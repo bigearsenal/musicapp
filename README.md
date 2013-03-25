@@ -446,10 +446,14 @@ HnnGnHnnnHnHGmmHmnnHGHmmnnmmmmmHHnHmnHGHmGmGmHHHmm:23 => "GHmn"
 5.We come to an order of 10 groups as `GHmn`<`LZk`<`DFbv`<`BVd`<`ASlz`<`QWp`<`ghXC`<`Nas`<`Jcx`<`ERui`. They are equivalent to the digits from 0,1,2 to 9. EX: we test with the string `LnJmyknNdNSvZBHTkDJTvHkn`(1381585330). At firstly remove the trivial positions from 0 to 4, 15 to 23 as the group `Tty` is the delimiter to get `knNdNSvZBH` and convert it into nummerical system. We have `1073742130`. The difference between the result and the original number is `307843200`.   
 
 6.It is almost complete. Now given a real album_id, ex: `1382365302` . We subtract by `307843200` and generate from the calculated result to get string which each digit is equivalent to each group. Finally it is end up with `ZGJGTknazpbbknbTZDJTDGLG` [http://m.mp3.zing.vn/xml/song/ZGJGTknazpbbknbTZDJTDGLG](http://m.mp3.zing.vn/xml/song/ZGJGTknazpbbknbTZDJTDGLG). Look at the folowing code:  
+
 ```coffeescript
-encryptId = (id) ->
-		a = "nkbdzphacu".split('')
-		"ZGJGT" + (id-307843200).toString().split('').map((v)-> a[v]).join('') + "TZDJTDGLG"
+encryptId = (id) ->		
+	arr = "GHmn<LZk<DFbv<BVd<ASlz<QWp<ghXC<Nas<Jcx<ERui".split("<")
+	delimiter = "Tty"
+	("1080|" + (id-307843200).toString() + "|128|2010").split('').map((v)-> 
+		if v isnt "|" then arr[v][Math.floor(Math.random()*10)%arr[v].length] 
+		else delimiter[Math.floor(Math.random()*10)%3]).join('')
 ```
 
 ### Brutal Search ###
@@ -461,7 +465,7 @@ encryptId = (id) ->
 * Scan whole albums in artist profile
 > [http://mp3.zing.vn/nghe-si/Dam-Vinh-Hung/album](http://mp3.zing.vn/nghe-si/Dam-Vinh-Hung/album)  
 
-### Procedure when getting album encryted links###
+### Album encrypted links###
 
 *Step 1:* Get album-xml: 
 ```bash
@@ -492,7 +496,7 @@ only available in 6hours due to the consistency between the hash `4ce95480fb0b14
 * Get song  
 [http://m.mp3.zing.vn/xml/song/ZGJGTknazzupuzaTZDJTDGLG](http://m.mp3.zing.vn/xml/song/ZGJGTknazzupuzaTZDJTDGLG)  
 [http://mp3.zing.vn/download/song/Chi-Con-Lai-Tinh-Yeu-Bui-Anh-Tuan/ZGJGyLGNldSnHdptLDcyvmLn](http://mp3.zing.vn/download/song/Chi-Con-Lai-Tinh-Yeu-Bui-Anh-Tuan/ZGJGyLGNldSnHdptLDcyvmLn)  
-==>> the encrypted links  
+**the encrypted links**
 [http://mp3.zing.vn/xml/load-song/MjAxMSUyRjAyJTJGMjIlMkZlJTJGYSUyRmVhMWI5OTU4YWY5MTM5YjA2ODE5MTU2NzFlMjVhN2JiLm1wMyU3QzI=](http://mp3.zing.vn/xml/load-song/MjAxMSUyRjAyJTJGMjIlMkZlJTJGYSUyRmVhMWI5OTU4YWY5MTM5YjA2ODE5MTU2NzFlMjVhN2JiLm1wMyU3QzI=)  
 [http://m.mp3.zing.vn/xml/song-load/MjAxMSUyRjAyJTJGMjIlMkZlJTJGYSUyRmVhMWI5OTU4YWY5MTM5YjA2ODE5MTU2NzFlMjVhN2JiLm1wMyU3QzI=](http://m.mp3.zing.vn/xml/song-load/MjAxMSUyRjAyJTJGMjIlMkZlJTJGYSUyRmVhMWI5OTU4YWY5MTM5YjA2ODE5MTU2NzFlMjVhN2JiLm1wMyU3QzI=)  
 * Get video  
