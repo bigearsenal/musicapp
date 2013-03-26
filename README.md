@@ -447,13 +447,12 @@ HnnGnHnnnHnHGmmHmnnHGHmmnnmmmmmHHnHmnHGHmGmGmHHHmm:23 => "GHmn"
 
 6.It is almost complete. Now given a real album_id, ex: `1382365302` . We subtract by `307843200` and generate from the calculated result to get string which each digit is equivalent to each group. Finally it is end up with `ZGJGTknazpbbknbTZDJTDGLG` [http://m.mp3.zing.vn/xml/song/ZGJGTknazpbbknbTZDJTDGLG](http://m.mp3.zing.vn/xml/song/ZGJGTknazpbbknbTZDJTDGLG). Look at the folowing code:  
 
-```coffeescript
-encryptId = (id) ->		
-	arr = "GHmn<LZk<DFbv<BVd<ASlz<QWp<ghXC<Nas<Jcx<ERui".split("<")
-	delimiter = "Tty"
-	("1080|" + (id-307843200).toString() + "|128|2010").split('').map((v)-> 
-		if v isnt "|" then arr[v][Math.floor(Math.random()*10)%arr[v].length] 
-		else delimiter[Math.floor(Math.random()*10)%3]).join('')
+```coffeescript  
+encryptId = (id) ->
+	a = "GHmn|LZk|DFbv|BVd|ASlz|QWp|ghXC|Nas|Jcx|ERui".split("|")
+	("1080|" + (id-307843200) + "|128|2010").split('').map((i)-> 
+		if i isnt "|" then a[i][Math.random()*a[i].length|0] 
+		else  "Tty"[Math.random()*3|0]).join('')  
 ```
 
 ### Brutal Search ###
