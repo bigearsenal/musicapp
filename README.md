@@ -449,10 +449,10 @@ HnnGnHnnnHnHGmmHmnnHGHmmnnmmmmmHHnHmnHGHmGmGmHHHmm:23 => "GHmn"
 
 ```coffeescript  
 encryptId = (id) ->
-	a = "GHmn|LZk|DFbv|BVd|ASlz|QWp|ghXC|Nas|Jcx|ERui".split("|")
-	("1080|" + (id-307843200) + "|128|2010").split('').map((i)-> 
+	a = "GHmn|LZk|DFbv|BVd|ASlz|QWp|ghXC|Nas|Jcx|ERui".split("|") 
+	Array::map.call("1080|" + (id-307843200) + "|128|2010",(i)->
 		if i isnt "|" then a[i][Math.random()*a[i].length|0] 
-		else  "Tty"[Math.random()*3|0]).join('')  
+		else  "Tty"[Math.random()*3|0]).join('')
 ```
 
 ### Brutal Search ###
