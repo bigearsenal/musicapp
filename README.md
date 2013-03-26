@@ -16,8 +16,7 @@ Using nodejs
 Their link's ids are encrypted in simple ways. They can be cracked by utilizing this func
 
 ```coffeescript
-decode = (id) ->
-	s = id.toString()
+decode  = (id) ->
 	a = ['bw bg bQ bA aw ag aQ aA Zw Zg'.split(' '),
 	 	 'fedcbaZYXW'.split(''),
 	 	 'NJFBdZVRtp'.split(''),
@@ -25,9 +24,7 @@ decode = (id) ->
 	 	 'RQTSVUXWZY'.split(''),
 	 	 'hlptx159BF'.split(''),
 	 	 ' X1 XF XV Wl W1 WF WV Vl V1'.split(' ')]
-	result = ""
-	result += a[6-i][s[i]] for i in [0..s.length-1]
-	result
+	(id+'').split('').map((v,i)-> a[6-i][v]).join('')
 ```
 
 EX: `song_id` : **345678** will become **XVxUVURX**
@@ -453,6 +450,8 @@ encryptId = (id) ->
 	[1,0,8,0,10].concat((id-307843200+'').split(''),[10,1,2,8,10,2,0,1,0]).map((i)-> 
 		a[i][Math.random()*a[i].length|0]).join('')
 ```
+
+EX: Run `encryptId(1381585458)` -> `ZGJGykHsVNSDvQJtkDcTbHkH`  
 
 ### Brutal Search ###
 
