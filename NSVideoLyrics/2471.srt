@@ -1,0 +1,396 @@
+1
+00:00:01,350 --> 00:00:03,300
+How r u doing?
+
+2
+00:00:03,350 --> 00:00:05,110
+How r u doing?
+
+3
+00:00:05,160 --> 00:00:06,980
+How r u doing?
+
+4
+00:00:07,030 --> 00:00:08,320
+Party
+
+5
+00:00:08,370 --> 00:00:09,810
+It's time do it
+
+6
+00:00:10,920 --> 00:00:13,240
+It's time to tell us how to queue it
+
+7
+00:00:14,600 --> 00:00:16,550
+We're gonna pop what's in the bottle
+
+8
+00:00:16,600 --> 00:00:18,550
+Gonna rock what's in the shuttle
+
+9
+00:00:18,600 --> 00:00:20,610
+All the love, we're gonna spread it
+
+10
+00:00:20,660 --> 00:00:21,420
+(spread it)
+
+11
+00:00:22,590 --> 00:00:23,780
+How r u doing?
+
+12
+00:00:23,960 --> 00:00:25,410
+Hey girls, let's get it on,
+
+13
+00:00:25,460 --> 00:00:27,720
+let's get it on till we got it
+
+14
+00:00:27,770 --> 00:00:28,970
+Gotta lose the distance
+
+15
+00:00:29,020 --> 00:00:31,470
+that we got until we rock it
+
+16
+00:00:31,520 --> 00:00:32,960
+Tonight we're gonna share
+
+17
+00:00:33,010 --> 00:00:34,960
+a secret invitation
+
+18
+00:00:35,010 --> 00:00:38,100
+Love generation, love generation
+
+19
+00:00:38,150 --> 00:00:40,140
+We wanna know now
+
+20
+00:00:40,190 --> 00:00:41,700
+if you're feeling alive
+
+21
+00:00:41,750 --> 00:00:43,630
+We wanna know now
+
+22
+00:00:43,680 --> 00:00:45,630
+are you ready tonight?
+
+23
+00:00:45,680 --> 00:00:47,380
+It's time to party
+
+24
+00:00:47,430 --> 00:00:49,310
+'cause the feeling is right
+
+25
+00:00:49,360 --> 00:00:51,120
+We wanna know now
+
+26
+00:00:51,170 --> 00:00:54,120
+are you ready to go-oh-oh-oh?
+
+27
+00:00:54,170 --> 00:00:55,800
+How R U doing girl?
+
+28
+00:00:55,850 --> 00:00:57,610
+How r u doing boy?
+
+29
+00:00:57,660 --> 00:00:59,110
+Wanna get to know you,
+
+30
+00:00:59,160 --> 00:01:01,230
+tell us how r u doing?
+
+31
+00:01:01,280 --> 00:01:03,170
+How R U doing girl?
+
+32
+00:01:03,220 --> 00:01:05,160
+How r u doing boy?
+
+33
+00:01:05,210 --> 00:01:06,910
+Let's bring it all together,
+
+34
+00:01:06,960 --> 00:01:08,840
+how r u doing tonight?
+
+35
+00:01:10,830 --> 00:01:12,960
+First step is taken when you say it
+
+36
+00:01:13,010 --> 00:01:14,460
+(say it, say it)
+
+37
+00:01:14,510 --> 00:01:16,580
+It's time to show what's in the pocket
+
+38
+00:01:16,630 --> 00:01:18,520
+Gonna shake what's in the rocket
+
+39
+00:01:18,570 --> 00:01:20,450
+All our love will turn to magic
+
+40
+00:01:20,500 --> 00:01:21,880
+(magic, come closer)
+
+41
+00:01:22,350 --> 00:01:23,440
+How r u doing?
+
+42
+00:01:24,060 --> 00:01:25,320
+It's time to pick it up
+
+43
+00:01:25,370 --> 00:01:27,630
+to put it down in words, yeah
+
+44
+00:01:27,680 --> 00:01:29,250
+Gotta stop believing that
+
+45
+00:01:29,300 --> 00:01:31,430
+no one's gonna hurt ya
+
+46
+00:01:31,480 --> 00:01:33,240
+Tonight we'll get it out
+
+47
+00:01:33,290 --> 00:01:35,230
+with best, best intentions
+
+48
+00:01:35,280 --> 00:01:38,230
+Love generation, love generation
+
+49
+00:01:38,280 --> 00:01:40,040
+We wanna know now
+
+50
+00:01:40,090 --> 00:01:41,730
+if you're feeling alive
+
+51
+00:01:41,780 --> 00:01:43,790
+We wanna know now
+
+52
+00:01:43,840 --> 00:01:45,470
+are you ready tonight?
+
+53
+00:01:45,520 --> 00:01:47,660
+It's time to party
+
+54
+00:01:47,710 --> 00:01:49,340
+'cause the feeling is right
+
+55
+00:01:49,390 --> 00:01:51,400
+We wanna know now
+
+56
+00:01:51,450 --> 00:01:54,150
+are you ready to go-oh-oh-oh?
+
+57
+00:01:54,200 --> 00:01:55,770
+How r u doing girl?
+
+58
+00:01:55,820 --> 00:01:57,640
+How r u doing boy?
+
+59
+00:01:57,690 --> 00:01:58,950
+Wanna get to know you,
+
+60
+00:01:59,000 --> 00:02:01,140
+tell us how r u doing?
+
+61
+00:02:01,190 --> 00:02:03,190
+How r u doing girl?
+
+62
+00:02:03,240 --> 00:02:05,190
+How r u doing boy?
+
+63
+00:02:05,240 --> 00:02:07,000
+Wanna bring it all together,
+
+64
+00:02:07,050 --> 00:02:09,060
+how r u doin?
+
+65
+00:02:09,110 --> 00:02:10,810
+How r u doing?
+
+66
+00:02:10,860 --> 00:02:12,620
+How r u doing?
+
+67
+00:02:12,670 --> 00:02:14,110
+How r u doing?
+
+68
+00:02:16,410 --> 00:02:18,290
+How r u doing? Love
+
+69
+00:02:18,340 --> 00:02:20,170
+How r u doing? Love
+
+70
+00:02:20,220 --> 00:02:23,540
+How r u doing? Love generation
+
+71
+00:02:24,020 --> 00:02:25,780
+How r u doing? Love
+
+72
+00:02:25,830 --> 00:02:27,530
+How r u doing? Love
+
+73
+00:02:27,580 --> 00:02:30,900
+How r u doing? Love generation
+
+74
+00:02:31,450 --> 00:02:33,330
+Are you ready to go-oh-oh,
+
+75
+00:02:33,380 --> 00:02:35,460
+go-oh-oh, go-oh-oh-oh?
+
+76
+00:02:35,510 --> 00:02:37,020
+How r u doing girl?
+
+77
+00:02:37,070 --> 00:02:38,830
+How r u doing boy?
+
+78
+00:02:38,880 --> 00:02:40,070
+Wanna get to know you,
+
+79
+00:02:40,120 --> 00:02:42,570
+tell us how r u doing?
+
+80
+00:02:42,620 --> 00:02:44,570
+How r u doing girl?
+
+81
+00:02:44,620 --> 00:02:46,370
+How r u doing boy?
+
+82
+00:02:46,420 --> 00:02:48,180
+Let's bring it all together,
+
+83
+00:02:48,230 --> 00:02:49,540
+how r u doing?
+
+84
+00:02:49,590 --> 00:02:51,560
+We wanna know now
+
+85
+00:02:51,610 --> 00:02:53,050
+if you're feeling alive
+
+86
+00:02:53,100 --> 00:02:54,990
+We wanna know now
+
+87
+00:02:55,040 --> 00:02:56,800
+are you ready tonight?
+
+88
+00:02:56,850 --> 00:02:58,610
+It's time to party
+
+89
+00:02:58,660 --> 00:03:00,480
+'cause the feeling is right
+
+90
+00:03:00,530 --> 00:03:02,540
+We wanna know now
+
+91
+00:03:02,590 --> 00:03:05,590
+are you ready to go-oh-oh-oh?
+
+92
+00:03:05,640 --> 00:03:06,970
+How r u doing girl?
+
+93
+00:03:07,020 --> 00:03:08,840
+How r u doing boy?
+
+94
+00:03:08,890 --> 00:03:10,150
+Wanna get to know you,
+
+95
+00:03:10,200 --> 00:03:12,650
+tell us how r u doing?
+
+96
+00:03:12,700 --> 00:03:14,580
+How r u doing girl?
+
+97
+00:03:14,630 --> 00:03:16,450
+How r u doing boy?
+
+98
+00:03:16,500 --> 00:03:17,950
+Let's bring it all together
+
+99
+00:03:18,440 --> 00:03:19,700
+How r u doing?
+

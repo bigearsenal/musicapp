@@ -1,0 +1,18 @@
+
+{exec} = require 'child_process'
+ns = require './cNhacso'
+
+
+
+option '-f', '--firstRange [FIRST_RANGE]', 'the first item in range'
+option '-l', '--lastRange [LAST_RANGE]', 'the last item in range'
+task 'nhacso:getsongs' , 'fetching songs from nhacso. Using with parameter -f and -l', (options) ->
+	throw new Error '[FIRST_RANGE] is required' unless options.firstRange?
+	throw new ERROR '[LAST_RANGE] is require' unless options.lastRange?
+	ns.fetchSongs options.firstRange, options.lastRange
+
+
+task 'nhacso:getalbums', 'fetching albums from nhacso. Using with parameter -f and -l', (options) ->
+	throw new Error '[FIRST_RANGE] is required' unless options.firstRange?
+	throw new ERROR '[LAST_RANGE] is require' unless options.lastRange?
+	ns.fetchAlbums options.firstRange, options.lastRange
