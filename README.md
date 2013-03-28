@@ -514,6 +514,8 @@ Secondly, it actually loads balancing among the hosts: `http://channelz1.org.mp3
 [http://mp3.zing.vn/ajax/lyrics/lyrics?from=0&id=ZW6OFZ70&callback=zmCore.js270375](http://mp3.zing.vn/ajax/lyrics/lyrics?from=0&id=ZW6OFZ70&callback=zmCore.js270375)  
 => JSONP. Remove callback func to get JSON `http://mp3.zing.vn/ajax/lyrics/lyrics?from=0&id=ZW6OFZ70&callback=`  
 => param `from=0` means lyric version  
+Get lyrics for videos  
+<http://mp3.zing.vn/ajax/lyric-v2/lyrics?id=ZW6UF98O>
 ```bash
 x.html.replace(/\r|\n|\t/g,'').replace(/<div\sclass\=\"iLyric\">.+/g,'').replace(/^.+<\/span><\/span>/g,'').replace(/<\/div>/g,'')  
 ```
