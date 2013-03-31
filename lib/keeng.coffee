@@ -4,16 +4,19 @@ Module = require './module'
 Utils = require './utils'
 colors = require 'colors'
 fs = require 'fs'
+encoder = new Encoder('entity');
 
 KE_CONFIG = 
 	table : 
 		Songs : "KESongs"
+		Videos : "KEVideos"
 
 class Keeng extends Module
 	constructor : (@mysqlConfig, @config = KE_CONFIG) ->
 		@table = @config.table
 		@query = 
-			_insertIntoKESongs : "INSERT INTO " + @table.Songs + " SET ?"
+			_insertIntoKESongs : "INSERT IGNORE INTO " + @table.Songs + " SET ?"
+			_insertIntoKEVideos : "INSERT IGNORE INTO " + @table.Videos + " SET ?"
 		@utils = new Utils()
 		@parser = new xml2js.Parser();
 		super @mysqlConfig
@@ -100,11 +103,11 @@ class Keeng extends Module
 						for i in [0..locations.length-1]
 							song = 
 								albumid : album.id
-								album_name : album.title
+								album_name : encoder.htmlDecode album.title
 								songid : ids[i+1].replace(/\<info\>/,'').replace(/<\/info\>/,'').trim()
-								song_name : titles[i+1].replace(/\<title\>/,'').replace(/<\/title\>/,'').trim()
+								song_name : encoder.htmlDecode titles[i+1].replace(/\<title\>/,'').replace(/<\/title\>/,'').trim()
 								song_link : locations[i].replace(/\<location\>/,'').replace(/<\/location\>/,'').trim()
-								artist_name : album.artist_name
+								artist_name : encoder.htmlDecode album.artist_name
 							if song.song_link.match(/\d{4}\/\d{2}\/\d{2}/) isnt null then song.created = song.song_link.match(/\d{4}\/\d{2}\/\d{2}/)[0].replace(/\//g,'-')
 							@connection.query @query._insertIntoKESongs, song, (err)->
 								if err then console.log "CANNOT insert songid #{song.songid}. ERROR: #{err}".red
@@ -188,6 +191,15 @@ class Keeng extends Module
 		@stats.currentTable = @table.Albums
 		@_fetchAlbum id for id in [range0..range1]
 		null
+
+
+	fetchVideos : ->
+		@connect()
+		console.log " |"+"Fetching videoid: #{range0}..#{range1} to table: #{@table.Videos}".magenta
+		@stats.totalItems = (range1 - range0 + 1)*25
+		[@stats.range0, @stats.range1] = [range0, range1]
+		@stats.currentTable = @table.Videos
+		@_fetchVideos id for id in [range0..range1]
 
 	update : ->
 		#update songs and albums

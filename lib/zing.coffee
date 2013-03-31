@@ -1282,27 +1282,24 @@ class Zing extends Module
 									@stats.failedItemCount+=1
 						catch e
 							console.log "Error has occured during processing at song: #{song.sid}"
-	updateVideosLyrics : (range0,range1)=>
+	updateVideosLyrics : ->
 		@connect()
-		skippedRows = range0-1
-		nItems = range1-range0+1
+
 		@stats.currentTable = @table.Videos
-		@stats.totalItems = nItems
 		# _q = "Select vid from #{@table.Videos} order by vid ASC LIMIT #{skippedRows},#{nItems} "
-		_q = "Select vid from #{@table.Videos} LIMIT 1"
+		_q = "Select vid from #{@table.Videos}"
 		console.log "Running on: #{new Date(Date.now())}"
 		console.log " |"+"Update Videos lyrics to table  : #{@table.Videos}".magenta
-		console.log " |" + "It has been skipped #{skippedRows} rows and selected #{nItems} ones ".magenta
 
 		# console.log _q
 		@connection.query _q, (err, videos)=>
 			if err then console.log "Cannot get videos from database. ERROR: #{err}"
 			else 
+				@stats.totalItems = videos.length
 				for video in videos 
 					do (video)=>
 						try 
-							# link = "http://mp3.zing.vn/ajax/lyric-v2/lyrics?id=#{@_convertToId video.vid}"
-							link = "http://mp3.zing.vn/ajax/lyric-v2/lyrics?id=ZW6Z8I0D"
+							link = "http://mp3.zing.vn/ajax/lyric-v2/lyrics?id=#{@_convertToId video.vid}&from=0"
 							# console.log link
 							@_getFileByHTTP link, (data)=>
 								try 
@@ -1322,7 +1319,7 @@ class Zing extends Module
 
 										index = bbb.indexOf Math.max bbb...
 
-										console.log bbb[index] + "<<<<=====    SCORE"
+										# console.log bbb[index] + "<<<<=====    SCORE"
 
 										if zeroCount is bbb.length then index = bbb.length-1
 
@@ -1335,15 +1332,15 @@ class Zing extends Module
 											t = ""
 										t = encoder.htmlDecode t
 										_u = "UPDATE #{@table.Videos} SET lyric=#{@connection.escape(t)} where vid=#{video.vid}"
-										console.log _u
-										# @connection.query _u, (err)->
-										# 	if err then console.log "Cannt update lyric #{video.vid}"
+										# console.log _u
+										@connection.query _u, (err)->
+											if err then console.log "Cannt update lyric #{video.vid}"
 
 										@stats.passedItemCount +=1
 										
 									else 
 										@stats.failedItemCount+=1
-										console.log "FAILED"
+										# console.log "FAILED"
 
 									@utils.printRunning @stats
 
@@ -1569,6 +1566,32 @@ class Zing extends Module
 							_u = "update ZIVideos set created=#{@connection.escape(created)} where videoid=#{@connection.escape(video.videoid)}"
 							@connection.query _u, (err)->
 								if err then console.log "cannt update video"
+	_updateLyricForVideo : (vid) ->
+		
+		link = "http://mp3.zing.vn/ajax/lyric-v2/lyrics?id=#{@_convertToId vid}&from=0"
+		# console.log link
+		@_getFileByHTTP link, (data)=>
+			try 
+				if data isnt null
+					arr = JSON.parse(data).result
+					bbb = arr.map (v)-> 
+						v = v.match(/score\">\d+<\/span>/g)?[0].match(/\d+/g)?[0]
+						if v isnt undefined then parseInt v,10 else 0
+					zeroCount = 0
+					bbb.map (v)->
+						if v is 0 then zeroCount+=1
+					index = bbb.indexOf Math.max bbb...
+					if zeroCount is bbb.length then index = bbb.length-1
+					t =  JSON.stringify(arr[index]).replace(/^.+<\/span><\/span>/g,'')
+													.replace(/<\/div>.+$/g,'')
+													.replace(/<\/p>\\n/g,'')
+													.replace(/\\r/g,'').replace(/\\t/g,'').replace(/\\n/g,'')
+					if t.search("Hiện chưa có lời bài hát") > -1
+						t = ""
+					t = encoder.htmlDecode t
+					_u = "UPDATE #{@table.Videos} SET lyric=#{@connection.escape(t)} where vid=#{vid}"
+					@connection.query _u, (err)->
+						if err then console.log "Cannt update lyric #{video.vid}"
 
 	updateVideos : ->
 		@connect()
@@ -1655,6 +1678,7 @@ class Zing extends Module
 							# @_fetchVideoLink _video
 							@connection.query @query._insertIntoZIVideos, _video, (err)->
 								if err then console.log "Cannot insert video #{video.videoid} into table. Error: #{err}"
+								else @_updateLyricForVideo _video.vid
 						@stats.passedItemCount +=1		
 					else 
 						@stats.failedItemCount +=1

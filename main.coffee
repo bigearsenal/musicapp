@@ -207,7 +207,7 @@ runZing = ->
 			when "13" then zing.encryptId()
 			when "14" then zing.test()
 			when "15" then zing.updateSongsLeft()
-			when "16" then runWithRange zing.updateVideosLyrics
+			when "16" then zing.updateVideosLyrics()
 			when "17" then zing.testAAAA()
 			when "18" then zing.updatePathAndCreated()
 			when "19" then zing.updateAlbumsLeft()

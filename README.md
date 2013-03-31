@@ -515,10 +515,9 @@ Secondly, it actually loads balancing among the hosts: `http://channelz1.org.mp3
 => JSONP. Remove callback func to get JSON `http://mp3.zing.vn/ajax/lyrics/lyrics?from=0&id=ZW6OFZ70&callback=`  
 => param `from=0` means lyric version  
 Get lyrics for videos  
-<http://mp3.zing.vn/ajax/lyric-v2/lyrics?id=ZW6UF98O>
-```bash
-x.html.replace(/\r|\n|\t/g,'').replace(/<div\sclass\=\"iLyric\">.+/g,'').replace(/^.+<\/span><\/span>/g,'').replace(/<\/div>/g,'')  
-```
+<http://mp3.zing.vn/ajax/lyric-v2/lyrics?id=ZW6UF98O>  
+Get all lyrics for videos by inserting parameter `from=0`  
+<http://mp3.zing.vn/ajax/lyric-v2/lyrics?id=ZW6UF98O&from=0>   
 
 ### Notice ###
 
@@ -551,7 +550,7 @@ link gonna expire in 12h
 Check duplicated albums in database. EX: albumid `I1umglqa8dMM` has 2 performers. Check it out and correct later!
 
 * Get Album
-[http://www.nhaccuatui.com/flash/xml?key2=7ab190e6723074e9de3eb1389724facc](http://www.nhaccuatui.com/flash/xml?key2=7ab190e6723074e9de3eb1389724facc)   
+<http://www.nhaccuatui.com/flash/xml?key2=7ab190e6723074e9de3eb1389724facc>  
 *Get albums' plays* 
 [http://www.nhaccuatui.com/wg/get-counter?listPlaylistIds=10779538,10582398](http://www.nhaccuatui.com/wg/get-counter?listPlaylistIds=10779538,10582398)  
 
