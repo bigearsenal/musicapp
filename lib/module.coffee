@@ -8,7 +8,7 @@ MYSQL_DEFAULT_CONFIG =
 	port: '8889'
 
 class Module
-	constructor : (@severConfig = MYSQL_DEFAULT_CONFIG) ->
+	constructor : (@serverConfig = MYSQL_DEFAULT_CONFIG) ->
 		@stats = 
 			totalItemCount :0
 			passedItemCount :0
@@ -22,7 +22,7 @@ class Module
 			currentTable : ""
 		@logPath = ""
 	connect : ->
-		@connection = mysql.createConnection @severConfig
+		@connection = mysql.createConnection @serverConfig
 		@connection.connect()
 		@
 	resetStats : ->

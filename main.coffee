@@ -109,7 +109,8 @@ runKeeng = ->
 	console.log "STEP 2:".inverse.blue + " " + "Choose the type of command:".underline.blue
 	console.log "\t" + "CREATE".inverse.red + " tables\t" + "RESET".inverse.red + " tables "
 	console.log "\t1.update albums+songs\t2.fetch albums+songs"
-	console.log "\t3.show stats"
+	console.log "\t3.show stats\t4.fetchVideos"
+	console.log "\t5.updateVideos\t6.axxxxxxxxxx"
 	ke = new Keeng(mysqlConfig)
 	rl.question "=> ", (answer) ->
 		switch answer.trim()
@@ -118,6 +119,9 @@ runKeeng = ->
 			when "1" then ke.update()
 			when "2" then runWithRange(ke.fetchAlbums)
 			when "3" then ke.showStats()
+			when "4" then runWithRange ke.fetchVideos
+			when "5" then ke.updateVideos()
+			
 			# when "1" then nv.fetchSongs 23123, 23123
 			else console.log "Wrong type".red
 runChacha = ->
@@ -260,6 +264,26 @@ runNhaccuatui = ->
 			when "16" then nct.updateLyrics()
 
 			else console.log "Wrong type".red
+
+runMusicVNN = ->
+	MusicVNN = require './lib/musicvnn'
+	console.log "Running with "+"musicvnn.vn".inverse.green
+	console.log "STEP 2:".inverse.blue + " " + "Choose the type of command:".underline.blue
+	console.log "\t1.fetchSongs\t2.xxxxxxxxxxxx"
+	console.log "\t3.show stats\t4.xxxxxxxxxxx"
+	# console.log "\t5.updateVideos\t6.axxxxxxxxxx"
+	musicvnn = new MusicVNN()
+	rl.question "=> ", (answer) ->
+		switch answer.trim()
+			when "1" then musicvnn.fetchSongs()
+			when "2" then runWithRange(musicvnn.xxxxx)
+			when "3" then musicvnn.showStats()
+			# when "4" then runWithRange musicvnn.fetchVideos
+			# when "5" then musicvnn.updateVideos()
+			
+			# when "1" then nv.fetchSongs 23123, 23123
+			else console.log "Wrong type".red
+
 runWithRange = (callback) ->
 	console.log "STEP 3:".inverse.blue + " " + "Enter range:".underline.blue
 	console.log "Syntax is NUMBER+SPACE_KEY+NUMBER For instance:12323 12323".grey
@@ -277,6 +301,8 @@ startingLog = ->
 	console.log ""
 	console.log	"        "+ "5.chacha.vn".inverse.green + "\t" + "6.nghenhac.info".inverse.green+ "\t" + "7.mp3.zing.vn".inverse.green + "\t" + 
 				"8.nhaccuatui.com".inverse.green
+	console.log ""
+	console.log	"        "+ "9.music.vnn.vn".inverse.green + "\t"
 	console.log "        Type 'q' to quit".grey
 
 rl.setPrompt('=>', 3)
@@ -292,6 +318,7 @@ rl.on("line", (line) ->
 		when "6" then runNghenhac()
 		when "7" then runZing()
 		when "8" then runNhaccuatui()
+		when "9" then runMusicVNN()
 		when "q"
 			rl.close()
 		else startingLog()

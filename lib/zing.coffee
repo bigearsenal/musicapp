@@ -1464,8 +1464,6 @@ class Zing extends Module
 
 						if @stats.totalItemCount is @stats.totalItems
 							@utils.printFinalResult @stats
-
-
 	updateSplitArtistsofSongs : ->
 		@connect()
 		@stats.currentTable = @table.Songs
@@ -1813,81 +1811,84 @@ class Zing extends Module
 	_updateSongs : (songid) ->
 		link = "http://mp3.zing.vn/bai-hat/joke-link/#{@_convertToId songid}.html"
 		@_getFileByHTTP link, (data)=>
-			@stats.totalItemCount +=1
-			@stats.currentId = songid
-			if data isnt null
-				_song = 
-					sid : songid
-					songid : @_convertToId songid
+			try 	
+				@stats.totalItemCount +=1
+				@stats.currentId = songid
+				if data isnt null
+					_song = 
+						sid : songid
+						songid : @_convertToId songid
 
-				if data.match(/Lượt\snghe\:.+<\/p>/g)
-					_song.plays = data.match(/Lượt\snghe\:.+<\/p>/g)[0]
-								.replace(/Lượt\snghe\:|<\/p>|\./g,'').trim()
-				else _song.plays = 0
+					if data.match(/Lượt\snghe\:.+<\/p>/g)
+						_song.plays = data.match(/Lượt\snghe\:.+<\/p>/g)[0]
+									.replace(/Lượt\snghe\:|<\/p>|\./g,'').trim()
+					else _song.plays = 0
 
-				if data.match(/Sáng\stác\:.+<\/a><\/a>/g)
-					_song.author = encoder.htmlDecode data.match(/Sáng\stác\:.+<\/a><\/a>/g)[0]
-								.replace(/^.+\">|<.+$/g,'').trim()
-				else _song.author = ''
+					if data.match(/Sáng\stác\:.+<\/a><\/a>/g)
+						_song.author = encoder.htmlDecode data.match(/Sáng\stác\:.+<\/a><\/a>/g)[0]
+									.replace(/^.+\">|<.+$/g,'').trim()
+					else _song.author = ''
 
-				if data.match(/Thể\sloại\:.+\|\sLượt\snghe/g)
-					_topics = data.match(/Thể\sloại\:.+\|\sLượt\snghe/g)[0]
-										.replace(/Thể\sloại\:|\s\|\sLượt\snghe/g,'').split(',')
-					arr = []
-					arr.push _topic.replace(/\<a.+\"\>|\<\/a\>/g,'').trim() for _topic in _topics
-					_song.topic = JSON.stringify arr
-				else _song.topic = ''
+					if data.match(/Thể\sloại\:.+\|\sLượt\snghe/g)
+						_topics = data.match(/Thể\sloại\:.+\|\sLượt\snghe/g)[0]
+											.replace(/Thể\sloại\:|\s\|\sLượt\snghe/g,'').split(',')
+						arr = []
+						arr.push _topic.replace(/\<a.+\"\>|\<\/a\>/g,'').trim() for _topic in _topics
+						_song.topic = JSON.stringify arr
+					else _song.topic = ''
 
-				if data.match(/xmlURL.+/)
+					if data.match(/xmlURL.+/)
 
-					_link = data.match(/xmlURL.+/)[0]
-								.match(/http:\/\/mp3\.zing\.vn\/xml\/song-xml\/[a-zA-Z]+/)[0]
+						_link = data.match(/xmlURL.+/)[0]
+									.match(/http:\/\/mp3\.zing\.vn\/xml\/song-xml\/[a-zA-Z]+/)[0]
 
-					_link = _link.replace(/song-xml/,'song')
-								.replace(/mp3/,'m.mp3')
+						_link = _link.replace(/song-xml/,'song')
+									.replace(/mp3/,'m.mp3')
+					@temp.totalFail = 0
+					do (_song) =>
+						@_getFileByHTTP _link, (data)=>
+							try
+								data = JSON.parse data
+								_song.song_name	= encoder.htmlDecode data.data[0].title.trim()
+								_song.song_artist = JSON.stringify encoder.htmlDecode(data.data[0].performer.trim()).split(',')
+								_song.song_link = data.data[0].source
 
-				@temp.totalFail = 0
-				do (_song) =>
-					@_getFileByHTTP _link, (data)=>
-						data = JSON.parse data
-						_song.song_name	= encoder.htmlDecode data.data[0].title.trim()
-						_song.song_artist = JSON.stringify encoder.htmlDecode(data.data[0].performer.trim()).split(',')
-						_song.song_link = data.data[0].source
+								_str =  _song.song_link.replace(/^.+load-song\//g,'').replace(/^.+song-load\//g,'')
+								testArr = []
+								testArr.push @_decodeString _str.slice(i, i+4) for i in [0.._str.length-1] by 4
+								path =  decodeURIComponent testArr.join('').match(/.+mp3/g)
 
-						_str =  _song.song_link.replace(/^.+load-song\//g,'').replace(/^.+song-load\//g,'')
-						testArr = []
-						testArr.push @_decodeString _str.slice(i, i+4) for i in [0.._str.length-1] by 4
-						path =  decodeURIComponent testArr.join('').match(/.+mp3/g)
+								created = path.match(/^\d{4}\/\d{2}\/\d{2}/)?[0].replace(/\//g,"-")
 
-						created = path.match(/^\d{4}\/\d{2}\/\d{2}/)?[0].replace(/\//g,"-")
+								_song.path = path
+								_song.created = created
 
-						_song.path = path
-						_song.created = created
+								_tempSong = 
+									sid : _song.sid
 
-						_tempSong = 
-							sid : _song.sid
+								# console.log _song
 
-						@connection.query @query._insertIntoZISongs, _song, (err)=>
-							if err then console.log "Cannot insert song: #{_song.songid} into table"
-							else @_updateLyric _tempSong
-				_song = ""
-				
-				@stats.passedItemCount +=1
-				@log.lastSongId = songid
-				@_updateSongs(songid + 1)
-				
-			else 
-				@stats.failedItemCount+=1
-				@temp.totalFail += 1
-				if @temp.totalFail < 1200
+								@connection.query @query._insertIntoZISongs, _song, (err)=>
+									if err then console.log "Cannot insert song: #{_song.songid} into table"
+									else @_updateLyric _tempSong
+					_song = ""
+					
+					@stats.passedItemCount +=1
+					@log.lastSongId = songid
 					@_updateSongs(songid + 1)
+					
+				else 
+					@stats.failedItemCount+=1
+					@temp.totalFail += 1
+					if @temp.totalFail < 1200
+						@_updateSongs(songid + 1)
 
-			@utils.printUpdateRunning songid, @stats, "Fetching....."
+				@utils.printUpdateRunning songid, @stats, "Fetching....."
 
-			if @temp.totalFail is 1200
-				@utils.printFinalResult @stats
-				@_writeLog @log
-				@updateAlbums()
+				if @temp.totalFail is 1200
+					@utils.printFinalResult @stats
+					@_writeLog @log
+					@updateAlbums()
 	updateSongs : ->
 		@connect()
 		console.log "Running on: #{new Date(Date.now())}"

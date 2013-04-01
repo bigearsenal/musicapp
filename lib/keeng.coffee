@@ -3,7 +3,10 @@ xml2js = require 'xml2js'
 Module = require './module'
 Utils = require './utils'
 colors = require 'colors'
+atob = require 'atob' 
 fs = require 'fs'
+
+Encoder = require('node-html-encoder').Encoder
 encoder = new Encoder('entity');
 
 KE_CONFIG = 
@@ -20,7 +23,22 @@ class Keeng extends Module
 		@utils = new Utils()
 		@parser = new xml2js.Parser();
 		super @mysqlConfig
-		
+	
+	_getFileByHTTP : (link, callback) ->
+		http.get link, (res) =>
+				res.setEncoding 'utf8'
+				data = ''
+				# callback res.headers.location
+				if res.statusCode isnt 302
+					res.on 'data', (chunk) =>
+						data += chunk;
+					res.on 'end', () =>
+						
+						callback data
+				else callback(null)
+			.on 'error', (e) =>
+				console.log  "Cannot get file. ERROR: " + e.message
+
 
 	createTables : ->
 		@connect()
@@ -192,14 +210,106 @@ class Keeng extends Module
 		@_fetchAlbum id for id in [range0..range1]
 		null
 
+	_fetchVideos : (pageId) ->		
+		link = "http://www.keeng.vn/video/video-moi.html?page=" + pageId
+		http.get link, (res) =>
+				res.setEncoding 'utf8'
+				data = ''
+				res.on 'data', (chunk) =>
+					data += chunk;
+				res.on 'end', () =>
+					items = data.match(/class\=\"link\sname-song\sunder\".+/g)
+					data  = ""
+					for item, i in items
+						@stats.totalItemCount +=1
+						@stats.passedItemCount +=1
+						video = 
+							vid :  item.match(/^.+name-single/g)[0]
+									.match(/^.+ title/)[0]
+									.replace(/^.+\/.+\/.+\//,'')
+									.replace(/\.html.+/,'')
+						@connection.query @query._insertIntoKEVideos, video, (err)->
+							if err then console.log "cannt insert video id: #{video.vid}"
+						@utils.printRunning @stats
+					
+					if @stats.totalItems is @stats.totalItemCount 
+						@utils.printFinalResult @stats
+			
+			.on 'error', (e) =>
+				console.log  "Got error: " + e.message
+				@stats.failedItemCount+=1	
 
-	fetchVideos : ->
+	fetchVideos : (range0 = 0, range1 = 0)=>
 		@connect()
 		console.log " |"+"Fetching videoid: #{range0}..#{range1} to table: #{@table.Videos}".magenta
-		@stats.totalItems = (range1 - range0 + 1)*25
+		@stats.totalItems = (range1 - range0 + 1)*28
 		[@stats.range0, @stats.range1] = [range0, range1]
 		@stats.currentTable = @table.Videos
 		@_fetchVideos id for id in [range0..range1]
+
+	_updateVideos : ->
+		_q  = "select vid from KEVideos_test LIMIT 7"
+
+		@connection.query _q, (err,results)=>
+			if err then console.log "cannt fetch videos from table"
+			else
+				@stats.totalItems = results.length
+				for video, index in results
+					do (video, index)=>
+						# link = "http://www.keeng.vn/video/joke-link/DBKXN8EQ.html"
+						link = "http://www.keeng.vn/video/joke-link/#{video.vid}.html"
+						@_getFileByHTTP link, (data)=>
+							_video = 
+								vid : video.vid
+							@stats.totalItemCount++
+							if data isnt null
+								if data.match(/name-song\".+/g)
+									_temp = data.match(/name-song\".+/g)[0]
+									_video.name = encoder.htmlDecode _temp.replace(/<\/span>.+$/g,'')
+													.replace(/^.+>/g,'')
+									_t = _temp.replace(/^.+<\/span>/g,'').split(" ft ")
+									_video.artists = JSON.stringify _t.map (v)-> encoder.htmlDecode v.replace(/<\/a>.+$/g,'').replace(/^.+>/g,'')
+									_video.playingid = _temp.match(/playingid=\d+/g)?[0].match(/\d+/g)?[0]
+								if data.match(/Lượt\snghe:.+/g)
+									_video.plays = data.match(/Lượt\snghe:.+/g)[0].match(/\d+/g)?[0]
+								if data.match(/videoPlayerLink.+/g)
+									_video.link = data.match(/videoPlayerLink.+/g)?[0].match(/http.+/)?[0].replace(/\';/g,'')
+								if data.match(/videoImageLink.+/g)
+									_video.thumbnail = atob data.match(/videoImageLink.+/g)?[0]
+															.replace(/\";/g,'').replace(/^.+\"/g,'').trim()
+									_video.created = _video.thumbnail.match(/\d{4}\/\d{2}\/\d{2}/g)?[0]
+								if data.match(/link\stl\sunder.+/g)
+									_video.topic = encoder.htmlDecode data.match(/link\stl\sunder.+/g)[0].replace(/<\/a>.+$/g,'').replace(/^.+>/g,'')
+
+								data = JSON.stringify(data)
+								if data.match(/statis.+link\stl\sunder/g)
+									_video.author = data.match(/statis.+link\stl\sunder/g)[0].replace(/<\/a>.+$/g,'').replace(/^.+>/g,'')
+									if _video.author.search(/Đang\scập\snhật/) > -1
+										_video.author = ""
+
+								@stats.passedItemCount++
+								@connection.query @query._insertIntoKEVideos, _video, (err)=>
+									if err
+										console.log "cannt insert new videoid #{_video.vid} into table. ERROR: #{err}"
+									else @connection.query "delete from KEVideos_test where vid=#{@connection.escape(_video.vid)}"
+
+
+
+							else @stats.failedItemCount++
+
+							@utils.printRunning @stats
+
+							if index is 6 then @_updateVideos()
+
+							if @stats.totalItems is @stats.totalItemCount
+								@utils.printFinalResult @stats
+
+	updateVideos : ->
+		@connect()
+		console.log " |"+"Update videos to table: #{@table.Videos}".magenta
+		_q  = "select vid from KEVideos_test LIMIT 7"
+
+		@_updateVideos()
 
 	update : ->
 		#update songs and albums
