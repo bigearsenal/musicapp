@@ -52,6 +52,9 @@ class Site extends Module
 		else 
 			encoder.htmlDecode(a).trim()
 
+	# format Datetimt to insert into table
+	formatDate : (dt)->
+		dt.getFullYear() + "-" + (dt.getMonth()+1) + "-" + dt.getDay() + " " + dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds()
 
 	showStartupMessage : (message,table)->
 		console.log "Running on: #{new Date(Date.now())}"

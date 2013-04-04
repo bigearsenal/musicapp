@@ -283,7 +283,20 @@ runMusicVNN = ->
 			
 			# when "1" then nv.fetchSongs 23123, 23123
 			else console.log "Wrong type".red
-
+runVietGiaitri = ->
+	VietGiaitri = require './lib/vietgiaitri'
+	console.log "Running with "+"vietGiaitri.vn".inverse.green
+	console.log "STEP 2:".inverse.blue + " " + "Choose the type of command:".underline.blue
+	console.log "\t1.fetchSongs\t2.xxxxxxxxxxxx"
+	console.log "\t3.show stats\t4.xxxxxxxxxxx"
+	# console.log "\t5.updateVideos\t6.axxxxxxxxxx"
+	vietGiaitri = new VietGiaitri()
+	rl.question "=> ", (answer) ->
+		switch answer.trim()
+			when "1" then vietGiaitri.fetchSongs()
+			when "2" then runWithRange(vietGiaitri.xxxxx)
+			when "3" then vietGiaitri.showStats()
+			else console.log "Wrong type".red
 runWithRange = (callback) ->
 	console.log "STEP 3:".inverse.blue + " " + "Enter range:".underline.blue
 	console.log "Syntax is NUMBER+SPACE_KEY+NUMBER For instance:12323 12323".grey
@@ -302,7 +315,7 @@ startingLog = ->
 	console.log	"        "+ "5.chacha.vn".inverse.green + "\t" + "6.nghenhac.info".inverse.green+ "\t" + "7.mp3.zing.vn".inverse.green + "\t" + 
 				"8.nhaccuatui.com".inverse.green
 	console.log ""
-	console.log	"        "+ "9.music.vnn.vn".inverse.green + "\t"
+	console.log	"        "+ "9.music.vnn.vn".inverse.green + "\t"+ "10.nhac.vietgiaitri.com".inverse.green
 	console.log "        Type 'q' to quit".grey
 
 rl.setPrompt('=>', 3)
@@ -319,6 +332,7 @@ rl.on("line", (line) ->
 		when "7" then runZing()
 		when "8" then runNhaccuatui()
 		when "9" then runMusicVNN()
+		when "10" then runVietGiaitri()
 		when "q"
 			rl.close()
 		else startingLog()
