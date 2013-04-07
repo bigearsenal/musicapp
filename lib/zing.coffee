@@ -22,7 +22,7 @@ class Zing extends Module
 		@table = @config.table
 		@query = 
 			_insertIntoZISongs : "INSERT IGNORE INTO " + @table.Songs + " SET ?"
-			_insertIntoZIAlbums : "INSERT IGNORE INTO " + @table.Albums + " SET ?"
+			_insertIntoZIAlbums : "INSERT INTO " + @table.Albums + " SET ?"
 			_insertIntoZISongs_Albums : "INSERT IGNORE INTO " + @table.Songs_Albums + " SET ?"
 			_insertIntoZIArtists : "INSERT IGNORE INTO " + @table.Artists + " SET ?"
 			_insertIntoZIVideos : "INSERT IGNORE INTO " + @table.Videos + " SET ?"
@@ -1690,6 +1690,84 @@ class Zing extends Module
 
 
 	# Updating songs, albums and songs_albums
+	_processAlbum : (albumid, data) ->
+		album = 
+			aid : albumid
+			albumid : @_convertToId albumid
+		album.album_encodedId = data.match(/xmlURL.+\&amp\;/g)[0].replace(/xmlURL\=http\:\/\/mp3\.zing\.vn\/xml\/album\-xml\//g,'').replace(/\&amp\;/,'') 
+		
+		if data.match(/Lượt\snghe\:\<\/span\>.+/g)
+			album.plays = data.match(/Lượt\snghe\:\<\/span\>.+/g)[0]
+							.replace(/Lượt\snghe\:\<\/span\>\s|\<\/p\>|\./g,'').trim()
+		else album.plays = 0
+		
+		if data.match(/Năm\sphát\shành\:.+/g)
+			album.released_year = data.match(/Năm\sphát\shành\:.+/g)[0]
+									.replace(/Năm\sphát\shành\:/g,'')
+									.replace(/\<\/p\>|\<\/span\>/g,'').trim()
+		else album.released_year = ''
+
+		if data.match(/Số\sbài\shát\:/g)
+			album.nsongs = data.match(/Số\sbài\shát\:.+/g)[0]
+								.replace(/Số\sbài\shát\:|\<\/span\>\s|\<\/p\>/g,'')
+		else album.nsongs = ''
+
+		if data.match(/Thể\sloại\:/g)
+			_topics = data.match(/Thể\sloại\:.+/g)[0]
+								.replace(/Thể\sloại\:.|\/span\>|\<\/p\>/g,'').split(',')
+			arr = []
+			arr.push _topic.replace(/\<a.+\"\>|\<\/a\>/g,'').trim() for _topic in _topics
+			album.topic = JSON.stringify arr
+		else album.topic = ''
+
+		if data.match(/_albumIntro\"\sclass\=\"rows2.+/g)
+			album.description = encoder.htmlDecode data.match(/_albumIntro\"\sclass\=\"rows2.+/g)[0]
+									.replace(/_albumIntro.+\"\>|\<br\s\/\>|\<\/p\>/g,'')
+
+		if data.match /detail-title.+/g
+			item = data.match(/detail-title.+/g)[0].replace(/detail-title\">|<\/h1>/g,'')
+			_tempArr = item.split(' - ')
+			_temp_artist = encoder.htmlDecode _tempArr[_tempArr.length-1]
+
+			if _temp_artist.search(" ft. ") > -1
+				album.album_artist = JSON.stringify _temp_artist.trim().split(' ft. ')
+			else album.album_artist = JSON.stringify _temp_artist.trim().split(',')
+
+			_tempArr.splice(-1)
+			album.album_name = encoder.htmlDecode _tempArr.join(' - ')
+		
+		if data.match /album-detail-img/g
+			_temp =  data.match(/album-detail-img.+/g)[0].replace(/album-detail-img|/)
+			album.album_thumbnail = _temp.match(/src\=\".+/g)[0].replace(/album-detail-img.+src\=/g,'')
+											.replace(/alt.+|\"|src\=/g,'').trim()
+			if album.album_thumbnail.match(/_\d+\..+$/)
+				_t = album.album_thumbnail.match(/_\d+\..+$/)[0].replace(/_|\..+$/,'')
+				_t = new Date(parseInt(_t,10)*1000)
+				_created = _t.getFullYear() + "-" + (_t.getMonth()+1) + "-" + _t.getDate() + " " + _t.getHours() + ":" + _t.getMinutes() + ":" + _t.getSeconds()
+				album.created = _created
+
+		if data.match(/_divPlsLite.+\"\sclass/g)
+			arr = []
+			_songids = data.match(/_divPlsLite.+\"\sclass/g)
+			arr.push _songid.replace(/_divPlsLite|\"\sclass/g,'') for _songid in _songids
+			songids = arr.map (v)=> @_convertToInt v
+		else album.description = ""
+		data = ""
+		
+		# console.log album
+		# console.log songs_albums
+		# Starting to insert new album
+		
+		@connection.query @query._insertIntoZIAlbums, album, (err)=>
+			if !err 
+				for sid in songids
+					do (sid, albumid)=>
+						_item = 
+							aid : albumid
+							sid : sid
+						@connection.query @query._insertIntoZISongs_Albums, _item, (err)->
+							if err then console.log "Cannot insert new record: #{JSON.stringify(_item)} into Songs_Albums. ERROR: #{err}"
+
 	_updateAlbums : (albumid)->
 		link = "http://mp3.zing.vn/album/joke-link/#{@_convertToId albumid}.html"
 		@_getFileByHTTP link, (data)=>
@@ -1697,92 +1775,15 @@ class Zing extends Module
 				@stats.totalItemCount +=1
 				@stats.currentId = albumid
 				if data isnt null
-					album = 
-						aid : albumid
-						albumid : @_convertToId albumid
 					if data.match(/xmlURL.+\&amp\;/g) is null 
 						@stats.failedItemCount += 1
 						@temp.totalFail+=1
 						# console.log "ERROR : album #{albumid}: does not exist".red
 					else
-
-						album.album_encodedId = data.match(/xmlURL.+\&amp\;/g)[0].replace(/xmlURL\=http\:\/\/mp3\.zing\.vn\/xml\/album\-xml\//g,'').replace(/\&amp\;/,'') 
-						
-						if data.match(/Lượt\snghe\:\<\/span\>.+/g)
-							album.plays = data.match(/Lượt\snghe\:\<\/span\>.+/g)[0]
-											.replace(/Lượt\snghe\:\<\/span\>\s|\<\/p\>|\./g,'').trim()
-						else album.plays = 0
-						
-						if data.match(/Năm\sphát\shành\:.+/g)
-							album.released_year = data.match(/Năm\sphát\shành\:.+/g)[0]
-													.replace(/Năm\sphát\shành\:/g,'')
-													.replace(/\<\/p\>|\<\/span\>/g,'').trim()
-						else album.released_year = ''
-
-						if data.match(/Số\sbài\shát\:/g)
-							album.nsongs = data.match(/Số\sbài\shát\:.+/g)[0]
-												.replace(/Số\sbài\shát\:|\<\/span\>\s|\<\/p\>/g,'')
-						else album.nsongs = ''
-
-						if data.match(/Thể\sloại\:/g)
-							_topics = data.match(/Thể\sloại\:.+/g)[0]
-												.replace(/Thể\sloại\:.|\/span\>|\<\/p\>/g,'').split(',')
-							arr = []
-							arr.push _topic.replace(/\<a.+\"\>|\<\/a\>/g,'').trim() for _topic in _topics
-							album.topic = JSON.stringify arr
-						else album.topic = ''
-
-						if data.match(/_albumIntro\"\sclass\=\"rows2.+/g)
-							album.description = encoder.htmlDecode data.match(/_albumIntro\"\sclass\=\"rows2.+/g)[0]
-													.replace(/_albumIntro.+\"\>|\<br\s\/\>|\<\/p\>/g,'')
-
-						if data.match /detail-title.+/g
-							item = data.match(/detail-title.+/g)[0].replace(/detail-title\">|<\/h1>/g,'')
-							_tempArr = item.split(' - ')
-							_temp_artist = encoder.htmlDecode _tempArr[_tempArr.length-1]
-
-							if _temp_artist.search(" ft. ") > -1
-								album.album_artist = JSON.stringify _temp_artist.trim().split(' ft. ')
-							else album.album_artist = JSON.stringify _temp_artist.trim().split(',')
-
-							_tempArr.splice(-1)
-							album.album_name = encoder.htmlDecode _tempArr.join(' - ')
-						
-						if data.match /album-detail-img/g
-							_temp =  data.match(/album-detail-img.+/g)[0].replace(/album-detail-img|/)
-							album.album_thumbnail = _temp.match(/src\=\".+/g)[0].replace(/album-detail-img.+src\=/g,'')
-															.replace(/alt.+|\"|src\=/g,'').trim()
-							if album.album_thumbnail.match(/_\d+\..+$/)
-								_t = album.album_thumbnail.match(/_\d+\..+$/)[0].replace(/_|\..+$/,'')
-								_t = new Date(parseInt(_t,10)*1000)
-								_created = _t.getFullYear() + "-" + (_t.getMonth()+1) + "-" + _t.getDate() + " " + _t.getHours() + ":" + _t.getMinutes() + ":" + _t.getSeconds()
-								album.created = _created
-
-						if data.match(/_divPlsLite.+\"\sclass/g)
-							arr = []
-							_songids = data.match(/_divPlsLite.+\"\sclass/g)
-							arr.push _songid.replace(/_divPlsLite|\"\sclass/g,'') for _songid in _songids
-							songids = arr.map (v)=> @_convertToInt v
-						else album.description = ""
-						data = ""
-						
-						# console.log album
-						# console.log songs_albums
-						# Starting to insert new album
 						@temp.totalFail = 0
-						@log.lastAlbumId = album.aid
-						@connection.query @query._insertIntoZIAlbums, album, (err)=>
-							if err then console.log "cannt insert new album: #{album.albumid}. ERROR: #{err}"
-							else
-								for sid in songids
-									do (sid, albumid)=>
-										_item = 
-											aid : albumid
-											sid : sid
-										@connection.query @query._insertIntoZISongs_Albums, _item, (err)->
-											if err then console.log "Cannot insert new record: #{JSON.stringify(_item)} into Songs_Albums. ERROR: #{err}"
-
-						@stats.passedItemCount +=1		
+						@log.lastAlbumId = albumid
+						@stats.passedItemCount +=1	
+						@_processAlbum albumid, data	
 				else 
 					@temp.totalFail+=1
 					@stats.failedItemCount +=1
@@ -1808,6 +1809,64 @@ class Zing extends Module
 		@stats.currentTable = @table.Albums + " & " + @table.Songs_Albums
 		@_updateAlbums @log.lastAlbumId+1
 
+	_processSong : (songid, data)->
+		_song = 
+			sid : songid
+			songid : @_convertToId songid
+
+		if data.match(/Lượt\snghe\:.+<\/p>/g)
+			_song.plays = data.match(/Lượt\snghe\:.+<\/p>/g)[0]
+						.replace(/Lượt\snghe\:|<\/p>|\./g,'').trim()
+		else _song.plays = 0
+
+		if data.match(/Sáng\stác\:.+<\/a><\/a>/g)
+			_song.author = encoder.htmlDecode data.match(/Sáng\stác\:.+<\/a><\/a>/g)[0]
+						.replace(/^.+\">|<.+$/g,'').trim()
+		else _song.author = ''
+
+		if data.match(/Thể\sloại\:.+\|\sLượt\snghe/g)
+			_topics = data.match(/Thể\sloại\:.+\|\sLượt\snghe/g)[0]
+								.replace(/Thể\sloại\:|\s\|\sLượt\snghe/g,'').split(',')
+			arr = []
+			arr.push _topic.replace(/\<a.+\"\>|\<\/a\>/g,'').trim() for _topic in _topics
+			_song.topic = JSON.stringify arr
+		else _song.topic = ''
+
+		if data.match(/xmlURL.+/)
+
+			_link = data.match(/xmlURL.+/)[0]
+						.match(/http:\/\/mp3\.zing\.vn\/xml\/song-xml\/[a-zA-Z]+/)[0]
+
+			_link = _link.replace(/song-xml/,'song')
+						.replace(/mp3/,'m.mp3')
+		data = ""
+		do (_song) =>
+			@_getFileByHTTP _link, (data)=>
+				try
+					data = JSON.parse data
+					_song.song_name	= encoder.htmlDecode data.data[0].title.trim()
+					_song.song_artist = JSON.stringify encoder.htmlDecode(data.data[0].performer.trim()).split(',')
+					_song.song_link = data.data[0].source
+
+					_str =  _song.song_link.replace(/^.+load-song\//g,'').replace(/^.+song-load\//g,'')
+					testArr = []
+					testArr.push @_decodeString _str.slice(i, i+4) for i in [0.._str.length-1] by 4
+					path =  decodeURIComponent testArr.join('').match(/.+mp3/g)
+
+					created = path.match(/^\d{4}\/\d{2}\/\d{2}/)?[0].replace(/\//g,"-")
+
+					_song.path = path
+					_song.created = created
+
+					_tempSong = 
+						sid : _song.sid
+
+					# console.log _song
+
+					@connection.query @query._insertIntoZISongs, _song, (err)=>
+						if err then console.log "Cannot insert song: #{_song.songid} into table"
+						else @_updateLyric _tempSong
+		_song = ""
 	_updateSongs : (songid) ->
 		link = "http://mp3.zing.vn/bai-hat/joke-link/#{@_convertToId songid}.html"
 		@_getFileByHTTP link, (data)=>
@@ -1815,66 +1874,11 @@ class Zing extends Module
 				@stats.totalItemCount +=1
 				@stats.currentId = songid
 				if data isnt null
-					_song = 
-						sid : songid
-						songid : @_convertToId songid
-
-					if data.match(/Lượt\snghe\:.+<\/p>/g)
-						_song.plays = data.match(/Lượt\snghe\:.+<\/p>/g)[0]
-									.replace(/Lượt\snghe\:|<\/p>|\./g,'').trim()
-					else _song.plays = 0
-
-					if data.match(/Sáng\stác\:.+<\/a><\/a>/g)
-						_song.author = encoder.htmlDecode data.match(/Sáng\stác\:.+<\/a><\/a>/g)[0]
-									.replace(/^.+\">|<.+$/g,'').trim()
-					else _song.author = ''
-
-					if data.match(/Thể\sloại\:.+\|\sLượt\snghe/g)
-						_topics = data.match(/Thể\sloại\:.+\|\sLượt\snghe/g)[0]
-											.replace(/Thể\sloại\:|\s\|\sLượt\snghe/g,'').split(',')
-						arr = []
-						arr.push _topic.replace(/\<a.+\"\>|\<\/a\>/g,'').trim() for _topic in _topics
-						_song.topic = JSON.stringify arr
-					else _song.topic = ''
-
-					if data.match(/xmlURL.+/)
-
-						_link = data.match(/xmlURL.+/)[0]
-									.match(/http:\/\/mp3\.zing\.vn\/xml\/song-xml\/[a-zA-Z]+/)[0]
-
-						_link = _link.replace(/song-xml/,'song')
-									.replace(/mp3/,'m.mp3')
-					@temp.totalFail = 0
-					do (_song) =>
-						@_getFileByHTTP _link, (data)=>
-							try
-								data = JSON.parse data
-								_song.song_name	= encoder.htmlDecode data.data[0].title.trim()
-								_song.song_artist = JSON.stringify encoder.htmlDecode(data.data[0].performer.trim()).split(',')
-								_song.song_link = data.data[0].source
-
-								_str =  _song.song_link.replace(/^.+load-song\//g,'').replace(/^.+song-load\//g,'')
-								testArr = []
-								testArr.push @_decodeString _str.slice(i, i+4) for i in [0.._str.length-1] by 4
-								path =  decodeURIComponent testArr.join('').match(/.+mp3/g)
-
-								created = path.match(/^\d{4}\/\d{2}\/\d{2}/)?[0].replace(/\//g,"-")
-
-								_song.path = path
-								_song.created = created
-
-								_tempSong = 
-									sid : _song.sid
-
-								# console.log _song
-
-								@connection.query @query._insertIntoZISongs, _song, (err)=>
-									if err then console.log "Cannot insert song: #{_song.songid} into table"
-									else @_updateLyric _tempSong
-					_song = ""
-					
+					@_processSong songid, data
+					data = ""
 					@stats.passedItemCount +=1
 					@log.lastSongId = songid
+					@temp.totalFail = 0
 					@_updateSongs(songid + 1)
 					
 				else 
@@ -1899,7 +1903,44 @@ class Zing extends Module
 
 		@_updateSongs @log.lastSongId+1
 	# ---------------------------------------
-	
+	# Update songs and albums with RANGE
+	_updateSongsOrAlbumsWithRange : (range0, range1, isSong = true)->
+		@connect()
+		console.log "Running on: #{new Date(Date.now())}"
+		if isSong 
+			console.log " |"+"Update Songs to table: #{@table.Songs}".magenta
+			@stats.currentTable = @table.Songs
+		else 
+			console.log " |"+"Update Albums to table: #{@table.Albums}".magenta
+			@stats.currentTable = @table.Albums
+		
+		@stats.totalItems = range1 - range0 + 1
+
+		for id in [range0..range1]
+			do (id)=>
+				if isSong then link = "http://mp3.zing.vn/bai-hat/joke-link/#{@_convertToId id}.html"
+				else link = "http://mp3.zing.vn/album/joke-link/#{@_convertToId id}.html"
+				@_getFileByHTTP link, (data)=>
+					try 	
+						@stats.totalItemCount +=1
+						@stats.currentId = id
+						if data isnt null
+							if isSong then @_processSong id, data
+							else @_processAlbum id, data
+							data = ""
+							@stats.passedItemCount +=1
+						else 
+							@stats.failedItemCount+=1
+
+						@utils.printRunning @stats
+
+						if @stats.totalItems is @stats.totalItemCount
+							@utils.printFinalResult @stats
+	updateSongsWithRange : (range0, range1) =>
+		@_updateSongsOrAlbumsWithRange range0, range1, true
+	updateAlbumsWithRange : (range0, range1) =>
+		@_updateSongsOrAlbumsWithRange range0, range1, false
+		
 		
 
 	findDiffenceBetween2Strings : (s1,s2)->

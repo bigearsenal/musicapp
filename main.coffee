@@ -190,6 +190,7 @@ runZing = ->
 	console.log "\t19.updateAlbumsLeft\t20.UPDATE SONGS AND ALBUMS"
 	console.log "\t21.UPDATEALBUMS\t22.updateCreatedTime"
 	console.log "\t23.updateVideos\t24.updateSplitArtistsofAlbums"
+	console.log "\t25.UPDATE SONGS WITH RANGE\t26.UPDATE ALBUMS WITH RANGE"
 
 	zing = new Zing(mysqlConfig)
 	rl.question "=> ", (answer) ->
@@ -220,6 +221,8 @@ runZing = ->
 			when "22" then zing.updateCreatedTime()
 			when "23" then zing.updateVideos()
 			when "24" then zing.updateSplitArtistsofAlbums()
+			when "25" then runWithRange zing.updateSongsWithRange
+			when "26" then runWithRange zing.updateAlbumsWithRange
 			
 
 			else console.log "Wrong type".red
