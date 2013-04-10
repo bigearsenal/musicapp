@@ -71,7 +71,7 @@ class Nhacvui extends Module
 			link : song['jwplayer:file'][0]
 		@connection.query @query._insertIntoNVSongs, _item, (err) =>
 		 	if err then console.log "Cannot insert the song into table. ERROR: " + err	
-		 	else @_updateSong320 _item.songid
+		 	# else @_updateSong320 _item.songid  #deprecated on April 10,2013
 	_storeSong320 : (id, song) ->
 		_item = 
 			songid : id
@@ -89,7 +89,7 @@ class Nhacvui extends Module
 				link : song['jwplayer:file'][0]
 			@connection.query @query._insertIntoNVAlbums,_item,(err) =>
 				if err then console.log "Cannot get albumid: #{_item.albumid}. ERROR: ".red + err
-				else @_updateAlbumName _item.albumid
+				else @_updateAlbumName _item.albumid 
 	_storeAlbumName : (id, album)->
 		_query = "UPDATE #{@table.Albums} SET " +
 				" album_name   = #{@connection.escape(album.album_name)},"+
@@ -198,16 +198,18 @@ class Nhacvui extends Module
 					data += chunk;
 				res.on 'end', () =>
 					if data.search('Album không tồn tại.') is -1
-						title_artist = data.match(/\<div\sclass=\"nghenhac-baihat\"\>\<h\d\>.+/)[0]
-							.replace(/\<div\sclass=\"nghenhac-baihat\"\>\<h\d\>/,'')
-							.replace(/\<\/h\d\>\<\/div\>/,'')
+						title_artist = data.match(/nghenhac-baihat.+/g)[0]
+							.replace(/\<\/h\d\>\<\/div\>/g,'')
+							.replace(/^.+>/g,'')
 
-						type_plays = data.match(/\<div\sclass=\"nghenhac-info\"\>.+/)[0]
-							.replace(/\<div\sclass=\"nghenhac-info\"\>/,'')
-							.replace(/Thể loại:\s\<a\shref=\"\/.+\.html\"\stitle=\".+\"\>/,'')
-							.replace(/\<\/a\>\s/,'')
-							.replace(/Nghe:\s/,'')
-							.replace(/\<\/div\>/,'')
+						plays = data.match(/Lượt\snghe:.+/g)?[0]
+							.replace(/<\/p>/g,'')
+							.replace(/^.+>/g,'')
+							.replace(/,/g,'').trim()
+
+						topic = data.match(/Thể\sloại:.+/g)?[0]
+							.replace(/<\/a><\/p>.+$/g,'')
+							.replace(/^.+>/g,'')
 						data = ""
 						
 						#split by dash sign (-) EX: "Cpop Chart (15/6 - 22/6 ) - Various Artists"
@@ -221,8 +223,8 @@ class Nhacvui extends Module
 						album = 
 							album_name : encoder.htmlDecode _name.trim()
 							album_artist : encoder.htmlDecode _artist.trim()
-							topic : encoder.htmlDecode type_plays.split('|')[0].trim()
-							plays : type_plays.split('|')[1].replace(/\,/g,'').trim()
+							topic : topic
+							plays : plays
 
 						@_storeAlbumName id, album
 			.on 'error', (e) =>

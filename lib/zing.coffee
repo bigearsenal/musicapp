@@ -1904,45 +1904,73 @@ class Zing extends Module
 		@_updateSongs @log.lastSongId+1
 	# ---------------------------------------
 	# Update songs and albums with RANGE
-	_updateSongsOrAlbumsWithRange : (range0, range1, isSong = true)->
+	_updateSongsOrAlbumsWithRange : (range0, range1, type)->
 		@connect()
 		console.log "Running on: #{new Date(Date.now())}"
-		if isSong 
+		if type is 1 
 			console.log " |"+"Update Songs to table: #{@table.Songs}".magenta
 			@stats.currentTable = @table.Songs
-		else 
+		else if type is 2
 			console.log " |"+"Update Albums to table: #{@table.Albums}".magenta
 			@stats.currentTable = @table.Albums
-		
 		@stats.totalItems = range1 - range0 + 1
-
-		for id in [range0..range1]
-			do (id)=>
-				if isSong then link = "http://mp3.zing.vn/bai-hat/joke-link/#{@_convertToId id}.html"
-				else link = "http://mp3.zing.vn/album/joke-link/#{@_convertToId id}.html"
-				@_getFileByHTTP link, (data)=>
-					try 	
-						@stats.totalItemCount +=1
-						@stats.currentId = id
-						if data isnt null
-							if isSong then @_processSong id, data
-							else @_processAlbum id, data
-							data = ""
-							@stats.passedItemCount +=1
-						else 
-							@stats.failedItemCount+=1
-
-						@utils.printRunning @stats
-
-						if @stats.totalItems is @stats.totalItemCount
-							@utils.printFinalResult @stats
+		@fetchRows range0, range1, type, (arr)=>
+			console.log "The # of items is: #{arr.length}"
+			for id in arr
+				do (id)=>
+					if type is 1 then link = "http://mp3.zing.vn/bai-hat/joke-link/#{@_convertToId id}.html"
+					else if type is 2 then link = "http://mp3.zing.vn/album/joke-link/#{@_convertToId id}.html"
+					@_getFileByHTTP link, (data)=>
+						try 	
+							@stats.totalItemCount +=1
+							@stats.currentId = id
+							if data isnt null
+								if isSong then @_processSong id, data
+								else @_processAlbum id, data
+								data = ""
+								@stats.passedItemCount +=1
+							else 
+								@stats.failedItemCount+=1
+							@utils.printRunning @stats
+							if @stats.totalItems is @stats.totalItemCount
+								@utils.printFinalResult @stats
 	updateSongsWithRange : (range0, range1) =>
-		@_updateSongsOrAlbumsWithRange range0, range1, true
+		@_updateSongsOrAlbumsWithRange range0, range1, 1
 	updateAlbumsWithRange : (range0, range1) =>
-		@_updateSongsOrAlbumsWithRange range0, range1, false
-		
-		
+		@_updateSongsOrAlbumsWithRange range0, range1, 2
 
+	# fetching ffrom data base
+	fetchRows : (range0, range1, type, onSuccess)->
+		# type 1 is song, 2 is album, 3 is video
+		if type is 1
+			typeId = "sid"
+			table = @table.Songs
+		else if type is 2
+			typeId = "aid"
+			table = @table.Albums
+		else if type is 3
+			typeId = "vid"
+			table = @table.Videos
+			
+		nSteps = (range1 - range0 + 1)/1000 | 0 + 1
+		resultArray = []
+		for i in [1..nSteps]
+			do (i) =>
+				
+				firstId = range0 + 1000*(i-1)
+				lastId = range0 + 1000*i
+				_q = "select #{typeId} from #{table} where #{typeId} < #{lastId} and #{typeId} >= #{firstId}"
+				@connection.query _q, (err, results)->
+					if err then console.log "cannot fetch the results"
+					else 
+						b = []
+						for item in results
+							b.push item[typeId]
+						for value in [firstId..lastId]
+							if b.indexOf(value) is -1 then resultArray.push value
+						if lastId >= range1
+							onSuccess resultArray
+	# ------------------------------------------
 	findDiffenceBetween2Strings : (s1,s2)->
 		# console.log "#{s1}".blue
 		# console.log "#{s2}".green
