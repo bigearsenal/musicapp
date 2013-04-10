@@ -1767,6 +1767,7 @@ class Zing extends Module
 							sid : sid
 						@connection.query @query._insertIntoZISongs_Albums, _item, (err)->
 							if err then console.log "Cannot insert new record: #{JSON.stringify(_item)} into Songs_Albums. ERROR: #{err}"
+		album
 
 	_updateAlbums : (albumid)->
 		link = "http://mp3.zing.vn/album/joke-link/#{@_convertToId albumid}.html"
@@ -1862,6 +1863,8 @@ class Zing extends Module
 						sid : _song.sid
 
 					# console.log _song
+					@song = _song # using for testing
+
 
 					@connection.query @query._insertIntoZISongs, _song, (err)=>
 						if err then console.log "Cannot insert song: #{_song.songid} into table"
