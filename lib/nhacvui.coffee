@@ -5,6 +5,8 @@ Utils = require './utils'
 colors = require 'colors'
 fs = require 'fs'
 
+events = require('events')
+
 Encoder = require('node-html-encoder').Encoder
 encoder = new Encoder('entity');
 
@@ -22,46 +24,50 @@ class Nhacvui extends Module
 			_insertIntoNVAlbums : "INSERT INTO " + @table.Albums + " SET ?"
 			_insertIntoNVSongs_Albums : "INSERT INTO " + @table.Songs_Albums + " SET ?"
 		@utils = new Utils()
-		@parser = new xml2js.Parser();
+		@parser = new xml2js.Parser()
+		@eventEmitter = new events.EventEmitter()
 		super @mysqlConfig
 		@logPath = @config.logPath
 		@log = {}
 		@_readLog()
 
-	createTables : ->
-		@connect()
-		songsQuery = " create table IF NOT EXISTS " + @table.Songs + " (
-					songid int,
-					song_name varchar(255),
-					artist_name varchar(255),
-					annotation varchar(255),
-					link varchar(255),
-					link320 varchar(255)
-					);"
-		albumsQuery = "CREATE TABLE IF NOT EXISTS " + @table.Albums + " (
-					albumid int,
-					album_name varchar(255),
-					album_artist varchar(255),
-					topic varchar(100),
-					plays int,
-					song_name varchar(255),
-					artist_name varchar(255),					
-					link varchar(255)
-					);"
-		_query = songsQuery + albumsQuery
-		
-		@connection.query _query, (err, result)=>
-			if err then console.log "Cannot create tables" else console.log "Tables: #{@table.Songs}, #{@table.Albums} have been created!"
-			@end()
+	getFileByHTTP : (link, onSucess, onFail, options) ->
+		http.get link, (res) =>
+				res.setEncoding 'utf8'
+				data = ''
+				# onSucess res.headers.location
+				if res.statusCode isnt 302
+					res.on 'data', (chunk) =>
+						data += chunk;
+					res.on 'end', () =>
+						
+						onSucess data, options
+				else onFail("The link is temporary moved",options)
+			.on 'error', (e) =>
+				onFail  "Cannot get file from server. ERROR: " + e.message, options
 
-	resetTables : ->
-		@connect()
-		songsQuery = "truncate table #{@table.Songs} ;"
-		albumsQuery = "truncate table #{@table.Albums} ;"
-		_query = songsQuery+albumsQuery
-		@connection.query _query, (err, result)=>
-			if err then console.log "Cannot truncate tables" else console.log "Tables: #{@table.Songs}, #{@table.Albums} have been truncated!"
-			@end()
+	getFiles : (range,processLinkCallback,processDataCallback)->
+		for id in [range.first..range.last]
+			do (id) =>
+				href = processLinkCallback(id)
+				@getFileByHTTP href,((data)=>
+					@stats.totalItemCount +=1
+					if data isnt null
+						@stats.passedItemCount +=1
+						result = processDataCallback(id,data)
+						# insertIntoDBCallback(result)
+						@eventEmitter.emit 'result', result
+					else @stats.failedItemCount +=1
+
+					@utils.printRunning @stats
+					@stats.currentId = id
+
+					if @stats.totalItemCount is @stats.totalItems
+						@utils.printFinalResult @stats
+
+				), (err) ->
+					console.log "We have an error while fetching files"
+
 
 	_storeSong : (id, song) ->
 		_item = 
@@ -377,7 +383,59 @@ class Nhacvui extends Module
 		console.log " |"+"Updating Albums to table: #{@table.Albums}".magenta 
 		@_updateAlbum @log.lastAlbumId+1
 
+	updateSongsStats : ->
+		range = 
+			first : 200000
+			last : 250000
+		@stats.totalItems = range.last - range.first + 1
+		@stats.currentTable = @table.Songs
 
+		console.log "THE # OF ITEMS IS #{@stats.totalItems}"
+
+		@connect()
+
+		processLinkCallback  = (id)-> "http://hcm.nhac.vui.vn/-m#{id}c2p1a1.html"
+		processDataCallback = (id,data)->
+			if !data.match(/Bài\shát\skhông\stồn\stại/)
+				_t = data.match(/Nhạc\ssĩ:.+/g)?[0]
+				song = 
+					songid : id
+					plays : 0
+					topic : ""
+					author : ""
+					lyric : ""
+				if _t isnt undefined
+					song.plays = _t.match(/Lượt\snghe.+/g)[0].replace(/<\/div>.+/g,'').replace(/Lượt\snghe:|,/g,'').trim()
+					song.topic = _t.replace(/<\/a>.+$/g,'').replace(/^.+>/g,'').trim()
+					song.author = encoder.htmlDecode _t.replace(/<\/span>.+/g,'').replace(/^.+>/g,'').trim()
+
+				song.lyric = data.match(/media_title.+/g)?[0].replace(/<\/div><div\s.+$/g,'').replace(/^.+<\/span><\/i><\/div>/g,'').trim()
+
+				if song.lyric.match(/Hiện\sbài\shát.+chưa\scó\slời/)
+					song.lyric = ""
+
+				if song.author.match(/Đang\sCập\sNhật/)
+					song.author = ""
+				song
+			else 
+				song = null
+			song
+		
+		@eventEmitter.on 'result', (result)=>
+			if result isnt null
+				_q = "update #{@table.Songs} set " + 
+						 "plays = #{@connection.escape result.plays}, " + 
+						 "topic = #{@connection.escape result.topic}, " + 
+						 "author = #{@connection.escape result.author}, " + 
+						 "lyric = #{@connection.escape result.lyric} " + 
+						 "where songid = #{result.songid} "
+				@connection.query _q, (err)->
+					if err then console.log "cannt insert into databaseq"
+			else 
+				@stats.failedItemCount +=1
+				@stats.passedItemCount -=1
+
+		@getFiles range,processLinkCallback,processDataCallback
 
 	showStats : ->
 		@_printTableStats NV_CONFIG.table

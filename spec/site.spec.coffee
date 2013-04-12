@@ -1,7 +1,7 @@
 describe "The site mp3.zing.vn", ->
   Zing = require '../lib/zing'
   zing = new Zing()
-  waitingTime = 200
+  waitingTime = 100
   
   describe "contains a song", ->
     it "has an id of 1382402055", ->
@@ -19,8 +19,8 @@ describe "The site mp3.zing.vn", ->
        expect(zing.song.sid).toEqual(1382402055)
     it "of encoded id of ZW6ZC807", ->
       expect(zing.song.songid).toEqual("ZW6ZC807")
-    it "of total plays of 31", ->
-      expect(parseInt(zing.song.plays,10)).toEqual(31)
+    # it "of total plays of 31", ->
+    #   expect(parseInt(zing.song.plays,10)).toEqual(31)
     it "whose author is nobody", ->
       expect(zing.song.author).toEqual('')
     it "whose topics are Âu Mỹ,Pop,Audiophile", ->

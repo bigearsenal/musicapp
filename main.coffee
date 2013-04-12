@@ -85,8 +85,8 @@ runNhacvui = ->
 	console.log "\t" + "CREATE".inverse.red + " tables\t" + "RESET".inverse.red + " tables "
 	console.log "\t1.update songs\t2.update albums"
 	console.log "\t3.fetch songs\t4.fetch albums"
-	console.log "\t5.fetch album's titles"
-	console.log "\t6.show stats"
+	console.log "\t5.fetch album's titles \t6.updateSongsStats"
+	console.log "\t7.show stats"
 	nv = new Nhacvui(mysqlConfig)
 	rl.question "=> ", (answer) ->
 		switch answer.trim()
@@ -97,7 +97,8 @@ runNhacvui = ->
 			when "3" then runWithRange(nv.fetchSongs)
 			when "4" then runWithRange(nv.fetchAlbums)
 			when "5" then runWithRange(nv.fetchAlbumName)
-			when "6" then nv.showStats()
+			when "6" then nv.updateSongsStats()
+			when "7" then nv.showStats()
 			# when "1" then nv.fetchSongs 23123, 23123
 			else console.log "Wrong type".red
 runKeeng = ->
