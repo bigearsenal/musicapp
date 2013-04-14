@@ -27,6 +27,6 @@ encryptZingID = (id)->
 
 console.log "http://mp3.zing.vn/html5/video/" + encryptId 1381585458
 console.log "http://mp3.zing.vn/html5/video/" + encryptZingID "ZW6Z7DE0"
-console.log _decodeIntegerToId_ZING 1382386947
+console.log _decodeIntegerToId_ZING 1381585037
 console.log _encodeIdToInteger_ZING "ZW6ZDZBI"
 
