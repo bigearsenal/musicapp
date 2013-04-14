@@ -14,6 +14,7 @@ NV_CONFIG =
 	table : 
 		Songs : "NVSongs"
 		Albums : "NVAlbums"
+		Songs_Albums : "NVSongs_Albums"
 	logPath : "./log/NVLog.txt"
 
 class Nhacvui extends Module
@@ -68,6 +69,8 @@ class Nhacvui extends Module
 				), (err) ->
 					console.log "We have an error while fetching files"
 
+	formatDate : (dt)->
+		dt.getFullYear() + "-" + (dt.getMonth()+1) + "-" + dt.getDay() + " " + dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds()
 
 	_storeSong : (id, song) ->
 		_item = 
@@ -262,33 +265,95 @@ class Nhacvui extends Module
 			.on 'error', (e) =>
 				console.log  "Got error: " + e.message
 				@stats.failedItemCount+=1
-	_fetchAlbum : (id) ->
-		link = "http://hcm.nhac.vui.vn/asx2.php?type=3&id=" + id
-		http.get link, (res) =>
-				res.setEncoding 'utf8'
-				data = ''
-				res.on 'data', (chunk) =>
-					data += chunk;
-				res.on 'end', () =>
-					transferEncoding =  res.headers['transfer-encoding']
-					if res.headers['content-length']? then contentLength = parseInt res.headers['content-length']
-					else contentLength = 0
-					@stats.totalItemCount+=1
-					if transferEncoding is "chunked" or contentLength > 0
-						@parser.parseString data, (err, result) =>
-							album = result.rss.channel[0].item
-							@stats.currentId = id
-							@stats.passedItemCount+=1
-							@_storeAlbum id, album
+	_fetchAlbum : (range0 = 0, range1 = 0) ->
+		# console.log range1
+		range = 
+			first : range0
+			last : range1
+		@stats.totalItems = range.last - range.first + 1
+		@stats.currentTable = @table.Albums
+		console.log "THE # OF ALBUMS IS #{@stats.totalItems}"
+		@connect()
+		processLinkCallback  = (id)-> "http://hcm.nhac.vui.vn/-a#{id}p1.html"
+		processDataCallback = (id,data)=>
+			if data.search('Album không tồn tại.') is -1
+						title_artist = data.match(/nghenhac-baihat.+/g)[0]
+							.replace(/\<\/h\d\>\<\/div\>/g,'')
+							.replace(/^.+>/g,'')
+
+						plays = data.match(/Lượt\snghe:.+/g)?[0]
+							.replace(/<\/p>/g,'')
+							.replace(/^.+>/g,'')
+							.replace(/,/g,'').trim()
+
+						topic = data.match(/Thể\sloại:.+/g)?[0]
+							.replace(/<\/a><\/p>.+$/g,'')
+							.replace(/^.+>/g,'')
+						
+
+						nsongs = data.match(/Số\sbài\shát:\s.+/g)?[0]
+							.replace(/<\/p>$/g,'')
+							.replace(/^.+>/g,'')
+
+						thumbnail = data.match(/albumInfo-img.+[\n\t\r]+.+/g)?[0]
+														.replace(/\"\salt.+$/g,'').replace(/^.+\s.+\"/g,'')
+
+						created = ""
+
+						if thumbnail?.match(/\d+_/g)
+							created = thumbnail.match(/\d{10,14}_/g)?[0]?.replace(/_/g,'')
+
+						if !thumbnail?.match(/http/)
+							thumbnail = "http://hcm.nhac.vui.vn" + thumbnail
+
+						songids = data.match(/javascript:liked_onclick\(\'\d+\'\)/g)
+						songids = songids?.map (v)-> v.match(/\d+/)[0]
+						data = ""
+						
+						#split by dash sign (-) EX: "Cpop Chart (15/6 - 22/6 ) - Various Artists"
+						#_name = "Cpop Chart (15/6 - 22/6 )" and _artist="Various Artists"
+						_arr = title_artist.split(/\s\-\s/)
+						_artist = _arr[_arr.length-1]
+						_arr.splice(_arr.length-1,1)
+						_name = _arr.join(" - ")
+						_arr = ""
+
+						album = 
+							aid : id
+							album_name : encoder.htmlDecode _name.trim()
+							album_artist : encoder.htmlDecode _artist.trim()
+							topic : topic
+							plays : plays
+							nsongs : nsongs
+							thumbnail : thumbnail
+						
+						if created isnt "" then album.created = @formatDate new Date(parseInt(created,0)*1000)
+						else album.created = ""
+
+						result = 
+							album : album
+							songids : songids
+
+			else null
+
+		@eventEmitter.on 'result', (result)=>
+			if result isnt null
+				# console.log result
+
+				@connection.query @query._insertIntoNVAlbums, result.album, (err)=>
+					if err then console.log "cannt insert album: #{result.aid} into table"
 					else 
-						@stats.failedItemCount+=1
-					
-					@utils.printRunning @stats
-					if @stats.totalItemCount is @stats.totalItems
-							@utils.printFinalResult @stats		
-			.on 'error', (e) =>
-				console.log  "Got error: " + e.message
-				@stats.failedItemCount+=1
+						for sid in result.songids
+							do (sid,result)=>
+								@connection.query @query._insertIntoNVSongs_Albums, {"sid" : sid,"aid" : result.album.aid}, (err)->
+									if err then console.log "cannt insert song: #{sid} - album: #{result.album.aid}"
+
+			else 
+				@stats.failedItemCount +=1
+				@stats.passedItemCount -=1
+
+		@getFiles range,processLinkCallback,processDataCallback
+
 	_fetchAlbumName : (id) ->
 		link = "http://hcm.nhac.vui.vn/-a#{id}p1.html"
 		# Album không tồn tại.
@@ -354,7 +419,7 @@ class Nhacvui extends Module
 		@stats.totalItems = range1 - range0 + 1
 		[@stats.range0, @stats.range1] = [range0, range1]
 		@stats.currentTable = @table.Albums
-		@_fetchAlbum id for id in [range0..range1]
+		@_fetchAlbum range0, range1
 		null
 	fetchAlbumName : (range0 = 0, range1 = 0) =>
 		@connect()
@@ -385,8 +450,8 @@ class Nhacvui extends Module
 
 	updateSongsStats : ->
 		range = 
-			first : 200000
-			last : 250000
+			first : 290480
+			last : 314047
 		@stats.totalItems = range.last - range.first + 1
 		@stats.currentTable = @table.Songs
 

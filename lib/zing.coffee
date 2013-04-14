@@ -1921,17 +1921,20 @@ class Zing extends Module
 			console.log "The # of items is: #{arr.length}"
 			for id in arr
 				do (id)=>
+					# console.log id
 					if type is 1 then link = "http://mp3.zing.vn/bai-hat/joke-link/#{@_convertToId id}.html"
 					else if type is 2 then link = "http://mp3.zing.vn/album/joke-link/#{@_convertToId id}.html"
+					# console.log link
 					@_getFileByHTTP link, (data)=>
-						try 	
+						try
+							# console.log data
 							@stats.totalItemCount +=1
 							@stats.currentId = id
 							if data isnt null
-								if isSong then @_processSong id, data
-								else @_processAlbum id, data
-								data = ""
+								if type is 1 then @_processSong id, data
+								else if type is 2 then @_processAlbum id, data
 								@stats.passedItemCount +=1
+								data = ""
 							else 
 								@stats.failedItemCount+=1
 							@utils.printRunning @stats

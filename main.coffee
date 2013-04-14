@@ -301,6 +301,20 @@ runVietGiaitri = ->
 			when "2" then runWithRange(vietGiaitri.xxxxx)
 			when "3" then vietGiaitri.showStats()
 			else console.log "Wrong type".red
+runStats = ->
+	Stats = require './lib/stats'
+	console.log "Running with "+"statistics".inverse.green
+	console.log "STEP 2:".inverse.blue + " " + "Choose the type of command:".underline.blue
+	console.log "\t1.fetchTable\t2.xxxxxxxxxxxx"
+	console.log "\t3.show stats\t4.xxxxxxxxxxx"
+	# console.log "\t5.updateVideos\t6.axxxxxxxxxx"
+	stats = new Stats()
+	rl.question "=> ", (answer) ->
+		switch answer.trim()
+			when "1" then stats.fetchTable()
+			when "2" then runWithRange(stats.xxxxx)
+			when "3" then stats.showStats()
+			else console.log "Wrong type".red
 runWithRange = (callback) ->
 	console.log "STEP 3:".inverse.blue + " " + "Enter range:".underline.blue
 	console.log "Syntax is NUMBER+SPACE_KEY+NUMBER For instance:12323 12323".grey
@@ -319,7 +333,7 @@ startingLog = ->
 	console.log	"        "+ "5.chacha.vn".inverse.green + "\t" + "6.nghenhac.info".inverse.green+ "\t" + "7.mp3.zing.vn".inverse.green + "\t" + 
 				"8.nhaccuatui.com".inverse.green
 	console.log ""
-	console.log	"        "+ "9.music.vnn.vn".inverse.green + "\t"+ "10.nhac.vietgiaitri.com".inverse.green
+	console.log	"        "+ "9.music.vnn.vn".inverse.green + "\t"+ "10.nhac.vietgiaitri.com".inverse.green+ "\t" + "11. STATISTICS".inverse.green
 	console.log "        Type 'q' to quit".grey
 
 rl.setPrompt('=>', 3)
@@ -337,6 +351,7 @@ rl.on("line", (line) ->
 		when "8" then runNhaccuatui()
 		when "9" then runMusicVNN()
 		when "10" then runVietGiaitri()
+		when "11" then runStats()
 		when "q"
 			rl.close()
 		else startingLog()

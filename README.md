@@ -238,6 +238,12 @@ Updated on December 12, 2012
 	<http://hcm.nhac.vui.vn/asx2.php?type=3&id=24000>  
 	`type=3` => album  
 
+* Access to different servers:  
+	<http://music-hn.24hstatic.com/uploadmusic2/4312057e459982206e6d6e257c2c3bf3/5164734e/uploadmusic/id_le/2-2013/ngaln/Music/128/Hukkeunhukkeun%20Ttakkeunttakkeun%20-%20Tokyo%20Girl.mp3>
+	`music-hn` - `music-hcm` - `m-nv-music`  - `nv-img-hcm` - `nv-ad-hcm` - `nv-ad-hn`  
+	<http://hn.nhac.vui.vn/asx2.php?type=3&id=26873>  
+	`hn.nhac.vui.vn` <=> `hcm.nhac.vui.vn`
+
 *STATS:* ~279772 songs, ~24100 albums on Feb 02
 
 ---
