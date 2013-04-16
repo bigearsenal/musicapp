@@ -28,7 +28,7 @@ runNhacso = ->
 	console.log "STEP 2:".inverse.blue + " " + "Choose the type of command:".underline.blue
 	console.log "\t" + "RESET_SOAL".inverse.red + "- reset songs and albums \t" + "RESET_VIDEO".inverse.red + "- reset video table "
 	console.log "\t" + "stats".inverse.red + "- show stats \t"
-	console.log "\t1.update albums\t2.update songs\t"
+	console.log "\t1.UPDATE ALBUMS & SONGS\t2.update songs\t"
 	console.log "\t3.update videos\t4.fetch songs stats\t"
 	console.log "\t5.fetch songs\t6.fetch albums"
 	console.log "\t7.fetch videos\t8.fetch lyrics"
@@ -39,7 +39,7 @@ runNhacso = ->
 			when "RESET_SOAL" then ns.resetSongsAndAlbumsTable()
 			when "RESET_VIDEO" then ns.resetVideosTable()
 			when "stats" then ns.showStats()
-			when "1" then ns.updateAlbums()
+			when "1" then ns.update()
 			when "2" then ns.updateSongs()
 			when "3" then ns.updateVideos()
 			when "4" then runWithRange ns.fetchSongsStats
@@ -83,7 +83,7 @@ runNhacvui = ->
 		logPath : "./log/test_NVLog.txt"
 	console.log "STEP 2:".inverse.blue + " " + "Choose the type of command:".underline.blue
 	console.log "\t" + "CREATE".inverse.red + " tables\t" + "RESET".inverse.red + " tables "
-	console.log "\t1.update songs\t2.update albums"
+	console.log "\t1.UPDATE SONGS & ALBUMS \t2.update albums"
 	console.log "\t3.fetch songs\t4.fetch albums"
 	console.log "\t5.fetch album's titles \t6.updateSongsStats"
 	console.log "\t7.show stats"
@@ -92,7 +92,7 @@ runNhacvui = ->
 		switch answer.trim()
 			when "CREATE" then nv.createTables()
 			when "RESET" then nv.resetTables()
-			when "1" then nv.updateSongs()
+			when "1" then nv.update()
 			when "2" then nv.updateAlbums()
 			when "3" then runWithRange(nv.fetchSongs)
 			when "4" then runWithRange(nv.fetchAlbums)
@@ -135,7 +135,7 @@ runChacha = ->
 		logPath : "./log/test_CCLog.txt"
 	console.log "STEP 2:".inverse.blue + " " + "Choose the type of command:".underline.blue
 	console.log "\t" + "CREATE".inverse.red + " tables\t" + "RESET".inverse.red + " tables "
-	console.log "\t1.update songs\t2.update albums"
+	console.log "\t1.UPDATE SONGS AND ALBUMS\t2.update albums"
 	console.log "\t3.fetch songs\t4.fetch albums"
 	console.log "\t5.show stats"
 	cc = new Chacha(mysqlConfig)
@@ -143,7 +143,7 @@ runChacha = ->
 		switch answer.trim()
 			when "CREATE" then cc.createTables()
 			when "RESET" then cc.resetTables()
-			when "1" then cc.updateSongs()
+			when "1" then cc.update()
 			when "2" then cc.updateAlbums()
 			when "3" then runWithRange(cc.fetchSongs)
 			when "4" then runWithRange(cc.fetchAlbums)
@@ -360,5 +360,4 @@ rl.on("line", (line) ->
   console.log ""
   console.log "YOU HAVE LOGGED OUT!".inverse.red
   process.exit 0
-
 

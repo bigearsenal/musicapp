@@ -1887,12 +1887,12 @@ class Zing extends Module
 				else 
 					@stats.failedItemCount+=1
 					@temp.totalFail += 1
-					if @temp.totalFail < 1200
+					if @temp.totalFail < 2000
 						@_updateSongs(songid + 1)
 
 				@utils.printUpdateRunning songid, @stats, "Fetching....."
 
-				if @temp.totalFail is 1200
+				if @temp.totalFail is 2000
 					@utils.printFinalResult @stats
 					@_writeLog @log
 					@updateAlbums()

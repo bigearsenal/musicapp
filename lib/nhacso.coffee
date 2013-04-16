@@ -176,6 +176,7 @@ class Nhacso extends Module
 							@_writeLog @log
 							@utils.printFinalResult @stats
 						@resetStats()
+						@updateSongs()
 						# if @log.totalPassedSongs is 0 then console.log "The stats of table: #{@table.NSSongs} is up-to-date on: #{new Date(Date.now())}" 
 						# else @fetchSongsStats @log.lastSongId-@log.totalPassedSongs+1, @log.lastSongId
 			.on 'error', (e) ->
@@ -665,7 +666,7 @@ class Nhacso extends Module
 		console.log "Running on: #{new Date(Date.now())}"
 		console.log " |"+"Updating Songs to table: #{@table.NSSongs}".magenta 
 		@_updateSong @log.lastSongId+1
-	updateAlbums : ->
+	update : ->
 		@connect()
 		console.log "Running on: #{new Date(Date.now())}"
 		console.log " |"+"Updating Albums to table: #{@table.NSAlbums}".magenta 
@@ -682,73 +683,5 @@ class Nhacso extends Module
 	showStats : ->
 		@_printTableStats NS_CONFIG.table
 
-	
-	_updateVideoErrors : ->
-					videoData = ""			
-					http.get link, (res) =>
-							data = ''
-							res.on 'data', (chunk) =>
-								data += chunk;
-							res.on 'end', () =>
-								@parser.parseString data, (err, result) =>
-									result = result.data.track[0]
-									if typeof result.id[0] isnt "object"
-										videoData =
-											id : result.id[0]
-											name : result.name[0].trim()
-											link : result.sourceUrl[0]
-											thumbnail : result.thumbnailUrl[0]
-									
-									console.log videoData
-						.on 'error', (e) =>
-							console.log  "Got error: " + e.message
-	_insertCreatedDatesofVideo : ()->
-		@connect()
-		_query = "select videoid,link from NSVideos where videoid=334 or videoid=6228 or videoid=6229"
-		@connection.query _query, (err,results) =>
-			for key, video of results
-				do (video) =>
-					try
-						if video.link isnt "http://st01.freesocialmusic.com/" and video.link isnt "http://st02.freesocialmusic.com/"
-							ts = video.link.match(/\/[0-9]+_/g)[0].replace(/\//, "").replace(/_/, "")
-							ts = parseInt(ts)*Math.pow(10,13-ts.length)
-							date = new Date(ts)
-							console.log ts
-							console.log date
-							_formatedDate = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds()
-							_qUpdate = "update NSVideos set created='#{_formatedDate}' where videoid=#{video.videoid}"
-							@connection.query _qUpdate, (err,resutls) =>
-								if err then console.log "we have an error at #{video.videoid}"
-					catch e
-						console.log "error at videoid: #{video.videoid}"
 
-
-	resetVideosTable : ->
-		@connect()
-		@_readLog()
-		_videoid = 0
-		@log.lastVideoId = _videoid 
-		@log.updated_at = Date.now()
-		@_writeLog @log
-		# fs.writeFileSync @logPath,JSON.stringify(@log),"utf8"	
-		_query = "delete from " + @table.NSVideos  + " where videoid > #{_videoid};"
-		@connection.query _query, (err,results) ->
-		 	if err then console.log "Cannot reset the table Video. ERROR: " + err
-		 	else console.log results
-	resetSongsAndAlbumsTable : ->
-		@connect()
-		@_readLog()
-		_songid = 1263474
-		_albumid = 557356
-		@log.lastSongId = _songid 
-		@log.lastAlbumId = _albumid 
-		@log.updated_at = Date.now()
-		@_writeLog @log
-		# fs.writeFileSync @logPath,JSON.stringify(@log),"utf8"	
-		_query = "delete from " + @table.NSSongs  + " where songid > #{_songid};"
-		_query+= "delete from " + @table.NSAlbums + " where albumid > #{_albumid};"
-		_query+= "delete from " + @table.NSSongs_Albums + " where albumid > #{_albumid};"
-		@connection.query _query, (err,results) ->
-		 	if err then console.log "Cannot reset the tables. ERROR: " + err
-		 	else console.log results
 module.exports = Nhacso

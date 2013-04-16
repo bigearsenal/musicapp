@@ -42,6 +42,7 @@ class Module
 		data = fs.readFileSync @logPath , "utf8"
 		@log = JSON.parse(data)
 	_writeLog : (log) ->
+		log.updated_at = new Date().getTime()
 		fs.writeFileSync @logPath,JSON.stringify(log),"utf8"
 
 	_printTableStats : (tables) ->

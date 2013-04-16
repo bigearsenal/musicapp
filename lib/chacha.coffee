@@ -112,6 +112,8 @@ class Chacha extends Module
 							if @stats.passedItemCount isnt 0
 								@utils.printFinalResult @stats
 								@_writeLog @log
+								@resetStats()
+								@updateAlbums()
 							else 
 								console.log ""
 								console.log "Table: #{@table.Songs} is up-to-date"
@@ -214,7 +216,7 @@ class Chacha extends Module
 			do (id) =>
 				@_fetchSongs id
 		null
-	updateSongs : ->
+	update : ->
 		@connect()
 		@_readLog()
 		@temp = {}
