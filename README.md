@@ -264,6 +264,28 @@ Updated on December 12, 2012
 	`s0`,`s1`,`s2`,`s3`,`s4`,`s5` are sizes.   
 	`0 => original`, `1 => 640x640px`, `2 => 320x320`, `3 => 150x150`, `4 => 100x100`, `5 => 50x50`
 
+<http://audio.chacha.vn/songs/output/71/586908/2/s/duc-vong%20-%20Thanh%20Dai%20Sieu.mp3>
+<http://audio.chacha.vn/songs/output/71/586908/4/s/duc-vong%20-%20Thanh%20Dai%20Sieu.mp3>
+
+Notice `2` and `4` 
+
+The rule of finding the link of mp3 file:  
+
+```coffeescript
+http://audio.chacha.vn/songs/output/71/586908/2/s/ - .mp3?s=1
+http://audio.chacha.vn/songs/output/71/586908/4/s/duc-vong - Thanh Dai Sieu.mp3
+http://audio.chacha.vn/songs/output/71/586906/2/s/ - .mp3?s=1
+http://audio.chacha.vn/songs/output/71/586906/2/s/doi-mat-nguoi-xua - Dan Nguyen.mp3?s=1
+http://audio.chacha.vn/songs/output/71/586736/2/s/ - .mp3?s=1
+http://audio.chacha.vn/songs/output/71/586736/2/s/bien-noi-nho-va-em - My-Linh.mp3?s=1
+http://audio.chacha.vn/songs/output/53/2/s/ - .mp3
+http://audio.chacha.vn/songs/output/53/2/s/va-em-da-biet-minh-yeu - Ho-Ngoc-Ha.mp3
+```
+
+ 
+
+<http://audio.chacha.vn/songs/output/71/586908/2/s/ - .mp3?s=1>  
+
 *STATS:* ~313875 songs, ~ 4396 albums on Jan 31
 
 --- 

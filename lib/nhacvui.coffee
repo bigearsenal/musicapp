@@ -107,7 +107,7 @@ class Nhacvui extends Module
 		          song.topic = _t.replace(/<\/a>.+$/g,'').replace(/^.+>/g,'').trim()
 		          song.author = encoder.htmlDecode _t.replace(/<\/span>.+/g,'').replace(/^.+>/g,'').trim()
 
-		        song.lyric = data.match(/media_title.+/g)?[0].replace(/<\/div><div\s.+$/g,'').replace(/^.+<\/span><\/i><\/div>/g,'').trim()
+		        song.lyric = encoder.htmlDecode data.match(/media_title.+/g)?[0].replace(/<\/div><div\s.+$/g,'').replace(/^.+<\/span><\/i><\/div>/g,'').trim()
 
 		        if song.lyric.match(/Hiện\sbài\shát.+chưa\scó\slời/)
 		          song.lyric = ""

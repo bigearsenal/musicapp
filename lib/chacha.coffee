@@ -5,6 +5,10 @@ Utils = require './utils'
 colors = require 'colors'
 fs = require 'fs'
 
+Encoder = require('node-html-encoder').Encoder
+encoder = new Encoder('entity');
+
+
 CC_CONFIG = 
 	table : 
 		Songs : "CCSongs"
@@ -53,6 +57,22 @@ class Chacha extends Module
 		@connection.query songsQuery, (err, result)=>
 			if err then console.log "Cannot truncate tables" else console.log "Tables: #{@table.Songs} have been truncated!"
 			@end()
+
+	getFileByHTTP : (link, onSucess, onFail, options) ->
+		http.get link, (res) =>
+				res.setEncoding 'utf8'
+				data = ''
+				# onSucess res.headers.location
+				if res.statusCode isnt 302
+					res.on 'data', (chunk) =>
+						data += chunk;
+					res.on 'end', () =>
+						
+						onSucess data, options
+				else onFail("The link is temporary moved",options)
+			.on 'error', (e) =>
+				onFail  "Cannot get file from server. ERROR: " + e.message, options
+
 
 	_storeSong : (song) ->
 		if song.thumb.match(/artists\/\/s5\/\d+/) 
@@ -121,39 +141,162 @@ class Chacha extends Module
 			.on 'error', (e) =>
 				console.log  "Got error: " + e.message
 				@stats.failedItemCount+=1
+	# _updateAlbum : (id) ->
+	# 	link = "http://www.chacha.vn/album/play/#{id}"
+	# 	http.get link, (res) =>
+	# 			res.setEncoding 'utf8'
+	# 			data = ''
+	# 			res.on 'data', (chunk) =>
+	# 				data += chunk;
+	# 			res.on 'end', () =>
+	# 				@stats.totalItemCount +=1
+	# 				@utils.printUpdateRunning id, @stats, "Fetching..."
+	# 				if data isnt "[]"
+	# 					@stats.passedItemCount +=1
+	# 					data = JSON.parse data
+	# 					@log.lastAlbumId = id
+	# 					@_updateAlbumName id, data
+	# 					@_updateAlbum id+1
+	# 					# if the record fails consecutively 100 times, it would stop
+	# 					@temp.totalFail = 0
+	# 				else 
+	# 					@stats.failedItemCount +=1
+	# 					@temp.totalFail +=1
+	# 					@utils.printUpdateRunning id, @stats, "Fetching..."
+	# 					if @temp.totalFail is 100
+	# 						if @stats.passedItemCount isnt 0
+	# 							@utils.printFinalResult @stats
+	# 							@_writeLog @log
+	# 						else 
+	# 							console.log ""
+	# 							console.log "Table: #{@table.Albums} is up-to-date"
+	# 					else @_updateAlbum id+1
+	# 		.on 'error', (e) =>
+	# 			console.log  "Got error: " + e.message
+	# 			@stats.failedItemCount+=1
 	_updateAlbum : (id) ->
-		link = "http://www.chacha.vn/album/play/#{id}"
-		http.get link, (res) =>
-				res.setEncoding 'utf8'
-				data = ''
-				res.on 'data', (chunk) =>
-					data += chunk;
-				res.on 'end', () =>
-					@stats.totalItemCount +=1
-					@utils.printUpdateRunning id, @stats, "Fetching..."
-					if data isnt "[]"
-						@stats.passedItemCount +=1
-						data = JSON.parse data
-						@log.lastAlbumId = id
-						@_updateAlbumName id, data
-						@_updateAlbum id+1
-						# if the record fails consecutively 100 times, it would stop
-						@temp.totalFail = 0
-					else 
-						@stats.failedItemCount +=1
-						@temp.totalFail +=1
-						@utils.printUpdateRunning id, @stats, "Fetching..."
-						if @temp.totalFail is 100
-							if @stats.passedItemCount isnt 0
-								@utils.printFinalResult @stats
-								@_writeLog @log
+		id = 9090
+		link = "http://www.chacha.vn/album/fake-link,#{id}.html"
+
+		onSucess = (data)=>
+			if data isnt null
+				album =
+					albumid : id
+					album_name : ""
+					album_artist : ""
+					nsongs : 0
+					thumbnail : ""
+				arr = data.match(/\<meta\sname\=\"title\".+\/\>/g)[0]
+					.replace(/\<meta\sname\=\"title\"\scontent\=\"/,'')
+					.match(/^.+\|/)[0].replace(/\|/,'').trim()
+					.split('-')
+				
+				album.album_name = arr[0].trim()
+				album.album_artist = arr[1].trim()
+
+				album.thumbnail = data.match(/album-image.+[\r\n\t]+.+/g)?[0]
+
+				if album.thumbnail isnt undefined
+					album.thumbnail = album.thumbnail.replace(/\?.+/g,'').replace(/album-image.+[\r\n\t]+.+\"/g,'')
+				else album.thumbnail = ""
+
+				album.description = data.match(/full-desc.+/)?[0]
+
+				if album.description isnt undefined
+					album.description = encoder.htmlDecode album.description.replace(/<br\/><a.+view-more-full.+$/g,'')
+																											.replace(/full-desc\">/g,'')
+
+				album.nsongs = data.match(/total-played/g)?.length
+
+				if album.nsongs isnt undefined
+					album.nsongs -=1
+				else album.nsongs = 0
+
+			else album = null
+			console.log album		
+			data = ""
+		onFail = (err)=>
+			console.log err
+		@getFileByHTTP link, onSucess, onFail
+
+	_updateAlbum : (id) ->
+
+		_q = "select albumid from CCAlbums"
+		@connection.query _q, (err, results)=>
+			if err then console.log "eroor"
+			else 
+				@stats.totalItems = results.length
+				for al in results
+					do (al)=>
+						link = "http://www.chacha.vn/album/fake-link,#{al.albumid}.html"
+						onSucess = (data)=>
+							@stats.totalItemCount +=1
+							if data isnt null
+								album =
+									albumid : al.albumid
+									album_name : ""
+									album_artist : ""
+									nsongs : 0
+									thumbnail : ""
+									plays : 0
+								# arr = data.match(/\<meta\sname\=\"title\".+\/\>/g)[0]
+								# 	.replace(/\<meta\sname\=\"title\"\scontent\=\"/,'')
+								# 	.match(/^.+\|/)[0].replace(/\|/,'').trim()
+								# 	.split('-')
+								
+								# album.album_name = arr[0].trim()
+								# album.album_artist = arr[1].trim()
+
+								album.thumbnail = data.match(/album-image.+[\r\n\t]+.+/g)?[0]
+								if album.thumbnail isnt undefined
+									album.thumbnail = album.thumbnail.replace(/\?.+/g,'').replace(/album-image.+[\r\n\t]+.+\"/g,'')
+								else album.thumbnail = ""
+
+								album.description = data.match(/full-desc.+/)?[0]
+								if album.description isnt undefined
+									album.description = encoder.htmlDecode album.description
+																															.replace(/<br\/><a.+view-more-full.+$/g,'')
+																															.replace(/full-desc\">/g,'')
+																															.replace(/<\/p>$/g,'').replace(/^<p>/g,'')
+																															.replace(/<\/span>$/g,'').replace(/^<span.+\">/g,'')
+																															.replace(/<\/p>$/g,'').replace(/^<p.+\">/g,'')
+									if album.description.match(/songLyric/) or album.description.match(/Đang cập nhật thông tin/ig) then album.description = ""
+								
+								plays  = data.match(/total-played.+/g)
+								sum = 0
+								if plays isnt null
+									plays = plays.map (v)-> v.replace(/<\/span>/g,'').replace(/total-played\">/g,'')
+									plays.forEach (v)-> if v isnt '' then sum += parseInt(v)
+									sum = sum/(plays.length-1) if plays.length > 1
+								album.plays = sum
+
+
+								# album.nsongs = data.match(/total-played/g)?.length
+								# if album.nsongs isnt undefined
+								# 	album.nsongs -=1
+								# else album.nsongs = 0
+
 							else 
-								console.log ""
-								console.log "Table: #{@table.Albums} is up-to-date"
-						else @_updateAlbum id+1
-			.on 'error', (e) =>
-				console.log  "Got error: " + e.message
-				@stats.failedItemCount+=1
+								album = null
+								@stats.failedItemCount +=1
+
+
+							@stats.passedItemCount +=1
+							_u = "update CCAlbums set thumbnail=#{@connection.escape album.thumbnail}, description=#{@connection.escape album.description}, plays=#{album.plays} where albumid=#{album.albumid}"
+
+							@utils.printRunning @stats
+
+							@connection.query _u, (err)=>
+								if err then console.log "ANBINH " + err
+							# console.log album	
+							if @stats.totalItems is @stats.totalItemCount
+								@utils.printFinalResult @stats	
+							data = ""
+						onFail = (err)=>
+							console.log err
+						@getFileByHTTP link, onSucess, onFail
+								
+	
 	_updateAlbumName : (id, album) ->
 		link = "http://www.chacha.vn/album/fake-link,#{id}.html"
 		http.get link, (res) =>
