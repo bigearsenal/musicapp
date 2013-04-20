@@ -1,1 +1,1 @@
-{"serverType":"nhacso.net","lastSongId":1281199,"updated_at":1366247153777,"totalPassedSongs":434,"lastAlbumId":647906,"lastVideoId":15270}
+{"serverType":"nhacso.net","lastSongId":1282427,"updated_at":1366428948210,"totalPassedSongs":760,"lastAlbumId":650271,"lastVideoId":15270}

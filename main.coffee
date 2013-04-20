@@ -137,7 +137,7 @@ runChacha = ->
 	console.log "\t" + "CREATE".inverse.red + " tables\t" + "RESET".inverse.red + " tables "
 	console.log "\t1.UPDATE SONGS AND ALBUMS\t2.update albums"
 	console.log "\t3.fetch songs\t4.fetch albums"
-	console.log "\t5.show stats"
+	console.log "\t5.show stats \t6.getSongsTopic"
 	cc = new Chacha(mysqlConfig)
 	rl.question "=> ", (answer) ->
 		switch answer.trim()
@@ -148,6 +148,7 @@ runChacha = ->
 			when "3" then runWithRange(cc.fetchSongs)
 			when "4" then runWithRange(cc.fetchAlbums)
 			when "5" then cc.showStats()
+			when "6" then cc.getSongsTopic()
 			# when "1" then nv.fetchSongs 23123, 23123
 			else console.log "Wrong type".red
 runNghenhac = ->

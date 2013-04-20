@@ -1916,9 +1916,10 @@ class Zing extends Module
 		else if type is 2
 			console.log " |"+"Update Albums to table: #{@table.Albums}".magenta
 			@stats.currentTable = @table.Albums
-		@stats.totalItems = range1 - range0 + 1
+
 		@fetchRows range0, range1, type, (arr)=>
 			console.log "The # of items is: #{arr.length}"
+			@stats.totalItems = arr.length
 			for id in arr
 				do (id)=>
 					# console.log id
@@ -1960,12 +1961,21 @@ class Zing extends Module
 			
 		nSteps = (range1 - range0 + 1)/1000 | 0 + 1
 		resultArray = []
+
+		console.log "nsteps is " + nSteps
+		
 		for i in [1..nSteps]
 			do (i) =>
-				
-				firstId = range0 + 1000*(i-1)
-				lastId = range0 + 1000*i
+				if (range1 - range0) >= 1000
+					firstId = range0 + 1000*(i-1)
+					lastId = range0 + 1000*i
+					if i is nSteps
+						lastId = range1
+				else 
+					firstId = range0
+					lastId = range1
 				_q = "select #{typeId} from #{table} where #{typeId} < #{lastId} and #{typeId} >= #{firstId}"
+				# console.log _q
 				@connection.query _q, (err, results)->
 					if err then console.log "cannot fetch the results"
 					else 
@@ -1974,7 +1984,8 @@ class Zing extends Module
 							b.push item[typeId]
 						for value in [firstId..lastId]
 							if b.indexOf(value) is -1 then resultArray.push value
-						if lastId >= range1
+						# console.log "lastid is #{lastId} and range1 is #{range1}"
+						if lastId is range1
 							onSuccess resultArray
 	# ------------------------------------------
 	findDiffenceBetween2Strings : (s1,s2)->
