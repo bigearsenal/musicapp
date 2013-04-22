@@ -242,7 +242,7 @@ class Nghenhac extends Module
 					for sid in songs
 						do (sid)=>
 							@connection.query @query._insertIntoNNSongs_Albums, {aid : album.id, sid : sid}, (err1)->
-								if err then console.log "cannt insert song: #{sid} - album: #{album.id} into table. ERROR: #{err1}"
+								if err1 then console.log "cannt insert song: #{sid} - album: #{album.id} into table. ERROR: #{err1}"
 
 		@_fetchAlbum id for id in [range0..range1]
 		null
@@ -291,7 +291,7 @@ class Nghenhac extends Module
 					for sid in songs
 						do (sid)=>
 							@connection.query @query._insertIntoNNSongs_Albums, {aid : album.id, sid : sid}, (err1)->
-								if err then console.log "Cannot insert song: #{sid} - album: #{album.id} into table. ERROR: #{err1}"
+								if err1 then console.log "Cannot insert song: #{sid} - album: #{album.id} into table. ERROR: #{err1}"
 			@_updateAlbum(album.id+1) 
 		@_updateAlbum(@log.lastAlbumId+1)
 
