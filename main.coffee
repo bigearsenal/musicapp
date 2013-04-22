@@ -160,8 +160,9 @@ runNghenhac = ->
 		logPath : "./log/test_NNLog.txt"
 	console.log "STEP 2:".inverse.blue + " " + "Choose the type of command:".underline.blue
 	console.log "\t" + "CREATE".inverse.red + " tables\t" + "RESET".inverse.red + " tables "
-	console.log "\t1.update albums+songs\t2.fetch albums+songs"
-	console.log "\t3.show stats"
+	console.log "\t1.UPDATE SONGS AND ALBUMS \t2.fetch albums"
+	console.log "\t3.fetch songs\t4.show stats"
+	console.log "\t5.update songs\t6.update albums"
 	nn = new Nghenhac(mysqlConfig)
 	rl.question "=> ", (answer) ->
 		switch answer.trim()
@@ -169,7 +170,10 @@ runNghenhac = ->
 			when "RESET" then nn.resetTables()
 			when "1" then nn.update()
 			when "2" then runWithRange(nn.fetchAlbums)
-			when "3" then nn.showStats()
+			when "3" then runWithRange(nn.fetchSongs)
+			when "4" then nn.showStats()
+			when "5" then nn.updateSongs()
+			when "6" then nn.updateAlbums()
 			else console.log "Wrong type".red
 runZing = ->
 	Zing = require './lib/zing'

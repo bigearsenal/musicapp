@@ -1,1 +1,1 @@
-{"serverType":"nghenhac.info","updated_at":1366429870034,"lastAlbumId":21139}
+{"serverType":"nghenhac.info","lastSongId":286987,"updated_at":1366651746674,"lastAlbumId":21147}
