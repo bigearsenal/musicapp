@@ -613,10 +613,8 @@ Check duplicated albums in database. EX: albumid `I1umglqa8dMM` has 2 performers
 
 * Checking the hidden values: `inpHiddenSongKey`, `inpHiddenId`, `inpHiddenType`, `inpHiddenGenre`, `inpHiddenSingerIds`, `inpLyricId`  in every song, album or music video  
 
-
-
-
-knxmykmadxvkNNZtØØØyvmkn
+* Download song  
+<http://www.nhaccuatui.com/download/song/G6DYEW6ts4zq>
 
 **Notice: the pair (songid,albumid) gonna be duplicated while updating new albums. Be careful when use it**
 

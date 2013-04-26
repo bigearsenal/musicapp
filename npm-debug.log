@@ -1,0 +1,250 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node', '/usr/local/bin/npm', 'install', 'httpsync' ]
+2 info using npm@1.2.11
+3 info using node@v0.8.20
+4 verbose read json /Users/daonguyenanbinh/package.json
+5 verbose read json /Users/daonguyenanbinh/node_modules/async/package.json
+6 verbose read json /Users/daonguyenanbinh/node_modules/atob/package.json
+7 verbose read json /Users/daonguyenanbinh/node_modules/cld/package.json
+8 verbose read json /Users/daonguyenanbinh/node_modules/coffee-script/package.json
+9 verbose read json /Users/daonguyenanbinh/node_modules/colors/package.json
+10 verbose read json /Users/daonguyenanbinh/node_modules/ezcrypto/package.json
+11 verbose read json /Users/daonguyenanbinh/node_modules/g/package.json
+12 verbose read json /Users/daonguyenanbinh/node_modules/jsdom/package.json
+13 verbose read json /Users/daonguyenanbinh/node_modules/mysql/package.json
+14 verbose read json /Users/daonguyenanbinh/node_modules/node-html-encoder/package.json
+15 verbose read json /Users/daonguyenanbinh/node_modules/node-inspector/package.json
+16 verbose read json /Users/daonguyenanbinh/node_modules/nodetime/package.json
+17 verbose read json /Users/daonguyenanbinh/node_modules/phpjs/package.json
+18 verbose read json /Users/daonguyenanbinh/node_modules/utf8/package.json
+19 verbose read json /Users/daonguyenanbinh/node_modules/xml2js/package.json
+20 verbose read json /Users/daonguyenanbinh/package.json
+21 verbose cache add [ 'httpsync', null ]
+22 verbose cache add name=undefined spec="httpsync" args=["httpsync",null]
+23 verbose parsed url { pathname: 'httpsync', path: 'httpsync', href: 'httpsync' }
+24 silly lockFile ca6a830e-httpsync httpsync
+25 verbose lock httpsync /Users/daonguyenanbinh/.npm/ca6a830e-httpsync.lock
+26 silly lockFile ca6a830e-httpsync httpsync
+27 silly lockFile ca6a830e-httpsync httpsync
+28 verbose addNamed [ 'httpsync', '' ]
+29 verbose addNamed [ null, '' ]
+30 silly lockFile 202468d7-httpsync httpsync@
+31 verbose lock httpsync@ /Users/daonguyenanbinh/.npm/202468d7-httpsync.lock
+32 silly addNameRange { name: 'httpsync', range: '', hasData: false }
+33 verbose url raw httpsync
+34 verbose url resolving [ 'https://registry.npmjs.org/', './httpsync' ]
+35 verbose url resolved https://registry.npmjs.org/httpsync
+36 info trying registry request attempt 1 at 10:39:19
+37 http GET https://registry.npmjs.org/httpsync
+38 http 200 https://registry.npmjs.org/httpsync
+39 silly registry.get cb [ 200,
+39 silly registry.get   { vary: 'Accept',
+39 silly registry.get     server: 'CouchDB/1.3.0 (Erlang OTP/R15B03)',
+39 silly registry.get     etag: '"3J4G3CW7YCE8RKN7EBNXUR5UA"',
+39 silly registry.get     date: 'Fri, 26 Apr 2013 03:39:21 GMT',
+39 silly registry.get     'content-type': 'application/json',
+39 silly registry.get     'content-length': '38055' } ]
+40 silly addNameRange number 2 { name: 'httpsync', range: '', hasData: true }
+41 silly addNameRange versions [ 'httpsync',
+41 silly addNameRange   [ '0.0.1', '0.0.2', '0.0.3', '0.0.4', '0.0.5', '0.0.6', '0.0.7' ] ]
+42 verbose addNamed [ 'httpsync', '0.0.7' ]
+43 verbose addNamed [ '0.0.7', '0.0.7' ]
+44 silly lockFile 59e704f5-httpsync-0-0-7 httpsync@0.0.7
+45 verbose lock httpsync@0.0.7 /Users/daonguyenanbinh/.npm/59e704f5-httpsync-0-0-7.lock
+46 silly lockFile 0068bb40--org-httpsync-httpsync-0-0-7-tgz https://registry.npmjs.org/httpsync/-/httpsync-0.0.7.tgz
+47 verbose lock https://registry.npmjs.org/httpsync/-/httpsync-0.0.7.tgz /Users/daonguyenanbinh/.npm/0068bb40--org-httpsync-httpsync-0-0-7-tgz.lock
+48 verbose addRemoteTarball [ 'https://registry.npmjs.org/httpsync/-/httpsync-0.0.7.tgz',
+48 verbose addRemoteTarball   '353e97d342dbee23efa27d7844584c576686cb48' ]
+49 info retry fetch attempt 1 at 10:39:22
+50 verbose fetch to= /var/folders/ns/j7xr4t851v1brpwv8mv9c_dh0000gn/T/npm-14865/1366947562392-0.055781682720407844/tmp.tgz
+51 http GET https://registry.npmjs.org/httpsync/-/httpsync-0.0.7.tgz
+52 http 200 https://registry.npmjs.org/httpsync/-/httpsync-0.0.7.tgz
+53 silly shasum updated bytes 9633
+54 info shasum 353e97d342dbee23efa27d7844584c576686cb48
+54 info shasum /var/folders/ns/j7xr4t851v1brpwv8mv9c_dh0000gn/T/npm-14865/1366947562392-0.055781682720407844/tmp.tgz
+55 verbose tar unpack /var/folders/ns/j7xr4t851v1brpwv8mv9c_dh0000gn/T/npm-14865/1366947562392-0.055781682720407844/tmp.tgz
+56 silly lockFile 9213ea28-392-0-055781682720407844-package /var/folders/ns/j7xr4t851v1brpwv8mv9c_dh0000gn/T/npm-14865/1366947562392-0.055781682720407844/package
+57 verbose lock /var/folders/ns/j7xr4t851v1brpwv8mv9c_dh0000gn/T/npm-14865/1366947562392-0.055781682720407844/package /Users/daonguyenanbinh/.npm/9213ea28-392-0-055781682720407844-package.lock
+58 silly lockFile da86505c-392-0-055781682720407844-tmp-tgz /var/folders/ns/j7xr4t851v1brpwv8mv9c_dh0000gn/T/npm-14865/1366947562392-0.055781682720407844/tmp.tgz
+59 verbose lock /var/folders/ns/j7xr4t851v1brpwv8mv9c_dh0000gn/T/npm-14865/1366947562392-0.055781682720407844/tmp.tgz /Users/daonguyenanbinh/.npm/da86505c-392-0-055781682720407844-tmp-tgz.lock
+60 silly gunzTarPerm modes [ '755', '644' ]
+61 silly gunzTarPerm extractEntry package.json
+62 silly gunzTarPerm extractEntry .npmignore
+63 silly gunzTarPerm extractEntry README.md
+64 silly gunzTarPerm extractEntry index.js
+65 silly gunzTarPerm extractEntry example/upload_file.js
+66 silly gunzTarPerm extractEntry History.md
+67 silly gunzTarPerm extractEntry wscript
+68 silly gunzTarPerm extractEntry .travis.yml
+69 silly gunzTarPerm extractEntry Makefile
+70 silly gunzTarPerm extractEntry binding.gyp
+71 silly gunzTarPerm extractEntry build.sh
+72 silly gunzTarPerm extractEntry src/curl.cc
+73 silly gunzTarPerm extractEntry src/curl.h
+74 silly gunzTarPerm extractEntry src/main.cc
+75 silly gunzTarPerm extractEntry src/request.cc
+76 silly gunzTarPerm extractEntry test/curl.js
+77 silly gunzTarPerm extractEntry test/mocha.opts
+78 silly gunzTarPerm extractEntry test/support/echo.js
+79 silly gunzTarPerm extractEntry TODO
+80 silly gunzTarPerm extractEntry link.sh
+81 verbose read json /var/folders/ns/j7xr4t851v1brpwv8mv9c_dh0000gn/T/npm-14865/1366947562392-0.055781682720407844/package/package.json
+82 silly lockFile 9213ea28-392-0-055781682720407844-package /var/folders/ns/j7xr4t851v1brpwv8mv9c_dh0000gn/T/npm-14865/1366947562392-0.055781682720407844/package
+83 silly lockFile 9213ea28-392-0-055781682720407844-package /var/folders/ns/j7xr4t851v1brpwv8mv9c_dh0000gn/T/npm-14865/1366947562392-0.055781682720407844/package
+84 silly lockFile da86505c-392-0-055781682720407844-tmp-tgz /var/folders/ns/j7xr4t851v1brpwv8mv9c_dh0000gn/T/npm-14865/1366947562392-0.055781682720407844/tmp.tgz
+85 silly lockFile da86505c-392-0-055781682720407844-tmp-tgz /var/folders/ns/j7xr4t851v1brpwv8mv9c_dh0000gn/T/npm-14865/1366947562392-0.055781682720407844/tmp.tgz
+86 verbose from cache /var/folders/ns/j7xr4t851v1brpwv8mv9c_dh0000gn/T/npm-14865/1366947562392-0.055781682720407844/package/package.json
+87 verbose tar pack [ '/Users/daonguyenanbinh/.npm/httpsync/0.0.7/package.tgz',
+87 verbose tar pack   '/var/folders/ns/j7xr4t851v1brpwv8mv9c_dh0000gn/T/npm-14865/1366947562392-0.055781682720407844/package' ]
+88 verbose tarball /Users/daonguyenanbinh/.npm/httpsync/0.0.7/package.tgz
+89 verbose folder /var/folders/ns/j7xr4t851v1brpwv8mv9c_dh0000gn/T/npm-14865/1366947562392-0.055781682720407844/package
+90 silly lockFile 9213ea28-392-0-055781682720407844-package /var/folders/ns/j7xr4t851v1brpwv8mv9c_dh0000gn/T/npm-14865/1366947562392-0.055781682720407844/package
+91 verbose lock /var/folders/ns/j7xr4t851v1brpwv8mv9c_dh0000gn/T/npm-14865/1366947562392-0.055781682720407844/package /Users/daonguyenanbinh/.npm/9213ea28-392-0-055781682720407844-package.lock
+92 silly lockFile ac685260-h-npm-httpsync-0-0-7-package-tgz /Users/daonguyenanbinh/.npm/httpsync/0.0.7/package.tgz
+93 verbose lock /Users/daonguyenanbinh/.npm/httpsync/0.0.7/package.tgz /Users/daonguyenanbinh/.npm/ac685260-h-npm-httpsync-0-0-7-package-tgz.lock
+94 silly lockFile 9213ea28-392-0-055781682720407844-package /var/folders/ns/j7xr4t851v1brpwv8mv9c_dh0000gn/T/npm-14865/1366947562392-0.055781682720407844/package
+95 silly lockFile 9213ea28-392-0-055781682720407844-package /var/folders/ns/j7xr4t851v1brpwv8mv9c_dh0000gn/T/npm-14865/1366947562392-0.055781682720407844/package
+96 silly lockFile ac685260-h-npm-httpsync-0-0-7-package-tgz /Users/daonguyenanbinh/.npm/httpsync/0.0.7/package.tgz
+97 silly lockFile ac685260-h-npm-httpsync-0-0-7-package-tgz /Users/daonguyenanbinh/.npm/httpsync/0.0.7/package.tgz
+98 silly lockFile 58ce3cc5-nbinh-npm-httpsync-0-0-7-package /Users/daonguyenanbinh/.npm/httpsync/0.0.7/package
+99 verbose lock /Users/daonguyenanbinh/.npm/httpsync/0.0.7/package /Users/daonguyenanbinh/.npm/58ce3cc5-nbinh-npm-httpsync-0-0-7-package.lock
+100 silly lockFile 58ce3cc5-nbinh-npm-httpsync-0-0-7-package /Users/daonguyenanbinh/.npm/httpsync/0.0.7/package
+101 silly lockFile 58ce3cc5-nbinh-npm-httpsync-0-0-7-package /Users/daonguyenanbinh/.npm/httpsync/0.0.7/package
+102 verbose tar unpack /Users/daonguyenanbinh/.npm/httpsync/0.0.7/package.tgz
+103 silly lockFile 58ce3cc5-nbinh-npm-httpsync-0-0-7-package /Users/daonguyenanbinh/.npm/httpsync/0.0.7/package
+104 verbose lock /Users/daonguyenanbinh/.npm/httpsync/0.0.7/package /Users/daonguyenanbinh/.npm/58ce3cc5-nbinh-npm-httpsync-0-0-7-package.lock
+105 silly lockFile ac685260-h-npm-httpsync-0-0-7-package-tgz /Users/daonguyenanbinh/.npm/httpsync/0.0.7/package.tgz
+106 verbose lock /Users/daonguyenanbinh/.npm/httpsync/0.0.7/package.tgz /Users/daonguyenanbinh/.npm/ac685260-h-npm-httpsync-0-0-7-package-tgz.lock
+107 silly gunzTarPerm modes [ '755', '644' ]
+108 silly gunzTarPerm extractEntry package.json
+109 silly gunzTarPerm extractEntry .npmignore
+110 silly gunzTarPerm extractEntry README.md
+111 silly gunzTarPerm extractEntry index.js
+112 silly gunzTarPerm extractEntry example/upload_file.js
+113 silly gunzTarPerm extractEntry History.md
+114 silly gunzTarPerm extractEntry wscript
+115 silly gunzTarPerm extractEntry .travis.yml
+116 silly gunzTarPerm extractEntry Makefile
+117 silly gunzTarPerm extractEntry binding.gyp
+118 silly gunzTarPerm extractEntry build.sh
+119 silly gunzTarPerm extractEntry src/curl.cc
+120 silly gunzTarPerm extractEntry src/curl.h
+121 silly gunzTarPerm extractEntry src/main.cc
+122 silly gunzTarPerm extractEntry src/request.cc
+123 silly gunzTarPerm extractEntry test/curl.js
+124 silly gunzTarPerm extractEntry test/mocha.opts
+125 silly gunzTarPerm extractEntry test/support/echo.js
+126 silly gunzTarPerm extractEntry TODO
+127 silly gunzTarPerm extractEntry link.sh
+128 verbose read json /Users/daonguyenanbinh/.npm/httpsync/0.0.7/package/package.json
+129 silly lockFile 58ce3cc5-nbinh-npm-httpsync-0-0-7-package /Users/daonguyenanbinh/.npm/httpsync/0.0.7/package
+130 silly lockFile 58ce3cc5-nbinh-npm-httpsync-0-0-7-package /Users/daonguyenanbinh/.npm/httpsync/0.0.7/package
+131 silly lockFile ac685260-h-npm-httpsync-0-0-7-package-tgz /Users/daonguyenanbinh/.npm/httpsync/0.0.7/package.tgz
+132 silly lockFile ac685260-h-npm-httpsync-0-0-7-package-tgz /Users/daonguyenanbinh/.npm/httpsync/0.0.7/package.tgz
+133 silly shasum updated bytes 9638
+134 info shasum 1cd9cb975de0c4fc19a11186c855155e92aa30b1
+134 info shasum /Users/daonguyenanbinh/.npm/httpsync/0.0.7/package.tgz
+135 verbose from cache /Users/daonguyenanbinh/.npm/httpsync/0.0.7/package/package.json
+136 verbose chmod /Users/daonguyenanbinh/.npm/httpsync/0.0.7/package.tgz 644
+137 verbose chown /Users/daonguyenanbinh/.npm/httpsync/0.0.7/package.tgz [ 501, 20 ]
+138 silly lockFile 0068bb40--org-httpsync-httpsync-0-0-7-tgz https://registry.npmjs.org/httpsync/-/httpsync-0.0.7.tgz
+139 silly lockFile 0068bb40--org-httpsync-httpsync-0-0-7-tgz https://registry.npmjs.org/httpsync/-/httpsync-0.0.7.tgz
+140 silly lockFile 59e704f5-httpsync-0-0-7 httpsync@0.0.7
+141 silly lockFile 59e704f5-httpsync-0-0-7 httpsync@0.0.7
+142 silly lockFile 202468d7-httpsync httpsync@
+143 silly lockFile 202468d7-httpsync httpsync@
+144 silly resolved [ { name: 'httpsync',
+144 silly resolved     version: '0.0.7',
+144 silly resolved     scripts: { install: 'sh build.sh', test: 'make test' },
+144 silly resolved     description: '`httpsync` is a port of libcurl to node.js. Its interface emulates the  `http` module of node.js. But in contrast to `http` module\'s asynchronous functions, `httpsync` provides the equivalent synchronous APIs.',
+144 silly resolved     main: 'index.js',
+144 silly resolved     directories: { test: 'test' },
+144 silly resolved     repository: { type: 'git', url: 'git://github.com/fengmk2/node-curl.git' },
+144 silly resolved     keywords: [ 'curl', 'sync', 'http' ],
+144 silly resolved     devDependencies: { should: '*', mocha: '*', 'form-data': '0.0.3' },
+144 silly resolved     author: { name: 'zcbenz' },
+144 silly resolved     license: 'MIT',
+144 silly resolved     readme: '# httpsync\n\n[![Build Status](https://secure.travis-ci.org/fengmk2/node-curl.png)](http://travis-ci.org/fengmk2/node-curl)\n\n`httpsync` is a port of libcurl to node.js. Its interface emulates the\n`http` module of node.js. But in contrast to `http` module\'s asynchronous\nfunctions, node-curl provides the equivalent synchronous APIs.\n\n## Install\n\n* required libcurl: http://curl.haxx.se/libcurl/\n\n```bash\n$ npm install httpsync\n```\n\n## APIs\n\n### httpsync.request(options)\n \n Options:\n\n - `url`             (required) The url to GET/POST, such as "http://host:80/index.php", just like what you input in the browser.\n - `method`          `GET`, `POST` or `HEAD` or any other valid request. And even `FUCK` if your server supports it.\n - `headers`         Custom headers to be sent. \n - `useragent`       The User Agent string\n - `timeout`         Maximum time in seconds that you allow the libcurl transfer operation to take.\n - `connectTimeout`  Maximum time in seconds that you allow the connection to the server to take.\n - `debug`           `httpsync` will print debug informations is set to true\n\n Example\n\n```javascript\nvar httpsync = require(\'httpsync\');\nvar req = httpsync.request({\n  url: "http://cnodejs.org",\n  method: "GET",\n  useragent: "Ultimate Web Browser",\n  headers: {\n    Tag: "TGB3123",\n    String: "A long string"\n  }\n});\n```\n\n### httpsync.get([options | url])\n\n It\'s equivalent to `curl.request` but the method is default to `GET`.\n\n And you can have\n\n```javascript\nvar httpsync = require(\'httpsync\');\nvar req = httpsync.get({ url : "http://cnodejs.org"});\nvar res = req.end();\nconsole.log(res);\n```\n\n Or just straight forward\n\n```javascript\nvar httpsync = require(\'httpsync\');\nvar req = httpsync.get("http://cnodejs.org");\n```\n\n### request.write(chunk)\n \n Write a chunk of data to the request. The type of data can be String or Buffer.\n\n### request.end([chunk])\n\n Send the request and get response.\n\n Example\n\n```javascript\nvar req = curl.request({\n  url: "http://cnodejs.org",\n  method: "POST"\n});\nreq.write("Some text\\n");\nreq.write("another text");\nconsole.log(req.end());\n```\n\n### request.endFile(filePath)\n\n Send a file directly. The method will default to `PUT`.\n\n Example\n\n```javascript\nvar req = curl.request({\n  url: "http://cnodejs.org",\n});\nreq.endFile("/etc/passwd");\n```\n\n### response\n\n The response Object is what you get after req.end (), it has following\n fields:\n\n - `data`        A Buffer that stores data sent by server.\n - `headers`     Complete response headers, even contains those custom ones.\n - `ip`          IP address of the server.\n - `statusCode`  Status code that sent by server.\n\n## Contributors\n\nThanks goes to the people who have contributed code to this module, see the [GitHub Contributors page](https://github.com/fengmk2/node-curl/graphs/contributors).\n\nBelow is the output from `git-summary`\n\n```\n project: node-curl\n commits: 33\n active : 8 days\n files  : 24\n authors: \n    21  赵成                  63.6%\n    12  fengmk2                 36.4%\n```\n\n## License \n\n(The MIT License)\n\nCopyright (c) 2012 fengmk2 &lt;fengmk2@gmail.com&gt;\nCopyright (c) 2012 zcbenz https://github.com/zcbenz\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n\'Software\'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \'AS IS\', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n',
+144 silly resolved     readmeFilename: 'README.md',
+144 silly resolved     _id: 'httpsync@0.0.7',
+144 silly resolved     dist: { shasum: '1cd9cb975de0c4fc19a11186c855155e92aa30b1' },
+144 silly resolved     _from: 'httpsync@',
+144 silly resolved     _resolved: 'https://registry.npmjs.org/httpsync/-/httpsync-0.0.7.tgz' } ]
+145 info install httpsync@0.0.7 into /Users/daonguyenanbinh
+146 info installOne httpsync@0.0.7
+147 verbose from cache /Users/daonguyenanbinh/.npm/httpsync/0.0.7/package/package.json
+148 info /Users/daonguyenanbinh/node_modules/httpsync unbuild
+149 verbose read json /Users/daonguyenanbinh/node_modules/httpsync/package.json
+150 verbose tar unpack /Users/daonguyenanbinh/.npm/httpsync/0.0.7/package.tgz
+151 silly lockFile c733b1b7-uyenanbinh-node-modules-httpsync /Users/daonguyenanbinh/node_modules/httpsync
+152 verbose lock /Users/daonguyenanbinh/node_modules/httpsync /Users/daonguyenanbinh/.npm/c733b1b7-uyenanbinh-node-modules-httpsync.lock
+153 silly lockFile ac685260-h-npm-httpsync-0-0-7-package-tgz /Users/daonguyenanbinh/.npm/httpsync/0.0.7/package.tgz
+154 verbose lock /Users/daonguyenanbinh/.npm/httpsync/0.0.7/package.tgz /Users/daonguyenanbinh/.npm/ac685260-h-npm-httpsync-0-0-7-package-tgz.lock
+155 silly gunzTarPerm modes [ '755', '644' ]
+156 silly gunzTarPerm extractEntry package.json
+157 silly gunzTarPerm extractEntry .npmignore
+158 silly gunzTarPerm extractEntry README.md
+159 silly gunzTarPerm extractEntry index.js
+160 silly gunzTarPerm extractEntry example/upload_file.js
+161 silly gunzTarPerm extractEntry History.md
+162 silly gunzTarPerm extractEntry wscript
+163 silly gunzTarPerm extractEntry .travis.yml
+164 silly gunzTarPerm extractEntry Makefile
+165 silly gunzTarPerm extractEntry binding.gyp
+166 silly gunzTarPerm extractEntry build.sh
+167 silly gunzTarPerm extractEntry src/curl.cc
+168 silly gunzTarPerm extractEntry src/curl.h
+169 silly gunzTarPerm extractEntry src/main.cc
+170 silly gunzTarPerm extractEntry src/request.cc
+171 silly gunzTarPerm extractEntry test/curl.js
+172 silly gunzTarPerm extractEntry test/mocha.opts
+173 silly gunzTarPerm extractEntry test/support/echo.js
+174 silly gunzTarPerm extractEntry TODO
+175 silly gunzTarPerm extractEntry link.sh
+176 verbose read json /Users/daonguyenanbinh/node_modules/httpsync/package.json
+177 silly lockFile c733b1b7-uyenanbinh-node-modules-httpsync /Users/daonguyenanbinh/node_modules/httpsync
+178 silly lockFile c733b1b7-uyenanbinh-node-modules-httpsync /Users/daonguyenanbinh/node_modules/httpsync
+179 silly lockFile ac685260-h-npm-httpsync-0-0-7-package-tgz /Users/daonguyenanbinh/.npm/httpsync/0.0.7/package.tgz
+180 silly lockFile ac685260-h-npm-httpsync-0-0-7-package-tgz /Users/daonguyenanbinh/.npm/httpsync/0.0.7/package.tgz
+181 info preinstall httpsync@0.0.7
+182 verbose from cache /Users/daonguyenanbinh/node_modules/httpsync/package.json
+183 verbose readDependencies using package.json deps
+184 verbose from cache /Users/daonguyenanbinh/node_modules/httpsync/package.json
+185 verbose readDependencies using package.json deps
+186 silly resolved []
+187 verbose about to build /Users/daonguyenanbinh/node_modules/httpsync
+188 info build /Users/daonguyenanbinh/node_modules/httpsync
+189 verbose from cache /Users/daonguyenanbinh/node_modules/httpsync/package.json
+190 verbose linkStuff [ false, false, false, '/Users/daonguyenanbinh/node_modules' ]
+191 info linkStuff httpsync@0.0.7
+192 verbose linkBins httpsync@0.0.7
+193 verbose linkMans httpsync@0.0.7
+194 verbose rebuildBundles httpsync@0.0.7
+195 info install httpsync@0.0.7
+196 verbose unsafe-perm in lifecycle true
+197 silly exec sh "-c" "sh build.sh"
+198 silly sh,-c,sh build.sh,/Users/daonguyenanbinh/node_modules/httpsync spawning
+199 info httpsync@0.0.7 Failed to exec install script
+200 info /Users/daonguyenanbinh/node_modules/httpsync unbuild
+201 verbose from cache /Users/daonguyenanbinh/node_modules/httpsync/package.json
+202 info preuninstall httpsync@0.0.7
+203 info uninstall httpsync@0.0.7
+204 verbose true,/Users/daonguyenanbinh/node_modules,/Users/daonguyenanbinh/node_modules unbuild httpsync@0.0.7
+205 info postuninstall httpsync@0.0.7
+206 error httpsync@0.0.7 install: `sh build.sh`
+206 error `sh "-c" "sh build.sh"` failed with 1
+207 error Failed at the httpsync@0.0.7 install script.
+207 error This is most likely a problem with the httpsync package,
+207 error not with npm itself.
+207 error Tell the author that this fails on your system:
+207 error     sh build.sh
+207 error You can get their info via:
+207 error     npm owner ls httpsync
+207 error There is likely additional logging output above.
+208 error System Darwin 12.2.0
+209 error command "node" "/usr/local/bin/npm" "install" "httpsync"
+210 error cwd /Users/daonguyenanbinh/Box Documents/Sites/nodejs
+211 error node -v v0.8.20
+212 error npm -v 1.2.11
+213 error code ELIFECYCLE
+214 verbose exit [ 1, true ]

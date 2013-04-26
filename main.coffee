@@ -241,36 +241,16 @@ runNhaccuatui = ->
 		logPath : "./log/test_NCTLog.txt"
 	console.log "STEP 2:".inverse.blue + " " + "Choose the type of command:".underline.blue
 	console.log "\t" + "CREATE".inverse.red + " tables\t" + "RESET".inverse.red + " tables "
-	console.log "\t1.get artist temp\t2.show stats"
-	console.log "\t3.updateAlbumStatsAndInsertSongs\t4.fetch songs plays"
-	console.log "\t5.updateAlbumLinkKey\t6.updateSongLinkKey"
-	console.log "\t7.fetchAlbumByTopic\t8.fetchVideoByArtist"
-	console.log "\t9.updateVideoLinkKey\t10.updateVideosPlays"
-	console.log "\t11.fetchVideoByTopic\t12.fetchAlbumByAuthor"
-	console.log "\t13.UPDATE SONGS & ALBUMS\t14. updateSongs_AlbumsTables"
-	console.log "\t15.UPDATE VIDEOS\t16. updateLyrics"
+	console.log "\t1.UPDATE ALBUMS AND SONGS\t2.updateSongsPlay"
 	
 	nct = new Nhaccuatui(mysqlConfig)
 	rl.question "=> ", (answer) ->
 		switch answer.trim()
 			when "CREATE" then nct.createTables()
 			when "RESET" then nct.resetTables()
-			when "1" then nct.fetchArtist()
-			when "2" then nct.showStats()
-			when "3" then nct.updateAlbumStatsAndInsertSongs()
-			when "4" then nct.fetchSongsPlays()
-			when "5" then nct.updateAlbumLinkKey()
-			when "6" then nct.updateSongLinkKey()
-			when "7" then nct.fetchAlbumByTopic()
-			when "8" then nct.fetchVideosByArtist()
-			when "9" then nct.updateVideoLinkKey()
-			when "10" then nct.updateVideosPlays()
-			when "11" then nct.fetchVideoByTopic()
-			when "12" then nct.fetchAlbumByAuthor()
-			when "13" then nct.updateAlbumsAndSongs()
-			when "14" then nct.updateSongs_AlbumsTables()
-			when "15" then nct.updateVideos()
-			when "16" then nct.updateLyrics()
+			when "1" then nct.updateAlbumsAndSongs()
+			when "2" then nct.updateSongsPlays()
+			
 
 			else console.log "Wrong type".red
 
