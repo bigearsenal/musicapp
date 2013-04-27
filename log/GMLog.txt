@@ -1,1 +1,1 @@
-{"serverType":"music.go.vn","lastSongId":183266,"lastAlbumId":18949,"updated_at":1366817930199,"totalPassedSongs":13}
+{"serverType":"music.go.vn","lastSongId":183291,"lastAlbumId":18954,"updated_at":1367037669242,"totalPassedSongs":23}

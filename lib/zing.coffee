@@ -32,7 +32,6 @@ class Zing extends Module
 		@logPath = @config.logPath
 		@log = {}
 		@_readLog()
-
 	encryptId : (id) ->
 		a = "GHmn|LZk|DFbv|BVd|ASlz|QWp|ghXC|Nas|Jcx|ERui|Tty".split("|") 
 		[1,0,8,0,10].concat((id-307843200+'').split(''),[10,1,2,8,10,2,0,1,0]).map((i)-> 
@@ -202,100 +201,113 @@ class Zing extends Module
 					_u = "UPDATE #{@table.Videos} SET lyric=#{@connection.escape(t)} where vid=#{vid}"
 					@connection.query _u, (err)->
 						if err then console.log "Cannt update lyric #{video.vid}"
+	
+	_processVideo : (vid, data)->
+		_video = null
+		if data.match(/xmlURL.+\&amp\;/g) is null then return _video
+		else
+			# _video = 
+			# 	video_encodedId : data.match(/xmlURL.+\&amp\;/g)[0].replace(/xmlURL\=http\:\/\/mp3\.zing\.vn\/xml\/video\-xml\//g,'').replace(/\&amp\;/,'')
+			_video = 
+				vid : vid
+				title : ""
+				artists : ""
+				topic : ""
+				plays : 0
+				thumbnail : ""
+				link : ""
+				lyric : ""
+				created : "0000-00-00"
+
+			if data.match(/Thể\sloại\:/g)
+					_temp= data.match(/Thể\sloại\:.+/g)[0]				
+					_topics = _temp.split('|')[0].replace(/Thể\sloại\:.|\/span\>|\<\/p\>/g,'').split(',')
+					_video.plays = _temp.split('|')[1].replace(/Lượt\sxem\:|\s|\<\/p\>|\./g,'')
+					arr = []
+					arr.push _topic.replace(/\<a.+\"\>|\<\/a\>/g,'').trim() for _topic in _topics
+					_video.topic = JSON.stringify arr
+			else _video.topic = ''
+
+			if data.match(/detail-title.+/g)
+				_temp = data.match(/detail-title.+/g)[0]
+									.replace(/detail-title"/g,'')
+				_temp = _temp.split(/<span>-<\/span>/g)
+
+				_video.title = _temp[0].replace(/<\/h1>|>/g,'')
+				# console.log _temp[1]
+				_video.artists = JSON.stringify _temp[1].match(/Tìm\sbài\shát\scủa.+"/g)[0].replace(/"$/g,'')
+															.replace(/Tìm\sbài\shát\scủa\s/g,'').split(' ft. ')
+				
+			if data.match(/og:image/g)
+				_video.thumbnail = data.match(/og:image.+/g)[0].match(/http.+"/g)[0].replace('"','')
+
+			link = _video.thumbnail
+			if link.match /\d{10}\.jpg/g
+				_timestamp = link.match(/\d{10}\.jpg/g)[0].replace(/\.jpg/g,'')
+				_date = new Date(parseInt(_timestamp,10)*1000)
+				_video.created = _date.getFullYear() + "-" + (_date.getMonth()+1) + "-"+ _date.getDate()
+			if link.match /\d{4}\/\d{1}/g
+				_video.created = link.match(/\d{4}\/\d{1}/g)[0]
+			if link.match /\d{4}\/\d{2}/g
+				_video.created = link.match(/\d{4}\/\d{2}/g)[0]
+			if link.match /\d{4}\/\d{1}\/\d{1}/g
+				_video.created = link.match(/\d{4}\/\d{1}\/\d{1}/g)[0]
+			if link.match /\d{4}\/\d{1}\/\d{2}/g
+				_video.created = link.match(/\d{4}\/\d{1}\/\d{2}/g)[0]
+			if link.match /\d{4}\/\d{2}\/\d{2}/g
+				_video.created = link.match(/\d{4}\/\d{2}\/\d{2}/g)[0]
+			if link.match /\d{4}\/\d{2}_\d{2}/g
+				_video.created = link.match(/\d{4}\/\d{2}\_\d{2}/g)[0].replace(/\//,'-').replace(/_/,'-')
+
+			_video.link = "http://mp3.zing.vn/html5/video/" + @encryptId(vid)
+
+			lyric = data.match(/Lời\sbài\shát+[^]+class=\"seo\"/g)?[0]
+			if lyric
+				lyric = lyric.replace(/<p\sclass=\"seo+[^]+<p\sclass=\"seo/g,'').replace(/Lời\sbài\shát+[^]+<\/span><\/span>/g,'').trim()
+				_video.lyric = lyric.replace(/<\/p>\r\n\t<\/div>\r\n\t\t<\/div>\r\n\t\t/g,'')
+
+				# 
+
+			return _video
+			
+	_updateVideo : (id)->
+		link = "http://mp3.zing.vn/video-clip/joke-link/#{@_convertToId id}.html"
+		@_getFileByHTTP link, (data)=>
+			@stats.totalItemCount +=1
+			@stats.currentId = id		
+			if data isnt null
+				video = @_processVideo id, data	
+				if video is null
+					@stats.failedItemCount += 1
+					@temp.totalFail += 1
+				else 
+					# console.log video
+					@stats.passedItemCount += 1
+					@log.lastVideoId += id
+					@temp.totalFail = 0
+					@connection.query @query._insertIntoZIVideos, video, (err)=>
+						if err then console.log "Cannot insert video #{video.videoid} into table. Error: #{err}"					
+			else 
+				@stats.failedItemCount += 1
+				@temp.totalFail += 1
+			
+			@utils.printUpdateRunning id, @stats, "Fetching..."
+			
+			if @temp.totalFail < @temp.nStop
+				@_updateVideo id+1
+			else
+				@utils.printFinalResult @stats
+				@_writeLog @log
 	updateVideos : ->
 		@connect()
-
 		@stats.currentTable = @table.Videos
-		nItems = 100000
-		
-
-		startingNumber = 1381585048
-		round = 8
-
-		range0 = startingNumber + round*nItems
-		range1 = startingNumber + (round+1)*nItems
-
-
 		console.log "Running on: #{new Date(Date.now())}"
-		console.log " |Starting from #{range0} -> #{range1}. Round is #{round}, nItems is #{nItems}"
 		console.log " |"+"Update video to table  : #{@table.Videos}".magenta
-
-		@stats.totalItems = nItems + 1
-		
-		for vid in [range0..range1-80000]
-		# for vid in [1381945778..1381945778+100]
-			do (vid)=>
-				link = "http://mp3.zing.vn/video-clip/joke-link/#{@_convertToId vid}.html"
-				@_getFileByHTTP link, (data)=>
-					@stats.totalItemCount +=1
-					@stats.currentId = vid
-					
-					if data isnt null
-						if data.match(/xmlURL.+\&amp\;/g) is null then console.log "ERROR : video #{video.videoid}: #{video.title} of #{video.artist} does not exist".red
-						else
-							# _video = 
-							# 	video_encodedId : data.match(/xmlURL.+\&amp\;/g)[0].replace(/xmlURL\=http\:\/\/mp3\.zing\.vn\/xml\/video\-xml\//g,'').replace(/\&amp\;/,'')
-							_video = 
-								vid : vid
-
-							if data.match(/Thể\sloại\:/g)
-									_temp= data.match(/Thể\sloại\:.+/g)[0]				
-									_topics = _temp.split('|')[0].replace(/Thể\sloại\:.|\/span\>|\<\/p\>/g,'').split(',')
-									_video.plays = _temp.split('|')[1].replace(/Lượt\sxem\:|\s|\<\/p\>|\./g,'')
-									arr = []
-									arr.push _topic.replace(/\<a.+\"\>|\<\/a\>/g,'').trim() for _topic in _topics
-									_video.topic = JSON.stringify arr
-							else _video.topic = ''
-
-							if data.match(/detail-title.+/g)
-								_temp = data.match(/detail-title.+/g)[0]
-													.replace(/detail-title"/g,'')
-								_temp = _temp.split(/<span>-<\/span>/g)
-
-								_video.title = _temp[0].replace(/<\/h1>|>/g,'')
-								# console.log _temp[1]
-								_video.artists = JSON.stringify _temp[1].match(/Tìm\sbài\shát\scủa.+"/g)[0].replace(/"$/g,'')
-																			.replace(/Tìm\sbài\shát\scủa\s/g,'').split(' ft. ')
-								
-							if data.match(/og:image/g)
-								_video.thumbnail = data.match(/og:image.+/g)[0].match(/http.+"/g)[0].replace('"','')
-
-							_video.created = "0000-00-00"
-
-							link = _video.thumbnail
-							if link.match /\d{10}\.jpg/g
-								_timestamp = link.match(/\d{10}\.jpg/g)[0].replace(/\.jpg/g,'')
-								_date = new Date(parseInt(_timestamp,10)*1000)
-								_video.created = _date.getFullYear() + "-" + (_date.getMonth()+1) + "-"+ _date.getDate()
-
-							if link.match /\d{4}\/\d{1}/g
-								_video.created = link.match(/\d{4}\/\d{1}/g)[0]
-							if link.match /\d{4}\/\d{2}/g
-								_video.created = link.match(/\d{4}\/\d{2}/g)[0]
-							if link.match /\d{4}\/\d{1}\/\d{1}/g
-								_video.created = link.match(/\d{4}\/\d{1}\/\d{1}/g)[0]
-							if link.match /\d{4}\/\d{1}\/\d{2}/g
-								_video.created = link.match(/\d{4}\/\d{1}\/\d{2}/g)[0]
-							if link.match /\d{4}\/\d{2}\/\d{2}/g
-								_video.created = link.match(/\d{4}\/\d{2}\/\d{2}/g)[0]
-							if link.match /\d{4}\/\d{2}_\d{2}/g
-								_video.created = link.match(/\d{4}\/\d{2}\_\d{2}/g)[0].replace(/\//,'-').replace(/_/,'-')
-
-
-							_video.link = "http://mp3.zing.vn/html5/video/" + @encryptId(vid)
-							# console.log _video
-							# @_fetchVideoLink _video
-							@connection.query @query._insertIntoZIVideos, _video, (err)=>
-								if err then console.log "Cannot insert video #{video.videoid} into table. Error: #{err}"
-								else @_updateLyricForVideo _video.vid
-						@stats.passedItemCount +=1		
-					else 
-						@stats.failedItemCount +=1
-
-					@utils.printRunning @stats
-
-					if @stats.totalItems is @stats.totalItemCount
-						@utils.printFinalResult @stats
+		@temp =
+			totalFail : 0
+			nStop : 2000 # the number of consecutive items fail
+		console.log "The program will stop after #{@temp.nStop} consecutive videos failed"
+		@_updateVideo @log.lastVideoId+1
 
 	# ---------------------------------------
 	# Updating songs, albums and songs_albums
@@ -556,46 +568,6 @@ class Zing extends Module
 		@_updateSongs @log.lastSongId+1
 	# ---------------------------------------
 	# Update songs and albums with RANGE
-	_updateSongsOrAlbumsWithRange : (range0, range1, type)->
-		@connect()
-		console.log "Running on: #{new Date(Date.now())}"
-		if type is 1 
-			console.log " |"+"Update Songs to table: #{@table.Songs}".magenta
-			@stats.currentTable = @table.Songs
-		else if type is 2
-			console.log " |"+"Update Albums to table: #{@table.Albums}".magenta
-			@stats.currentTable = @table.Albums
-
-		@fetchRows range0, range1, type, (arr)=>
-			console.log "The # of items is: #{arr.length}"
-			@stats.totalItems = arr.length
-			for id in arr
-				do (id)=>
-					# console.log id
-					if type is 1 then link = "http://mp3.zing.vn/bai-hat/joke-link/#{@_convertToId id}.html"
-					else if type is 2 then link = "http://mp3.zing.vn/album/joke-link/#{@_convertToId id}.html"
-					# console.log link
-					@_getFileByHTTP link, (data)=>
-						try
-							# console.log data
-							@stats.totalItemCount +=1
-							@stats.currentId = id
-							if data isnt null
-								if type is 1 then @_processSong id, data
-								else if type is 2 then @_processAlbum id, data
-								@stats.passedItemCount +=1
-								data = ""
-							else 
-								@stats.failedItemCount+=1
-							@utils.printRunning @stats
-							if @stats.totalItems is @stats.totalItemCount
-								@utils.printFinalResult @stats
-	updateSongsWithRange : (range0, range1) =>
-		@_updateSongsOrAlbumsWithRange range0, range1, 1
-	updateAlbumsWithRange : (range0, range1) =>
-		@_updateSongsOrAlbumsWithRange range0, range1, 2
-
-	# fetching ffrom data base
 	fetchRows : (range0, range1, type, onSuccess)->
 		# type 1 is song, 2 is album, 3 is video
 		if type is 1
@@ -636,161 +608,87 @@ class Zing extends Module
 						# console.log "lastid is #{lastId} and range1 is #{range1}"
 						if lastId is range1
 							onSuccess resultArray
+	_updateSongsOrAlbumsWithRange : (range0, range1, type)->
+		console.log "Running on: #{new Date(Date.now())}"
+		if type is 1 
+			console.log " |"+"Update Songs to table: #{@table.Songs}".magenta
+			@stats.currentTable = @table.Songs
+		else if type is 2
+			console.log " |"+"Update Albums to table: #{@table.Albums}".magenta
+			@stats.currentTable = @table.Albums
+
+		@fetchRows range0, range1, type, (arr)=>
+			console.log "The # of items is: #{arr.length}"
+			@stats.totalItems = arr.length
+			for id in arr
+				do (id)=>
+					# console.log id
+					if type is 1 then link = "http://mp3.zing.vn/bai-hat/joke-link/#{@_convertToId id}.html"
+					else if type is 2 then link = "http://mp3.zing.vn/album/joke-link/#{@_convertToId id}.html"
+					# console.log link
+					@_getFileByHTTP link, (data)=>
+						try
+							# console.log data
+							@stats.totalItemCount +=1
+							@stats.currentId = id
+							if data isnt null
+								if type is 1 then @_processSong id, data
+								else if type is 2 then @_processAlbum id, data
+								@stats.passedItemCount +=1
+								data = ""
+							else 
+								@stats.failedItemCount+=1
+							@utils.printRunning @stats
+							if @stats.totalItems is @stats.totalItemCount
+								@utils.printFinalResult @stats
+	updateSongsWithRange : (range0, range1) =>
+		@connect()
+		# if both range0 and range1 equal 1. Then we trigger the special case. 
+		# Fetching the max and min id in the last 100 pages 
+		if range0 is 1 and range1 is 1
+			console.log "Fetching items in last 100 pages. Each page contains 500 records"
+			_q = "select max(sid) as max from #{@table.Songs}"
+			max = ""
+			@connection.query _q, (err, results)=>
+				if err then console.log "cannt getting max item from table. ERROR: #{err}"
+				else 
+					for result in results
+						max = result.max
+						_q = "select sid as min from #{@table.Songs} order by sid DESC LIMIT 50000,1"
+						@connection.query _q, (err, results)=>
+							if err then console.log "cannt getting max item from table. ERROR: #{err}"
+							else 
+								for result in results
+									min = result.min
+									console.log "Fetching items in range: #{min} - #{max}"
+									@_updateSongsOrAlbumsWithRange min, max, 1
+
+		else @_updateSongsOrAlbumsWithRange range0, range1, 1
+	updateAlbumsWithRange : (range0, range1) =>
+		@connect()
+		# if both range0 and range1 equal 1. Then we trigger the special case. 
+		# Fetching the max and min id in the last 100 pages 
+		if range0 is 1 and range1 is 1
+			console.log "Fetching items in last 100 pages. Each page contains 500 records"
+			_q = "select max(aid) as max from #{@table.Albums}"
+			max = ""
+			@connection.query _q, (err, results)=>
+				if err then console.log "cannt getting max item from table. ERROR: #{err}"
+				else 
+					for result in results
+						max = result.max
+						_q = "select aid as min from #{@table.Albums} order by aid DESC LIMIT 50000,1"
+						@connection.query _q, (err, results)=>
+							if err then console.log "cannt getting max item from table. ERROR: #{err}"
+							else 
+								for result in results
+									min = result.min
+									console.log "Fetching items in range: #{min} - #{max}"
+									@_updateSongsOrAlbumsWithRange min, max, 2
+		else @_updateSongsOrAlbumsWithRange range0, range1, 2
+
+	# fetching ffrom data base
 	# ------------------------------------------
-	findDiffenceBetween2Strings : (s1,s2)->
-		# console.log "#{s1}".blue
-		# console.log "#{s2}".green
-		if s1.length is s2.length
-			arr = []
-			for i in [0..s1.length-1]
-				if s1[i] isnt s2[i]
-					arr.push i
-			arr
-
-		else 
-			# console.log "ALERT: 2 strings are not equal. S1: #{s1.length}, S2: #{s2.length}"
-			# console.log "#{s1}".blue
-			# console.log "#{s2}".green
-			[]
-	###*
-	 * TO GET PATTERN LIKE (38:M,c)----18-----=>(I,b)
-	 * @return {[type]} [description]
-	###
-	test1 : ->
-		base = "http://mp3.zing.vn/blog?"
-		query = "DY4MMy8wMi8xMS84L2EvInagaMEOGFlMDY4MjdhNmQwMzExNDk1YmNjZTIyOTU5ODViOGUdUngWeBXAzfEZvInagaMEmUsICmV2ZXIgQWxvInagaMEWeBmV8SnVzdGFUZWV8MXwy"
-		base62 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
-		originalLink = base + query
-		console.log originalLink
-		@_getFileByHTTP (originalLink), (data)=>
-			console.log data
-			originalData =  JSON.stringify(data).replace(/fsfsdfdsfdserwrwq3\/[a-f0-9]+\/[a-f0-9]+/g,'')
-											.replace(/\?q\=[a-f0-9]+\&amp;t\=[0-9]+/g,'')
-			for i in [0..query.length-1]
-				link = query.split('')
-				# console.log "-----------------------"
-				# console.log "#{link.join('')}".red
-				for j in [0..base62.length-1]
-					if query[i] isnt base62[j]
-						do (i,j) =>
-							link[i] = base62[j]
-
-							# console.log query[i] + "=>" + base62[j] + ":" + link.join('')
-							l = base + link.join('')
-
-
-							@_getFileByHTTP (l), (d)=>
-								if d isnt undefined
-									secondaryData = JSON.stringify(d).replace(/fsfsdfdsfdserwrwq3\/[a-f0-9]+\/[a-f0-9]+/g,'')
-															 .replace(/\?q\=[a-f0-9]+\&amp;t\=[0-9]+/g,'')
-									indexes = @findDiffenceBetween2Strings originalData, secondaryData
-									# console.log "Changing #{query[i]} at position #{i} to #{base62[j]}. At position : "+JSON.stringify(indexes) + ": the character "+ 
-									# 			indexes.map((index)-> originalData[index]).join(' ') + "=>" + 
-									# 			indexes.map((index)-> secondaryData[index]).join(' ') + ";"
-									# 			
-									# 			
-									if indexes.length is 1
-										arrayS = "0123456789abcdefmp/.".split('')
-										if indexes.map((index)-> secondaryData[index]).join(' ') in arrayS
-											console.log "(#{i}:#{query[i]},#{indexes.map((index)-> originalData[index]).join(' ')})----#{indexes[0]-28}-----=>(#{base62[j]},#{indexes.map((index)-> secondaryData[index]).join(' ')})" 
-											# console.log originalData
-											# console.log secondaryData
-
-	test : ->
-		base = "http://mp3.zing.vn/blog?"
-		query   = "MjAxMyUyRjAzJTJGMDklMkY5JTJGYyUyRjljYmQzM2I4OWE4ZWUyOTU1YTcyZjI3MTU0ZGIzMTk1Lm1wMyU3QzI"
-		suffix  = "**4MMy8wMi8xMS84L2EvInagaMEOGFlMDY4MjdhNmQwMzExNDk1YmNjZTIyOTU5ODViOGUdUngWeBXAzfEZvInagaMEmUsICmV2ZXIgQWxvInagaMEWeBmV8SnVzdGFUZWV8MXwy"
-		
-		base62 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz="
-
-		base24_A = "IJKLMNOPQRSTUVWXYZabcdef"
-		base24_B = "CDEFGHSTUVWXijklmnyz0123"
-		originalLink = base + query
-		
-		# for i in base24_A 
-		# 	for j in base24_B
-				# str = i+j
-				# uri = suffix.replace(/[*]+/g,str)
-				# link = base + uri
-				# do (i,j,link)=>
-				# 	process.stdout.write "(#{i},#{j})\r"
-				# 	@_getFileByHTTP (link), (data)=>
-				# 		if data isnt undefined
-				# 			data =  JSON.stringify(data).replace(/fsfsdfdsfdserwrwq3\/[a-f0-9]+\/[a-f0-9]+/g,'')
-				# 			# console.log data
-				# 			process.stdout.write "(#{i},#{j})\r"
-				# 			# if i is "M" and j is "j"
-				# 			# 	console.log link
-				# 			# 	console.log "(#{i},#{j})--->" + data
-				# 			# if data.length is 80 
-				# 			if data[186] isnt "�" and data[187] isnt "�"
-				# 				# if data[29] is "0"
-				# 					# if data[28] in "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz/.".split('')
-				# 						nCounts +=1
-				# 						# console.log data[186] + "---------------"
-				# 						console.log "(#{i}#{j})=>(#{data[186]}#{data[187]})---(#{i.charCodeAt(0)},#{j.charCodeAt(0)})=>(#{data[186].charCodeAt(0)},#{data[187].charCodeAt(0)})"
-
-				# 			if i is "z" and j is "z" then console.log nCounts
-
-
-				# finding the third param IC[A-Z,a-z,0-9....]
-		
-		base62 =   "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
-
-
-		basei = "ABCDEFGH" # not in base24_A
-		basej = "ABCDEFGHQRSTUVWXghijklmnwxyz0123" # not in base 24_B
-		
-		basek = "ABEFIJMNQRUVYZcdghklopstwx014589"
-		baseC = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
-
-		# # case 1
-		# basei = "01234567"
-		# basej = "IJKLYZabopqr4567"
-		# basek = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
-		# # end of case 1
-
-
-		nCounts = 0
-
-		suffix1 = "åæøxMyUyRjAzJTJGMDklMkY5JTJGYyUyRjljYmQzM2I4OWE4ZWUyOTU1YTcyZjI3MTU0ZGIzMTk1Lm1wMyU3QzI"
-
-
-		#case 1 but in the case it depends on 4th character
-		# basei = "I"
-		# basej = "A"
-		# basek = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
-		# suffix1 = "0åæøMyUyRjAzJTJGMDklMkY5JTJGYyUyRjljYmQzM2I4OWE4ZWUyOTU1YTcyZjI3MTU0ZGIzMTk1Lm1wMyU3QzI"
-		# #### end of case 1
-		for i in basei
-			for j in basej
-				for k in basek
-					uri = suffix1.replace(/[å]+/g,i).replace(/[æ]+/g,j).replace(/[ø]+/g,k)
-
-					do (i,j,k,uri)=>
-						link = base + uri
-						process.stdout.write "(#{i},#{j},#{k})\r"
-						@_getFileByHTTP (link), (data)=>
-							if data isnt undefined
-								data =  JSON.stringify(data).replace(/fsfsdfdsfdserwrwq3\/[a-f0-9]+\/[a-f0-9]+/g,'')
-														.replace(/^..+zdn\.vn\/\//g,'')
-														.replace(/\?q\=.+/,'')
-								process.stdout.write "(#{i},#{j},#{k})\r"
-								# if data.length is 80 
-									# if data[28] isnt "�" and data[29] isnt "�" and data[30] isnt "�"
-										# if data[29] is "0"
-											# if data[28] in "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz/.".split('')
-								nCounts +=1
-								# console.log data
-								data = encoder.htmlDecode data
-								if data[0] isnt "�" and data[1] isnt "�" and data[2] isnt "�"
-									console.log "(#{uri.substr(0,4)})=>(#{data.substr(0,14)})---"+
-										"(#{uri.substr(0,4).split('').map((v)->v.charCodeAt(0))})=>"+
-										"(#{data.substr(0,14).split('').map((v)->v.charCodeAt(0))})"
-
-								
-
-
 	showStats : ->
 		@_printTableStats ZI_CONFIG.table
 
