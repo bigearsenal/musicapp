@@ -184,51 +184,21 @@ runZing = ->
 		logPath : "./log/test_ZILog.txt"
 	console.log "STEP 2:".inverse.blue + " " + "Choose the type of command:".underline.blue
 	console.log "\t" + "CREATE".inverse.red + " tables\t" + "RESET".inverse.red + " tables "
-	console.log "\t1.get artist temp\t2.show stats"
-	console.log "\t3.fetchAlbumTopic\t4.fetch artist profile"
-	console.log "\t5.fetch videos\t\t6.fetch video link"
-	console.log "\t7.fetchAlbumByGenre\t8.updateAlbums&Songs"
-	console.log "\t9.updateIdFromAlbum\t10.updateSongsAndAlbums"
-	console.log "\t11.updateSongsStatsAndLyrics\t12.testPattern"
-	console.log "\t13.encryptId\t14.test"
-	console.log "\t15.updateSongsLeft\t16.updateVideosLyrics"
-	console.log "\t17.testAAAA\t18.updatePathAndCreated"
-	console.log "\t19.updateAlbumsLeft\t20.UPDATE SONGS AND ALBUMS"
-	console.log "\t21.UPDATEALBUMS\t22.updateCreatedTime"
-	console.log "\t23.updateVideos\t24.updateSplitArtistsofAlbums"
-	console.log "\t25.UPDATE SONGS WITH RANGE\t26.UPDATE ALBUMS WITH RANGE"
+
+	console.log "\t1.UPDATE SONGS AND ALBUMS\t2.UPDATE ALBUMS"
+	console.log "\t3.updateVideos\t4.UPDATE SONGS WITH RANGE"
+	console.log "\t5.UPDATE ALBUMS WITH RANGE"
 
 	zing = new Zing(mysqlConfig)
 	rl.question "=> ", (answer) ->
 		switch answer.trim()
 			when "CREATE" then zing.createTables()
 			when "RESET" then zing.resetTables()
-			when "1" then zing.fetchArtist()
-			when "2" then zing.showStats()
-			when "3" then zing.fetchAlbumTopic()
-			when "4" then zing.fetchArtistProfile()
-			when "5" then zing.fetchVideo()
-			when "6" then zing.fetchVideoLink()
-			when "7" then zing.fetchAlbumByGenre()
-			when "8" then zing.update()
-			when "9" then zing.updateIdFromAlbum()
-			when "10" then zing.updateSongsAndAlbums()
-			when "11" then runWithRange zing.updateSongsStatsAndLyrics
-			when "12" then runWithRange zing.testPattern
-			when "13" then zing.encryptId()
-			when "14" then zing.test()
-			when "15" then zing.updateSongsLeft()
-			when "16" then zing.updateVideosLyrics()
-			when "17" then zing.testAAAA()
-			when "18" then zing.updatePathAndCreated()
-			when "19" then zing.updateAlbumsLeft()
-			when "20" then zing.updateSongs()
-			when "21" then zing.updateAlbums()
-			when "22" then zing.updateCreatedTime()
-			when "23" then zing.updateVideos()
-			when "24" then zing.updateSplitArtistsofAlbums()
-			when "25" then runWithRange zing.updateSongsWithRange
-			when "26" then runWithRange zing.updateAlbumsWithRange
+			when "1" then zing.updateSongs()
+			when "2" then zing.updateAlbums()
+			when "3" then zing.updateVideos()
+			when "4" then runWithRange zing.updateSongsWithRange
+			when "5" then runWithRange zing.updateAlbumsWithRange
 			
 
 			else console.log "Wrong type".red

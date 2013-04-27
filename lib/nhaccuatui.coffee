@@ -117,7 +117,6 @@ class Nhaccuatui extends Module
 		
 		@eventEmitter.on "album-plays-result", (albums)->
 			onDone albums
-	
 	_fetchSongsPlays : (ids)->
 		link = "http://www.nhaccuatui.com/wg/get-counter?listSongIds=#{ids}"
 		onSucess = (data)=> 
@@ -165,8 +164,6 @@ class Nhaccuatui extends Module
 						a = []
 						a.push song.id
 				@_fetchSongsPlays a.join(',')
-
-
 	insertAlbumsIntoDB : (albums)->
 		console.log " |STEP 5: Inserting new albums into table".magenta
 		@resetStats()
