@@ -21,9 +21,12 @@ class Module
 			currentId : 0
 			currentTable : ""
 		@logPath = ""
+		@hasConnection = false
 	connect : ->
-		@connection = mysql.createConnection @serverConfig
-		@connection.connect()
+		if @hasConnection is false
+			@connection = mysql.createConnection @serverConfig
+			@connection.connect()
+			@hasConnection = true
 		@
 	resetStats : ->
 		@stats = 

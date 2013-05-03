@@ -8,6 +8,8 @@ fs = require 'fs'
 Encoder = require('node-html-encoder').Encoder
 encoder = new Encoder('entity');
 
+events = require('events')
+
 ZI_CONFIG = 
 	table : 
 		Songs : "ZISongs"
@@ -28,6 +30,7 @@ class Zing extends Module
 			_insertIntoZIVideos : "INSERT IGNORE INTO " + @table.Videos + " SET ?"
 		@utils = new Utils()
 		@parser = new xml2js.Parser();
+		@eventEmitter = new events.EventEmitter()
 		super @mysqlConfig
 		@logPath = @config.logPath
 		@log = {}
@@ -283,7 +286,7 @@ class Zing extends Module
 				else 
 					# console.log video
 					@stats.passedItemCount += 1
-					@log.lastVideoId += id
+					@log.lastVideoId = id
 					@temp.totalFail = 0
 					@connection.query @query._insertIntoZIVideos, video, (err)=>
 						if err then console.log "Cannot insert video #{video.videoid} into table. Error: #{err}"					
@@ -305,7 +308,7 @@ class Zing extends Module
 		console.log " |"+"Update video to table  : #{@table.Videos}".magenta
 		@temp =
 			totalFail : 0
-			nStop : 2000 # the number of consecutive items fail
+			nStop : 3000 # the number of consecutive items fail
 		console.log "The program will stop after #{@temp.nStop} consecutive videos failed"
 		@_updateVideo @log.lastVideoId+1
 
@@ -411,9 +414,10 @@ class Zing extends Module
 
 				@utils.printUpdateRunning albumid, @stats, "Fetching..."
 
-				if @temp.totalFail >= 1000
+				if @temp.totalFail >= @temp.nStop
 					@utils.printFinalResult @stats
 					@_writeLog @log
+					@eventEmitter.emit "update-album-finish"
 				else @_updateAlbums albumid+1
 
 			catch e
@@ -422,11 +426,12 @@ class Zing extends Module
 				@temp.totalFail+=1
 	updateAlbums : ->
 		@connect()
-		@resetStats()
 		console.log "Running on: #{new Date(Date.now())}"
 		console.log " |"+"Update Albums and Songs_Albums to tables: #{@table.Albums} & #{@table.Songs_Albums}".magenta
 		@temp = {}
 		@temp.totalFail = 0
+		@temp.nStop = 1000
+		console.log "The program will stop after #{@temp.nStop} consecutive albums failed"
 		@stats.currentTable = @table.Albums + " & " + @table.Songs_Albums
 		@_updateAlbums @log.lastAlbumId+1
 
@@ -548,24 +553,41 @@ class Zing extends Module
 				else 
 					@stats.failedItemCount+=1
 					@temp.totalFail += 1
-					if @temp.totalFail < 2000
+					if @temp.totalFail < @temp.nStop
 						@_updateSongs(songid + 1)
 
 				@utils.printUpdateRunning songid, @stats, "Fetching....."
 
-				if @temp.totalFail is 2000
+				if @temp.totalFail is @temp.nStop
 					@utils.printFinalResult @stats
 					@_writeLog @log
-					@updateAlbums()
-	updateSongs : ->
+					@eventEmitter.emit "update-song-finish"
+	updateSongs : =>
 		@connect()
 		console.log "Running on: #{new Date(Date.now())}"
 		console.log " |"+"Update Songs to table: #{@table.Songs}".magenta
 		@temp = {}
 		@temp.totalFail = 0
+		@temp.nStop = 2000
+		console.log "The program will stop after #{@temp.nStop} consecutive songs failed"
 		@stats.currentTable = @table.Songs
 
 		@_updateSongs @log.lastSongId+1
+
+	update : ->
+		@eventEmitter.on "fetch-new-songs-done", =>
+			@resetStats()
+			@updateSongs()
+		@eventEmitter.on "update-song-finish", =>
+			@resetStats()
+			@updateAlbums()
+		@eventEmitter.on "update-album-finish",=>
+			@resetStats()
+			@updateVideos()
+
+		# update the songs which is not available when downloaded then
+		@updateSongsWithRange 1,1
+
 	# ---------------------------------------
 	# Update songs and albums with RANGE
 	fetchRows : (range0, range1, type, onSuccess)->
@@ -641,6 +663,7 @@ class Zing extends Module
 							@utils.printRunning @stats
 							if @stats.totalItems is @stats.totalItemCount
 								@utils.printFinalResult @stats
+								@eventEmitter.emit "fetch-new-songs-done"
 	updateSongsWithRange : (range0, range1) =>
 		@connect()
 		# if both range0 and range1 equal 1. Then we trigger the special case. 

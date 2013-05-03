@@ -59,6 +59,8 @@ class Utils
 		message += " | t_left:" + @_getTimeRemain(stats.totalItemCount/tempDuration*1000,stats) + "|\r"
 		printResutls message
 
+	printMessage : (message)->
+		printResutls message + "\r"
 	test : -> console.log "daonguyenanbinh"
 
 module.exports = Utils

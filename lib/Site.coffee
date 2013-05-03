@@ -3,6 +3,8 @@ xml2js = require 'xml2js'
 Module = require './module'
 Utils = require './utils'
 colors = require 'colors'
+events = require('events')
+
 
 Encoder = require('node-html-encoder').Encoder
 encoder = new Encoder('entity');
@@ -23,6 +25,7 @@ class Site extends Module
 				_insertIntoVideos : "INSERT IGNORE INTO " + @table.Videos + " SET ?"
 			@utils = new Utils()
 			@parser = new xml2js.Parser();
+			@eventEmitter = new events.EventEmitter()
 			super()
 		else console.log "You do not specify any PREFIX".red
 	
@@ -54,7 +57,7 @@ class Site extends Module
 
 	# format Datetimt to insert into table
 	formatDate : (dt)->
-		dt.getFullYear() + "-" + (dt.getMonth()+1) + "-" + dt.getDay() + " " + dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds()
+		dt.getFullYear() + "-" + (dt.getMonth()+1) + "-" + dt.getDate() + " " + dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds()
 
 	showStartupMessage : (message,table)->
 		console.log "Running on: #{new Date(Date.now())}"

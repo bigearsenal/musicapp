@@ -28,28 +28,22 @@ runNhacso = ->
 	console.log "STEP 2:".inverse.blue + " " + "Choose the type of command:".underline.blue
 	console.log "\t" + "RESET_SOAL".inverse.red + "- reset songs and albums \t" + "RESET_VIDEO".inverse.red + "- reset video table "
 	console.log "\t" + "stats".inverse.red + "- show stats \t"
-	console.log "\t1.UPDATE ALBUMS & SONGS\t2.update songs\t"
-	console.log "\t3.update videos\t4.fetch songs stats\t"
-	console.log "\t5.fetch songs\t6.fetch albums"
-	console.log "\t7.fetch videos\t8.fetch lyrics"
-	console.log "\t9.update lyrics\t10.test "
-	console.log "\t11.test1\t12.xxxx "
+	console.log "\t1.UPDATE ALBUMS, SONGS & VIDEOS\t2.fetchTypeSONG\t"
+	console.log "\t3.fetchTypeAlbum\t4.fetchMaxTypeSong"
+	console.log "\t5.fetchMaxTypeAlbum\t6............."
+
 	rl.question "=> ", (answer) ->
 		switch answer.trim()
 			when "RESET_SOAL" then ns.resetSongsAndAlbumsTable()
 			when "RESET_VIDEO" then ns.resetVideosTable()
 			when "stats" then ns.showStats()
 			when "1" then ns.update()
-			when "2" then ns.updateSongs()
-			when "3" then ns.updateVideos()
-			when "4" then runWithRange ns.fetchSongsStats
-			when "5" then runWithRange ns.fetchSongs
-			when "6" then runWithRange ns.fetchAlbums
-			when "7" then runWithRange ns.fetchVideos
-			when "8" then runWithRange ns.fetchLyrics #insert offset and step
-			when "9" then ns.updateLyrics()
-			when "10" then ns.test()
-			when "11" then ns.test1()
+			when "2" then ns.fetchType()
+			when "3" then ns.fetchTypeAlbum()
+			when "4" then ns.fetchMaxTypeSong()
+			when "5" then ns.fetchMaxTypeAlbum()
+			
+
 
 			else console.log "Wrong type".red
 runGomusic = ->
@@ -185,8 +179,8 @@ runZing = ->
 	console.log "STEP 2:".inverse.blue + " " + "Choose the type of command:".underline.blue
 	console.log "\t" + "CREATE".inverse.red + " tables\t" + "RESET".inverse.red + " tables "
 
-	console.log "\t1.UPDATE SONGS AND ALBUMS\t2.UPDATE ALBUMS"
-	console.log "\t3.updateVideos\t4.UPDATE SONGS WITH RANGE"
+	console.log "\t1.UPDATE SONGS, ALBUMS & VIDEOS\t2.UPDATE ALBUMS"
+	console.log "\t3.UPDATE VIDEOS\t4.UPDATE SONGS WITH RANGE"
 	console.log "\t5.UPDATE ALBUMS WITH RANGE"
 
 	zing = new Zing(mysqlConfig)
@@ -194,7 +188,7 @@ runZing = ->
 		switch answer.trim()
 			when "CREATE" then zing.createTables()
 			when "RESET" then zing.resetTables()
-			when "1" then zing.updateSongs()
+			when "1" then zing.update()
 			when "2" then zing.updateAlbums()
 			when "3" then zing.updateVideos()
 			when "4" then runWithRange zing.updateSongsWithRange

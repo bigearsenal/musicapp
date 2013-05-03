@@ -1,684 +1,677 @@
-http = require 'http'
-xml2js = require 'xml2js'
-Module = require './module'
-Utils = require './utils'
-colors = require 'colors'
+Site = require "./Site"
 
-Encoder = require('node-html-encoder').Encoder
-encoder = new Encoder('entity');
 
-NS_CONFIG = 
-	table : 
-		NSSongs : "NSSongs"
-		NSAlbums : "NSAlbums"
-		NSSongs_Albums : "NSSongs_Albums"
-		NSVideos : "NSVideos"
-	logPath : "./log/NSLog.txt"
-
-class Nhacso extends Module
-	constructor : (@mysqlConfig, @config = NS_CONFIG) ->
-		@table = @config.table
-		@query = 
-			_insertIntoNSSongs : "INSERT INTO " + @table.NSSongs + " SET ?"
-			_insertIntoNSAlbums : "INSERT INTO " + @table.NSAlbums + " SET ?"
-			_insertIntoNSSongs_Albums : "INSERT INTO " + @table.NSSongs_Albums + " SET ?"
-			_insertIntoNSVideo : "INSERT INTO " + @table.NSVideos + " SET ?"
-		@utils = new Utils()
-		@parser = new xml2js.Parser();
-		super @mysqlConfig
-		@logPath = @config.logPath
+class Nhacso extends Site
+	constructor: ->
+		super "NS"
+		@logPath = "./log/NSLog.txt"
 		@log = {}
 		@_readLog()
-	
-	_decodeId : (songId) ->
-		arr = Array::slice.call songId.toString()
-		arr = arr.map((value) -> parseInt(value) )
-		a = []
-		songid = ""
-		a[1] = ['bw','bg','bQ','bA','aw','ag','aQ','aA','Zw','Zg']
-		a[2] = ['f','e','d','c','b','a','Z','Y','X','W']
-		a[3] = ['N','J','F','B','d','Z','V','R','t','p']
-		a[4] = ['U0','Uk','UU','UE','V0','Vk','VU','VE','W0','Wk']
-		a[5] = ['R','Q','T','S','V','U','X','W','Z','Y']
-		a[6] = ['h','l','p','t','x','1','5','9','B','F']
-		a[7] = ['','X1','XF','XV','Wl','W1','WF','WV','Vl','V1']		
-		for i in [1..arr.length]
-			songid += a[7-i+1][arr[i-1]]
-		songid
 
-	_storeSong : (song) ->
-		_item = 
-			songid : parseInt song.id[0]
-			totaltime : parseInt song.totalTime[0]
-			name : song.name[0].trim()
-			mp3link : song.mp3link[0]
-		# convert timestamp from link to to  created datetime
-		ts = _item.mp3link.match(/\/[0-9]+_/g)[0].replace(/\//, "").replace(/_/, "")
-		ts = parseInt(ts)*Math.pow(10,13-ts.length)
-		date = new Date(ts)
-		_formatedDate = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds()
-		_item.created = _formatedDate
+	_decodeId  : (id) ->
+		a = ['bw bg bQ bA aw ag aQ aA Zw Zg'.split(' '),
+		 	 'fedcbaZYXW'.split(''),
+		 	 'NJFBdZVRtp'.split(''),
+		 	 'U0 Uk UU UE V0 Vk VU VE W0 Wk'.split(' '),
+		 	 'RQTSVUXWZY'.split(''),
+		 	 'hlptx159BF'.split(''),
+		 	 ' X1 XF XV Wl W1 WF WV Vl V1'.split(' ')]
+		(id+'').split('').map((v,i)-> a[6-i][v]).join('')
+	getValueXML : (data,tag,position)->
+		v = data.match(new RegExp("<#{tag}>.+<\/#{tag}>","g"))?[position]
+		if v then return @processStringorArray v.replace(/\]\].+$/g,'').replace(/^.+CDATA\[/g,'')
+		else ''
 
-		if typeof song.artist[0] isnt "object"
-			_item.artist = song.artist[0].trim()
-			_item.artistid = parseInt song.artistlink[0].match(/-\d+\.html/)[0].replace("-","").replace(".html","")
-		else
-			_item.artist = 0
-			_item.artistid = 0
+	processSongLink : (data,options)=>
+		song = 
+			songid : options.id		
+			name : ""	
+			artist : ""
+			artistid : 0
+			author : ""
+			authorid : ""
+			totaltime : 0
+			plays : 0
+			topic : ""
+			bitrate : 0
+			official : 0
+			islyric : 0
+			mp3link : ""
+			lyric : ""
+			created : "0000-00-00"
+			updated : "0000-00-00"
 
-		if typeof song.author[0] isnt "object"
-			_item.author = song.author[0].trim()
-			_item.authorid = parseInt song.authorlink[0].match(/-\d+\.html/)[0].replace("-","").replace(".html","")
-		else
-			_item.author = 0
-			_item.authorid = 0
+		song.name = @getValueXML data,"name",1
+		song.artist = @getValueXML data, "artist", 0
+		song.artistid = parseInt @getValueXML(data,"artistlink",0).replace(/\.html/g,'').replace(/^.+-/g,''),10
+		song.author = @getValueXML data, "author", 0
+		if song.author isnt ''
+			song.authorid = parseInt @getValueXML(data, "authorlink",0).replace(/\.html/g,'').replace(/^.+-/g,''),10
 
-		@connection.query @query._insertIntoNSSongs, _item, (err) =>
-			if err then console.log "Cannot insert the song into table. ERROR: " + err
-			else 
-				@_updateSongStats _item.songid
-				@_updateSongBitrate _item.songid
-	_storeSongStats : (songs, isFinalStep = false) ->
-		_query = ""
-		for song, index in songs 
-			# console.log song
-			_item = 
-				id : parseInt(song.SongID)
-				plays : parseInt(song.TotalFeel)*3 + parseInt(song.TotalLike)*3 + parseInt(song.TotalListen) + parseInt(song.TotalDownload)*2
-				islyric : parseInt song.TotalLyric
-			_query+= "UPDATE " + @table.NSSongs + " SET "
-			_query+= "plays=" + _item.plays + ", "
-			_query+= "islyric=" + _item.islyric + ", "
-			_query+= "updated=now()"
-			_query+= " WHERE songid=" + _item.id + "; "
-			if _item.islyric > 0  then @_updateSongLyric _item.id
-			if index is (songs.length - 1)
-				#console.log _query
-				@connection.query _query, (err, results) =>
-			 		if err
-			 			console.log "Cannot insert the song's stats into table. ERROR: " + err
-			 			console.log _item.id
-	_storeAlbum : (id,album) ->
-		_album = 
-			albumid : id
-			album_name : album.name[0].trim()
-			thumbnail : album.img[0]
-		if typeof album.username[0] isnt "object"
-			_album.artist = album.username[0].trim()
-			_album.artistid = parseInt album.userlink[0].match(/-\d+\.html/)[0].replace("-","").replace(".html","")
-		else
-			_album.artist = ""
-			_album.artistid = ""
-		@connection.query @query._insertIntoNSAlbums,_album,(err) =>
-			if err then console.log err 
-			else 
-				@_updateAlbumTopic id
-				@_updateAlbumTotalSongs id
-				@_updateAlbumDescAndIssuedTime id
-	_storeSongs_Album : (id,songs) ->
-		_songlist = []									
-		songs.forEach (element, index)=> 
-			_songid = parseInt element.id[0]
-			if !isNaN(_songid)
-				_songlist[index] = {}
-				_songlist[index].songid = _songid
-				_songlist[index].albumid = id
-				@connection.query @query._insertIntoNSSongs_Albums,_songlist[index],(err) ->
-				 	if err then console.log err + "at albumid: " + id + " songid: " +_songlist[index].songid + " is not available"
-	_storeVideo : (video) ->
-		ts = video.link.match(/\/[0-9]+_/g)[0].replace(/\//, "").replace(/_/, "")
-		ts = parseInt(ts)*Math.pow(10,13-ts.length)
-		date = new Date(ts)
-		_formatedDate = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds()
+		totaltime = data.match(/totalTime.+totalTime/)?[0]
+		if totaltime then song.totaltime = parseInt totaltime.replace(/^.+>|<.+$/g,''),10
 		
-		_item =
-			videoid : video.id
-			video_name : video.name.trim()
-			link : video.link
-			sublink : video.sublink
-			thumbnail : video.thumbnail
-			plays :  video.plays
-			artist_list : video.artist_list
-			created : _formatedDate
-		@connection.query @query._insertIntoNSVideo,_item,(err) =>
-			if err then console.log err + " Videoid: " + video.id + " is not ready"
-	
-	_updateAlbum : (id) ->
-		link = "http://nhacso.net/flash/album/xnl/1/uid/X1lWW0NabwIBAw==," + @_decodeId(id)
-		# console.log link + " " +id		
-		album_id = id
-		http.get link, (res) =>
-				data = ''
-				res.on 'data', (chunk) =>
-					data += chunk;
-				res.on 'end', () =>
-					# length is 39 means data only contains <?xml version="1.0" encoding="utf-8" ?>
-					# therefore it has to stop
-					@stats.currentTable = @table.NSAlbums + " and " + @table.NSSongs_Albums
-					if data.length isnt 39
-						@parser.parseString data, (err, result) =>
-							album = result.music.playlist[0]
-							@stats.totalItemCount+=1
-							if album.name[0] isnt "Playlist Nhạc Số" and album.img[0].search(/_120x90.(jpg|png)$/g) is -1  and album.song?
-								@_storeAlbum album_id, album
-								@_storeSongs_Album album_id, album.song
-								@stats.passedItemCount+=1
-							else 
-								@stats.failedItemCount+=1
-							@log.lastAlbumId +=1
-							@utils.printUpdateRunning id, @stats, "Fetching..."	
-							@_updateAlbum(id+1) 
-					else 
-						@log.updated_at = Date.now()
-						# fs.writeFileSync @logPath,JSON.stringify(@log),"utf8"
-						if @stats.totalItemCount is 0 then console.log "Table #{@table.NSAlbums} is up-to-date on: #{new Date(Date.now())}"
-						else
-							@_writeLog @log
-							@utils.printFinalResult @stats
-						@resetStats()
-						@updateSongs()
-						# if @log.totalPassedSongs is 0 then console.log "The stats of table: #{@table.NSSongs} is up-to-date on: #{new Date(Date.now())}" 
-						# else @fetchSongsStats @log.lastSongId-@log.totalPassedSongs+1, @log.lastSongId
-			.on 'error', (e) ->
-				console.log  "Got error: " + e.message
-				@stats.failedItemCount+=1
-	_updateSong : (id) ->
+		song.mp3link = @getValueXML data, "mp3link", 0
+
+		if song.name isnt '' and song.mp3link isnt '/'
+			ts = song.mp3link.match(/\/[0-9]+_/g)[0].replace(/\//, "").replace(/_/, "")
+			ts = parseInt(ts)*Math.pow(10,13-ts.length)
+			song.created = @formatDate new Date(ts)
+			song.updated = @formatDate new Date()
+			@updateSongLink(song.songid + 1)
+			@_updateSong song
+		else 
+			_options =
+				id : song.songid
+			@onSongFail "The XML of song is empty", _options
+		song
+	updateSongLink : (id)->
+		# id = 1283657
+		
 		link = "http://nhacso.net/flash/song/xnl/1/id/" + @_decodeId(id)
-		http.get link, (res) =>
-				data = ''
-				res.on 'data', (chunk) =>
-					data += chunk;
-				res.on 'end', () =>
-					@parser.parseString data, (err, result) =>
-						song = result.music.playlist[0].song[0]
-						@stats.totalItemCount+=1
-						@stats.currentTable = @table.NSSongs
-						if typeof song.id[0] isnt "object"
-							@_storeSong(song)	
-							@stats.passedItemCount+=1
-							@utils.printUpdateRunning id, @stats, "Fetching..."
-							@log.lastSongId = id
-							@_updateSong id+1
-						else 
-							@stats.totalItemCount -=1
-							error = true
-							if @stats.totalItemCount is 0 then console.log "Table #{@table.NSSongs} is up-to-date on: #{new Date(Date.now())}"
-							else @utils.printFinalResult @stats
-							@log.totalPassedSongs = @stats.passedItemCount
-							@_writeLog @log
-							
-							
-	
-			.on 'error', (e) ->
-				console.log  "Got error: " + e.message
-				@stats.failedItemCount+=1
-	_updateVideo : (id) ->
-		link = "http://nhacso.net/flash/video/xnl/1/id/" + @_decodeId(id)
-		link2 = "http://nhacso.net/video/parse?listIds=" + id
-		link3 = "http://nhacso.net/statistic/videostatistic?listIds=" +id
-		videoData = ""
+		options = 
+				id : id
+		@getFileByHTTP link, @processSongLink, @onSongFail, options
+	processSong : (data,options)=>
 
-		http.get link, (res) =>
-				data = ''
-				res.on 'data', (chunk) =>
-					data += chunk;
-				res.on 'end', () =>
-					@stats.currentId = id
-					@utils.printUpdateRunning id, @stats, "Fetching..."
-					@parser.parseString data, (err, result) =>
-						result = result.data.track[0]
-						if typeof result.id[0] isnt "object"
-							videoData =
-								id : result.id[0]
-								name : result.name[0].trim()
-								link : result.sourceUrl[0]
-								thumbnail : result.thumbnailUrl[0]
-							if typeof result.subUrl[0] isnt "object"
-								videoData.sublink = result.subUrl[0]
-							else videoData.sublink = ""
-							@stats.currentId = id
-							@utils.printUpdateRunning id, @stats, "Fetching..."
-							http.get link2, (res2) =>
-									data2 = ''
-									res2.on 'data', (chunk) =>
-										data2 += chunk;
-									res2.on 'end', () =>
-										data2 = JSON.parse data2
-										arr = data2[0].ListArtist.split(',')
-										arr[i] = arr[i].replace(/\<a.+\"\>/,'').replace(/\<\/a\>/,'').trim() for i in [0..arr.length-1]
-										videoData.artist_list = arr.reduce (x,y)-> x+","+y								
-										@stats.currentId = id
-										@utils.printUpdateRunning id, @stats, "Fetching..."
-										http.get link3, (res3) =>
-												data3 = ''
-												res3.on 'data', (chunk) =>
-													data3 += chunk;
-												res3.on 'end', () =>
-													data3 = JSON.parse data3
-													@stats.totalItemCount+=1
-													videoData.plays  = parseInt data3.result[id.toString()].TotalView
-													videoData.plays += parseInt(data3.result[id.toString()].TotalLike)*3
-													videoData.plays += parseInt(data3.result[id.toString()].TotalComment)*3
-													videoData.plays += parseInt(data3.result[id.toString()].TotalDownload)*3											
-													@stats.passedItemCount+=1
-													@stats.currentId = id
-													@utils.printUpdateRunning id, @stats, "Fetching..."
-													@_storeVideo videoData
-													@log.lastVideoId = id
-													@_updateVideo(id+1)
-													
-											.on 'error', (e) =>
-												console.log  "Got error: " + e.message
-												@stats.failedItemCount+=1
-								.on 'error', (e) =>
-									console.log  "Got error: " + e.message
-									@stats.failedItemCount+=1
-						else 
-							if @stats.totalItemCount is 0
-								console.log ""
-								console.log "Video is up-to-date".magenta
-							else
-								@stats.failedItemCount+=1
-								@_writeLog @log 
-								@utils.printFinalResult @stats
-							@connection.end()
-			.on 'error', (e) =>
-				console.log  "Got error: " + e.message
-				@stats.failedItemCount+=1
+		song = options.song
+		if data.match(/official/) then song.official = 1
+		bitrate = data.match(/\d+kb\/s/g)?[0]
 
-	_fetchItem : (id,type) ->
-		if type is "song" then link = "http://nhacso.net/flash/song/xnl/1/id/" + @_decodeId(id)
-		else if type is "album" then link = "http://nhacso.net/flash/album/xnl/1/uid/X1lWW0NabwIBAw==," + @_decodeId(id)
-		http.get link, (res) =>
-				data = ''
-				res.on 'data', (chunk) =>
-					data += chunk;
-				res.on 'end', () =>
-					@parser.parseString data, (err, result) =>
-						if type is "song"
-							@stats.currentTable = @table.NSSongs
-							song = result.music.playlist[0].song[0]
-							@stats.totalItemCount+=1
-							if typeof song.id[0] isnt "object"
-								# insert song into table"
-								@_storeSong(song)	
-								@stats.passedItemCount+=1
-								
-							else 
-								# console.log "do nothing....."
-								@stats.failedItemCount+=1
-						
-						else if type is "album"
-							@stats.currentTable = @table.NSAlbums + " and " + @table.NSSongs_Albums
-							_album = result.music.playlist[0]
-							@stats.totalItemCount+=1
-							if _album.name[0] isnt "Playlist Nhạc Số" and _album.song?
-								@_storeAlbum id, _album
-								@_storeSongs_Album id, _album.song
-								@stats.passedItemCount+=1	
-							else 
-								@stats.failedItemCount+=1
+		if bitrate then song.bitrate = parseInt bitrate.replace(/kb\/s/g,''),10
 
-						# print when completed in each percent
-						
-						if @stats.totalItemCount%Math.ceil(0.0001*@stats.totalItems) is 0
-							@stats.currentId = id
-							@utils.printRunning @stats 
-	
-						if @stats.totalItemCount is @stats.totalItems
-							@utils.printFinalResult @stats
-							@connection.end()
-			.on 'error', (e) =>
-				console.log  "Got error: " + e.message
-				@stats.failedItemCount+=1
-	_fetchVideo : (videoid) ->
-		id = videoid
-		link = "http://nhacso.net/flash/video/xnl/1/id/" + id
-		link2 = "http://nhacso.net/video/parse?listIds=" + id
-		link3 = "http://nhacso.net/statistic/videostatistic?listIds=" + id
-		videoData = ""
+		plays = data.match(/total_listen_song_detail_\d+.+/g)?[0]
+		if plays then song.plays = parseInt plays.replace(/<\/span>.+$/g,'').replace(/^.+>/g,'').replace(/\./g,''),10
+
+		topic = data.match(/<li><a\shref\=\"http\:\/\/nhacso\.net\/the-loai.+/g)?[0]
+		if topic then song.topic = @processStringorArray topic.replace(/^.+\">|<\/a><\/li>/g,'')
+
+		lyric = data.match(/txtlyric.+[^]+.+Bạn chưa nhập nội bài hát/g)?[0]
+		if lyric 
+			song.islyric = 1
+			song.lyric = lyric.replace(/<\/textarea>+[^]+.+$/g,'').replace(/^.+>/g,'')
+			if song.lyric.match(/Hãy đóng góp lời bài hát chính xác cho Nhacso nhé/g)
+				song.lyric = ""
+				song.islyric = 0
+
+		@eventEmitter.emit "result-song", song
 		
-		http.get link, (res) =>
-				data = ''
-				res.on 'data', (chunk) =>
-					data += chunk;
-				res.on 'end', () =>
-					@stats.currentId = videoid
-					@utils.printRunning @stats
-					@parser.parseString data, (err, result) =>
-						result = result.data.track[0]
-						if typeof result.id[0] isnt "object"
-							videoData =
-								id : result.id[0]
-								name : result.name[0].trim()
-								link : result.sourceUrl[0]
-								thumbnail : result.thumbnailUrl[0]
-							if typeof result.subUrl[0] isnt "object"
-								videoData.sublink = result.subUrl[0]
-							else videoData.sublink = ""
-							@stats.currentId = videoid
-							@utils.printRunning @stats
-							http.get link2, (res2) =>
-									data2 = ''
-									res2.on 'data', (chunk) =>
-										data2 += chunk;
-									res2.on 'end', () =>
-										data2 = JSON.parse data2
-										arr = data2[0].ListArtist.split(',')
-										arr[i] = arr[i].replace(/\<a.+\"\>/,'').replace(/\<\/a\>/,'').trim() for i in [0..arr.length-1]
-										videoData.artist_list = arr.reduce (x,y)-> x+","+y								
-										@stats.currentId = videoid
-										@utils.printRunning @stats
-										http.get link3, (res3) =>
-												data3 = ''
-												res3.on 'data', (chunk) =>
-													data3 += chunk;
-												res3.on 'end', () =>
-													data3 = JSON.parse data3
-													@stats.totalItemCount+=1
-													videoData.plays  = parseInt data3.result[id.toString()].TotalView
-													videoData.plays += parseInt(data3.result[id.toString()].TotalLike)*3
-													videoData.plays += parseInt(data3.result[id.toString()].TotalComment)*3
-													videoData.plays += parseInt(data3.result[id.toString()].TotalDownload)*3											
-													@stats.passedItemCount+=1
-													@stats.currentId = videoid
-													@utils.printRunning @stats
-													@_storeVideo videoData
-
-													if @stats.totalItemCount is @stats.totalItems 
-														@utils.printFinalResult @stats
-													
-											.on 'error', (e) =>
-												console.log  "Got error: " + e.message
-												@stats.failedItemCount+=1
-								.on 'error', (e) =>
-									console.log  "Got error: " + e.message
-									@stats.failedItemCount+=1
-						else @stats.failedItemCount+=1
-			.on 'error', (e) =>
-				console.log  "Got error: " + e.message
-				@stats.failedItemCount+=1
-	_fetchSongStats : (id) -> 
-		ids = ""
-		finalStep = false
-		isFinalStep = false
-		@currentStep+=1
-		if @currentStep isnt @totalSteps
-			ids = [id..id+@step-1].join(',')
-			step = @step
+		song
+	onSongFail : (error, options)=>
+		# console.log "Song #{options.id} has an error: #{error}"
+		@stats.totalItemCount +=1
+		@stats.failedItemCount +=1
+		@temp.totalFail += 1
+		@utils.printUpdateRunning options.id, @stats, "Fetching..."
+		if @temp.totalFail < @temp.nStop
+			@updateSongLink options.id + 1
 		else
-			finalStep = @stats.totalItems-((@totalSteps-1)*@step)
-			step = finalStep
-			isFinalStep = true
-			ids = [id..id+finalStep-1].join(',')
-		link = "http://nhacso.net/statistic/songstatistic?listIds=" + ids
-		# console.log link
-		http.get link, (res) =>
-				data = ''
-				res.on 'data', (chunk) =>
-					data += chunk;
-				res.on 'end', () =>
-					# console.log data
-					songStats = JSON.parse(data)
-					@stats.currentTable = @table.NSSongs
-					@stats.totalItemCount+=step
-					if songStats.error is 0
-
-						@stats.currentId = id
-						@stats.passedItemCount+=step		
-						@utils.printRunning @stats
-						@_storeSongStats songStats.result						
-					else 
-						# console.log "do nothing....."
-						@stats.failedItemCount+=step
-						@utils.printRunning @stats 
-					
-					if isFinalStep then @utils.printFinalResult @stats	
-			.on 'error', (e) ->
-				console.log  "Got error: " + e.message
-				@stats.failedItemCount+=1
-	_fetchLyrics : (offset,rows) ->
-		_query  = "select songid from #{@table.NSSongs} where islyric > 0 and lyric is null ORDER BY songid DESC LIMIT #{offset},#{rows}"	
-		# _query = "select songid,lyric from #{@table.NSSongs} where songid=779401"
-		# _query = "select songid from NSSongs where islyric > 0 and lyric like '%�%' order by songid DESC"
-		@connection.query _query, (err,results) =>
-			if err
-				console.log "Error at offset: #{offset} and rows: #{rows}"
-			else
-				if results.length is 0 then console.log " |"+"The lyrics are up-to-date".magenta
-				for song in results
-					if results.length < rows then @stats.totalItems = results.length
-					do (song) =>
-						link = "http://nhacso.net/song/lyric?song_id=#{song.songid}"
-						song.lyric = 
-						http.get link, (res) =>
-								res.setEncoding 'utf8'
-								data = ''
-								res.on 'data', (chunk) =>
-									data += chunk
-								res.on 'end', () =>
-									# data = data.match(/\<p\sclass=\"desc\"\>.+\<p\sclass=\"xemthem\"/)[0].replace(/\<p\sclass=\"desc\"\>/,'').replace(/\<p\sclass=\"xemthem\"/,'').replace(/\<\/p\>/,'')
-									@stats.totalItemCount+=1
-									id = song.songid
-									# console.log id
-									@temp.count+=1
-									# console.log JSON.stringify data
-									data = data.replace(/\r/g,'')
-									data = data.match(/\<p\sclass=\"desc\"\>.+/)[0].replace(/\sclass="desc"/,'')
-									_insertLyric = "UPDATE #{@table.NSSongs} SET lyric = #{@connection.escape(data)} where songid = #{id};"
-									@stats.passedItemCount+=1
-									# console.log _insertLyric
-									@connection.query _insertLyric, (err) =>
-										if err then console.log "Cannot update lyric of songid: #{song.songid}. ERROR: #{err}"
-										else
-											@stats.currentId = song.songid
-											@utils.printRunning @stats 	
-																			
-										if @temp.count is @stats.totalItems
-											@utils.printFinalResult @stats
-											@connection.end()
-
-							.on 'error', (e) =>
-								console.log  "Got error: " + e.message
-								@stats.failedItemCount+=1	
-	
-	_updateAlbumTopic : (id) ->
-		link = "http://nhacso.net/nghe-album/ab.#{@_decodeId(id)}.html"
-		http.get link, (res) =>
-				res.setEncoding 'utf8'
-				data = ''
-				res.on 'data', (chunk) =>
-					data += chunk
-				res.on 'end', () =>
-					if res.headers.location isnt "http://nhacso.net/404"
-						data = data.replace(/\r/g,'')
-						_item = 
-							id : id
-						_item.topic = data.match(/\<li\sclass\=\"bg\".+\<\/li\>/)[0]
-										.replace(/\<li\sclass\=\"bg\"\>\<a\shref\s\=\"http\:\/\/nhacso\.net\/.+\"\>/,'')
-										.replace(/\<\/a\>\<\/li\>/,'').trim()
-						data = ""
-						_insertTopic = "UPDATE #{@table.NSAlbums} SET topic = #{@connection.escape(_item.topic)} where albumid = #{_item.id};"
-						@connection.query _insertTopic, (err)->
-							if err then console.log "Albumid:#{_item.id} has errors. Error:#{err}".red	
-
-			.on 'error', (e) =>
-				console.log  "Got error: " + e.message
-	_updateAlbumDescAndIssuedTime : (id) ->
-		link = "http://nhacso.net/album/getdescandissuetime?listIds=#{id}"
-		http.get link, (res) =>
-				res.setEncoding 'utf8'
-				data = ''
-				res.on 'data', (chunk) =>
-					data += chunk
-				res.on 'end', () =>
-					data = JSON.parse data
-					data = data.result[0]
-					try
-						_item = 
-							id : data.AlbumID
-							issuedAt : data.IssueTime
-							desc : data.AlbumDesc
-						_item.desc = encoder.htmlDecode _item.desc
-						if _item.desc.search("thưởng thức nhạc chất lượng cao và chia sẻ cảm xúc với bạn bè tại Nhacso.net") > -1
-							_item.desc = ""
-					catch e
-						console.log "Cannot update album description. ERROR: albumid: #{_item.id} "
-					_updateDesc = "UPDATE #{@table.NSAlbums} SET description = #{@connection.escape(_item.desc)},"+
-						" released_date=#{@connection.escape(_item.issuedAt)} where albumid = #{_item.id};"
-					@connection.query _updateDesc, (err)->
-						if err then console.log "Albumid:#{_item.id} has errors. Error:#{err}".red	
-
-			.on 'error', (e) =>
-				console.log  "Got error: " + e.message	
-	_updateAlbumTotalSongs : (id) ->
-		link = "http://nhacso.net/album/gettotalsong?listIds=#{id}"
-		http.get link, (res) =>
-				res.setEncoding 'utf8'
-				data = ''
-				res.on 'data', (chunk) =>
-					data += chunk
-				res.on 'end', () =>
-					data = JSON.parse data
-					data = data.result
-					_query = ""
-					try
-						strId = "nsn:album:total:song:id:#{id}"
-						# console.log strId
-						_item =
-							id : data[strId].AlbumID
-							totalSongs : data[strId].TotalSong
-						_query = "UPDATE #{@table.NSAlbums} SET total_songs = #{_item.totalSongs} where albumid = #{_item.id};"
-						@connection.query _query, (err)->
-							if err then console.log "Albumid:#{_item.id} has errors. Error:#{err}".red
-					catch e
-						console.log "Cannot update total_songs of the album: #{id}.ERROR: " + strId
-
-			.on 'error', (e) =>
-				console.log  "Got error: " + e.message
-				@stats.failedItemCount+=1		
-	_updateSongStats : (id) -> 
-		link = "http://nhacso.net/statistic/songstatistic?listIds=" + id
-		http.get link, (res) =>
-				data = ''
-				res.on 'data', (chunk) =>
-					data += chunk;
-				res.on 'end', () =>
-					songStats = JSON.parse(data)
-					if songStats.error is 0
-						@_storeSongStats songStats.result						
-			.on 'error', (e) ->
-				console.log  "Got error: " + e.message
-	_updateSongBitrate : (songid) ->
-		link = "http://nhacso.net/nghe-nhac/link-joke.#{@_decodeId(songid)}==.html"
-		http.get link, (res) =>
-				res.setEncoding 'utf8'
-				data = ''
-				res.on 'data', (chunk) =>
-					data += chunk;
-				res.on 'end', () =>
-					if data.match(/\d+kb\/s/g)
-						bitrate = data.match(/\d+kb\/s/g)[0].replace(/kb\/s/g,'')
-						if data.match(/official/g) then official = true 
-						else official = false
-						if data.match(/<li><a\shref\=\"http\:\/\/nhacso\.net\/the-loai.+/g)
-							topic = data.match(/<li><a\shref\=\"http\:\/\/nhacso\.net\/the-loai.+/g)[0]
-								.replace(/^.+\">|<\/a><\/li>/g,'').trim()
-						else topic = ''
-						data  = ''
-						_q = "update NSSongs set bitrate=#{bitrate}, official=#{official}, topic=#{@connection.escape(topic)}  where songid=#{songid}"
-						@connection.query _q, (err)=>
-							if err then console.log "cannt update birate. ERROR: #{err}"
-
-			.on 'error', (e) =>
-				console.log  "Got error while updating bitrate: " + e.message		
-	_updateSongLyric : (id) ->
-		link = "http://nhacso.net/song/lyric?song_id=#{id}"
-		http.get link, (res) =>
-				res.setEncoding 'utf8'
-				data = ''
-				res.on 'data', (chunk) =>
-					data += chunk
-				res.on 'end', () =>
-					data = data.replace(/\r/g,'')
-					data = data.match(/\<p\sclass=\"desc\"\>.+/)[0].replace(/\sclass="desc"/,'')
-					_insertLyric = "UPDATE #{@table.NSSongs} SET lyric = #{@connection.escape(data)} where songid = #{id};"
-					@connection.query _insertLyric, (err) =>
-						if err then console.log "Cannot update lyric of songid: #{song.songid}. ERROR: #{err}"
-			.on 'error', (e) =>
-				console.log  "Got error: " + e.message
-	
-	fetchSongsStats: (range0 = 0, range1 = 0) =>
-		@connect()
-		console.log " |"+"Fetching statistics of songid: #{range0}..#{range1} to table: #{@table.NSSongs}".magenta
-		@stats.totalItems = range1 - range0 + 1
-		[@stats.range0, @stats.range1] = [range0, range1]
-		@step = 50
-		@currentStep = 0
-		if @stats.totalItems%@step is 0 then @totalSteps = @stats.totalItems/@step 
-		else @totalSteps = Math.floor(@stats.totalItems/@step) + 1
-		@_fetchSongStats id for id in [range0..range1] by @step
-		null
-	fetchSongs : (range0 = 0, range1 = 0) =>
-		@connect()
-		console.log " |"+"Fetching songid: #{range0}..#{range1} to table: #{ @table.NSSongs}".magenta
-		@stats.totalItems = range1 - range0 + 1
-		[@stats.range0, @stats.range1] = [range0, range1]
-		@_fetchItem id, "song" for id in [range0..range1]
-		null
-	fetchAlbums : (range0 = 0, range1 = 0) =>
-		@connect()
-		@stats.totalItems = range1 - range0 + 1
-		[@stats.range0, @stats.range1] = [range0, range1]
-		console.log " |"+"Fetching albumid: #{range0}..#{range1} to table: #{@table.NSAlbums}".magenta
-		@_fetchItem id, "album" for id in [range0..range1]
-		null
-	fetchVideos : (range0 = 0, range1 = 0) =>
-		@connect()
-		@stats.totalItems = range1 - range0 + 1
-		@stats.currentTable = @table.NSVideos
-		[@stats.range0, @stats.range1] = [range0, range1]
-		console.log " |"+"Fetching videoid: #{range0}..#{range1} to table: #{@table.NSVideos}".magenta
-		# @_fetchVideo id for id in [range0..range1]
-		for id in [range0..range1]
-			do () =>
-				@_fetchVideo id
-
-		null	
-	fetchLyrics : ( amount = 0, repetition = 0)=>
-		@connect()
-		_rows = amount #fetch 100 rows in database
-		_initialOffset = 0 #offset each time
-		@temp = 
-			step : repetition 
-			count : 0
-		@stats.totalItems = @temp.step * _rows
-		@stats.currentTable = @table.NSSongs
-		console.log " |"+"Fetching songs which have lyrics. Rows: #{_initialOffset+1}..#{_initialOffset+@stats.totalItems} to table: #{@table.NSSongs}".magenta		
-		for i in [1..@temp.step]
-			do (i) =>
-				_offset = _initialOffset + (i-1)*_rows
-				@_fetchLyrics(_offset,_rows)
-	
-	
+			if @stats.totalItemCount is @temp.nStop 
+				console.log ""
+				console.log " |Songs are up-to-date"
+			else 
+				@utils.printFinalResult @stats
+				@_writeLog @log
+			@eventEmitter.emit "update-song-finish"
+	# This special method will be triggered when XML file exists but the official page doesnt
+	# On this case, the song will be considered as it is legitimate one and will be inserted into db
+	onSpecialCase : (err, options)=>
+			@stats.totalItemCount +=1
+			@stats.passedItemCount +=1
+			@utils.printUpdateRunning options.song.songid, @stats, "Fetching..."
+			@log.lastSongId = options.song.songid
+			@connection.query @query._insertIntoSongs, options.song, (err)->
+				if err then console.log "Cannt insert song: #{options.song.songid} into database. ERROR: #{err}"
+	_updateSong : (song)=>
+		id = song.songid
+		link = "http://nhacso.net/nghe-nhac/link-joke.#{@_decodeId(id)}==.html"
+		options = 
+			id : id
+			song : song	
+		@getFileByHTTP link, @processSong, @onSpecialCase, options
 	updateSongs : ->
 		@connect()
-		console.log "Running on: #{new Date(Date.now())}"
-		console.log " |"+"Updating Songs to table: #{@table.NSSongs}".magenta 
-		@_updateSong @log.lastSongId+1
-	update : ->
+		@showStartupMessage "Updating songs to table ", @table.Songs
+		console.log " |The last song is " +  @log.lastSongId
+		@stats.currentTable = @table.Songs
+		@temp = 
+			totalFail : 0
+			nStop : 100
+		console.log " |The program will stop after #{@temp.nStop} consecutive songs failed"
+		@eventEmitter.on "result-song", (song)=>
+			@stats.totalItemCount +=1
+			@stats.passedItemCount +=1
+			@log.lastSongId = song.songid
+			@temp.totalFail = 0
+			@connection.query @query._insertIntoSongs, song, (err)->
+				if err then console.log "Cannt insert song: #{song.songid} into database. ERROR: #{err}"
+			@utils.printUpdateRunning song.songid, @stats, "Fetching..."
+			
+		@updateSongLink @log.lastSongId+1
+		# @updateSongLink 1283890
+
+	# ALBUM PART
+	getAlbumTotalPlays : (album)->
+		link = "http://nhacso.net/statistic/albumtotallisten?listIds=#{album.albumid}"
+		options = 
+			album : album
+		onSucess = (data,options)=>
+			data = JSON.parse(data)
+			options.album.plays = parseInt(data.result[options.album.albumid].totalListen,10)
+			@eventEmitter.emit "result-album",options.album
+		onFail = (err, options)->
+			console.log "Cannt description and issued time of the album: #{options.album.albumid}. ERROR: #{err}"
+		@getFileByHTTP link, onSucess, onFail, options
+	getAlbumDescAndIssuedTime : (album)->
+		link = "http://nhacso.net/album/getdescandissuetime?listIds=#{album.albumid}"
+		options = 
+			album : album
+		onSucess = (data,options)=>
+			data = JSON.parse(data).result[0]
+			options.album.released_date = data.IssueTime
+			options.album.description = @processStringorArray data.AlbumDesc
+			if options.album.description.match(/thưởng thức nhạc chất lượng cao và chia sẻ cảm xúc với bạn bè tại Nhacso.net/)
+				options.album.description = ""
+			@getAlbumTotalPlays options.album
+		onFail = (err, options)->
+			console.log "Cannt description and issued time of the album: #{options.album.albumid}. ERROR: #{err}"
+		@getFileByHTTP link, onSucess, onFail, options
+	getTotalSongsInAlbum : (album)->
+		link = "http://nhacso.net/album/gettotalsong?listIds=#{album.albumid}"
+		options = 
+			album : album
+		onSucess = (data,options)=>
+			data = JSON.parse data
+			strId = "nsn:album:total:song:id:#{options.album.albumid}"
+			options.album.nsongs = parseInt data.result[strId].TotalSong,10
+			@getAlbumDescAndIssuedTime options.album
+		onFail = (err, options)->
+			console.log "Cannt get total songs of the album: #{options.album.albumid}. ERROR: #{err}"
+		@getFileByHTTP link, onSucess, onFail, options
+	processAlbum : (data, options)=>
+		album = 
+			albumid : options.id
+			title : ""
+			artist : ""
+			artistid : ""
+			topic : ""
+			genre : ""
+			description : ""
+			released_date : ""
+			nsongs : 0
+			plays : 0
+			thumbnail : ""
+			songs : []
+					
+		temp = data.match(/class=\"intro_album_detail.+[^]+.+id=\"divPlayer/g)?[0]
+		if temp
+			title = temp.match(/strong.+strong/)?[0]
+			if title then album.title = @processStringorArray title.replace(/^.+>|<.+$/g,'')
+			artist = temp.match(/strong.+/g,'')?[0]
+			if artist
+				album.artist = @processStringorArray artist.replace(/^.+>/g,'')
+				artistid = artist.match(/\d+\.html/g)
+				if artistid then album.artistid = parseInt artistid[0].replace(/\.html/g,''),10
+			# description = temp.match(/class=\"desc.+[^]+.+xemthem/g)?[0]
+			# if description then album.description = @processStringorArray description.replace(/<\/p>[^]+.+/g,'').replace(/^.+\">/g,'')
+			thumbnail = temp.match(/<img width.+align/g)?[0]
+			if thumbnail then album.thumbnail = thumbnail.replace(/^.+src=\"|\".+$/g,'')
+
+		topic = data.match(/\<li\sclass\=\"bg\".+\<\/li\>/)?[0]
+		if topic then  album.topic = @processStringorArray topic.replace(/\<li\sclass\=\"bg\"\>\<a\shref\s\=\"http\:\/\/nhacso\.net\/.+\"\>/,'')
+										.replace(/\<\/a\>\<\/li\>/,'')
+
+		songs = data.match(/songid_\d+/g)
+		if songs 
+			songs.map (v)-> album.songs.push parseInt(v.replace(/songid_/g,''),10)
+			@_updateAlbum options.id + 1
+			@getTotalSongsInAlbum album
+		else
+			@onAlbumFail "The album: #{album.albumid} has no song", {id : album.albumid}
+		album
+	onAlbumFail : (error, options)=>
+		# console.log "Album #{options.id} has an error: #{error}"
+		@stats.totalItemCount +=1
+		@stats.failedItemCount +=1
+		@temp.totalFail += 1
+		@utils.printUpdateRunning options.id, @stats, "Fetching..."
+		if @temp.totalFail < @temp.nStop
+			@_updateAlbum options.id + 1
+		else
+			if @stats.totalItemCount is @temp.nStop
+				console.log ""
+				console.log " |Albums are up-to-date"
+			else 
+				@utils.printFinalResult @stats
+				@_writeLog @log
+			@eventEmitter.emit "update-album-finish"
+	_updateAlbum : (id)=>
+		link = "http://nhacso.net/nghe-album/ab.#{@_decodeId(id)}.html"
+		options = 
+			id : id
+		@getFileByHTTP link, @processAlbum, @onAlbumFail, options
+	updateAlbums : ->
+
 		@connect()
-		console.log "Running on: #{new Date(Date.now())}"
-		console.log " |"+"Updating Albums to table: #{@table.NSAlbums}".magenta 
+		@showStartupMessage "Updating album to table ", @table.Albums
+		@temp = 
+			totalFail : 0
+			nStop : 3000
+		@stats.currentTable = @table.Albums
+
+		console.log " |The last album is " +  @log.lastAlbumId
+		console.log " |The program will stop after #{@temp.nStop} consecutive albums failed"
+
+		@eventEmitter.on "result-album", (album)=>
+			@stats.totalItemCount +=1
+			@stats.passedItemCount +=1
+			@log.lastAlbumId = album.albumid
+			@temp.totalFail = 0
+			songs = album.songs
+			delete album.songs
+			@connection.query @query._insertIntoAlbums, album, (err)=>
+				if err then console.log "Cannt insert album: #{album.albumid} into database. ERROR: #{err}"
+				else 
+					for song in songs
+						@connection.query @query._insertIntoSongs_Albums, {albumid: album.albumid, songid: song}, (err1)->
+							if err then console.log "Cannt insert song-album into table. ERROR: #{err1}"
+			@utils.printUpdateRunning album.albumid, @stats, "Fetching..."
+			
 		@_updateAlbum @log.lastAlbumId+1
 
+
+	# VIDEO PART
+	getVideoDurationAndSublink : (video)->
+		link = "http://nhacso.net/flash/video/xnl/1/id/" + @_decodeId(video.videoid)
+		options = 
+			video : video
+		onSucess = (data,options)=>
+			options.video.duration = parseInt(@getValueXML(data, "duration", 0).replace(/<\/duration>|<duration>/g,''),10)
+			options.video.sublink = @getValueXML data, "subUrl", 0
+			@eventEmitter.emit "result-video",options.video
+		onFail = (err, options)->
+			console.log "Cannt get  duration and sublink of the video: #{options.video.videoid}. ERROR: #{err}"
+		@getFileByHTTP link, onSucess, onFail, options
+	processVideo : (data, options)=>
+		@_updateVideo options.id + 1
+		video = 
+			videoid : options.id
+			title : ""
+			artists : ""
+			topic : ""
+			plays : 0
+			duration : 0
+			official : 0
+			producerid : 0
+			link : ""
+			sublink : ""
+			thumbnail : ""
+			created : "0000-00-00"
+
+		temp = data.match(/<p class=\"title_video.+[^]+.+Đăng bởi/g)?[0]
+
+		if temp
+			title = temp.match(/title\">(.+)<\/h1>/)?[1]
+			if title then video.title = @processStringorArray title
+
+			official = temp.match(/official/)?[0]
+			if official then video.official = 1
+
+			artists = temp.match(/<h2>.+<\/h2>/g)
+			if artists then video.artists = @processStringorArray artists.map((v)->v.replace(/<h2>|<\/h2>/g,''))
+
+		video.topic = @processStringorArray data.match(/<li><a href=\"http:\/\/nhacso.net\/the-loai-video.+html\">(.+)<\/a>.+/)?[1]
+
+		plays = data.match(/<span>(.+)<\/span><ins>&nbsp;lượt xem<\/ins>/)?[1]
+		video.plays = parseInt(plays.replace(/\./g,''),10)
+
+		video.thumbnail = data.match(/var video.+poster=\"(.+)\".+/)?[1]
+
+		video.link = data.match(/video \+= \'<source src=\"(.+)\" type/)?[1]
+
+		ts = video.link.match(/\/([0-9]+)_/)?[1]
+		ts = parseInt(ts)*Math.pow(10,13-ts.length)
+		video.created = @formatDate new Date(ts)
+
+		producerid = data.match(/getProducerByListIds.+\'(\d+)\'.+/)?[1]
+		if producerid then video.producerid = parseInt(producerid,10)
+
+		@getVideoDurationAndSublink video
+
+		video
+	onVideoFail : (error, options)=>
+		# console.log "Video #{options.id} has an error: #{error}"
+		@stats.totalItemCount +=1
+		@stats.failedItemCount +=1
+		@temp.totalFail += 1
+		@utils.printUpdateRunning options.id, @stats, "Fetching..."
+		if @temp.totalFail < @temp.nStop
+			@_updateVideo options.id + 1
+		else
+			if @stats.totalItemCount is @temp.nStop
+				console.log ""
+				console.log " |Videos are up-to-date"
+			else 
+				@utils.printFinalResult @stats
+				@_writeLog @log
+	_updateVideo: (id)=>
+		link = "http://nhacso.net/xem-video/joke-link.#{@_decodeId(id)}=.html"
+		options = 
+			id : id
+		@getFileByHTTP link, @processVideo, @onVideoFail, options
 	updateVideos : ->
+
 		@connect()
-		@_readLog()
-		@_updateVideo(@log.lastVideoId+1)
-	updateLyrics : ->
-		# get last 100 songs which have lyrics but arent updated
-		@fetchLyrics 100, 1
+		@showStartupMessage "Updating video to table ", @table.Videos
+		@temp = 
+			totalFail : 0
+			nStop : 100
+		@stats.currentTable = @table.Videos
+
+		console.log " |The last video is " +  @log.lastVideoId
+		console.log " |The program will stop after #{@temp.nStop} consecutive videos failed"
+
+		@eventEmitter.on "result-video", (video)=>
+			@stats.totalItemCount +=1
+			@stats.passedItemCount +=1
+			@log.lastVideoId = video.videoid
+			@temp.totalFail = 0			
+
+			@connection.query @query._insertIntoVideos, video, (err)=>
+				if err then console.log "Cannt insert video: #{video.videoid} into database. ERROR: #{err}"
+			@utils.printUpdateRunning video.videoid, @stats, "Fetching..."
+			
+		@_updateVideo @log.lastVideoId+1
+	 
+	# UDPATE SONGS, ALBUMS & VIDEOS
+	update : ->
+		@eventEmitter.on "update-song-finish", =>
+			@resetStats()
+			@updateAlbums()
+		@eventEmitter.on "update-album-finish", =>
+			@resetStats()
+			@updateVideos()
+		@updateSongs()
+
+
+	# this part is optional. Only fetch the topic
+	# 
+	processFetchSongType : (data,options)=>
+		# console.log options.genre
+		# console.log "page is" + options.page
+		songs = []
+		try 
+			temp = data.match(/getCategory.+\'(\{.+\})\'/)?[1]
+			temp = JSON.parse temp
+
+			mapping = []
+			for prop, values of temp
+				for value in values
+					mapping[value] = parseInt(prop,10)
+
+
+			topicsOfSongs = data.match(/Thể loại :.+/g)
+			topicsOfSongs = topicsOfSongs.map (v)->
+				if v.match(/cate_tag_song_\d+/g)
+					v.match(/cate_tag_song_\d+/g).map (v1) -> parseInt(v1.replace(/cate_tag_song_/,''),10)
+				else 
+					# console.log "Genreid : #{options.genre.id}, name: #{options.genre.name}, page:#{options.page} has problems"
+					null
+
+			songids = data.match(/play\(\'blocksongtag_\d+/g)
+			songids = songids.map (v)-> parseInt(v.replace(/play\(\'blocksongtag_/,''),10)
+
+			# console.log temp
+			# console.log JSON.stringify topicsOfSongs
+			# console.log JSON.stringify songids
+
+			# remove null value in topicsOfSongs
+			topicsOfSongs = topicsOfSongs.filter (v) -> if v is null then false else true
+			
+
+			songs = []
+
+			if songids.length is topicsOfSongs.length
+				for songid, index in songids
+					t = 
+						id : songid
+					t.cats = topicsOfSongs[index].map((v)=> mapping[v]).map (v)=> @type[v]
+					t.cats.push options.genre.name
+					t.cats = @filterType(t.cats.unique()).unique()
+					songs.push t
+			else console.log "songids and topicsOfSongs: type mismatched"
+
+			@eventEmitter.emit "result-type-done", songs
+			# console.log songs
+			return songs
+		catch e
+			console.log ""
+			console.log "Genreid : #{options.genre.id}, name: #{options.genre.name}, page:#{options.page} has problems"
+			console.log "ERROR: #{e}".red
+	onFetchTypeFail : (err,options) =>
+		console.log ""
+		console.log "Genreid : #{options.genre.id}, name: #{options.genre.name}, page:#{options.page} has failed"
+		console.log "ERROR: #{err}".red
+		@stats.totalItemCount +=1
+		@stats.failedItemCount +=1
+		@utils.printRunning @stats
+	_fetchType : (genre, page) ->
+		link = "http://nhacso.net/bai-hat-theo-the-loai-#{genre.id}/joke-link-2-#{page}.html"
+		# console.log link
+		options = 
+			genre : genre
+			page : page
+		@getFileByHTTP link, @processFetchSongType, @onFetchTypeFail, options				
+	# fetch Song only
+	fetchType : ->
+		Array::unique = ()->
+			@.filter (element, index, array)->
+				array.indexOf(element) is index
+		@connect()
+		@type = [null,"Nhạc Trẻ","Nhạc Trữ Tình","Nhạc Cách Mạng","Nhạc Trịnh ","Nhạc Tiền Chiến","Nhạc Dân Tộc","Nhạc Thiếu Nhi","Nhạc Không Lời","Rock Việt","Nhạc Hải Ngoại","Nhạc Quê Hương","Nhạc Việt Nam","Nhạc Quốc Tế","Rap Việt - Hiphop","Nhạc Hoa","Nhạc Hàn","Nhạc Pháp","Nhạc Các Nước Khác","Classical","Nhạc Phim","Nhạc Âu Mỹ","Pop","Rock","Hiphop/Rap","Country","Jazz","Hiphop","Latin",null,"Thể Loại","Dance/Electronic","Nhạc Nhật","Chưa phân loại",null,"Style","Acoustic/Audiophile","Soul","Reggae","Metal","New Age","R&B","Folk","Opera","TV Shows","VMVC 2011","Cặp Đôi Hoàn Hảo","Bài Hát Yêu Thích","Vietnam\'s Got Talent","Nhạc Chủ Đề","Nhạc 8/3","Nhạc chủ đề","Nhạc 8/3","Mừng QT phụ nữ 8/3","Nhạc Sàn","Nhạc Bà Bầu & Baby","Nhạc Spa | Thư Giãn","Nhạc Đám Cưới Hay","Sách Nói","Radio - Cảm Xúc","The Voice - Giọng Hát Việt","Vietnam Idol 2012","Nhạc Tuyển Tập","Shining Show","Gương Mặt Thân Quen","Ngâm Thơ","Fanmade / Radio"]
+		# test genres with some values has npages
+		# @genres = [{"id":99,"name":"Nhạc Xuân","page":129},{"id":73,"name":"Nhạc Không Lời","page":2898},{"id":79,"name":"Pop/Ballad","page":12056},{"id":76,"name":"New Age"},{"id":90,"name":"House"},{"id":62,"name":"R&B"},{"id":26,"name":"Rock"},{"id":64,"name":"Alternative"},{"id":63,"name":"Hiphop/Rap"},{"id":65,"name":"Country"},{"id":74,"name":"Folk"},{"id":68,"name":"Dance/Electronic"},{"id":66,"name":"Latin"},{"id":69,"name":"Jazz"},{"id":70,"name":"Acoustic/Audiophile"},{"id":72,"name":"Soundtrack"},{"id":77,"name":"Classical"},{"id":75,"name":"Blues"},{"id":108,"name":"Nhạc Giáng Sinh"},{"id":27,"name":"Metal"},{"id":71,"name":"Soul"}]
+		# ORIGINAL genres with no nPages
+		# @genres = [{"id":99,"name":"Nhạc Xuân"},{"id":73,"name":"Nhạc Không Lời"},{"id":79,"name":"Pop/Ballad"},{"id":76,"name":"New Age"},{"id":90,"name":"House"},{"id":62,"name":"R&B"},{"id":26,"name":"Rock"},{"id":64,"name":"Alternative"},{"id":63,"name":"Hiphop/Rap"},{"id":65,"name":"Country"},{"id":74,"name":"Folk"},{"id":68,"name":"Dance/Electronic"},{"id":66,"name":"Latin"},{"id":69,"name":"Jazz"},{"id":70,"name":"Acoustic/Audiophile"},{"id":72,"name":"Soundtrack"},{"id":77,"name":"Classical"},{"id":75,"name":"Blues"},{"id":108,"name":"Nhạc Giáng Sinh"},{"id":27,"name":"Metal"},{"id":71,"name":"Soul"}]
+		
+		# the result of genres after calling fetchMaxType. 
+		# DEFAULT ARRAY
+		@genres = [{"id":99,"name":"Nhạc Xuân","page":129},{"id":73,"name":"Nhạc Không Lời","page":2900},{"id":79,"name":"Pop/Ballad","page":12056},{"id":76,"name":"New Age","page":1326},{"id":90,"name":"House","page":187},{"id":62,"name":"R&B","page":1850},{"id":26,"name":"Rock","page":7595},{"id":64,"name":"Alternative","page":556},{"id":63,"name":"Hiphop/Rap","page":2513},{"id":65,"name":"Country","page":3053},{"id":74,"name":"Folk","page":762},{"id":68,"name":"Dance/Electronic","page":674},{"id":66,"name":"Latin","page":452},{"id":69,"name":"Jazz","page":2864},{"id":70,"name":"Acoustic/Audiophile","page":211},{"id":72,"name":"Soundtrack","page":1220},{"id":77,"name":"Classical","page":493},{"id":75,"name":"Blues","page":611},{"id":108,"name":"Nhạc Giáng Sinh","page":176},{"id":27,"name":"Metal","page":822},{"id":71,"name":"Soul","page":652}]
+		
+		# example
+		# @genres = [{"id":75,"name":"Blues","page":165}]
+
+		for g in @genres
+			@stats.totalItems += g.page
+		console.log "Total page: #{@stats.totalItems}"	
+		@stats.currentTable = @table.Songs
+
+
+		# THIS PART IS FOR RESULT EVENT
+		@eventEmitter.on "result-type-done", (songs)=>
+			# console.log songs
+			@stats.totalItemCount +=1
+			@stats.passedItemCount +=1
+			@utils.printRunning @stats
+
+			for song in songs
+				do (song)=>
+					_u = "update #{@table.Songs} SET category = #{@connection.escape(JSON.stringify(song.cats))} where songid=#{song.id}"
+					# console.log _u
+					@connection.query _u, (err)->
+						if err then console.log "Song:#{song.id} has an error: #{err}"
+
+			if @stats.totalItems is @stats.totalItemCount
+				@utils.printFinalResult @stats
+
+		for genre in @genres
+			for page in [1..genre.page]
+				@_fetchType genre, page
+
+
+
+	# -----------------------------------------------------------
+	processFetchAlbumType : (data,options)=>
+		# console.log options.genre
+		# console.log "page is" + options.page
+		try 
+
+			albumList = data.match(/getTotalSongInAlbum\(\'(.+)\',.+album_new_totalsong_/)?[1]
+
+			if albumList 
+				albumList = albumList.split(',').map (v)-> parseInt(v,10)
+				albums = []
+				albumList.forEach (v)-> albums.push({"id": v})
+				_q = "select albumid as id, topic as cats from #{@table.Albums} where "
+				albumList.forEach (v,i,arr)-> 
+					if i isnt arr.length-1
+						_q += "albumid=#{v} or "
+					else _q += "albumid=#{v}"
+				@connection.query _q, (err, results)=>
+					if err then console.log "EROOOOOOOOOOOOOOOOOR at QUERY: #{_q}".red
+					else 
+						albums = []
+						for album in results
+							if album.cats is null
+									albums.push {id : album.id, cats : []}
+							else albums.push {id : album.id, cats : album.cats.split("/ÆØÅ#%€#€#!")}
+						
+						for album in albums
+							album.cats.push options.genre.name
+							album.cats = @filterType(album.cats.unique()).unique()
+
+						@eventEmitter.emit "result-type-album-done", albums
+
+		catch e
+			console.log ""
+			console.log "Genreid : #{options.genre.id}, name: #{options.genre.name}, page:#{options.page} has problems"
+			console.log "ERROR: #{e}".red
+	_fetchTypeAlbum : (genre, page) ->
+		link = "http://nhacso.net/album-theo-the-loai-#{genre.id}/joke-link-2-#{page}.html"
+		# console.log link
+		options = 
+			genre : genre
+			page : page
+		@getFileByHTTP link, @processFetchAlbumType, @onFetchTypeFail, options		
+	# fet album only
+	fetchTypeAlbum : ->
+		Array::unique = ()->
+			@.filter (element, index, array)->
+				array.indexOf(element) is index
+		@connect()
+		@type = [null,"Nhạc Trẻ","Nhạc Trữ Tình","Nhạc Cách Mạng","Nhạc Trịnh ","Nhạc Tiền Chiến","Nhạc Dân Tộc","Nhạc Thiếu Nhi","Nhạc Không Lời","Rock Việt","Nhạc Hải Ngoại","Nhạc Quê Hương","Nhạc Việt Nam","Nhạc Quốc Tế","Rap Việt - Hiphop","Nhạc Hoa","Nhạc Hàn","Nhạc Pháp","Nhạc Các Nước Khác","Classical","Nhạc Phim","Nhạc Âu Mỹ","Pop","Rock","Hiphop/Rap","Country","Jazz","Hiphop","Latin",null,"Thể Loại","Dance/Electronic","Nhạc Nhật","Chưa phân loại",null,"Style","Acoustic/Audiophile","Soul","Reggae","Metal","New Age","R&B","Folk","Opera","TV Shows","VMVC 2011","Cặp Đôi Hoàn Hảo","Bài Hát Yêu Thích","Vietnam\'s Got Talent","Nhạc Chủ Đề","Nhạc 8/3","Nhạc chủ đề","Nhạc 8/3","Mừng QT phụ nữ 8/3","Nhạc Sàn","Nhạc Bà Bầu & Baby","Nhạc Spa | Thư Giãn","Nhạc Đám Cưới Hay","Sách Nói","Radio - Cảm Xúc","The Voice - Giọng Hát Việt","Vietnam Idol 2012","Nhạc Tuyển Tập","Shining Show","Gương Mặt Thân Quen","Ngâm Thơ","Fanmade / Radio"]
+		# the result of genres after calling fetchMaxType. 
+		# DEFAULT ARRAY
+		@genres = [{"id":99,"name":"Nhạc Xuân","page":32},{"id":73,"name":"Nhạc Không Lời","page":517},{"id":79,"name":"Pop/Ballad","page":2831},{"id":76,"name":"New Age","page":281},{"id":90,"name":"House","page":31},{"id":62,"name":"R&B","page":428},{"id":26,"name":"Rock","page":1667},{"id":64,"name":"Alternative","page":95},{"id":63,"name":"Hiphop/Rap","page":442},{"id":65,"name":"Country","page":531},{"id":74,"name":"Folk","page":148},{"id":68,"name":"Dance/Electronic","page":142},{"id":66,"name":"Latin","page":80},{"id":69,"name":"Jazz","page":496},{"id":70,"name":"Acoustic/Audiophile","page":41},{"id":72,"name":"Soundtrack","page":223},{"id":77,"name":"Classical","page":67},{"id":75,"name":"Blues","page":105},{"id":108,"name":"Nhạc Giáng Sinh","page":53},{"id":27,"name":"Metal","page":184},{"id":71,"name":"Soul","page":128}]
+
+		# example
+		# @genres = [{"id":73,"name":"Nhạc Không Lời","page":517}]
+
+		for g in @genres
+			@stats.totalItems += g.page
+		console.log "Total page: #{@stats.totalItems}"	
+		@stats.currentTable = @table.Albums
+
+		# THIS PART IS FOR RESULT EVENT
+		@eventEmitter.on "result-type-album-done", (albums)=>
+			# console.log albums
+			@stats.totalItemCount +=1
+			@stats.passedItemCount +=1
+			@utils.printRunning @stats
+
+			# console.log albums
+
+			for album in albums
+				do (album)=>
+					_u = "update #{@table.Albums} SET category = #{@connection.escape(JSON.stringify(album.cats))} where albumid=#{album.id}"
+					# console.log _u
+					@connection.query _u, (err)->
+						if err then console.log "Album:#{album.id} has an error: #{err}"
+
+			if @stats.totalItems is @stats.totalItemCount
+				@utils.printFinalResult @stats
+
+		for genre in @genres
+			for page in [1..genre.page]
+				@_fetchTypeAlbum genre, page
+	filterType : (arr)->
+		a = []
+		vnSongs = ["Nhạc Trẻ","Nhạc Trữ Tình","Nhạc Cách Mạng","Nhạc Trịnh","Nhạc Tiền Chiến","Nhạc Dân Tộc","Nhạc Thiếu Nhi","Rock Việt","Nhạc Hải Ngoại","Nhạc Quê Hương","Rap Việt - Hiphop"]
+		for item in arr
+			if vnSongs.indexOf(item) > -1
+				a.push "Nhạc Việt Nam"
+
+			if item is "Pop/Ballad"
+				a.push "Pop"
+				a.push "Ballad"
+			else if item is "Dance/Electronic"
+				a.push "Dance"
+				a.push "Electronic"
+			else if item is "Nhạc Spa | Thư Giãn"
+				a.push "Nhạc Spa"
+				a.push "Thư Giãn"
+			else if item is "Hiphop/Rap"
+				a.push "Hiphop"
+				a.push "Rap"
+			else if item is "Nhạc Bà Bầu & Baby"
+				a.push "Nhạc Bà Bầu"
+				a.push "Nhạc Baby"
+			else if item is "Rap Việt - Hiphop"
+				a.push "Rap Việt"
+				a.push "Hiphop"
+			else if item is "Radio - Cảm Xúc"
+				a.push "Radio"
+				a.push "Cảm Xúc"
+			else a.push item
+
+		return a
+
+	# -----------------------------------------------------------
+	fetchMaxTypeSong : () -> 
+		@genres = [{"id":99,"name":"Nhạc Xuân"},{"id":73,"name":"Nhạc Không Lời"},{"id":79,"name":"Pop/Ballad"},{"id":76,"name":"New Age"},{"id":90,"name":"House"},{"id":62,"name":"R&B"},{"id":26,"name":"Rock"},{"id":64,"name":"Alternative"},{"id":63,"name":"Hiphop/Rap"},{"id":65,"name":"Country"},{"id":74,"name":"Folk"},{"id":68,"name":"Dance/Electronic"},{"id":66,"name":"Latin"},{"id":69,"name":"Jazz"},{"id":70,"name":"Acoustic/Audiophile"},{"id":72,"name":"Soundtrack"},{"id":77,"name":"Classical"},{"id":75,"name":"Blues"},{"id":108,"name":"Nhạc Giáng Sinh"},{"id":27,"name":"Metal"},{"id":71,"name":"Soul"}]
+		@count = 0
+		@type = "song"
+		for genre in @genres
+			@getMax genre, 1, 1000
+	fetchMaxTypeAlbum : () -> 
+		@genres = [{"id":99,"name":"Nhạc Xuân"},{"id":73,"name":"Nhạc Không Lời"},{"id":79,"name":"Pop/Ballad"},{"id":76,"name":"New Age"},{"id":90,"name":"House"},{"id":62,"name":"R&B"},{"id":26,"name":"Rock"},{"id":64,"name":"Alternative"},{"id":63,"name":"Hiphop/Rap"},{"id":65,"name":"Country"},{"id":74,"name":"Folk"},{"id":68,"name":"Dance/Electronic"},{"id":66,"name":"Latin"},{"id":69,"name":"Jazz"},{"id":70,"name":"Acoustic/Audiophile"},{"id":72,"name":"Soundtrack"},{"id":77,"name":"Classical"},{"id":75,"name":"Blues"},{"id":108,"name":"Nhạc Giáng Sinh"},{"id":27,"name":"Metal"},{"id":71,"name":"Soul"}]
+		@count = 0
+		@type = "album"
+		for genre in @genres
+			@getMax genre, 1, 1000
+	getMax : (genre, page, inc) ->
+		if @type is "song"
+			link = "http://nhacso.net/bai-hat-theo-the-loai-#{genre.id}/joke-link-2-#{page}.html"
+		else if @type is "album"
+			link = "http://nhacso.net/album-theo-the-loai-#{genre.id}/joke-link-2-#{page}.html"
+		options = 
+			genre : genre
+			page : page
+			inc : inc
+		onSucess = (data,options)=>
+			# console.log "Genreid : #{options.genre.id} , name : #{options.genre.name} has page #{options.page} with inc:#{options.inc}"
+			@utils.printMessage("Running #{new Date()}")
+			if options.inc is 0
+				@count += 1
+				console.log "DONE: #{@count}---------------------------------------------------------------------------"
+				for genre, index in @genres
+					if genre.id is options.genre.id
+						@genres[index].page = options.page
+				console.log JSON.stringify @genres
+			else 
+				@getMax(options.genre,options.page+options.inc,inc)
+		onFail = (data,options)=>
+			page = options.page - options.inc
+			inc = options.inc/2 | 0
+			page = page + inc
+			# console.log "increment now is #{options.inc}"
+			# console.log options
+			# console.log "The page:#{options.page} has failed, inc: -#{inc}. Calling page:#{page}"
+			@utils.printMessage("Running #{new Date()}")
+			@getMax(options.genre,page, inc)
+
+
+		@getFileByHTTP link, onSucess, onFail, options		
 
 	showStats : ->
 		@_printTableStats NS_CONFIG.table

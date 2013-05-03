@@ -72,9 +72,9 @@ Insert user-generated valid `Auth` .`id=1240090058` in the link above is not nec
 ###b.Song###
 <http://nhacso.net/flash/song/xnl/1/id/XVxUVURX>  
   
-
-
 <http://nhacso.net/song/parse?listIds=1250000>  
+
+Direct link :  <http://nhacso.net/html5/song/id/X1pZUEVaaA==>
 
 > `listIds`means you can pass parameters with the following pattern : `para1,para2,para3`  
 
@@ -118,7 +118,7 @@ MISC:
 
 ###d.Album###
 <http://nhacso.net/flash/album/xnl/1/uid/X1lWW0NabwIBAw==,W1pZWkVe>  
-
+Use HTML5 <http://nhacso.net//html5/album/id/WF1VVEZf>  
 > Use on the last parameter only  
 
 <http://nhacso.net/album/parse?listIds=17000>  
