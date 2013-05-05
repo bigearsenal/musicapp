@@ -44,6 +44,7 @@ class Nhacso extends Site
 		song.name = @getValueXML data,"name",1
 		song.artist = @getValueXML data, "artist", 0
 		song.artistid = parseInt @getValueXML(data,"artistlink",0).replace(/\.html/g,'').replace(/^.+-/g,''),10
+		if song.artistid.toString() is "NaN" then song.artistid = 0
 		song.author = @getValueXML data, "author", 0
 		if song.author isnt ''
 			song.authorid = parseInt @getValueXML(data, "authorlink",0).replace(/\.html/g,'').replace(/^.+-/g,''),10
@@ -121,7 +122,7 @@ class Nhacso extends Site
 			@utils.printUpdateRunning options.song.songid, @stats, "Fetching..."
 			@log.lastSongId = options.song.songid
 			@connection.query @query._insertIntoSongs, options.song, (err)->
-				if err then console.log "Cannt insert song: #{options.song.songid} into database. ERROR: #{err}"
+				if err then console.log "Cannot insert song: #{options.song.songid} into database. ERROR: #{err}"
 	_updateSong : (song)=>
 		id = song.songid
 		link = "http://nhacso.net/nghe-nhac/link-joke.#{@_decodeId(id)}==.html"

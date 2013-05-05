@@ -43,7 +43,7 @@ class Utils
 		message += " | n:"+ stats.totalItemCount
 		message += " | pass:"+stats.passedItemCount
 		message += " | fail:"+stats.failedItemCount
-		message += " | speed:"+Math.round(stats.totalItemCount/tempDuration*1000)+ "|\r"
+		message += " | speed:"+Math.round(stats.totalItemCount/tempDuration*1000)+ "|                                      \r"
 		printResutls message
 
 	printRunning : (stats) ->

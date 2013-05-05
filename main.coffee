@@ -206,6 +206,7 @@ runNhaccuatui = ->
 	console.log "STEP 2:".inverse.blue + " " + "Choose the type of command:".underline.blue
 	console.log "\t" + "CREATE".inverse.red + " tables\t" + "RESET".inverse.red + " tables "
 	console.log "\t1.UPDATE ALBUMS AND SONGS\t2.updateSongsPlay"
+	console.log "\t3.fetchArtist\t2.xxxxxx"
 	
 	nct = new Nhaccuatui(mysqlConfig)
 	rl.question "=> ", (answer) ->
@@ -214,6 +215,9 @@ runNhaccuatui = ->
 			when "RESET" then nct.resetTables()
 			when "1" then nct.updateAlbumsAndSongs()
 			when "2" then nct.updateSongsPlays()
+			when "3" then nct.fetchArtist()
+
+			
 			
 
 			else console.log "Wrong type".red

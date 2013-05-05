@@ -174,6 +174,7 @@ class Nhacvui extends Module
 					@_updateSong id+1
 					@log.lastSongId = id
 				else 
+					@stats.totalItemCount +=1
 					@stats.failedItemCount+=1
 					@temp.totalFail+=1
 					if @temp.totalFail < 100

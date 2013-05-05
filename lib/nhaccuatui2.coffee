@@ -420,7 +420,7 @@ class Nhaccuatui extends Module
 		null	
 	#---------------------------------------
 	_fetchArtist : (artistName,page = 1) ->
-		link = "http://www.nhaccuatui.com/tim-kiem/playlist?q=#{artistName}&b=singer&page=#{page}"
+		link = "http://www.nhaccuatui.com/tim-kiem/bai-hat?q=#{artistName}&b=singer&page=#{page}"
 		http.get link, (res) =>
 				res.setEncoding 'utf8'
 				data = ''

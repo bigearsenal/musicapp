@@ -403,6 +403,149 @@ class Nhaccuatui extends Module
 		null
 
 
+
+	# THIS PART FOR PROCESSING SONG
+	# 
+	processArtistSongs : (data, options)=>
+
+		nSongs = data.match(/Tìm được (.+) kết quả cho/)?[1]
+
+		if nSongs
+
+			nSongs = parseInt(nSongs.replace(",",""),10)
+
+
+			if nSongs >= 50*20
+				maxPage = 50
+			else maxPage = (nSongs/20|0)+1
+
+			if options.page < maxPage
+				@_fetchArtist options.artistName, options.page+1
+
+
+			ids = data.match(/btnAddPlaylist_(\d+)/g)
+			if ids 
+				ids = ids.map (v)-> parseInt(v.replace(/btnAddPlaylist_/,''),10)
+
+			keys = data.match(/song-name.+\s+.+\s+.+\s+.+\s+.+\s+/g)
+
+			songs = []
+			if keys 
+				if keys.length is ids.length
+
+					keys.forEach (v,index)-> 
+						song = 
+							id : ids[index]
+						song.key = v.match(/<a.+\.(.+)\.html/)?[1]
+
+						if v.match(/class=\"mof\"/g)
+							song.official = 1
+						else song.official = 0
+
+						if v.match(/class=\"m320\"/g)
+							song.bitrate = 320
+						else song.bitrate = 0	
+
+						songs.push song
+
+					@eventEmitter.emit "fetch-song-artist-done", songs, options
+
+				else 
+					console.log "Artist: #{options.artistName} page: #{options.page} has keys and ids mismatched                                       "
+			else console.log "Artist: #{options.artistName} page: #{options.page} has keys and ids which do not exit                                       "
+		else console.log "Artist: #{options.artistName} page: #{options.page} has keys and ids which do not exit --- BBBB                                       "
+	processArtistSongsMobileVersion : (data,options)=>
+
+		songs = data.match(/<h3><a href=.+/g)
+
+		temp = data.match(/Hiển thị\s(\d+)\/(\d+).+/)
+
+		if temp
+			currentSongs = parseInt(temp[1],10)
+			nSongs = parseInt(temp[2],10)
+			# console.log currentSongs
+			# console.log nSongs
+			
+			if nSongs >= 1000
+				if nSongs%10 isnt 0
+					maxPage = (nSongs/10|0)+1
+				else maxPage = nSongs/10|0
+
+				# console.log "max page is" + maxPage
+				if options.page < maxPage and options.page isnt 1
+					@_fetchArtist options.artistName, options.page+1, "mobile"
+				if options.page is 1
+					@_fetchArtist options.artistName, 100, "mobile"
+				if songs 
+					songs = songs.map (v)-> 
+						t = 
+							key : v.match(/http.+\.(.+)\.html/)?[1]
+					@eventEmitter.emit "fetch-song-artist-done-mobile-version", songs, options
+	onProcessArtistSongsFail : (err,options)=>
+		@stats.totalItemCount +=1
+		@stats.failedItemCount +=1
+		console.log "ERROR while fetching http file. ERROR:#{err}".red
+	_fetchArtist : (artistName,page = 1, type = "desktop") ->
+		# link = "http://www.nhaccuatui.com/tim-kiem/bai-hat?q=#{artistName}&b=&page=#{page}"
+		
+		if type is "desktop"
+			link = "http://www.nhaccuatui.com/tim-kiem/bai-hat?q=#{artistName}&b=title&page=#{page}"
+		else if type is "mobile"
+			link = "http://m.nhaccuatui.com/tim-kiem/bai-hat?q=#{artistName}&b=&page=#{page}"
+		options = 
+			artistName : artistName
+			page : page
+		if link.match(/www\.nhaccuatui\.com/)
+			@getFileByHTTP link, @processArtistSongs, @onProcessArtistSongsFail, options
+
+		else if link.match(/m\.nhaccuatui\.com/)
+			@getFileByHTTP link, @processArtistSongsMobileVersion, @onProcessArtistSongsFail, options
+
+	onFetchSongAritstDone : ->
+		@eventEmitter.on "fetch-song-artist-done", (songs, options)=>
+			@stats.totalItemCount +=1
+			@stats.passedItemCount +=1
+			@utils.printUpdateRunning options.artistName + "-" + options.page, @stats, "Fetching..."
+
+			console.log songs
+
+			for song in songs
+				do (song)=>
+					@connection.query @query._insertIntoNCTSongs, song, (err)->
+						if err then console.log "Cannot insert song: #{song.id}, key #{song.key} into DB. ERROR: #{err}"
+					_u = "update #{@table.Songs} SET official=#{song.official}, bitrate=#{song.bitrate} where id=#{song.id}"
+					@connection.query _u, (err,results)=>
+						if err then console.log "Cannot update song: #{song.id}, key #{song.key}. ERROR: #{err} "
+
+		@eventEmitter.on "fetch-song-artist-done-mobile-version", (songs, options)=>
+			@stats.totalItemCount +=1
+			@stats.passedItemCount +=1
+			@utils.printUpdateRunning options.artistName + "-" + options.page, @stats, "Fetching..."
+			# console.log options
+			# console.log songs
+
+			for song in songs
+				do (song)=>
+					@connection.query @query._insertIntoNCTSongs, song, (err)->
+						if err then console.log "Cannot insert song key #{song.key} into DB. ERROR: #{err}"
+
+	fetchArtist : () =>
+		@connect()
+		artists = fs.readFileSync "./log/test/artist.txt" , "utf8"
+		# artists = "[\"dam vinh hung\"]"
+		artists = JSON.parse artists
+		console.log " |"+"Fetching artists, albums  to table: #{@table.Albums}".magenta
+
+		@onFetchSongAritstDone()
+			
+		@stats.totalItems = artists.length
+		@stats.currentTable = @table.Songs
+		console.log "get form 5000 to the 10000"
+		for name, index in artists
+			if 5000<=index<=10000
+				@_fetchArtist name, 1, "mobile"
+		null
+
 	showStats : ->
 		@_printTableStats NCT_CONFIG.table
 
