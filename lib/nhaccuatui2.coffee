@@ -8,8 +8,8 @@ fs = require 'fs'
 Encoder = require('node-html-encoder').Encoder
 encoder = new Encoder('entity');
 
-NCT_CONFIG = 
-	table : 
+NCT_CONFIG =
+	table :
 		Songs : "NCTSongs"
 		Albums : "NCTAlbums"
 		Videos : "NCTVideos"
@@ -22,7 +22,7 @@ NCT_CONFIG =
 class Nhaccuatui extends Module
 	constructor : (@mysqlConfig, @config = NCT_CONFIG) ->
 		@table = @config.table
-		@query = 
+		@query =
 			_insertIntoNCTSongs : "INSERT IGNORE INTO " + @table.Songs + " SET ?"
 			_insertIntoNCTAlbums : "INSERT IGNORE INTO " + @table.Albums + " SET ?"
 			_insertIntoNCTVideos : "INSERT IGNORE INTO " + @table.Videos + " SET ?"
@@ -36,7 +36,7 @@ class Nhaccuatui extends Module
 		@logPath = @config.logPath
 		@log = {}
 		@_readLog()
-		
+
 
 
 	_printUpdateAlbum : (info) ->
@@ -52,10 +52,10 @@ class Nhaccuatui extends Module
 				do (song) =>
 					@connection.query @query._insertIntoNCTSongs, song, (err)=>
 						if err then console.log "Cannot insert song #{song.song_key}"
-						else 
+						else
 							@_updateSongPlays song.songid
 							# @_updateSongLinkKey song.song_key
-		catch e 
+		catch e
 			console.log "Cannt insert new song in album: #{songs[0].album_key}. ERROR: #{e} "
 	_updateSongPlays : (songid)->
 		link = "http://www.nhaccuatui.com/wg/get-counter?listSongIds=#{songid}"
@@ -65,13 +65,13 @@ class Nhaccuatui extends Module
 				res.on 'data', (chunk) =>
 					data += chunk;
 				res.on 'end', () =>
-					try 
+					try
 						data = JSON.parse data
 						_q = "update #{@table.Songs} SET plays=#{data.data.songs[songid]} where songid=#{songid}"
 						data  = ""
 						@connection.query _q, (err)->
 							if err then console.log "Cannt update the total plays of the song #{songid} into database. ERROR: #{err}"
-					catch e 
+					catch e
 						console.log "Cannot udpate plays of the song: #{songid} has an error: #{e}"
 			.on 'error', (e) =>
 				console.log  "Got error: " + e.message
@@ -83,29 +83,29 @@ class Nhaccuatui extends Module
 				res.on 'data', (chunk) =>
 					data += chunk;
 				res.on 'end', () =>
-					try 
+					try
 						data = JSON.parse data
 						_q = "update #{@table.Albums} SET plays=#{data.data.playlists[albumid]} where albumid=#{albumid}"
 						data  = ""
 						@connection.query _q, (err)->
 							if err then console.log "Cannt update the total plays of the Album #{albumid} into database. ERROR: #{err}"
-					catch e 
+					catch e
 						console.log "Album #{albumid} has an error: #{e}"
 			.on 'error', (e) =>
 				console.log  "Got error: " + e.message
 	_updateAlbumTopic : (album) ->
-		try 
+		try
 			_q = "update #{@table.Albums} SET albumid=#{album.albumid}, " +
 									 " nsongs=#{album.nsongs}, " +
 									 " topic=#{@connection.escape(album.topic)}, " +
 									 " genre=#{@connection.escape(album.genre)}, " +
-									 " artist_list=#{@connection.escape(album.artist_list)}," + 
-									 " link_key=#{@connection.escape(album.link_key)}" + 
+									 " artist_list=#{@connection.escape(album.artist_list)}," +
+									 " link_key=#{@connection.escape(album.link_key)}" +
 									 " WHERE album_key=#{@connection.escape(album.album_key)}"
 			@connection.query _q ,(err)=>
 				if err then console.log "Cannot update album topic #{album.album_key}. ERROR: #{err}"
 				else @_updateAlbumPlays album.albumid
-		catch e 
+		catch e
 			console.log "Cannt update album topic: #{album.album_key}. ERROR: #{e} "
 
 	#--------------------------------
@@ -122,7 +122,7 @@ class Nhaccuatui extends Module
 					@stats.totalItemCount +=1
 					if not data.match(/Tìm\sđược\s0\skết\squả/) and data isnt ''
 						# console.log "#{artistName}: current Page: #{page}".red
-						# try 
+						# try
 							if data.match(/<a\shref\=\"http\:\/\/www\.nhaccuatui\.com\/mv.+/g)
 								arr = data.match(/<a\shref\=\"http\:\/\/www\.nhaccuatui\.com\/mv.+/g)
 								videos = []
@@ -131,11 +131,11 @@ class Nhaccuatui extends Module
 
 								for item, index in arr
 									videos.push item if index%2 is 0
-								
+
 								if  data.match(/src\=\"http\:\/\/.+nct\.nixcdn\.com.+\"\swidth/g)
 									thumbs = data.match(/src\=\"http\:\/\/.+nct\.nixcdn\.com.+\"\swidth/g)
 									thumbs[i] = thumb.replace(/src\=\"|\"\swidth/g,'') for thumb, i in thumbs
-								else 
+								else
 									thumbs[i] = '' for video, i in videos
 									console.log "#{artistName}: current Page: #{page} has no thummbinial"
 
@@ -144,7 +144,7 @@ class Nhaccuatui extends Module
 									for _artist, index in video_artists
 										video_artists[index] = _artist.split(/\>\,\s</g).map (v)->
 											v.replace(/a\shref.+_blank\"\>|\/a|<\/p\>|<|\>/g,'')
-								else 
+								else
 									video_artists[i] = '' for video, i in albums
 									console.log "#{XXXXXXXX}: current Page: #{page} has no artists names"
 
@@ -154,14 +154,14 @@ class Nhaccuatui extends Module
 														v = v.replace(/<\!\-\-<div\sclass\=\"times\"\>|<\/div\>\-\-\>/g,'').split(':')
 														time = parseInt(v[0],10)*60 + parseInt(v[1],10)
 
-								else 
+								else
 									durations[i] = '' for video, i in videos
 
 								# console.log JSON.stringify durations
-								
+
 								@stats.passedItemCount +=1
 								for video, index in videos
-									_video = 
+									_video =
 										artist : encoder.htmlDecode artistName
 									if video.match(/<a.+\.html/)
 										_video.video_key = video.match(/<a.+\.html/)[0].replace(/\.html/g,'').replace(/<a.+\./,'')
@@ -197,26 +197,26 @@ class Nhaccuatui extends Module
 									else totalPage = Math.floor(foundItems/20)+1
 									if totalPage > 50 then totalPage = 50
 								else totalPage = 1
-								
+
 								# console.log "#{artistName} has #{totalPage} page(s) ".red
 								@_fetchVideosByArtist artistName, p for p in [2..totalPage] if totalPage > 1
 							data = ""
 						# catch e
 						# 	console.log "ERROR at artist: #{artistName}. Error: #{e}".red
-						
+
 
 					else
 						@stats.failedItemCount+=1
 						# console.log "ARTIST: #{artistName} does not exit". magenta
-					
+
 					@utils.printRunning @stats
 					if @stats.totalItemCount is @stats.totalItems
 						@utils.printFinalResult @stats
 
-			
+
 			.on 'error', (e) =>
 				console.log  "Got error: " + e.message
-				@stats.failedItemCount+=1	
+				@stats.failedItemCount+=1
 	#--------------------------------
 	_fetchAlbumByTopic : (topicLink,page = 1) ->
 		link = topicLink + page
@@ -228,9 +228,9 @@ class Nhaccuatui extends Module
 				res.on 'data', (chunk) =>
 					data += chunk;
 				res.on 'end', () =>
-					
+
 					# console.log "#{XXXXXXXX}: current Page: #{page}".red
-					# try 
+					# try
 					if data.match(/<h3\><a\shref\=\"http\:\/\/www\.nhaccuatui\.com\/playlist.+/g)
 						albums = data.match(/<h3\><a\shref\=\"http\:\/\/www\.nhaccuatui\.com\/playlist.+/g)
 						thumbs = []
@@ -238,7 +238,7 @@ class Nhaccuatui extends Module
 						if  data.match(/src\=\"http\:\/\/.+nct\.nixcdn\.com.+\"\swidth/g)
 							thumbs = data.match(/src\=\"http\:\/\/.+nct\.nixcdn\.com.+\"\swidth/g)
 							thumbs[i] = thumb.replace(/src\=\"|\"\swidth/g,'') for thumb, i in thumbs
-						else 
+						else
 							thumbs[i] = '' for album, i in albums
 							console.log "#{XXXXXXXX}: current Page: #{page} has no thumbnail"
 						if data.match(/<a\s.+www\.nhaccuatui\.com\/tim\-kiem.+/g)
@@ -246,16 +246,16 @@ class Nhaccuatui extends Module
 							for _artist, index in artists
 								artists[index] = _artist.split(/\>\,\s</g).map (v)->
 									v.replace(/a\shref.+_blank\"\>|\/a|<\/p\>|<|\>/g,'')
-						else 
+						else
 							artists[i] = '' for album, i in albums
 							console.log "#{XXXXXXXX}: current Page: #{page} has no artists names"
 
 
-						
+
 						for album, index in albums
 							@stats.totalItemCount +=1
 							@stats.passedItemCount +=1
-							_album = 
+							_album =
 								artist : encoder.htmlDecode JSON.stringify artists[index]
 							if album.match(/<a.+\.html/)
 								_album.album_key = album.match(/<a.+\.html/)[0].replace(/\.html/g,'').replace(/<a.+\./,'')
@@ -273,25 +273,25 @@ class Nhaccuatui extends Module
 								_album.created += " " + _t.getHours() + ":" + _t.getMinutes() + ":" + _t.getSeconds()
 							@connection.query @query._insertIntoNCTAlbums, _album, (err)->
 							 	if err then console.log "Cannot insert album:#{_album.album_key} to table. ERROR: #{err}".red
-							
+
 							@utils.printRunning @stats
 							# console.log _album
-						
-						
+
+
 					else console.log "#{XXXXXXXX}: has no album at current Page: #{page} ".red
 
-						
+
 					data = ""
 					# catch e
 					# 	console.log "ERROR at artist: #{XXXXXXXX}. Error: #{e}".red
-					
+
 					if @stats.totalItemCount is @stats.totalItems
 						@utils.printFinalResult @stats
 
-			
+
 			.on 'error', (e) =>
 				console.log  "Got error: " + e.message
-				@stats.failedItemCount+=1	
+				@stats.failedItemCount+=1
 	fetchAlbumByTopic : ->
 		@connect()
 		console.log "Running on: #{new Date(Date.now())}"
@@ -302,7 +302,7 @@ class Nhaccuatui extends Module
 		# link2 = "http://www.nhaccuatui.com/playlist/nhac-tre.html?sort=1&page"
 		topics = "ana".split(',')
 		url = "http://www.nhaccuatui.com/playlist/"
-		
+
 		@stats.totalItems = 123617263187
 		@stats.currentTable = @table.Albums
 		for topic in topics
@@ -331,9 +331,9 @@ class Nhaccuatui extends Module
 				res.on 'data', (chunk) =>
 					data += chunk;
 				res.on 'end', () =>
-					
+
 					# console.log "#{XXXXXXXX}: current Page: #{page}".red
-					# try 
+					# try
 					if data.match(/<h3\><a\shref\=\"http\:\/\/www\.nhaccuatui\.com\/playlist.+/g)
 						albums = data.match(/<h3\><a\shref\=\"http\:\/\/www\.nhaccuatui\.com\/playlist.+/g)
 						thumbs = []
@@ -341,7 +341,7 @@ class Nhaccuatui extends Module
 						if  data.match(/src\=\"http\:\/\/.+nct\.nixcdn\.com.+\"\swidth/g)
 							thumbs = data.match(/src\=\"http\:\/\/.+nct\.nixcdn\.com.+\"\swidth/g)
 							thumbs[i] = thumb.replace(/src\=\"|\"\swidth/g,'') for thumb, i in thumbs
-						else 
+						else
 							thumbs[i] = '' for album, i in albums
 							console.log "#{XXXXXXXX}: current Page: #{page} has no thumbnail"
 						if data.match(/<p\><a\s.+www\.nhaccuatui\.com\/tim\-kiem.+/g)
@@ -349,16 +349,16 @@ class Nhaccuatui extends Module
 							for _artist, index in artists
 								artists[index] = _artist.split(/\>\,\s</g).map (v)->
 									v.replace(/a\shref.+_blank\"\>|\/a|<\/p\>|<p\>|<|\>/g,'')
-						else 
+						else
 							artists[i] = '' for album, i in albums
 							# console.log "#{XXXXXXXX}: current Page: #{page} has no artists names"
 
 
-						
+
 						for album, index in albums
 							@stats.totalItemCount +=1
 							@stats.passedItemCount +=1
-							_album = 
+							_album =
 								artist : encoder.htmlDecode JSON.stringify artists[index]
 							if album.match(/<a.+\.html/)
 								_album.album_key = album.match(/<a.+\.html/)[0].replace(/\.html/g,'').replace(/<a.+\./,'')
@@ -369,7 +369,7 @@ class Nhaccuatui extends Module
 							else _album.title = ''
 							_album.thumbnail = thumbs[index]
 
-							if _album.thumbnail 
+							if _album.thumbnail
 								if _album.thumbnail.match(/\d{4}\/\d{2}\/\d{2}/g)
 									_album.created = _album.thumbnail.match(/\d{4}\/\d{2}\/\d{2}/g)[0].replace(/\//g,'-')
 								if _album.thumbnail.match(/\/\d+\.jpg$/g)
@@ -378,25 +378,25 @@ class Nhaccuatui extends Module
 							# console.log _album
 							@connection.query @query._insertIntoNCTAlbums, _album, (err)->
 							 	if err then console.log "Cannot insert album:#{_album.album_key} to table. ERROR: #{err}".red
-							
+
 							@utils.printRunning @stats
 							# console.log _album
-						
-						
+
+
 					# else console.log "#{XXXXXXXX}: has no album at current Page: #{page} ".red
 
-						
+
 					data = ""
 					# catch e
 					# 	console.log "ERROR at artist: #{XXXXXXXX}. Error: #{e}".red
-					
+
 					if @stats.totalItemCount is @stats.totalItems
 						@utils.printFinalResult @stats
 
-			
+
 			.on 'error', (e) =>
 				console.log  "Got error: " + e.message
-				@stats.failedItemCount+=1	
+				@stats.failedItemCount+=1
 	fetchAlbumByAuthor : ->
 		@connect()
 		console.log "Running on: #{new Date(Date.now())}"
@@ -405,7 +405,7 @@ class Nhaccuatui extends Module
 		# topics = "playlist-moi nhac-tre tru-tinh cach-mang tien-chien nhac-trinh thieu-nhi rap-viet rock-viet khong-loi au-my han-quoc nhac-hoa nhac-nhat nhac-phim the-loai-khac".split(' ')
 		# link = "http://www.nhaccuatui.com/playlist/nhac-tre.html?page="
 		# link2 = "http://www.nhaccuatui.com/playlist/nhac-tre.html?sort=1&page"
-		
+
 		authors = "lee_00 thienhasaxoi anime-club belinh909 anime47 bluemoon_xx thangtin00 hestiasama witaolaonct iamjustguysbaka xuka_333 tinhlagi03357 ancotls m0nk3yt diaphilong3 quocbao88513 thansam962 loveforever010609012012 hongmiu1137 dacvu121 nguyenpro221992 nhutno.one annabelle_nguyen gared99 saovayhuy suzeria iambota91".split(' ')
 		url = "http://www.nhaccuatui.com/playlist/"
 		console.log authors.length
@@ -413,11 +413,11 @@ class Nhaccuatui extends Module
 		@stats.currentTable = @table.Albums
 		for author in authors
 			# link1 =  url + topic + ".html" + "?page="
-			# link2 =  url + topic + ".html" + "?sort=1&page="			
+			# link2 =  url + topic + ".html" + "?sort=1&page="
 			for page in [1..34]
 				link = "http://www.nhaccuatui.com/tim-nang-cao?title=&singer=&user=" + author + "&kbit=&type=2&sort=&direction=&page="
 				@_fetchAlbumByAuthor link, page
-		null	
+		null
 	#---------------------------------------
 	_fetchArtist : (artistName,page = 1) ->
 		link = "http://www.nhaccuatui.com/tim-kiem/bai-hat?q=#{artistName}&b=singer&page=#{page}"
@@ -430,7 +430,7 @@ class Nhaccuatui extends Module
 					@stats.totalItemCount +=1
 					if not data.match(/Tìm\sđược\s0\skết\squả/) and data isnt ''
 						# console.log "#{artistName}: current Page: #{page}".red
-						# try 
+						# try
 							if data.match(/<a\shref\=\"http\:\/\/www\.nhaccuatui\.com\/playlist.+/g)
 								arr = data.match(/<a\shref\=\"http\:\/\/www\.nhaccuatui\.com\/playlist.+/g)
 								albums = []
@@ -438,17 +438,17 @@ class Nhaccuatui extends Module
 
 								for item, index in arr
 									albums.push item if index%2 is 0
-								
+
 								if  data.match(/src\=\"http\:\/\/.+nct\.nixcdn\.com.+\"\swidth/g)
 									thumbs = data.match(/src\=\"http\:\/\/.+nct\.nixcdn\.com.+\"\swidth/g)
 									thumbs[i] = thumb.replace(/src\=\"|\"\swidth/g,'') for thumb, i in thumbs
-								else 
+								else
 									thumbs[i] = '' for album, i in albums
 									console.log "#{artistName}: current Page: #{page} has no thummbinial"
-								
+
 								@stats.passedItemCount +=1
 								for album, index in albums
-									_album = 
+									_album =
 										artist : encoder.htmlDecode artistName
 									if album.match(/<a.+\.html/)
 										_album.albumid = album.match(/<a.+\.html/)[0].replace(/\.html/g,'').replace(/<a.+\./,'')
@@ -476,26 +476,26 @@ class Nhaccuatui extends Module
 									else totalPage = Math.floor(foundItems/20)+1
 									if totalPage > 50 then totalPage = 50
 								else totalPage = 1
-								
+
 								# console.log "#{artistName} has #{totalPage} page(s) ".red
 								@_fetchArtist artistName, p for p in [2..totalPage] if totalPage > 1
 							data = ""
 						# catch e
 						# 	console.log "ERROR at artist: #{artistName}. Error: #{e}".red
-						
+
 
 					else
 						@stats.failedItemCount+=1
 						# console.log "ARTIST: #{artistName} does not exit". magenta
-					
+
 					@utils.printRunning @stats
 					if @stats.totalItemCount is @stats.totalItems
 						@utils.printFinalResult @stats
 
-			
+
 			.on 'error', (e) =>
 				console.log  "Got error: " + e.message
-				@stats.failedItemCount+=1	
+				@stats.failedItemCount+=1
 	fetchArtist : () =>
 		@connect()
 		artists = fs.readFileSync "./log/test/artist.txt" , "utf8"
@@ -519,7 +519,7 @@ class Nhaccuatui extends Module
 							_info = data.match(/<p\sclass\=\"category\"\>Thể\sloại\:.+/g)[0].split('|')
 							album.topic = _info[0].replace(/<p.+\"\>|<\/a\>/g,'').trim()
 							album.nsongs = parseInt _info[2].replace(/Số\sbài\:\s|<\/p\>/g,'').trim(), 10
-						else 
+						else
 							album.topic = ''
 							album.nsongs = 0
 
@@ -550,7 +550,7 @@ class Nhaccuatui extends Module
 									genre : album.genre
 									topic : album.topic
 									artists : album.artist_list
-									song_artists : JSON.stringify _temp.match(/singer.+/)[0].replace(/singer\=\"|\"/g,'').split(',').map (v)-> 
+									song_artists : JSON.stringify _temp.match(/singer.+/)[0].replace(/singer\=\"|\"/g,'').split(',').map (v)->
 													v = v.trim()
 													encoder.htmlDecode v
 									song_name : encoder.htmlDecode _temp.match(/relTitle.+singer/g)[0].replace(/relTitle\=\"|\"\ssinger/g,'')
@@ -571,15 +571,15 @@ class Nhaccuatui extends Module
 							songs_albums.push(_songs_albums)
 							if index is songs.length-1
 								@_updateSongLinkKey song, songs, album, songs_albums,  true
-							else 
+							else
 								# console.log index
 								@_updateSongLinkKey song, songs, album, songs_albums
-						
-						
+
+
 					catch e
 						console.log ""
 						console.log "ERROR while updating Album Stats And Inserting Songs. Album key: #{album.album_key}. ERROR: #{e}"
-					
+
 			.on 'error', (e) =>
 				console.log  "Got error: " + e.message
 	updateAlbumStatsAndInsertSongs : ->
@@ -594,7 +594,7 @@ class Nhaccuatui extends Module
 				@stats.currentTable = @table.Albums
 				for album, index in albums
 					@_updateAlbumStatsAndInsertSongs album.album_key
-		null		
+		null
 	#---------------------------------------
 	_fetchArtistProfile : (artistName) ->
 		link = "http://mp3.Nhaccuatui.vn/nghe-si/#{artistName}/tieu-su"
@@ -607,10 +607,10 @@ class Nhaccuatui extends Module
 					@stats.totalItemCount +=1
 					if res.statusCode isnt 302 and res.statusCode isnt 400
 						# console.log "#{artistName}: current Page: #{page}".red
-						
-						try 
+
+						try
 							@stats.passedItemCount +=1
-							artist = 
+							artist =
 								name : artistName
 							if data.match(/\<li\>\<span\>Tên\sthật\:.+/g)
 								artist.real_name = data.match(/\<li\>\<span\>Tên\sthật\:.+/g)[0]
@@ -638,7 +638,7 @@ class Nhaccuatui extends Module
 								artist.topic = JSON.stringify arr
 							else artist.topic = ''
 
-							
+
 							data = data.replace(/\r|\t|\n/g,'')
 
 							if data.match(/Thông\stin\schi\stiết.+\<div\sclass\=\"new\-sidebar\"\>/)
@@ -649,26 +649,26 @@ class Nhaccuatui extends Module
 								arr = []
 								arr.push _chunk.replace(/\=\"\/tim\-kiem.+\"\>|\<\/a\>|\<strong\>|\<\/strong\>/g,'').trim() for _chunk in _chunks
 								artist.description = arr.join(' ')
-							
+
 							@connection.query @query._insertIntoZIArtists, artist , (err)->
 								if err then console.log "Cannot insert artist #{artistName} into table. Error: #{err}"
 
 						catch e
 							"ERROR: Cannot fetch a profile of artist: #{artistName}".red
-						
+
 
 					else
 						@stats.failedItemCount+=1
 						# console.log "ARTIST: #{artistName} does not exit". magenta
-					
+
 					@utils.printRunning @stats
 					if @stats.totalItemCount is @stats.totalItems
 					 	@utils.printFinalResult @stats
 
-			
+
 			.on 'error', (e) =>
 				console.log  "Got error: " + e.message
-				@stats.failedItemCount+=1	
+				@stats.failedItemCount+=1
 	fetchArtistProfile : () ->
 		@connect()
 		artists = fs.readFileSync "./log/test/artist.txt" , "utf8"
@@ -689,7 +689,7 @@ class Nhaccuatui extends Module
 				res.on 'data', (chunk) =>
 					data += chunk;
 				res.on 'end', () =>
-					try 
+					try
 						data = JSON.parse data
 
 						for id in ids
@@ -701,14 +701,14 @@ class Nhaccuatui extends Module
 							@stats.currentId = id
 							@utils.printRunning @stats
 							@connection.query _q, (err)=>
-								if err  
+								if err
 									# console.log "Cannot update the total plays of the Album #{id} into database. ERROR: #{err}"
 									@stats.failedItemCount +=1
-							
+
 						data = ""
 						if @stats.totalItems is @stats.totalItemCount
 								@utils.printFinalResult @stats
-					catch e 
+					catch e
 						console.log "Album has an error: #{e}"
 			.on 'error', (e) =>
 				console.log  "Got error: " + e.message
@@ -727,7 +727,7 @@ class Nhaccuatui extends Module
 				for song, index in songs
 					a.push song.songid
 					if index%200 is 0
-							@_fetchSongsPlays a 
+							@_fetchSongsPlays a
 							a = []
 	##-------------------------------------------
 	_updateSongIds :(item)->
@@ -735,7 +735,7 @@ class Nhaccuatui extends Module
 			_query = "select id from #{@table.Songs} where albumid=#{@connection.escape(item.albumid)} order by id asc"
 			@connection.query _query, (err,songs)=>
 				if err then console.log "Cannt update songids, ERROR: #{err}"
-				else 
+				else
 					for i in [0..songs.length-1]
 						_q = "update #{@table.Songs} set songid=#{@connection.escape(item.songids[i])} where id=#{songs[i].id}"
 						@connection.query  _q, (err)=>
@@ -751,7 +751,7 @@ class Nhaccuatui extends Module
 				res.on 'data', (chunk) =>
 					data += chunk;
 				res.on 'end', () =>
-					try 
+					try
 						if data.match(/flashPlayer\"\,\s\"playlist.+/g)
 							link_key = data.match(/flashPlayer\"\,\s\"playlist.+/g)[0].replace(/flashPlayer.+playlist|0\..+|\s|\"|\,/g,'')
 						else link_key = ""
@@ -759,14 +759,14 @@ class Nhaccuatui extends Module
 						_q = "update #{@table.Albums} SET link_key=#{@connection.escape(link_key)} where album_key=#{@connection.escape(album_key)};"
 						# console.log _q
 						@connection.query _q, (err)=>
-							if err  
+							if err
 								consolqe.log "Cannot update the link key of the Album #{album_key} into database. ERROR: #{err}"
 								# @stats.failedItemCount +=1
 						data = ""
-					catch e 
+					catch e
 						console.log "Album has an error: #{e}"
 			.on 'error', (e) =>
-				console.log  "Got error: " + e.message	
+				console.log  "Got error: " + e.message
 	updateAlbumLinkKey : ()->
 		@connect()
 		console.log "Running on: #{new Date(Date.now())}"
@@ -780,11 +780,11 @@ class Nhaccuatui extends Module
 				@stats.currentTable = @table.Albums
 				for album, index in albums
 					# if index < 10
-						@_updateAlbumLinkKey album.album_key 
-	
+						@_updateAlbumLinkKey album.album_key
+
 	#-----------------------------------------------
 	#update type and link_key of song
-	#if song.type is song then check if song exists, update song plays and insert into table Songs_Albums 
+	#if song.type is song then check if song exists, update song plays and insert into table Songs_Albums
 	#if song.type is music video then put into table video
 	#
 	_updateSongLinkKey : (song, songs, album, songs_albums, isLastItem)->
@@ -796,7 +796,7 @@ class Nhaccuatui extends Module
 				res.on 'data', (chunk) =>
 					data += chunk;
 				res.on 'end', () =>
-					try 
+					try
 
 						if data.match(/value.+inpHiddenType/g)
 							song.type = data.match(/value.+inpHiddenType/g)[0].replace(/value\=\"|\"\sid\=\"inpHiddenType/g,'')
@@ -807,32 +807,32 @@ class Nhaccuatui extends Module
 						else song.link_key = ""
 
 						data = ""
-						
+
 						if song.type is 'mv' then album.totalMvs += 1
 						if isLastItem is true then @_writeLog @log
-						
+
 						if isLastItem is true and album.totalMvs is 0
 							delete album.totalMvs
 							@connection.query @query._insertIntoNCTAlbums, album, (err)=>
 								if err then console.log "Cannt insert album into table. ERROR: #{err}"
-								else 
+								else
 									@_updateAlbumPlays album.albumid
 									for song, index in songs
 								 		do (song, index) =>
 									 		@connection.query @query._insertIntoNCTSongs, song, (err)=>
 												if err then console.log "Cannot insert song #{song.song_key}. Error: #{err}"
-												else 
+												else
 													@_updateSongPlays song.songid
 													@connection.query @query._insertIntoNCTSongs_Albums, songs_albums[index], (err)=>
 														if err then console.log "cannt insert into songs_albums. #{JSON.stringify songs_albums[index]} Error: #{err}"
 
-						else 
+						else
 							if isLastItem is true and album.totalMvs isnt 0
 								if album.totalMvs is album.nsongs
 									delete album.totalMvs
 									@connection.query @query._insertIntoNCTMVPlaylists, album, (err)=>
 										if err then console.log "Cannt insert album into table. ERROR: #{err}"
-										else 
+										else
 											# @_updateAlbumPlays album.albumid
 											for song, index in songs
 										 		do (song, index) =>
@@ -850,20 +850,20 @@ class Nhaccuatui extends Module
 
 											 		@connection.query @query._insertIntoNCTMVs, video, (err)=>
 														if err then console.log "Cannot insert video #{video.video_key}. Error: #{err}"
-														else 
+														else
 															@_updateVideosPlays video.videoid
-															video_album = 
+															video_album =
 																videoid : songs_albums[index].songid
 																albumid : songs_albums[index].albumid
 															@connection.query @query._insertIntoNCTMVs_MVPlaylists, video_album, (err)=>
 																if err then console.log "cannt insert into video_album. #{JSON.stringify songs_albums[index]} Error: #{err}"
-								else 
+								else
 									# this is used for special case when an album has songs and videos. We prefer songs
 									# therefore we will insert into table album
 									delete album.totalMvs
 									@connection.query @query._insertIntoNCTAlbums, album, (err)=>
 										if err then console.log "Cannt insert album into table. ERROR: #{err}"
-										else 
+										else
 											@_updateAlbumPlays album.albumid
 											for song, index in songs
 										 		do (song, index) =>
@@ -872,11 +872,11 @@ class Nhaccuatui extends Module
 											 		if song.type isnt 'mv'
 												 		@connection.query @query._insertIntoNCTSongs, song, (err)=>
 															if err then console.log "Cannot insert song #{song.song_key}. Error: #{err}"
-															else 
+															else
 																@_updateSongPlays song.songid
 																@connection.query @query._insertIntoNCTSongs_Albums, songs_albums[index], (err)=>
 																	if err then console.log "cannt insert into songs_albums. #{JSON.stringify songs_albums[index]} Error: #{err}"
-					catch e 
+					catch e
 						console.log "Album has an error: #{e}"
 						console.log "#{JSON.stringify album}".red
 			.on 'error', (e) =>
@@ -893,7 +893,7 @@ class Nhaccuatui extends Module
 				console.log songs.length + "----------"
 				@stats.currentTable = @table.Songs
 				for song, index in songs
-					@_updateSongLinkKey song.song_key 
+					@_updateSongLinkKey song.song_key
 	#-----------------------------------------------
 	_updateVideoLinkKey : (video)->
 		link = "http://www.nhaccuatui.com/mv/joke-link.#{video.video_key}.html"
@@ -904,7 +904,7 @@ class Nhaccuatui extends Module
 				res.on 'data', (chunk) =>
 					data += chunk;
 				res.on 'end', () =>
-					try 
+					try
 
 						if data.match(/value.+inpHiddenType/g)
 							type = data.match(/value.+inpHiddenType/g)[0].replace(/value\=\"|\"\sid\=\"inpHiddenType/g,'')
@@ -940,7 +940,7 @@ class Nhaccuatui extends Module
 						if @stats.totalItemCount is @stats.totalItems
 							@utils.printFinalResult @stats
 
-					catch e 
+					catch e
 						console.log "Video has an error: #{e}"
 						@stats.failedItemCount +=1
 			.on 'error', (e) =>
@@ -959,9 +959,9 @@ class Nhaccuatui extends Module
 				@stats.currentTable = @table.Videos
 				for album, index in videos
 					# if index < 10
-						@_updateVideoLinkKey album.video_key 
+						@_updateVideoLinkKey album.video_key
 	#-----------------------------------------
-	
+
 	## Fetch video from file, take from the site and put into database
 	fetchVideosByArtist : () =>
 		@connect()
@@ -976,7 +976,7 @@ class Nhaccuatui extends Module
 	_updateVideosPlays : (ids)->
 		if ids.join?
 			idList = ids.join?(',')
-		else 
+		else
 			idList = ids
 			ids = ids.split(' ')
 		link = "http://www.nhaccuatui.com/wg/get-counter?listSongIds=#{idList}"
@@ -986,16 +986,16 @@ class Nhaccuatui extends Module
 				res.on 'data', (chunk) =>
 					data += chunk;
 				res.on 'end', () =>
-					try 
+					try
 						data = JSON.parse data
 						for id in ids
 							# console.log id
 							_q = "update #{@table.Videos} SET plays=#{data.data.songs[id]} where videoid=#{id};"
 							@connection.query _q, (err)=>
-								if err  
+								if err
 									console.log "Cannot update the total plays of the Video #{id} into database. ERROR: #{err}"
 						data = ""
-					catch e 
+					catch e
 						console.log "Video has an error: #{e}"
 			.on 'error', (e) =>
 				console.log  "Got error: " + e.message
@@ -1014,7 +1014,7 @@ class Nhaccuatui extends Module
 				for video, index in videos
 					a.push video.videoid
 					if index%1 is 0
-							@_updateVideosPlays a 
+							@_updateVideosPlays a
 							a = []
 	#---------------------------------------------------------------------------------
 	_fetchVideoByTopic : (topicLink,page = 1) ->
@@ -1036,11 +1036,11 @@ class Nhaccuatui extends Module
 
 						for item, index in arr
 							videos.push item if index%2 is 0
-						
+
 						if  data.match(/src\=\"http\:\/\/.+nct\.nixcdn\.com.+\"\swidth/g)
 							thumbs = data.match(/src\=\"http\:\/\/.+nct\.nixcdn\.com.+\"\swidth/g)
 							thumbs[i] = thumb.replace(/src\=\"|\"\swidth/g,'') for thumb, i in thumbs
-						else 
+						else
 							thumbs[i] = '' for video, i in videos
 							console.log "#{XXXXXXXX}: current Page: #{page} has no thummbinial"
 
@@ -1049,7 +1049,7 @@ class Nhaccuatui extends Module
 							for _artist, index in video_artists
 								video_artists[index] = _artist.split(/\>\,\s</g).map (v)->
 									v.replace(/a\shref.+_blank\"\>|\/a|<\/p\>|<|\>/g,'')
-						else 
+						else
 							video_artists[i] = '' for video, i in videos
 							console.log "#{XXXXXXXX}: current Page: #{page} has no artists names"
 
@@ -1059,11 +1059,11 @@ class Nhaccuatui extends Module
 												v = v.replace(/<\!\-\-<div\sclass\=\"times\"\>|<\/div\>\-\-\>/g,'').split(':')
 												time = parseInt(v[0],10)*60 + parseInt(v[1],10)
 
-						else 
+						else
 							durations[i] = '' for video, i in videos
 
 						# console.log JSON.stringify durations
-						
+
 						# @stats.passedItemCount +=1
 						# for video, index in videos
 						# 	_video = {}
@@ -1085,7 +1085,7 @@ class Nhaccuatui extends Module
 						# 			_video.created += ":01"
 						# 	@connection.query @query._insertIntoNCTVideos, _video, (err)->
 						# 		if err then console.log "Cannot insert video:#{_video.videoid} to table. ERROR: #{err}".red
-						
+
 						#------------ special usage for topic: the-loai-khac
 						@stats.passedItemCount +=1
 						for video, index in videos
@@ -1108,7 +1108,7 @@ class Nhaccuatui extends Module
 									_video.created += ":01"
 							@connection.query @query._insertIntoNCTVideos, _video, (err)->
 								if err then console.log "Cannot insert video:#{_video.videoid} to table. ERROR: #{err}".red
-						
+
 					# else console.log "#{XXXXXXXX}: has no video at current Page: #{page} ".red
 
 					# @_fetchAlbum _video
@@ -1118,10 +1118,10 @@ class Nhaccuatui extends Module
 					@utils.printRunning @stats
 					if @stats.totalItemCount is @stats.totalItems
 						@utils.printFinalResult @stats
-			
+
 			.on 'error', (e) =>
 				console.log  "Got error: " + e.message
-				@stats.failedItemCount+=1		
+				@stats.failedItemCount+=1
 	fetchVideoByTopic : ->
 		@connect()
 		console.log "Running on: #{new Date(Date.now())}"
@@ -1135,7 +1135,7 @@ class Nhaccuatui extends Module
 		# link2 = "http://www.nhaccuatui.com/playlist/nhac-tre.html?sort=1&page"
 		# winvejtya belinh909
 		url = "http://www.nhaccuatui.com/mv/"
-		
+
 		@stats.totalItems = 123617263187
 		@stats.currentTable = @table.Videos
 		for topic in topics
@@ -1146,7 +1146,7 @@ class Nhaccuatui extends Module
 			for page in [1..34]
 				@_fetchVideoByTopic link1, page
 				@_fetchVideoByTopic link2, page
-		null		
+		null
 
 	#---------------------------------------------------------------------------------
 	_updateAlbumsAndSongs : (topicLink,page = 1) ->
@@ -1166,7 +1166,7 @@ class Nhaccuatui extends Module
 						if  data.match(/src\=\"http\:\/\/.+nct\.nixcdn\.com.+\"\swidth/g)
 							thumbs = data.match(/src\=\"http\:\/\/.+nct\.nixcdn\.com.+\"\swidth/g)
 							thumbs[i] = thumb.replace(/src\=\"|\"\swidth/g,'') for thumb, i in thumbs
-						else 
+						else
 							thumbs[i] = '' for album, i in albums
 							console.log "#{XXXXXXXX}: current Page: #{page} has no thumbnail"
 						if data.match(/<a\shref.+www\.nhaccuatui\.com\/tim\-kiem.+/g)
@@ -1174,7 +1174,7 @@ class Nhaccuatui extends Module
 							for _artist, index in artists
 								artists[index] = _artist.split(/\>\,\s</g).map (v)->
 									v.replace(/a\shref.+_blank\"\>|\/a|<\/p\>|<|\>/g,'')
-						else 
+						else
 							artists[i] = '' for album, i in albums
 							console.log "#{XXXXXXXX}: current Page: #{page} has no artists names"
 						if data.match /NCTCounter_pl_\d+/g
@@ -1182,7 +1182,7 @@ class Nhaccuatui extends Module
 						else albumids[i] = '0' for album, i in albumids
 
 						for album, index in albums
-							_album = 
+							_album =
 								artist : encoder.htmlDecode JSON.stringify artists[index]
 								albumid : parseInt albumids[index].replace(/NCTCounter_pl_/g, ''), 10
 							if album.match(/<a.+\.html/)
@@ -1199,34 +1199,34 @@ class Nhaccuatui extends Module
 							if _album.thumbnail.match(/\/\d+\.jpg$/g)
 								_t = new Date(parseInt(_album.thumbnail.match(/\/\d+\.jpg/g)[0].replace(/\/|\.jpg/g,'')))
 								_album.created += " " + _t.getHours() + ":" + _t.getMinutes() + ":" + _t.getSeconds()
-							
-							
+
+
 							do (_album) =>
-								@stats.totalItemCount +=1 
+								@stats.totalItemCount +=1
 								if _album.albumid > @log.maxAlbumId
 									# find temporary max album id in album collection
-									if _album.albumid > @log.tempMaxAlbumId 
+									if _album.albumid > @log.tempMaxAlbumId
 										@log.tempMaxAlbumId  = _album.albumid
 									@stats.passedItemCount +=1
 									# @connection.query @query._insertIntoNCTAlbums, _album, (err)=>
 									#  	if err then console.log "Cannot insert new album:#{_album.album_key} to table. ERROR: #{err}".red
-									#  	else 
+									#  	else
 									 		# @_updateAlbumLinkKey _album.album_key
 									@_updateAlbumStatsAndInsertSongs _album
 								else @stats.failedItemCount += 1
 								@utils.printUpdateRunning _album.album_key, @stats, "Fetching..."
 								if @stats.totalItemCount is 9590
 									@utils.printFinalResult @stats
-							@utils.printUpdateRunning _album.album_key, @stats, "Fetching..."	
-					# else console.log "#{XXXXXXXX}: has no album at current Page: #{page} ".red	
+							@utils.printUpdateRunning _album.album_key, @stats, "Fetching..."
+					# else console.log "#{XXXXXXXX}: has no album at current Page: #{page} ".red
 					data = ""
 					# if @stats.totalItemCount is @stats.totalItems
 					# 	@utils.printFinalResult @stats
 			.on 'error', (e) =>
 				console.log  "Got error: " + e.message
-				@stats.failedItemCount+=1	
+				@stats.failedItemCount+=1
 	###*
-	 * updateAlbumsAndSongs()  
+	 * updateAlbumsAndSongs()
 	 *   _updateAlbumsAndSongs(topic,link) - insert new albums into table
 	 *     _updateAlbumStatsAndInsertSongs() - http://www.nhaccuatui.com/playlist/joke-link.#{album_key}.html
 	 *        _updateAlbumTopic()
@@ -1277,11 +1277,11 @@ class Nhaccuatui extends Module
 							if @stats.totalItemCount is @stats.totalItems
 								@utils.printFinalResult @stats
 						else _songs = ''
-						data = ''	
+						data = ''
 					catch e
 						console.log "ERROR while updating Album Stats And Inserting Songs.... #{e}"
 						@stats.failedItemCount += 1
-					
+
 			.on 'error', (e) =>
 				console.log  "Got error: " + e.message
 	updateSongs_AlbumsTables : ()->
@@ -1313,12 +1313,12 @@ class Nhaccuatui extends Module
 						durations = []
 						video_artists = []
 
-						
-						
+
+
 						if  data.match(/src\=\"http\:\/\/.+nct\.nixcdn\.com.+\"\swidth/g)
 							thumbs = data.match(/src\=\"http\:\/\/.+nct\.nixcdn\.com.+\"\swidth/g)
 							thumbs[i] = thumb.replace(/src\=\"|\"\swidth/g,'') for thumb, i in thumbs
-						else 
+						else
 							thumbs[i] = '' for video, i in videos
 							console.log "#{_nonsense}: current Page: #{page} has no thummbinial"
 
@@ -1327,7 +1327,7 @@ class Nhaccuatui extends Module
 							for _artist, index in video_artists
 								video_artists[index] = _artist.split(/\>\,\s</g).map (v)->
 									v.replace(/a\shref.+_blank\"\>|\/a|<\/p\>|<|\>/g,'')
-						else 
+						else
 							video_artists[i] = '' for video, i in videos
 							console.log "#{_nonsense}: current Page: #{page} has no artists names"
 
@@ -1337,13 +1337,13 @@ class Nhaccuatui extends Module
 												v = v.replace(/<\!\-\-<div\sclass\=\"times\"\>|<\/div\>\-\-\>/g,'').split(':')
 												time = parseInt(v[0],10)*60 + parseInt(v[1],10)
 
-						else 
+						else
 							durations[i] = '' for video, i in videos
 
-						
+
 						for video, index in videos
 							_video = {}
-							
+
 							if video.match(/<h3\><a.+\.html\"\stitle\=/g)
 								_video.video_key = video.match(/<h3\><a.+\.html\"\stitle\=/g)[0].replace(/<h3\>|\.html|\"\stitle\=/g,'').replace(/<a.+\./,'')
 							else _video.video_key = ''
@@ -1360,7 +1360,7 @@ class Nhaccuatui extends Module
 								else if _video.thumbnail.match(/\d{4}_\d{2}\//g)
 									_video.created = _video.thumbnail.match(/\d{4}_\d{2}\//g)[0].replace(/_/g,':').replace(/\//g,'')
 									_video.created += ":01"
-							
+
 
 							@_printUpdateAlbum "Fetching pages..."
 							if new Date(_video.created) > new Date(@log.lastVideoUpdatedDate)
@@ -1369,13 +1369,13 @@ class Nhaccuatui extends Module
 									@_writeLog @log
 								@stats.totalItems += 1
 								@_updateVideoLinkKey _video
-							
+
 					data = ""
-					
-			
+
+
 			.on 'error', (e) =>
 				console.log  "Got error: " + e.message
-				@stats.failedItemCount+=1			
+				@stats.failedItemCount+=1
 	updateVideos : ->
 		@connect()
 		console.log "Running on: #{new Date(Date.now())}"
@@ -1392,7 +1392,7 @@ class Nhaccuatui extends Module
 			link =  url + topic + ".html" + "?sort=1&page="
 			for page in [1..42]
 				@_updateVideos link, page
-		null		
+		null
 
 	_updateLyrics : (songid)->
 		link = "http://www.nhaccuatui.com/ajax/get-lyric?key=#{songid}"
@@ -1405,7 +1405,7 @@ class Nhaccuatui extends Module
 					try
 						@stats.totalItemCount +=1
 						if not data.match(/Hiện\schưa\scó\slời\sbài\shát\snào/)
-							
+
 							@stats.passedItemCount +=1
 							data = JSON.parse data
 							lyric = encoder.htmlDecode data.data.html.replace(/\r|\n|\t/g,'')
@@ -1415,7 +1415,7 @@ class Nhaccuatui extends Module
 							_u = "update #{@table.Songs} set lyric=#{@connection.escape(lyric)} where songid=#{songid}"
 							@connection.query _u, (err)->
 								if err then console.log "Cannt insert lyric of the song: #{songid}. ERROR: #{err}"
-						else 
+						else
 							@stats.failedItemCount += 1
 						@utils.printRunning @stats
 						if @stats.totalItemCount is @stats.totalItems
@@ -1423,7 +1423,7 @@ class Nhaccuatui extends Module
 					catch e
 						console.log "ERROR while updating Lyric of Song: #{songid}. ERROR: #{e}"
 						@stats.failedItemCount += 1
-					
+
 			.on 'error', (e) =>
 				console.log  "Got error: " + e.message
 				@stats.failedItemCount += 1

@@ -66,13 +66,13 @@ class Nhaccuatui extends Module
 					res.on 'end', () =>
 						
 						onSucess data, options
-				else onFail("The link is temporary moved",options)
+				else onFail("The link: #{link} is temporary moved",options)
 			.on 'error', (e) =>
-				onFail  "Cannot get file from server. ERROR: " + e.message, options
+				onFail  "Cannot get file: #{link} from server. ERROR: " + e.message, options
 				@stats.failedItemCount +=1
 	
 	_onFail : (err)->
-		console.log err
+		console.log "#{err}".red
 
 
 	_fetchAlbumsPlays : (ids)->
@@ -196,9 +196,17 @@ class Nhaccuatui extends Module
 			artists : ""
 			topic : ""
 			plays : 0
+			bitrate : 0
 			type : ""
 			link_key : ""
 			lyric : ""
+
+		id = data.match(/hidden.+\"(\d+)\".+inpHiddenId/)?[1]
+
+		if id
+			id = parseInt(id,10)
+			if id isnt song.id
+				song.id = id
 
 		topic =  data.match(/inpHiddenGenre.+/g)?[0]
 		if topic then song.topic = topic.replace(/inpHiddenGenre.+value\=|\"|\s\/\>/g,'')
@@ -218,6 +226,13 @@ class Nhaccuatui extends Module
 		lyric = data.match(/divLyric[^]+inpLyricId/g)?[0]
 		if lyric then song.lyric = encoder.htmlDecode lyric.replace(/<input.+$/g,'').replace(/[^]+hidden;\">\n/g,'').trim().replace(/<\/div>$/g,'').trim()
 	
+		bitrate = data.match(/<meta content=.+\s(\d+)kb/)?[1] 
+		if bitrate 
+			song.bitrate = bitrate
+		# THIS PART IS OPTIONAL. Only use for getting new songs
+		@processSimilarSongs data, options
+		# END OF OPTIONAL PART
+
 		@eventEmitter.emit "song-result", song
 
 		song
@@ -404,52 +419,39 @@ class Nhaccuatui extends Module
 
 
 
-	# THIS PART FOR PROCESSING SONG
+	# THIS PART FOR PROCESSING SONG, EXPANDING DB TO MILLIONS RECORDS May-05
 	# 
 	processArtistSongs : (data, options)=>
-
 		nSongs = data.match(/Tìm được (.+) kết quả cho/)?[1]
-
 		if nSongs
-
 			nSongs = parseInt(nSongs.replace(",",""),10)
-
-
 			if nSongs >= 50*20
 				maxPage = 50
 			else maxPage = (nSongs/20|0)+1
-
 			if options.page < maxPage
 				@_fetchArtist options.artistName, options.page+1
-
-
 			ids = data.match(/btnAddPlaylist_(\d+)/g)
 			if ids 
 				ids = ids.map (v)-> parseInt(v.replace(/btnAddPlaylist_/,''),10)
-
 			keys = data.match(/song-name.+\s+.+\s+.+\s+.+\s+.+\s+/g)
-
 			songs = []
 			if keys 
 				if keys.length is ids.length
-
 					keys.forEach (v,index)-> 
 						song = 
 							id : ids[index]
 						song.key = v.match(/<a.+\.(.+)\.html/)?[1]
-
 						if v.match(/class=\"mof\"/g)
 							song.official = 1
 						else song.official = 0
-
 						if v.match(/class=\"m320\"/g)
 							song.bitrate = 320
 						else song.bitrate = 0	
-
 						songs.push song
-
 					@eventEmitter.emit "fetch-song-artist-done", songs, options
-
+					# THIS EVENT CALLBACK IS OPTIONAL. USE ONLY FOR getSongs()
+					# @eventEmitter.emit "fetch-song-artist-done-the-FULL", songs, options
+					# END OF OPTIONAL PART
 				else 
 					console.log "Artist: #{options.artistName} page: #{options.page} has keys and ids mismatched                                       "
 			else console.log "Artist: #{options.artistName} page: #{options.page} has keys and ids which do not exit                                       "
@@ -500,7 +502,6 @@ class Nhaccuatui extends Module
 
 		else if link.match(/m\.nhaccuatui\.com/)
 			@getFileByHTTP link, @processArtistSongsMobileVersion, @onProcessArtistSongsFail, options
-
 	onFetchSongAritstDone : ->
 		@eventEmitter.on "fetch-song-artist-done", (songs, options)=>
 			@stats.totalItemCount +=1
@@ -509,13 +510,13 @@ class Nhaccuatui extends Module
 
 			console.log songs
 
-			for song in songs
-				do (song)=>
-					@connection.query @query._insertIntoNCTSongs, song, (err)->
-						if err then console.log "Cannot insert song: #{song.id}, key #{song.key} into DB. ERROR: #{err}"
-					_u = "update #{@table.Songs} SET official=#{song.official}, bitrate=#{song.bitrate} where id=#{song.id}"
-					@connection.query _u, (err,results)=>
-						if err then console.log "Cannot update song: #{song.id}, key #{song.key}. ERROR: #{err} "
+			# for song in songs
+			# 	do (song)=>
+			# 		@connection.query @query._insertIntoNCTSongs, song, (err)->
+			# 			if err then console.log "Cannot insert song: #{song.id}, key #{song.key} into DB. ERROR: #{err}"
+			# 		_u = "update #{@table.Songs} SET official=#{song.official}, bitrate=#{song.bitrate} where id=#{song.id}"
+			# 		@connection.query _u, (err,results)=>
+			# 			if err then console.log "Cannot update song: #{song.id}, key #{song.key}. ERROR: #{err} "
 
 		@eventEmitter.on "fetch-song-artist-done-mobile-version", (songs, options)=>
 			@stats.totalItemCount +=1
@@ -528,7 +529,6 @@ class Nhaccuatui extends Module
 				do (song)=>
 					@connection.query @query._insertIntoNCTSongs, song, (err)->
 						if err then console.log "Cannot insert song key #{song.key} into DB. ERROR: #{err}"
-
 	fetchArtist : () =>
 		@connect()
 		artists = fs.readFileSync "./log/test/artist.txt" , "utf8"
@@ -540,14 +540,277 @@ class Nhaccuatui extends Module
 			
 		@stats.totalItems = artists.length
 		@stats.currentTable = @table.Songs
-		console.log "get form 5000 to the 10000"
+		console.log "get from 20000 to the rest"
 		for name, index in artists
-			if 5000<=index<=10000
+			if 20000<=index
 				@_fetchArtist name, 1, "mobile"
 		null
+	#This part is used to update the song info: title, artist, plays..... after scan through the site nhaccuatui
+	processSimilarSongs : (data, options)=>
+		ids = data.match(/btnAddPlaylist_(\d+)\" class=\"add\"/g)
+		if ids 
+			ids = ids.map (v)-> parseInt(v.replace(/btnAddPlaylist_/,'').replace(/\" class=\"add\"/g,''),10)
+		keys = data.match(/class=\"song-name\".+\s+.+\s+.+\s+.+\s+.+\s+/g)
+		songs = []
+		if keys 
+			if ids
+				if keys.length is ids.length
+					keys.forEach (v,index)-> 
+						song = 
+							id : ids[index]
+						song.key = v.match(/<a.+\.(.+)\.html/)?[1]
+						if v.match(/class=\"mof\"/g)
+							song.official = 1
+						else song.official = 0
+						if v.match(/class=\"m320\"/g)
+							song.bitrate = 320
+						else song.bitrate = 0	
+						songs.push song
+					@eventEmitter.emit "fetch-song-artist-done", songs, options
+					# THIS EVENT CALLBACK IS OPTIONAL. USE ONLY FOR getSongs()
+					# @eventEmitter.emit "fetch-song-artist-done-the-FULL", songs, options
+					# END OF OPTIONAL PART
+				else 
+					# console.log "Song: #{options.id} key: #{options.key} has similar songs mismatched                                                "
+					@_onFailSong_UPDATE "Song: #{options.id} key: #{options.key} has similar songs mismatched                                                "
+			else 
+				# console.log "Song: #{options.id} key: #{options.key} is not available  !!!!"
+				@_onFailSong_UPDATE  "Song: #{options.id} key: #{options.key} is not available  !!!!"
+		else 
+			# console.log "Song: #{options.id} key: #{options.key} is not available                                                          "
+			@_onFailSong_UPDATE "Song: #{options.id} key: #{options.key} is not available                                                          "
 
-	showStats : ->
-		@_printTableStats NCT_CONFIG.table
+		# this part is for song-like
+		keys = data.match(/class=\"can-like\".+\s+.+\s+.+\s+.+\s+.+\s+/g)
+		ids = data.match(/NCTCounter_sg.+\s.+class=\"clr\"/g)
+		songs = []
+		if keys and ids
+			if keys.length is ids.length
+				ids = ids.map (v)-> v.match(/NCTCounter_sg_(\d+)/)?[1]
+				keys.forEach (v,index)-> 
+					song = 
+						id : ids[index]
+					song.key = v.match(/<a.+\.(.+)\.html/)?[1]
+					if v.match(/class=\"mof\"/g)
+						song.official = 1
+					else song.official = 0
+					if v.match(/class=\"m320\"/g)
+						song.bitrate = 320
+					else song.bitrate = 0	
+					songs.push song
+			@eventEmitter.emit "fetch-song-artist-done", songs, options
+		else 
+			# console.log "Song: #{options.id} key: #{options.key} is not available 2222      "
+			@_onFailSong_UPDATE "Song: #{options.id} key: #{options.key} is not available 2222      "	
+	_getFieldsFromTable : (param, callback)->
+		fields = "id"
+		if param.fields
+			_t = param.fields.map (v)-> return "#{param.table}.#{v}"
+			fields = _t.join(',')
+		_q = "Select #{fields} from #{param.table}"
+		_q += " #{param.onCondition}" if param.onCondition
+		_q += " LIMIT #{param.limit}" if param.limit
+		@connection.query _q, (err, results)=>
+			if err then console.log "cannt fetch fields from table. ERROR: #{err}"
+			else  callback results
+	_onFailSong_UPDATE : (err)=>
+		# if err isnt "The link: http://www.nhaccuatui.com/bai-hat/joke-link.null.html is temporary moved"
+		# 	console.log "#{err}".red
+		@stats.totalItemCount +=1
+		@stats.failedItemCount +=1
+		@utils.printRunning @stats
+		if @stats.totalItemCount%@params.limit is 0 and @stats.totalItemCount < @stats.totalItems
+				console.log ""
+				console.log "GO TO NEXT STEP: #{@stats.totalItemCount/@params.limit+1}".inverse.yellow
+				# @getField()
+				@getFieldBitrate()
+		
+		if @stats.totalItemCount is @stats.totalItems
+				@utils.printFinalResult @stats
+	getField : =>
+		@_getFieldsFromTable @params, (songs)=>
+			for song in songs
+				do (song)=>
+					link = "http://www.nhaccuatui.com/bai-hat/joke-link.#{song.key}.html"
+					options = 
+						id : song.id
+						key : song.key
+					@getFileByHTTP link, @processSong, @_onFailSong_UPDATE, options
+	onSongResultDone : ->
+		@eventEmitter.on "fetch-song-artist-done", (songs, options)=>
+			for song in songs
+				do (song)=>
+					@connection.query @query._insertIntoNCTSongs, song, (err)->
+						if err then console.log "Cannot insert song: #{song.id}, key #{song.key} into DB. ERROR: #{err}"
+					if song.bitrate isnt 0 or song.official isnt 0
+						_u = "update #{@table.Songs} SET "
+						_u += "official=#{song.official} " if song.official isnt 0
+						_u += "bitrate=#{song.bitrate} " if song.bitrate isnt 0
+						_u += " where id=#{song.id}"
+						@connection.query _u, (err,results)=>
+							if err then console.log "Cannot update song: #{song.id}, key #{song.key}. ERROR: #{err} "
+		@eventEmitter.on "song-result", (song)=>
+			@stats.totalItemCount +=1
+			@stats.passedItemCount +=1
+			@stats.currentId = song.id
+			@utils.printRunning @stats
+			# insert song into table
+			# 
+			_u = "update #{@table.Songs} SET "
+			# _u += " id=#{song.id}," # this option is enable when song.id > 1.000.000.000
+			_u += " title=#{@connection.escape song.title},"
+			_u += " artists=#{@connection.escape song.artists},"
+			_u += " topic=#{@connection.escape song.topic},"
+			_u += " type=#{@connection.escape song.type},"
+			_u += " link_key=#{@connection.escape song.link_key},"
+			_u += " bitrate=#{song.bitrate},"
+			_u += " lyric=#{@connection.escape song.lyric}"
+			_u += " WHERE #{@table.Songs}.key=#{@connection.escape song.key}"
+
+			# console.log _u
+			@connection.query _u, (err)=>
+				if err then console.log "Cannt insert song: #{song.key} into table. ERROR: #{err}"
+
+			if @stats.totalItemCount%@params.limit is 0 and @stats.totalItemCount < @stats.totalItems
+				console.log ""
+				console.log "GO TO NEXT STEP: #{@stats.totalItemCount/@params.limit+1}".inverse.yellow
+				@getField()
+			
+			if @stats.totalItemCount is @stats.totalItems
+				@utils.printFinalResult @stats
+		@eventEmitter.on "update-song-bitrate-mobile-version", (song)=>
+			@stats.totalItemCount +=1
+			@stats.passedItemCount +=1
+			@stats.currentId = song.id
+			@utils.printRunning @stats
+			# insert song into table
+			# console.log song
+			_u = "update #{@table.Songs} SET "
+			# _u += " id=#{song.id}," # this option is enable when song.id > 1.000.000.000
+			_u += " bitrate=#{song.bitrate}"
+			_u += " WHERE #{@table.Songs}.key=#{@connection.escape song.key}"
+			# console.log  _u
+			@connection.query _u, (err)=>
+				if err then console.log "Cannt insert song: #{song.key} into table. ERROR: #{err}"
+
+			if @stats.totalItemCount%@params.limit is 0 and @stats.totalItemCount < @stats.totalItems
+				console.log ""
+				console.log "GO TO NEXT STEP : #{@stats.totalItemCount/@params.limit+1} - MOBILE-VERSION".inverse.yellow
+				# @getField()
+				@getFieldBitrate()
+			
+			if @stats.totalItemCount is @stats.totalItems
+				@utils.printFinalResult @stats
+	
+		@eventEmitter.on "fetch-song-artist-done-mobile-version", (songs, options)=>
+			for song in songs
+				do (song)=>
+					# console.log song
+					@connection.query @query._insertIntoNCTSongs, song, (err)->
+						if err then console.log "Cannot insert song: #{song.id}, key #{song.key} into DB. ERROR: #{err}"
+	getSongs : ->
+		@connect()
+		console.log "Running on: #{new Date(Date.now())}"
+		console.log " |"+" UPDATE SONGS WHERE BITRATE = 0 OR BITRATE IS NULL from #{@table.Songs}".magenta	
+		@params = 
+			fields : ['id','key']
+			table : @table.Songs
+			limit : 10000
+			onCondition : " where artists = '[\"\"]'"
+		songs = []
+		@stats.totalItems = 10000
+		@stats.currentTable = @table.Songs
+		@onSongResultDone()
+		@getField()
+		# @getFieldBitrate()
+
+	#THIS PART USED FOR FILLED UP BITRATE IN TABLE
+	getFieldBitrate : =>
+		@_getFieldsFromTable @params, (songs)=>
+			for song in songs
+				do (song)=>
+					link = "http://m.nhaccuatui.com/bai-hat/joke-link.#{song.key}.html"
+					# console.log link
+					options = 
+						id : song.id
+						key : song.key
+					@getFileByHTTP link, @processSongBitrate, @_onFailSong_UPDATE, options
+	processSongBitrate : (data,options)=>
+		song =
+			id : options.id
+			key : options.key
+			bitrate : 0
+		bitrate = data.match(/<span><img.+\s(\d+)kbps/)?[1]
+		if bitrate 
+			song.bitrate = bitrate
+		@eventEmitter.emit "update-song-bitrate-mobile-version", song
+		songs = data.match(/<h3><a href.+html/g)
+		if songs 
+			songs = songs.map (v)->
+				ob = 
+					key : v.match(/.+\.([a-zA-Z0-9-_]+)\.html/)?[1]
+			@eventEmitter.emit "fetch-song-artist-done-mobile-version", songs	
+
+	#This part is not supposed to replace the func updateSongsPlays()
+	#It is used to fetch a large amount of songs which ends up to a million ones
+	#It will be removed later
+	onSongsPlaysFail : (err,options)=>
+		@stats.totalItemCount +=1
+		@stats.failedItemCount +=1
+		@utils.printRunning @stats
+
+		if @stats.totalItemCount<@stats.totalItems
+			@_getSongsPlays()
+
+		if @stats.totalItemCount is @stats.totalItems
+			@utils.printFinalResult @stats
+	processSongsPlays : (data, options)=>
+		data = JSON.parse data
+		songs = data.data.songs
+		# console.log songs
+		for  id, plays of songs
+			do (id, plays)=>
+				@stats.totalItemCount +=1
+				@stats.passedItemCount +=1
+				_u = "update #{@table.Songs} SET plays=#{plays} where id=#{id}"
+				@stats.currentId = id
+				# console.log _u
+				@connection.query _u, (err)->
+							if err then console.log "Cannt update the total plays of the song #{id} into database. ERROR: #{err}"
+				@utils.printRunning @stats
+
+		if @stats.totalItemCount<@stats.totalItems
+			@_getSongsPlays()
+
+		if @stats.totalItemCount is @stats.totalItems
+			@utils.printFinalResult @stats
+	_getSongsPlays : =>
+		@_getFieldsFromTable @params, (songs)=>
+			ids = []
+			for song in songs
+				ids.push song.id
+			ids = ids.join(',')
+			link = "http://www.nhaccuatui.com/wg/get-counter?listSongIds=#{ids}"
+			# console.log link
+			options = 
+				id : song.id
+			@getFileByHTTP link, @processSongsPlays, @onSongsPlaysFail, options
+	getSongsPlays : ->
+		@connect()
+		console.log "Running on: #{new Date(Date.now())}"
+		console.log " |"+" UPDATE PLAYS OF SONGS WHERE PLAYS = 0 from #{@table.Songs}".magenta	
+		@params = 
+			fields : ['id']
+			table : @table.Songs
+			limit : 500
+			onCondition : " WHERE plays=0 or plays is null "
+		songs = []
+		@stats.totalItems = 300000
+		@stats.currentTable = @table.Songs
+		# @getField()
+		@_getSongsPlays()
+	
+	showStats : -> @_printTableStats NCT_CONFIG.table
 
 
 module.exports = Nhaccuatui

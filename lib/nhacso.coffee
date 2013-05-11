@@ -326,17 +326,20 @@ class Nhacso extends Site
 		plays = data.match(/<span>(.+)<\/span><ins>&nbsp;lượt xem<\/ins>/)?[1]
 		video.plays = parseInt(plays.replace(/\./g,''),10)
 
-		video.thumbnail = data.match(/var video.+poster=\"(.+)\".+/)?[1]
+		thumb_link  = data.match(/poster=\"(.+)\" src=\"(.+)\" data/)
 
-		video.link = data.match(/video \+= \'<source src=\"(.+)\" type/)?[1]
-
-		ts = video.link.match(/\/([0-9]+)_/)?[1]
-		ts = parseInt(ts)*Math.pow(10,13-ts.length)
-		video.created = @formatDate new Date(ts)
+		if thumb_link
+			video.thumbnail = thumb_link[1]
+			video.link = thumb_link[2]
+			if video.link
+				ts = video.link.match(/\/([0-9]+)_/)?[1]
+				ts = parseInt(ts)*Math.pow(10,13-ts.length)
+				video.created = @formatDate new Date(ts)
 
 		producerid = data.match(/getProducerByListIds.+\'(\d+)\'.+/)?[1]
 		if producerid then video.producerid = parseInt(producerid,10)
 
+		# console.log video
 		@getVideoDurationAndSublink video
 
 		video
@@ -355,6 +358,7 @@ class Nhacso extends Site
 			else 
 				@utils.printFinalResult @stats
 				@_writeLog @log
+			@eventEmitter.emit "update-video-finish"
 	_updateVideo: (id)=>
 		link = "http://nhacso.net/xem-video/joke-link.#{@_decodeId(id)}=.html"
 		options = 
@@ -392,11 +396,96 @@ class Nhacso extends Site
 		@eventEmitter.on "update-album-finish", =>
 			@resetStats()
 			@updateVideos()
+		@eventEmitter.on "update-video-finish", =>
+			@resetStats()
+			@updateSongsCategory()
+		@eventEmitter.on "update-songs-category-done", =>
+			@resetStats()
+			@updateAlbumsCategory()
 		@updateSongs()
 
+	# THIS UPDATE IS FOR CATEGORY ONLY
+	# The format is ["Nhạc Việt Nam","Nhạc Trẻ","Pop","Ballad"]
+	updateSongsCategory : ->
+		Array::unique = ()->
+			@.filter (element, index, array)->
+				array.indexOf(element) is index
+		@connect()
+		@type = [null,"Nhạc Trẻ","Nhạc Trữ Tình","Nhạc Cách Mạng","Nhạc Trịnh ","Nhạc Tiền Chiến","Nhạc Dân Tộc","Nhạc Thiếu Nhi","Nhạc Không Lời","Rock Việt","Nhạc Hải Ngoại","Nhạc Quê Hương","Nhạc Việt Nam","Nhạc Quốc Tế","Rap Việt - Hiphop","Nhạc Hoa","Nhạc Hàn","Nhạc Pháp","Nhạc Các Nước Khác","Classical","Nhạc Phim","Nhạc Âu Mỹ","Pop","Rock","Hiphop/Rap","Country","Jazz","Hiphop","Latin",null,"Thể Loại","Dance/Electronic","Nhạc Nhật","Chưa phân loại",null,"Style","Acoustic/Audiophile","Soul","Reggae","Metal","New Age","R&B","Folk","Opera","TV Shows","VMVC 2011","Cặp Đôi Hoàn Hảo","Bài Hát Yêu Thích","Vietnam\'s Got Talent","Nhạc Chủ Đề","Nhạc 8/3","Nhạc chủ đề","Nhạc 8/3","Mừng QT phụ nữ 8/3","Nhạc Sàn","Nhạc Bà Bầu & Baby","Nhạc Spa | Thư Giãn","Nhạc Đám Cưới Hay","Sách Nói","Radio - Cảm Xúc","The Voice - Giọng Hát Việt","Vietnam Idol 2012","Nhạc Tuyển Tập","Shining Show","Gương Mặt Thân Quen","Ngâm Thơ","Fanmade / Radio"]
+		@genres = [{"id":99,"name":"Nhạc Xuân","page":129},{"id":73,"name":"Nhạc Không Lời","page":2900},{"id":79,"name":"Pop/Ballad","page":12056},{"id":76,"name":"New Age","page":1326},{"id":90,"name":"House","page":187},{"id":62,"name":"R&B","page":1850},{"id":26,"name":"Rock","page":7595},{"id":64,"name":"Alternative","page":556},{"id":63,"name":"Hiphop/Rap","page":2513},{"id":65,"name":"Country","page":3053},{"id":74,"name":"Folk","page":762},{"id":68,"name":"Dance/Electronic","page":674},{"id":66,"name":"Latin","page":452},{"id":69,"name":"Jazz","page":2864},{"id":70,"name":"Acoustic/Audiophile","page":211},{"id":72,"name":"Soundtrack","page":1220},{"id":77,"name":"Classical","page":493},{"id":75,"name":"Blues","page":611},{"id":108,"name":"Nhạc Giáng Sinh","page":176},{"id":27,"name":"Metal","page":822},{"id":71,"name":"Soul","page":652}]
+		
+		# Set all pages in genres the value 10
+		console.log "Fetching category for Songs".green
+		console.log "The defaul page for each genre is set to 10"
+		for index in [0..@genres.length-1]
+			@genres[index].page = 10
 
-	# this part is optional. Only fetch the topic
-	# 
+		for g in @genres
+			@stats.totalItems += g.page
+		console.log "Total page: #{@stats.totalItems}"	
+		@stats.currentTable = @table.Songs
+
+
+		# THIS PART IS FOR RESULT EVENT
+		@eventEmitter.on "result-type-done", (songs)=>
+			# console.log songs
+			@stats.totalItemCount +=1
+			@stats.passedItemCount +=1
+			@utils.printRunning @stats
+
+			for song in songs
+				do (song)=>
+					_u = "update #{@table.Songs} SET category = #{@connection.escape(JSON.stringify(song.cats))} where songid=#{song.id}"
+					# console.log _u
+					@connection.query _u, (err)->
+						if err then console.log "Song:#{song.id} has an error: #{err}"
+
+			if @stats.totalItems is @stats.totalItemCount
+				@utils.printFinalResult @stats
+				@eventEmitter.emit "update-songs-category-done"
+
+		for genre in @genres
+			for page in [1..genre.page]
+				@_fetchType genre, page
+	updateAlbumsCategory : ->
+		Array::unique = ()->
+			@.filter (element, index, array)->
+				array.indexOf(element) is index
+		@connect()
+		@type = [null,"Nhạc Trẻ","Nhạc Trữ Tình","Nhạc Cách Mạng","Nhạc Trịnh ","Nhạc Tiền Chiến","Nhạc Dân Tộc","Nhạc Thiếu Nhi","Nhạc Không Lời","Rock Việt","Nhạc Hải Ngoại","Nhạc Quê Hương","Nhạc Việt Nam","Nhạc Quốc Tế","Rap Việt - Hiphop","Nhạc Hoa","Nhạc Hàn","Nhạc Pháp","Nhạc Các Nước Khác","Classical","Nhạc Phim","Nhạc Âu Mỹ","Pop","Rock","Hiphop/Rap","Country","Jazz","Hiphop","Latin",null,"Thể Loại","Dance/Electronic","Nhạc Nhật","Chưa phân loại",null,"Style","Acoustic/Audiophile","Soul","Reggae","Metal","New Age","R&B","Folk","Opera","TV Shows","VMVC 2011","Cặp Đôi Hoàn Hảo","Bài Hát Yêu Thích","Vietnam\'s Got Talent","Nhạc Chủ Đề","Nhạc 8/3","Nhạc chủ đề","Nhạc 8/3","Mừng QT phụ nữ 8/3","Nhạc Sàn","Nhạc Bà Bầu & Baby","Nhạc Spa | Thư Giãn","Nhạc Đám Cưới Hay","Sách Nói","Radio - Cảm Xúc","The Voice - Giọng Hát Việt","Vietnam Idol 2012","Nhạc Tuyển Tập","Shining Show","Gương Mặt Thân Quen","Ngâm Thơ","Fanmade / Radio"]
+
+		@genres = [{"id":99,"name":"Nhạc Xuân","page":32},{"id":73,"name":"Nhạc Không Lời","page":517},{"id":79,"name":"Pop/Ballad","page":2831},{"id":76,"name":"New Age","page":281},{"id":90,"name":"House","page":31},{"id":62,"name":"R&B","page":428},{"id":26,"name":"Rock","page":1667},{"id":64,"name":"Alternative","page":95},{"id":63,"name":"Hiphop/Rap","page":442},{"id":65,"name":"Country","page":531},{"id":74,"name":"Folk","page":148},{"id":68,"name":"Dance/Electronic","page":142},{"id":66,"name":"Latin","page":80},{"id":69,"name":"Jazz","page":496},{"id":70,"name":"Acoustic/Audiophile","page":41},{"id":72,"name":"Soundtrack","page":223},{"id":77,"name":"Classical","page":67},{"id":75,"name":"Blues","page":105},{"id":108,"name":"Nhạc Giáng Sinh","page":53},{"id":27,"name":"Metal","page":184},{"id":71,"name":"Soul","page":128}]
+
+		console.log "Fetching category for albums".green
+		console.log "The defaul page for each genre is set to 10"
+		for index in [0..@genres.length-1]
+			@genres[index].page = 10
+
+		for g in @genres
+			@stats.totalItems += g.page
+		console.log "Total page: #{@stats.totalItems}"	
+		@stats.currentTable = @table.Albums
+
+		# THIS PART IS FOR RESULT EVENT
+		@eventEmitter.on "result-type-album-done", (albums)=>
+			# console.log albums
+			@stats.totalItemCount +=1
+			@stats.passedItemCount +=1
+			@utils.printRunning @stats
+			# console.log albums
+			for album in albums
+				do (album)=>
+					_u = "update #{@table.Albums} SET category = #{@connection.escape(JSON.stringify(album.cats))} where albumid=#{album.id}"
+					# console.log _u
+					@connection.query _u, (err)->
+						if err then console.log "Album:#{album.id} has an error: #{err}"
+			if @stats.totalItems is @stats.totalItemCount
+				@utils.printFinalResult @stats
+				@eventEmitter.emit "update-albums-category-done"
+		for genre in @genres
+			for page in [1..genre.page]
+				@_fetchTypeAlbum genre, page
+	# for songs
 	processFetchSongType : (data,options)=>
 		# console.log options.genre
 		# console.log "page is" + options.page
@@ -463,55 +552,7 @@ class Nhacso extends Site
 			genre : genre
 			page : page
 		@getFileByHTTP link, @processFetchSongType, @onFetchTypeFail, options				
-	# fetch Song only
-	fetchType : ->
-		Array::unique = ()->
-			@.filter (element, index, array)->
-				array.indexOf(element) is index
-		@connect()
-		@type = [null,"Nhạc Trẻ","Nhạc Trữ Tình","Nhạc Cách Mạng","Nhạc Trịnh ","Nhạc Tiền Chiến","Nhạc Dân Tộc","Nhạc Thiếu Nhi","Nhạc Không Lời","Rock Việt","Nhạc Hải Ngoại","Nhạc Quê Hương","Nhạc Việt Nam","Nhạc Quốc Tế","Rap Việt - Hiphop","Nhạc Hoa","Nhạc Hàn","Nhạc Pháp","Nhạc Các Nước Khác","Classical","Nhạc Phim","Nhạc Âu Mỹ","Pop","Rock","Hiphop/Rap","Country","Jazz","Hiphop","Latin",null,"Thể Loại","Dance/Electronic","Nhạc Nhật","Chưa phân loại",null,"Style","Acoustic/Audiophile","Soul","Reggae","Metal","New Age","R&B","Folk","Opera","TV Shows","VMVC 2011","Cặp Đôi Hoàn Hảo","Bài Hát Yêu Thích","Vietnam\'s Got Talent","Nhạc Chủ Đề","Nhạc 8/3","Nhạc chủ đề","Nhạc 8/3","Mừng QT phụ nữ 8/3","Nhạc Sàn","Nhạc Bà Bầu & Baby","Nhạc Spa | Thư Giãn","Nhạc Đám Cưới Hay","Sách Nói","Radio - Cảm Xúc","The Voice - Giọng Hát Việt","Vietnam Idol 2012","Nhạc Tuyển Tập","Shining Show","Gương Mặt Thân Quen","Ngâm Thơ","Fanmade / Radio"]
-		# test genres with some values has npages
-		# @genres = [{"id":99,"name":"Nhạc Xuân","page":129},{"id":73,"name":"Nhạc Không Lời","page":2898},{"id":79,"name":"Pop/Ballad","page":12056},{"id":76,"name":"New Age"},{"id":90,"name":"House"},{"id":62,"name":"R&B"},{"id":26,"name":"Rock"},{"id":64,"name":"Alternative"},{"id":63,"name":"Hiphop/Rap"},{"id":65,"name":"Country"},{"id":74,"name":"Folk"},{"id":68,"name":"Dance/Electronic"},{"id":66,"name":"Latin"},{"id":69,"name":"Jazz"},{"id":70,"name":"Acoustic/Audiophile"},{"id":72,"name":"Soundtrack"},{"id":77,"name":"Classical"},{"id":75,"name":"Blues"},{"id":108,"name":"Nhạc Giáng Sinh"},{"id":27,"name":"Metal"},{"id":71,"name":"Soul"}]
-		# ORIGINAL genres with no nPages
-		# @genres = [{"id":99,"name":"Nhạc Xuân"},{"id":73,"name":"Nhạc Không Lời"},{"id":79,"name":"Pop/Ballad"},{"id":76,"name":"New Age"},{"id":90,"name":"House"},{"id":62,"name":"R&B"},{"id":26,"name":"Rock"},{"id":64,"name":"Alternative"},{"id":63,"name":"Hiphop/Rap"},{"id":65,"name":"Country"},{"id":74,"name":"Folk"},{"id":68,"name":"Dance/Electronic"},{"id":66,"name":"Latin"},{"id":69,"name":"Jazz"},{"id":70,"name":"Acoustic/Audiophile"},{"id":72,"name":"Soundtrack"},{"id":77,"name":"Classical"},{"id":75,"name":"Blues"},{"id":108,"name":"Nhạc Giáng Sinh"},{"id":27,"name":"Metal"},{"id":71,"name":"Soul"}]
-		
-		# the result of genres after calling fetchMaxType. 
-		# DEFAULT ARRAY
-		@genres = [{"id":99,"name":"Nhạc Xuân","page":129},{"id":73,"name":"Nhạc Không Lời","page":2900},{"id":79,"name":"Pop/Ballad","page":12056},{"id":76,"name":"New Age","page":1326},{"id":90,"name":"House","page":187},{"id":62,"name":"R&B","page":1850},{"id":26,"name":"Rock","page":7595},{"id":64,"name":"Alternative","page":556},{"id":63,"name":"Hiphop/Rap","page":2513},{"id":65,"name":"Country","page":3053},{"id":74,"name":"Folk","page":762},{"id":68,"name":"Dance/Electronic","page":674},{"id":66,"name":"Latin","page":452},{"id":69,"name":"Jazz","page":2864},{"id":70,"name":"Acoustic/Audiophile","page":211},{"id":72,"name":"Soundtrack","page":1220},{"id":77,"name":"Classical","page":493},{"id":75,"name":"Blues","page":611},{"id":108,"name":"Nhạc Giáng Sinh","page":176},{"id":27,"name":"Metal","page":822},{"id":71,"name":"Soul","page":652}]
-		
-		# example
-		# @genres = [{"id":75,"name":"Blues","page":165}]
-
-		for g in @genres
-			@stats.totalItems += g.page
-		console.log "Total page: #{@stats.totalItems}"	
-		@stats.currentTable = @table.Songs
-
-
-		# THIS PART IS FOR RESULT EVENT
-		@eventEmitter.on "result-type-done", (songs)=>
-			# console.log songs
-			@stats.totalItemCount +=1
-			@stats.passedItemCount +=1
-			@utils.printRunning @stats
-
-			for song in songs
-				do (song)=>
-					_u = "update #{@table.Songs} SET category = #{@connection.escape(JSON.stringify(song.cats))} where songid=#{song.id}"
-					# console.log _u
-					@connection.query _u, (err)->
-						if err then console.log "Song:#{song.id} has an error: #{err}"
-
-			if @stats.totalItems is @stats.totalItemCount
-				@utils.printFinalResult @stats
-
-		for genre in @genres
-			for page in [1..genre.page]
-				@_fetchType genre, page
-
-
-
-	# -----------------------------------------------------------
+	# for albums
 	processFetchAlbumType : (data,options)=>
 		# console.log options.genre
 		# console.log "page is" + options.page
@@ -554,47 +595,7 @@ class Nhacso extends Site
 			genre : genre
 			page : page
 		@getFileByHTTP link, @processFetchAlbumType, @onFetchTypeFail, options		
-	# fet album only
-	fetchTypeAlbum : ->
-		Array::unique = ()->
-			@.filter (element, index, array)->
-				array.indexOf(element) is index
-		@connect()
-		@type = [null,"Nhạc Trẻ","Nhạc Trữ Tình","Nhạc Cách Mạng","Nhạc Trịnh ","Nhạc Tiền Chiến","Nhạc Dân Tộc","Nhạc Thiếu Nhi","Nhạc Không Lời","Rock Việt","Nhạc Hải Ngoại","Nhạc Quê Hương","Nhạc Việt Nam","Nhạc Quốc Tế","Rap Việt - Hiphop","Nhạc Hoa","Nhạc Hàn","Nhạc Pháp","Nhạc Các Nước Khác","Classical","Nhạc Phim","Nhạc Âu Mỹ","Pop","Rock","Hiphop/Rap","Country","Jazz","Hiphop","Latin",null,"Thể Loại","Dance/Electronic","Nhạc Nhật","Chưa phân loại",null,"Style","Acoustic/Audiophile","Soul","Reggae","Metal","New Age","R&B","Folk","Opera","TV Shows","VMVC 2011","Cặp Đôi Hoàn Hảo","Bài Hát Yêu Thích","Vietnam\'s Got Talent","Nhạc Chủ Đề","Nhạc 8/3","Nhạc chủ đề","Nhạc 8/3","Mừng QT phụ nữ 8/3","Nhạc Sàn","Nhạc Bà Bầu & Baby","Nhạc Spa | Thư Giãn","Nhạc Đám Cưới Hay","Sách Nói","Radio - Cảm Xúc","The Voice - Giọng Hát Việt","Vietnam Idol 2012","Nhạc Tuyển Tập","Shining Show","Gương Mặt Thân Quen","Ngâm Thơ","Fanmade / Radio"]
-		# the result of genres after calling fetchMaxType. 
-		# DEFAULT ARRAY
-		@genres = [{"id":99,"name":"Nhạc Xuân","page":32},{"id":73,"name":"Nhạc Không Lời","page":517},{"id":79,"name":"Pop/Ballad","page":2831},{"id":76,"name":"New Age","page":281},{"id":90,"name":"House","page":31},{"id":62,"name":"R&B","page":428},{"id":26,"name":"Rock","page":1667},{"id":64,"name":"Alternative","page":95},{"id":63,"name":"Hiphop/Rap","page":442},{"id":65,"name":"Country","page":531},{"id":74,"name":"Folk","page":148},{"id":68,"name":"Dance/Electronic","page":142},{"id":66,"name":"Latin","page":80},{"id":69,"name":"Jazz","page":496},{"id":70,"name":"Acoustic/Audiophile","page":41},{"id":72,"name":"Soundtrack","page":223},{"id":77,"name":"Classical","page":67},{"id":75,"name":"Blues","page":105},{"id":108,"name":"Nhạc Giáng Sinh","page":53},{"id":27,"name":"Metal","page":184},{"id":71,"name":"Soul","page":128}]
-
-		# example
-		# @genres = [{"id":73,"name":"Nhạc Không Lời","page":517}]
-
-		for g in @genres
-			@stats.totalItems += g.page
-		console.log "Total page: #{@stats.totalItems}"	
-		@stats.currentTable = @table.Albums
-
-		# THIS PART IS FOR RESULT EVENT
-		@eventEmitter.on "result-type-album-done", (albums)=>
-			# console.log albums
-			@stats.totalItemCount +=1
-			@stats.passedItemCount +=1
-			@utils.printRunning @stats
-
-			# console.log albums
-
-			for album in albums
-				do (album)=>
-					_u = "update #{@table.Albums} SET category = #{@connection.escape(JSON.stringify(album.cats))} where albumid=#{album.id}"
-					# console.log _u
-					@connection.query _u, (err)->
-						if err then console.log "Album:#{album.id} has an error: #{err}"
-
-			if @stats.totalItems is @stats.totalItemCount
-				@utils.printFinalResult @stats
-
-		for genre in @genres
-			for page in [1..genre.page]
-				@_fetchTypeAlbum genre, page
+	# filter function
 	filterType : (arr)->
 		a = []
 		vnSongs = ["Nhạc Trẻ","Nhạc Trữ Tình","Nhạc Cách Mạng","Nhạc Trịnh","Nhạc Tiền Chiến","Nhạc Dân Tộc","Nhạc Thiếu Nhi","Rock Việt","Nhạc Hải Ngoại","Nhạc Quê Hương","Rap Việt - Hiphop"]
@@ -626,8 +627,7 @@ class Nhacso extends Site
 			else a.push item
 
 		return a
-
-	# -----------------------------------------------------------
+	# this functions to find the maximum page in each genre. Only used once
 	fetchMaxTypeSong : () -> 
 		@genres = [{"id":99,"name":"Nhạc Xuân"},{"id":73,"name":"Nhạc Không Lời"},{"id":79,"name":"Pop/Ballad"},{"id":76,"name":"New Age"},{"id":90,"name":"House"},{"id":62,"name":"R&B"},{"id":26,"name":"Rock"},{"id":64,"name":"Alternative"},{"id":63,"name":"Hiphop/Rap"},{"id":65,"name":"Country"},{"id":74,"name":"Folk"},{"id":68,"name":"Dance/Electronic"},{"id":66,"name":"Latin"},{"id":69,"name":"Jazz"},{"id":70,"name":"Acoustic/Audiophile"},{"id":72,"name":"Soundtrack"},{"id":77,"name":"Classical"},{"id":75,"name":"Blues"},{"id":108,"name":"Nhạc Giáng Sinh"},{"id":27,"name":"Metal"},{"id":71,"name":"Soul"}]
 		@count = 0

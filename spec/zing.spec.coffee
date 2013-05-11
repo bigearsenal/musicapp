@@ -1,7 +1,7 @@
 describe "The site mp3.zing.vn", ->
   Zing = require '../lib/zing'
   zing = new Zing()
-  waitingTime = 100
+  waitingTime = 500
   
   describe "contains a song", ->
     it "has an id of 1382402055", ->
@@ -25,11 +25,11 @@ describe "The site mp3.zing.vn", ->
       expect(zing.song.author).toEqual('')
     it "whose topics are Âu Mỹ,Pop,Audiophile", ->
       expect(zing.song.topic).toEqual('["Âu Mỹ","Pop","Audiophile"]')
-    it "whose name is Meditation", ->
+    it "whose title is Meditation", ->
       expect(zing.song.song_name).toEqual('Meditation')
     it "whose artist is Olivia Ong", ->
       expect(zing.song.song_artist).toEqual('["Olivia Ong"]')
-    it "has link of http://m.mp3.zing.vn/xml/song-load/MjAxMyUyRjA0JTJGMDclMkY3JTJGNCUyRjc0ZGQ3YWM4MzMyNTQxZDEwNjNhNTg4MGM5MWU1NGQxLm1wMyU3QzI=", ->
+    it "has link of http://m.mp3.zing.vn/xml/song-load/....MyU3QzI=", ->
       expect(zing.song.song_link).toEqual('http://m.mp3.zing.vn/xml/song-load/MjAxMyUyRjA0JTJGMDclMkY3JTJGNCUyRjc0ZGQ3YWM4MzMyNTQxZDEwNjNhNTg4MGM5MWU1NGQxLm1wMyU3QzI=')
     it "whose link is decoded into 2013/04/07/7/4/74dd7ac8332541d1063a5880c91e54d1.mp3",->
       expect(zing.song.path).toEqual('2013/04/07/7/4/74dd7ac8332541d1063a5880c91e54d1.mp3')
@@ -53,17 +53,17 @@ describe "The site mp3.zing.vn", ->
        # console.log zing.song
        expect(result.aid).toEqual(1381671200)
        # console.log result
-       zing.end()
+       # zing.end()
        # console.log result
     it "having an albumid of ZWZAAIW0", ->
       expect(result.albumid).toEqual("ZWZAAIW0")
     # it "having album_encodedId of LHJntknaVJvJHnHtLFJTDGLG", ->
     #   expect(result.album_encodedId).toEqual("LHJntknaVJvJHnHtLFJTDGLG")
-    it "whose name is Anh Muốn Quay Lại... Đến Khi Nào",->
+    it "whose title is Anh Muốn Quay Lại... Đến Khi Nào",->
       expect(result.album_name).toEqual("Anh Muốn Quay Lại... Đến Khi Nào")
     it "whose author is Khắc Việt", ->
       expect(result.album_artist).toEqual('["Khắc Việt"]')      
-    it "whose topic are Việt Nam,Nhạc Trẻ",->
+    it "whose topics are Việt Nam,Nhạc Trẻ",->
       expect(result.topic).toEqual('["Việt Nam","Nhạc Trẻ"]') 
     # it "played 1158877 times", ->
     #   expect(parseInt(result.plays,10)).toEqual(1158877)
@@ -71,12 +71,13 @@ describe "The site mp3.zing.vn", ->
       expect(parseInt(result.released_year,10)).toEqual(2013)
     it "having 2 songs",->
        expect(parseInt(result.nsongs,10)).toEqual(2)
-    it "having thumbnail of http://image.mp3.zdn.vn/thumb/165_165/covers/5/2/5284f196b781e762b443f762a612172f_1365388107.jpg", ->
+    it "having thumbnail of http://image.mp3.zdn.vn/thumb/165_165/covers/...1365388107.jpg", ->
       expect(result.album_thumbnail).toEqual('http://image.mp3.zdn.vn/thumb/165_165/covers/5/2/5284f196b781e762b443f762a612172f_1365388107.jpg')
     it "having desciption starting with 'Đến khi nào.....'",->
       expect(result.description).toMatch(/Đến\skhi\snào.+/)
     it "created on 2013-4-8 9:28:27",->
       expect(result.created).toEqual("2013-4-8 9:28:27")
+
 
 
 

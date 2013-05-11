@@ -28,9 +28,9 @@ runNhacso = ->
 	console.log "STEP 2:".inverse.blue + " " + "Choose the type of command:".underline.blue
 	console.log "\t" + "RESET_SOAL".inverse.red + "- reset songs and albums \t" + "RESET_VIDEO".inverse.red + "- reset video table "
 	console.log "\t" + "stats".inverse.red + "- show stats \t"
-	console.log "\t1.UPDATE ALBUMS, SONGS & VIDEOS\t2.fetchTypeSONG\t"
-	console.log "\t3.fetchTypeAlbum\t4.fetchMaxTypeSong"
-	console.log "\t5.fetchMaxTypeAlbum\t6............."
+	console.log "\t1.UPDATE ALBUMS, SONGS & VIDEOS\t2.updateSongsCategory\t"
+	console.log "\t3.updateAlbumsCategory\t4.UPDATE VIDEOS ALONE"
+	# console.log "\t5.fetchMaxTypeAlbum\t6............."
 
 	rl.question "=> ", (answer) ->
 		switch answer.trim()
@@ -38,10 +38,11 @@ runNhacso = ->
 			when "RESET_VIDEO" then ns.resetVideosTable()
 			when "stats" then ns.showStats()
 			when "1" then ns.update()
-			when "2" then ns.fetchType()
-			when "3" then ns.fetchTypeAlbum()
-			when "4" then ns.fetchMaxTypeSong()
-			when "5" then ns.fetchMaxTypeAlbum()
+			when "2" then ns.updateSongsCategory()
+			when "3" then ns.updateAlbumsCategory()
+			when "4" then ns.updateVideos()
+			# when "4" then ns.fetchMaxTypeSong()
+			# when "5" then ns.fetchMaxTypeAlbum()
 			
 
 
@@ -206,7 +207,8 @@ runNhaccuatui = ->
 	console.log "STEP 2:".inverse.blue + " " + "Choose the type of command:".underline.blue
 	console.log "\t" + "CREATE".inverse.red + " tables\t" + "RESET".inverse.red + " tables "
 	console.log "\t1.UPDATE ALBUMS AND SONGS\t2.updateSongsPlay"
-	console.log "\t3.fetchArtist\t2.xxxxxx"
+	console.log "\t3.fetchArtist\t4.getSongs"
+	console.log "\t5.getSongsPlays\t6.XXXXXX"
 	
 	nct = new Nhaccuatui(mysqlConfig)
 	rl.question "=> ", (answer) ->
@@ -216,9 +218,8 @@ runNhaccuatui = ->
 			when "1" then nct.updateAlbumsAndSongs()
 			when "2" then nct.updateSongsPlays()
 			when "3" then nct.fetchArtist()
-
-			
-			
+			when "4" then nct.getSongs()
+			when "5" then nct.getSongsPlays()
 
 			else console.log "Wrong type".red
 

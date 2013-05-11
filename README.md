@@ -118,7 +118,7 @@ MISC:
 
 ###d.Album###
 <http://nhacso.net/flash/album/xnl/1/uid/X1lWW0NabwIBAw==,W1pZWkVe>  
-Use HTML5 <http://nhacso.net//html5/album/id/WF1VVEZf>  
+Use HTML5 <http://nhacso.net//html5/album/id/WF1VVEZf>  ªß
 > Use on the last parameter only  
 
 <http://nhacso.net/album/parse?listIds=17000>  
