@@ -1,0 +1,401 @@
+    <section class="suite">
+      <h1>THE WEBSITE MP3.ZING.VN</h1>
+      <dl>
+        <section class="suite">
+          <h1>Song ID: ZW6ZC807</h1>
+          <dl>
+            <dt>should be encoded into 1382402055, has plays, topic and no author</dt>
+            <dd><pre><code>var link, songid;
+zing.connect();
+songid = 1382402055;
+link = &quot;http://mp3.zing.vn/bai-hat/joke-link/&quot; + (zing._convertToId(songid)) + &quot;.html&quot;;
+return getFileByHTTP(link, function(data) {
+  zing._getFileByHTTP = function() {};
+  song = zing._processSong(songid, data);
+  expect(song.songid).to.equal(&quot;ZW6ZC807&quot;);
+  expect(parseInt(song.plays, 10)).to.match(/\d+/);
+  expect(song.author).to.equal(&quot;&quot;);
+  expect(song.topic).to.equal('[&quot;Âu Mỹ&quot;,&quot;Pop&quot;,&quot;Audiophile&quot;]');
+  return done();
+});</code></pre></dd>
+            <dt>should be called Meditation, composed by Olivia Ong, created on 2013-04-07, has link and path</dt>
+            <dd><pre><code>var link;
+zing.connect();
+link = &quot;http://m.mp3.zing.vn/xml/song/LnJGtLnNAQQxJQQyLDcyDHLG&quot;;
+return getFileByHTTP(link, function(data) {
+  var created, i, path, testArr, _i, _ref, _ref1, _str;
+  data = JSON.parse(data);
+  song.song_name = data.data[0].title.trim();
+  song.song_artist = JSON.stringify(data.data[0].performer.trim().split(','));
+  song.song_link = data.data[0].source;
+  _str = song.song_link.replace(/^.+load-song\//g, '').replace(/^.+song-load\//g, '');
+  testArr = [];
+  for (i = _i = 0, _ref = _str.length - 1; _i &lt;= _ref; i = _i += 4) {
+    testArr.push(zing._decodeString(_str.slice(i, i + 4)));
+  }
+  path = decodeURIComponent(testArr.join('').match(/.+mp3/g));
+  created = (_ref1 = path.match(/^\d{4}\/\d{2}\/\d{2}/)) != null ? _ref1[0].replace(/\//g, &quot;-&quot;) : void 0;
+  song.path = path;
+  song.created = created;
+  expect(song.song_name).to.equal('Meditation');
+  expect(song.song_artist).to.equal('[&quot;Olivia Ong&quot;]');
+  expect(song.song_link).to.equal('http://m.mp3.zing.vn/xml/song-load/MjAxMyUyRjA0JTJGMDclMkY3JTJGNCUyRjc0ZGQ3YWM4MzMyNTQxZDEwNjNhNTg4MGM5MWU1NGQxLm1wMyU3QzI=');
+  expect(song.path).to.equal('2013/04/07/7/4/74dd7ac8332541d1063a5880c91e54d1.mp3');
+  expect(song.created).to.equal('2013-04-07');
+  return done();
+});</code></pre></dd>
+          </dl>
+        </section>
+        <section class="suite">
+          <h1>Album ID: ZWZAAIW0</h1>
+          <dl>
+            <dt>should be called &quot;Anh Muốn Quay Lại... Đến Khi Nào&quot; and has certain properties</dt>
+            <dd><pre><code>var albumid, link;
+zing.connect();
+albumid = 1381671200;
+link = &quot;http://mp3.zing.vn/album/joke-link/&quot; + (zing._convertToId(albumid)) + &quot;.html&quot;;
+return getFileByHTTP(link, function(data) {
+  var result;
+  result = zing._processAlbum(albumid, data);
+  expect(result.albumid).to.equal(&quot;ZWZAAIW0&quot;);
+  expect(result.album_name).to.equal(&quot;Anh Muốn Quay Lại... Đến Khi Nào&quot;);
+  expect(result.album_artist).to.equal('[&quot;Khắc Việt&quot;]');
+  expect(result.topic).to.equal('[&quot;Việt Nam&quot;,&quot;Nhạc Trẻ&quot;]');
+  expect(parseInt(result.plays, 10)).to.match(/\d+/);
+  expect(parseInt(result.released_year, 10)).to.equal(2013);
+  expect(parseInt(result.nsongs, 10)).to.equal(2);
+  expect(result.album_thumbnail).to.equal('http://image.mp3.zdn.vn/thumb/165_165/covers/5/2/5284f196b781e762b443f762a612172f_1365388107.jpg');
+  expect(result.description).to.equal('“Đến khi nào”. “Anh muốn quay lại” là nỗi nhớ người yêu da diết được Khắc Việt chuyển tải qua giai điệu sâu lắng từ đầu đến cuối. Đúng như tựa đề, “Anh muốn quay lại” như một đề nghị muộn màng khi tình cảm đã chia ly. Trong khi đó “Đến khi nào” lại là một tình yêu rộng lượng của người con trai sẵn sàng hy sinh để đem lại hạnh phúc cho người mình yêu. Việc sử dụng điệp từ “Đến khi nào” nhiều lần trong ca khúc cùng tên khiến cho người nghe đồng cảm nhiều hơn với tình yêu chung thủy của chàng trai trong ca khúc này. ');
+  expect(result.created).to.equal(&quot;2013-4-8 9:28:27&quot;);
+  return done();
+});</code></pre></dd>
+          </dl>
+        </section>
+        <section class="suite">
+          <h1>Video ID: ZWZ9ZO0U</h1>
+          <dl>
+            <dt>should be called &quot;Kiếp Phong Trần&quot; by &quot;Lâm Hùng&quot; and has certain properties </dt>
+            <dd><pre><code>var link, vid;
+zing.connect();
+vid = 1381585668;
+link = &quot;http://mp3.zing.vn/video-clip/joke-link/&quot; + (zing._convertToId(vid)) + &quot;.html&quot;;
+return getFileByHTTP(link, function(data) {
+  var video;
+  video = zing._processVideo(vid, data);
+  expect(video.vid).to.equal(1381585668);
+  expect(video.title).to.equal('Kiếp Phong Trần');
+  expect(video.artists).to.equal('[&quot;Lâm Hùng&quot;]');
+  expect(video.topic).to.equal('[&quot;Việt Nam&quot;,&quot;Nhạc Trẻ&quot;]');
+  expect(parseInt(video.plays, 10)).to.be.at.least(1014646);
+  expect(video.thumbnail).to.equal('http://image.mp3.zdn.vn/thumb/240_135/thumb_video/1/e/1ebf84dd6270b3978273b47f980c854a_1340685814.jpg');
+  expect(video.link).to.match(/http:\/\/mp3.zing.vn\/html5\/video\/[a-zA-Z0-9]{24}/);
+  expect(video.lyric).to.equal('Kiếp phong trần bạn đường sương gió, giang hồ phiêu lãng vũ trụ là nhà. Ánh trăng vàng làm đèn đêm thâu, tựa mình trên cát sương giăng làm màn. 2. Nắng chan hoà miền trời thanh câm tú, ngỡ ngàng tựa như bước trên bồng lai. Mong quên đời phàm trần còn nhiều trên vai, tranh giành như thế tốt hơn làm người. ĐK1: Đời nam nhi chí trai dọc ngang núi sông, dù gian khó quyết không nao núng lòng. Đường ta đi chông gai không làm nhụt chí hiên ngang, đường thênh thang bước chân vui miệt mài. ĐK2: Đàn réo rắt chất ngất bầu không gian sẽ xoa dịu ta quên nỗi đau thương trầm luân. Đàn hỡi có nói giúp cho lòng ta xin nhân gian thôi hận thù cho nét môi tươi rạng ngời. Ta vui cùng non bồng lãng du, ta vui cùng bạn đường gió sương. Trọn niềm vui xóa tan đau thương sầu kiếp.\t\t&quot;');
+  expect(video.created).to.equal('2012-6-26');
+  return done();
+});</code></pre></dd>
+          </dl>
+        </section>
+      </dl>
+    </section>
+    <section class="suite">
+      <h1>THE WEBSITE NHACSO.NET</h1>
+      <dl>
+        <section class="suite">
+          <h1>Song ID: X1pZVkpYbg</h1>
+          <dl>
+            <dt>should be official, 320kbps, &quot;Nhạc Trữ Tình&quot;, and has lyric</dt>
+            <dd><pre><code>var encoded_id, link, options,
+  _this = this;
+encoded_id = &quot;X1pZVkpYbg&quot;;
+link = &quot;http://nhacso.net/nghe-nhac/link-joke.&quot; + encoded_id + &quot;==.html&quot;;
+options = {
+  id: encode(encoded_id),
+  song: {}
+};
+return getFileByHTTP(link, function(data) {
+  nsSong = ns.processSong(data, options);
+  expect(ns._decodeId(1285971)).to.equal(&quot;X1pZVkpYbg&quot;);
+  expect(nsSong.official).to.equal(1);
+  expect(nsSong.bitrate).to.equal(320);
+  expect(nsSong.plays).to.match(/\d+/);
+  expect(nsSong.topic).to.equal('Nhạc Trữ Tình');
+  expect(nsSong.islyric).to.equal(1);
+  expect(nsSong.lyric).to.equal(&quot;Em dấu yêu ơi anh đang quay về mười năm xa vắng\nanh đã đưa em, đưa em đi tìm một giấc mơ đời\nmười năm lạc loài phải không em\nmười năm hận thù trĩu trong tim\nta trót trao nhau thân, ta chót vong ân\nmang tuổi hoa niên, làm kiếp lưu đầy\nBóng tà ngả trên lưng đồi cỏ non\nGió hiền thoáng vi vu hàng lau xanh\nngoài kia là đồng thơm hương lúa mới\nbên lũy tre xanh ngả nghiêng hàng dừa\nvà đây là giòng sông ta thương mến,\nsoi bóng chung đôi những ngày ấu thơ\nAnh sẽ đưa em, đưa em xa rời vùng mây tăm tối\nAnh sẽ đưa em, đưa em đi về, về lối chân hiền\ncòn ai đợi chờ nữa không em\ncòn ai giận hờn nữa không em\nem hãy theo anh, men lối ăn năn\nta thoát cơn mê cùng giắt nhau về &quot;);
+  return done();
+});</code></pre></dd>
+            <dt>should be called &quot;Vó Ngựa Trên Đồi Cỏ Non&quot; and has certain properties</dt>
+            <dd><pre><code>var id, link, options,
+  _this = this;
+id = 1285971;
+link = &quot;http://nhacso.net/flash/song/xnl/1/id/&quot; + ns._decodeId(id);
+options = {
+  id: id
+};
+return getFileByHTTP(link, function(data) {
+  var created, ts, _ref;
+  ns.data = data;
+  expect(ns.getValueXML(ns.data, &quot;name&quot;, 1)).to.equal(&quot;Vó Ngựa Trên Đồi Cỏ Non&quot;);
+  expect(ns.getValueXML(ns.data, &quot;artist&quot;, 0)).to.equal(&quot;Trường Vũ&quot;);
+  expect(parseInt(ns.getValueXML(ns.data, &quot;artistlink&quot;, 0).replace(/\.html/g, '').replace(/^.+-/g, ''), 10)).to.equal(2428);
+  expect(ns.getValueXML(ns.data, &quot;author&quot;, 0)).to.equal(&quot;Ngân Giang&quot;);
+  expect(parseInt(ns.getValueXML(ns.data, &quot;authorlink&quot;, 0).replace(/\.html/g, '').replace(/^.+-/g, ''), 10)).to.equal(963);
+  expect(parseInt((_ref = ns.data.match(/totalTime.+totalTime/)) != null ? _ref[0].replace(/^.+&gt;|&lt;.+$/g, '') : void 0, 10)).to.equal(320);
+  expect(ns.getValueXML(ns.data, &quot;mp3link&quot;, 0)).to.equal(&quot;http://st01.freesocialmusic.com/mp3/2013/05/10/1178050012/136817005912_7480.mp3&quot;);
+  ts = ns.getValueXML(ns.data, &quot;mp3link&quot;, 0).match(/\/[0-9]+_/g)[0].replace(/\//, &quot;&quot;).replace(/_/, &quot;&quot;);
+  ts = parseInt(ts) * Math.pow(10, 13 - ts.length);
+  created = ns.formatDate(new Date(ts));
+  expect(created).to.equal(&quot;2013-5-10 14:14:19&quot;);
+  return done();
+});</code></pre></dd>
+          </dl>
+        </section>
+        <section class="suite">
+          <h1>Album ID: WF5YUEVY</h1>
+          <dl>
+            <dt>should be called &quot;B-Sides And Other Things I Forgot&quot; and has certain properties</dt>
+            <dd><pre><code>var encoded_id, link, options,
+  _this = this;
+encoded_id = &quot;WF5YUEVY&quot;;
+link = &quot;http://nhacso.net/nghe-album/ab.&quot; + encoded_id + &quot;.html&quot;;
+options = {
+  id: encode(encoded_id)
+};
+return getFileByHTTP(link, function(data) {
+  ns._updateAlbum = function() {};
+  ns.getTotalSongsInAlbum = function() {};
+  ns.onAlbumFail = function() {};
+  album = ns.processAlbum(data, options);
+  expect(album.albumid).to.equal(669367);
+  expect(album.title).to.equal(&quot;B-Sides And Other Things I Forgot&quot;);
+  expect(album.artist).to.equal(&quot;Blue Stahli&quot;);
+  expect(album.artistid).to.equal(97145);
+  expect(album.thumbnail).to.equal(&quot;http://st.nhacso.net/images/album/2013/05/09/1072071738/136807196518_99_120x120.jpg&quot;);
+  expect(album.songs).to.eql([1285687, 1285688, 1285689, 1285690, 1285691, 1285692, 1285693, 1285694, 1285695, 1285696, 1285697, 1285698]);
+  return done();
+});</code></pre></dd>
+            <dt>should contain 12 songs</dt>
+            <dd><pre><code>var link,
+  _this = this;
+link = &quot;http://nhacso.net/album/gettotalsong?listIds=&quot; + album.albumid;
+return getFileByHTTP(link, function(data) {
+  var nsongs, strId;
+  data = JSON.parse(data);
+  strId = &quot;nsn:album:total:song:id:&quot; + album.albumid;
+  nsongs = parseInt(data.result[strId].TotalSong, 10);
+  expect(nsongs).to.equal(12);
+  return done();
+});</code></pre></dd>
+            <dt>should be released in 2013 and has description </dt>
+            <dd><pre><code>var link,
+  _this = this;
+link = &quot;http://nhacso.net/album/getdescandissuetime?listIds=&quot; + album.albumid;
+return getFileByHTTP(link, function(data) {
+  var description, released_date;
+  data = JSON.parse(data).result[0];
+  released_date = data.IssueTime;
+  description = ns.processStringorArray(data.AlbumDesc);
+  expect(parseInt(released_date, 10)).to.equal(2013);
+  expect(description).to.equal(&quot;Label: FiXT\r\nGenre: Alternative&quot;);
+  return done();
+});</code></pre></dd>
+            <dt>should have been played more than 42 times </dt>
+            <dd><pre><code>var link,
+  _this = this;
+link = &quot;http://nhacso.net/statistic/albumtotallisten?listIds=&quot; + album.albumid;
+return getFileByHTTP(link, function(data) {
+  var plays;
+  data = JSON.parse(data);
+  plays = parseInt(data.result[&quot;&quot; + album.albumid].totalListen, 10);
+  expect(plays).to.be.above(42);
+  return done();
+});</code></pre></dd>
+          </dl>
+        </section>
+        <section class="suite">
+          <h1>Video ID: X15RV0N</h1>
+          <dl>
+            <dt>should be called &quot;Người Yêu Cũ&quot; and has certain properties</dt>
+            <dd><pre><code>var encoded_id, link, options,
+  _this = this;
+encoded_id = &quot;X15RV0N&quot;;
+link = &quot;http://nhacso.net/xem-video/joke-link.&quot; + encoded_id + &quot;=.html&quot;;
+options = {
+  id: encode(encoded_id)
+};
+return getFileByHTTP(link, function(data) {
+  ns.getVideoDurationAndSublink = function() {};
+  video = ns.processVideo(data, options);
+  expect(video.videoid).to.equal(16040);
+  expect(video.title).to.equal(&quot;Người Yêu Cũ&quot;);
+  expect(video.artists).to.equal('[&quot;Phan Mạnh Quỳnh&quot;]');
+  expect(video.topic).to.equal('Nhạc Trẻ');
+  expect(video.plays).to.be.at.least(1310);
+  expect(video.official).to.equal(1);
+  expect(video.producerid).to.equal(0);
+  expect(video.link).to.equal('http://st01.freesocialmusic.com/mp4/2013/05/09/1430055571/13680778242_4392.mp4');
+  expect(video.thumbnail).to.equal('http://st.nhacso.net/images/video/2013/05/09/1430055571/136807791310_2665_190x110.jpg');
+  expect(video.created).to.equal('2013-5-9 12:37:4');
+  return done();
+});</code></pre></dd>
+            <dt>should have subtitle and 303 second long</dt>
+            <dd><pre><code>var link,
+  _this = this;
+link = &quot;http://nhacso.net/flash/video/xnl/1/id/&quot; + ns._decodeId(video.videoid);
+return getFileByHTTP(link, function(data) {
+  var duration, sublink;
+  duration = parseInt(ns.getValueXML(data, &quot;duration&quot;, 0).replace(/&lt;\/duration&gt;|&lt;duration&gt;/g, ''), 10);
+  sublink = ns.getValueXML(data, &quot;subUrl&quot;, 0);
+  expect(duration).to.equal(303);
+  expect(sublink).to.equal(&quot;http://nhacso.net/flash/crypting/1/xnl/id/X15RV0M=&quot;);
+  return done();
+});</code></pre></dd>
+          </dl>
+        </section>
+      </dl>
+    </section>
+    <section class="suite">
+      <h1>THE WEBSITE MUSIC.GO.VN</h1>
+      <dl>
+        <section class="suite">
+          <h1>Song ID: 183352</h1>
+          <dl>
+            <dt>should be called &quot;Xa Mất Rồi&quot; by &quot;Thủy Tiên&quot; and has certain properties</dt>
+            <dd><pre><code>var link;
+link = &quot;http://music.go.vn/Ajax/SongHandler.ashx?type=getsonginfo&amp;sid=183352&quot;;
+return getFileByHTTP(link, function(data) {
+  var song;
+  gm.connect();
+  gm.connection.query = function() {};
+  song = gm._storeSong(JSON.parse(data));
+  expect(song.SongId).to.equal(183352);
+  expect(song.SongName).to.equal('Xa Mất Rồi');
+  expect(song.ArtistId).to.equal(22054);
+  expect(song.ArtistName).to.equal('Thủy Tiên');
+  expect(song.ArtistDisplayName).to.equal('Thủy Tiên');
+  expect(song.TopicId).to.equal(69);
+  expect(song.TopicName).to.equal('Nhạc Trẻ');
+  expect(song.GenreId).to.equal(50);
+  expect(song.GenreName).to.equal('Dance / Electronic');
+  expect(song.RegionId).to.equal(27);
+  expect(song.RegionName).to.equal('Nhạc Việt Nam');
+  expect(song.Thumbnail).to.equal('/Album/2013/5/9/91FDCFCE4056D4BBB89743E0806A6208.jpg');
+  expect(song.Tags).to.equal('');
+  expect(song.Lyric).to.equal('&lt;p&gt;&lt;span&gt;Và giờ này ... Đôi tay em không thể nào giữ lấy&lt;/span&gt;&lt;br /&gt;&lt;span&gt;Từng kỷ niệm ... Mà theo em dần chìm vào quên lãng&lt;/span&gt;&lt;br /&gt;&lt;span&gt;Cho nỗi buồn... Từng đêm kéo đến ... Và khiến nỗi nhớ như dài thêm&lt;/span&gt;&lt;br /&gt;&lt;br /&gt;&lt;span&gt;Còn lại gì ... Từ khi anh ra đi xa em mãi?&lt;/span&gt;&lt;br /&gt;&lt;span&gt;Còn lại gì ... Một mình giờ này lạc trong tê tái ?&lt;/span&gt;&lt;br /&gt;&lt;span&gt;Hỡi người ơi ... Tình yêu chúng ta ... Giờ là khúc ca ... Chẳng thế viết tiếp&lt;/span&gt;&lt;br /&gt;&lt;br /&gt;&lt;span&gt;ĐK : Và đến lúc em rời xa ... Con tim anh mới nhận ra&lt;/span&gt;&lt;br /&gt;&lt;span&gt;Khoảnh khắc có em kề bên ... Ôi bao nhiêu phút êm đềm ...&lt;/span&gt;&lt;br /&gt;&lt;span&gt;Mình đã xa mất rồi ... xa mất rồi ...&lt;/span&gt;&lt;br /&gt;&lt;span&gt;Tìm đâu hơi ấm những lúc ta mặn nồng ...&lt;/span&gt;&lt;br /&gt;&lt;br /&gt;&lt;span&gt;Khoảnh khắc xa rời nhau ... anh buông đôi tay thật mau&lt;/span&gt;&lt;br /&gt;&lt;span&gt;Dù biết em còn yêu ... Nhưng anh chẳng muốn quay lại ...&lt;/span&gt;&lt;br /&gt;&lt;span&gt;Bỏ mặc em với nỗi đau ... Với kỉ niệm&lt;/span&gt;&lt;br /&gt;&lt;span&gt;Tìm đâu hơi ấm, ký ức của hôm nào&lt;/span&gt;&lt;br /&gt;&lt;span&gt;Đã xa mất rồi ...&lt;/span&gt;&lt;/p&gt;');
+  expect(song.FilePath).to.equal('UserFiles/2013/5/9/zorba11/20130509105933.mp3');
+  expect(song.Bitrate).to.equal(320);
+  expect(song.Duration).to.equal(248);
+  expect(song.FileSize).to.equal(9928620);
+  expect(song.PlayCount).to.be.at.least(32);
+  expect(song.CreateTime).to.equal('2013-05-09');
+  expect(song.UpdateTime).to.equal('2013-05-09');
+  return done();
+});</code></pre></dd>
+          </dl>
+        </section>
+        <section class="suite">
+          <h1>Album ID: 18963</h1>
+          <dl>
+            <dt>should be called &quot;Có Bao Điều&quot; by &quot;Tiêu Châu Như Quỳnh&quot; and has certain properties </dt>
+            <dd><pre><code>var link;
+link = &quot;http://music.go.vn/Ajax/AlbumHandler.ashx?type=getinfo&amp;album=18963&quot;;
+return getFileByHTTP(link, function(data) {
+  var album;
+  gm.connect();
+  gm.connection.query = function() {};
+  album = gm._storeAlbum(JSON.parse(data));
+  expect(album.AlbumId).to.equal(18963);
+  expect(album.AlbumName).to.equal('Có Bao Điều');
+  expect(album.MasterArtistId).to.equal(31996);
+  expect(album.MasterArtistName).to.equal('Tiêu Châu Như Quỳnh');
+  expect(album.TopicId).to.equal(69);
+  expect(album.TopicName).to.equal('Nhạc Trẻ');
+  expect(album.GenreId).to.equal(3);
+  expect(album.GenreName).to.equal('Pop');
+  expect(album.RegionId).to.equal(27);
+  expect(album.RegionName).to.equal('Nhạc Việt Nam');
+  expect(album.Duration).to.equal(1212);
+  expect(album.ReleaseDate).to.equal('2013-01-01');
+  expect(album.Tags).to.equal('');
+  expect(album.Thumbnail).to.equal('/Album/2013/5/8/4DBA6D485070AE248339AEC2C3B9DB14.jpg');
+  expect(album.Description).to.equal('&lt;p&gt;&lt;span&gt;Album &quot;C&amp;oacute; bao điều&quot; gồm 5 b&amp;agrave;i h&amp;aacute;t l&amp;agrave; những giai điệu hiện đại thể hiện m&amp;agrave;u sắc tươi tắn của tuổi trẻ, chứa chan t&amp;igrave;nh cảm của một người con g&amp;aacute;i y&amp;ecirc;u đời.&lt;/span&gt;&lt;br /&gt;&lt;br /&gt;&lt;span&gt;Trong đ&amp;oacute; c&amp;oacute; 4 b&amp;agrave;i do ch&amp;iacute;nh Như Quỳnh s&amp;aacute;ng t&amp;aacute;c, ca kh&amp;uacute;c &quot;C&amp;oacute; bao điều&quot; viết về đề t&amp;agrave;i x&amp;atilde; hội với trăn trở của một c&amp;ocirc; g&amp;aacute;i trẻ qua những mảnh đời k&amp;eacute;m may mắn v&amp;agrave; niềm tin về một ng&amp;agrave;y mai tươi s&amp;aacute;ng hơn, &quot;Đ&amp;ocirc;i mắt đen&quot; th&amp;igrave; lại mang giai điệu nhẹ nh&amp;agrave;ng, s&amp;acirc;u lắng được Như Quỳnh s&amp;aacute;ng t&amp;aacute;c trong những năm học lớp 12 để d&amp;agrave;nh tặng cho một người bạn th&amp;acirc;n của m&amp;igrave;nh, &quot;Khoảng c&amp;aacute;ch của đ&amp;ocirc;i ta&quot; chứa đựng cảm x&amp;uacute;c day dứt khi hai người y&amp;ecirc;u nhau m&amp;agrave; kh&amp;ocirc;ng thể đến với nhau do những định kiến khắc nghiệt của x&amp;atilde; hội...&lt;/span&gt;&lt;/p&gt;');
+  expect(album.SongCount).to.equal(5);
+  expect(album.PlayCount).to.be.at.least(1);
+  expect(album.CreateTime).to.equal('2013-05-08');
+  expect(album.UpdateTime).to.equal('2013-05-09');
+  return done();
+});</code></pre></dd>
+          </dl>
+        </section>
+      </dl>
+    </section>
+    <section class="suite">
+      <h1>THE WEBSITE NHAC.VUI.VN</h1>
+      <dl>
+        <section class="suite">
+          <h1>Song ID: 183352</h1>
+          <dl>
+            <dt>should be called &quot;Anh Sẽ Quên&quot; by &quot;MT Phan&quot; and has link property</dt>
+            <dd><pre><code>var id, link;
+id = 318186;
+link = &quot;http://hcm.nhac.vui.vn/asx2.php?type=1&amp;id=&quot; + 318186;
+return getFileByHTTP(link, function(data) {
+  var parser, xml2js,
+    _this = this;
+  nv.getSongStats = function() {};
+  xml2js = require('xml2js');
+  parser = new xml2js.Parser();
+  return parser.parseString(data, function(err, result) {
+    var song;
+    song = result.rss.channel[0].item[0];
+    song = nv._storeSong(id, song);
+    expect(song.song_name).to.equal('Anh Sẽ Quên');
+    expect(song.artist_name).to.equal('MT Phan');
+    expect(song.link).to.equal('http://music-hcm.24hstatic.com/uploadmusic2/e4ee6c4db6d6f2cc130087823aff2a08/518d51cc/uploadmusic/id_chan/2-2013/huylun/Rap/NewTrack/128/Anh Se Quen - MT Phan.mp3');
+    return done();
+  });
+});</code></pre></dd>
+            <dt>should have author, plays, topic, lyric properties</dt>
+            <dd><pre><code>var id, link;
+id = 318186;
+link = &quot;http://hcm.nhac.vui.vn/-m&quot; + id + &quot;c2p1a1.html&quot;;
+return getFileByHTTP(link, function(data) {
+  var item, song;
+  item = {
+    song_name: &quot;&quot;,
+    artist_name: &quot;&quot;,
+    link: &quot;&quot;
+  };
+  song = nv.processSongCallback(id, data, item);
+  expect(parseInt(song.plays, 10)).to.be.at.least(22);
+  expect(song.topic).to.equal('Rap Việt');
+  expect(song.author).to.equal('Rap Việt');
+  expect(song.lyric).to.equal('Anh sẽ quên - MT Phan [TPR]&lt;br&gt;màng đêm lạnh lắm...một mình ỡ nơi góc tối.. lòng lại buồn&lt;br&gt;nhưng anh không muốn suy nghĩ nhiều... không muốn nhớ em khi cơn mưa tuông&lt;br&gt;và không mong một điều.... là được bên em như lúc trước&lt;br&gt;vì người đã thay đỗi rồi..em lẵng lơ anh thẫn thờ...anh không ngờ được&lt;br&gt;ây giờ em khác xưa quá....anh nhìn mãi mà không ra&lt;br&gt;lời nói cữ chĩ đã thay đỗi... anh không hiễu được em... những suy nghĩ sâu xa&lt;br&gt;cãm giác trong anh vẫn đâu buồn... và anh sẽ cố gắn quên&lt;br&gt;quên đi em quên đi mọi thứ giữa 2 chúng ta.. lúc còn kề bên&lt;br&gt;hạnh phúc mãi bên nhau...thì cũng chỉ là lời hứa mà thoi&lt;br&gt;nếu như ngày xưa ta không yêu... thì bây giờ không cần nói&lt;br&gt;nếu như anh không gặp em... thì anh cũng đã khác xưa rồi&lt;br&gt;anh không trách gì em.... chỉ trách số phận mà mình đã chia 2 lối&lt;br&gt;không thễ bên nhau thật lâu.... trong khi thời gian đó qua rất nhanh&lt;br&gt;anh cũng quá ngu ngốc.. đã đễ em đi khi lòng này không đành&lt;br&gt;nhưng mà cãm ơn em nha... đã tạo cho anh cãm xúc buồn&lt;br&gt;để viết lên khúc nhạc....và đó là những đều mà anh muốn &lt;br&gt;và khoảnh khắc đó... em đã quên rồi&lt;br&gt;để mây kia mang mưa về nơi cuối trời&lt;br&gt;đễ hôm nay... tình ta&lt;br&gt;cũng đã không như lúc đầu&lt;br&gt;ồi cơn mưa kia... đã mang em đi&lt;br&gt;về một nơi thật xa ỡ nơi cuối trời&lt;br&gt;chỉ mong mưa&lt;br&gt;sẽ xóa đi.. kĩ niệm đau&lt;br&gt;những kĩ niệm đau cũa ngày đó....thì anh vẫn nhớ mà&lt;br&gt;là lúc mà em đã ra đi... em bỏ lại tất cã&lt;br&gt;để lại bao nhiêu kí ức ngày xưa rồi anh ôm trọn vào tim&lt;br&gt;nỗi nhớ vẫn bên anh.... những lúc vui buồn khi tình cãm đã lặng im&lt;br&gt;anh đã tìm về nơi đó..... nơi anh đã được bên em&lt;br&gt;nhìn cảnh vật ngày xưa nhưng giờ vắng lặng.. anh lại đau thêm&lt;br&gt;mưa rơi lất tất...lá thu cũng đã rơi đầy trên con đường mưa&lt;br&gt;anh nhìn thật lâu đễ rồi không thễ kìm được nước mắt nữa&lt;br&gt;nhiều lần anh đã mơ... rồi anh hy vọng em sẽ về&lt;br&gt;nhưng không.. chĩ là do anh tưỡng tượng ra trong cơn mê&lt;br&gt;và mưa mùa thu vẫn cứ rơi thật sự là anh rất nhớ đó&lt;br&gt;mưa ơi mưa đã quên rồi hay là mưa không còn nhớ rõ&lt;br&gt;mưa cố làm cho anh vui... rồi mưa lại cố làm anh thật buồn&lt;br&gt;mưa đến làm mát con tim... rồi mưa cũng đã tuông rất nhanh&lt;br&gt;lời cuối anh muốn nói...là anh cũng thật sự xin lỗi em&lt;br&gt;và đây sẽ là bài hát cuối cùng mà anh viết về em');
+  return done();
+});</code></pre></dd>
+          </dl>
+        </section>
+        <section class="suite">
+          <h1>Album ID: 26989</h1>
+          <dl>
+            <dt>should be called &quot;April's Spring&quot; by &quot;Forty&quot; and has certain properties </dt>
+            <dd><pre><code>var id, link;
+id = 26989;
+link = &quot;http://hcm.nhac.vui.vn/-a&quot; + id + &quot;p1.html&quot;;
+return getFileByHTTP(link, function(data) {
+  var result;
+  result = nv.processAlbumData(id, data);
+  expect(result.album.aid).to.equal(26989);
+  expect(result.album.album_name).to.equal('April\'s Spring');
+  expect(result.album.album_artist).to.equal('Forty');
+  expect(result.album.topic).to.equal('Nhạc Hàn Quốc');
+  expect(parseInt(result.album.plays, 10)).to.be.at.least(39);
+  expect(parseInt(result.album.nsongs, 10)).to.equal(2);
+  expect(result.album.thumbnail).to.equal('http://nv-ad-hcm.24hstatic.com/upload/album/2-2013/1366001419_Aprils-Spring-Album-40-(Forty).jpg');
+  expect(result.album.created).to.equal('2013-4-1 11:50:19');
+  expect(result.songids).to.eql(['314212', '314211']);
+  return done();
+});</code></pre></dd>
+          </dl>
+        </section>
+      </dl>
+    </section>

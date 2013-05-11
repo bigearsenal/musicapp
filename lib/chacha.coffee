@@ -170,11 +170,11 @@ class Chacha extends Module
 			album.description = data.match(/full-desc.+/)?[0]
 			if album.description isnt undefined
 				album.description = encoder.htmlDecode album.description
-																										.replace(/<br\/><a.+view-more-full.+$/g,'')
-																										.replace(/full-desc\">/g,'')
-																										.replace(/<\/p>$/g,'').replace(/^<p>/g,'')
-																										.replace(/<\/span>$/g,'').replace(/^<span.+\">/g,'')
-																										.replace(/<\/p>$/g,'').replace(/^<p.+\">/g,'')
+												.replace(/<br\/><a.+view-more-full.+$/g,'')
+												.replace(/full-desc\">/g,'')
+												.replace(/<\/p>$/g,'').replace(/^<p>/g,'')
+												.replace(/<\/span>$/g,'').replace(/^<span.+\">/g,'')
+												.replace(/<\/p>$/g,'').replace(/^<p.+\">/g,'')
 				if album.description.match(/songLyric/) or album.description.match(/Đang cập nhật thông tin/ig) then album.description = ""
 			
 			plays  = data.match(/total-played.+/g)

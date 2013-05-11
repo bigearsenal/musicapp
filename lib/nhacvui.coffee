@@ -73,16 +73,33 @@ class Nhacvui extends Module
 	formatDate : (dt)->
 		dt.getFullYear() + "-" + (dt.getMonth()+1) + "-" + dt.getDay() + " " + dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds()
 
-	_storeSong : (id, song) ->
-		_item = 
-			songid : id
-			song_name : encoder.htmlDecode song.title[0].trim()
-			artist_name : encoder.htmlDecode song.description[0].replace("Thể hiện: ","").trim()
-			link : song['jwplayer:file'][0]
-		range =
-      first : id
-      last : id
+	processSongCallback : (id,data, item)->
+		if !data.match(/Bài\shát\skhông\stồn\stại/)
+			_t = data.match(/Nhạc\ssĩ:.+/g)?[0]
+			song = 
+				songid : id
+				song_name : item.song_name
+				artist_name : item.artist_name
+				plays : 0
+				topic : ""
+				author : ""
+				link : item.link
+				lyric : ""
+			if _t isnt undefined
+				song.plays = _t.match(/Lượt\snghe.+/g)[0].replace(/<\/div>.+/g,'').replace(/Lượt\snghe:|,/g,'').trim()
+				song.topic = _t.replace(/<\/a>.+$/g,'').replace(/^.+>/g,'').trim()
+				song.author = encoder.htmlDecode _t.replace(/<\/span>.+/g,'').replace(/^.+>/g,'').trim()
 
+			song.lyric = encoder.htmlDecode data.match(/media_title.+/g)?[0].replace(/<\/div><div\s.+$/g,'').replace(/^.+<\/span><\/i><\/div>/g,'').trim()
+
+			if song.lyric.match(/Hiện\sbài\shát.+chưa\scó\slời/)
+				song.lyric = ""
+
+			if song.author.match(/Đang\sCập\sNhật/i)
+			 	song.author = ""
+		else song = null
+		song
+	getSongStats : (id,item)->
 		href = "http://hcm.nhac.vui.vn/-m#{id}c2p1a1.html"
 		@stats.currentId = id
 		@getFileByHTTP href,(data)=>
@@ -90,43 +107,27 @@ class Nhacvui extends Module
 			@utils.printUpdateRunning id, @stats, "Fetching..."
 			if data isnt null
 				@stats.passedItemCount +=1
-				processDataCallback = (id,data)->
-		      if !data.match(/Bài\shát\skhông\stồn\stại/)
-		        _t = data.match(/Nhạc\ssĩ:.+/g)?[0]
-		        song = 
-		          songid : id
-		          song_name : _item.song_name
-		          artist_name : _item.artist_name
-		          plays : 0
-		          topic : ""
-		          author : ""
-		          link : _item.link
-		          lyric : ""
-		        if _t isnt undefined
-		          song.plays = _t.match(/Lượt\snghe.+/g)[0].replace(/<\/div>.+/g,'').replace(/Lượt\snghe:|,/g,'').trim()
-		          song.topic = _t.replace(/<\/a>.+$/g,'').replace(/^.+>/g,'').trim()
-		          song.author = encoder.htmlDecode _t.replace(/<\/span>.+/g,'').replace(/^.+>/g,'').trim()
-
-		        song.lyric = encoder.htmlDecode data.match(/media_title.+/g)?[0].replace(/<\/div><div\s.+$/g,'').replace(/^.+<\/span><\/i><\/div>/g,'').trim()
-
-		        if song.lyric.match(/Hiện\sbài\shát.+chưa\scó\slời/)
-		          song.lyric = ""
-
-		        if song.author.match(/Đang\sCập\sNhật/i)
-		          song.author = ""
-		      else song = null
-      		song
-				result = processDataCallback(id,data)
+				result = @processSongCallback(id,data,item)
 				if result isnt null
 					@connection.query @query._insertIntoNVSongs, result, (err)->
 						if err then console.log "Can not insert new song"
-					
 				else 
 						@stats.failedItemCount +=1
 						@stats.passedItemCount -=1
 				
 			else 
-				@stats.failedItemCount +=1			
+				@stats.failedItemCount +=1	
+	_storeSong : (id, song) ->
+		_item = 
+			songid : id
+			song_name : encoder.htmlDecode song.title[0].trim()
+			artist_name : encoder.htmlDecode song.description[0].replace("Thể hiện: ","").trim()
+			link : song['jwplayer:file'][0]
+		range =
+		      first : id
+		      last : id
+		@getSongStats id, _item	
+		_item		
 
 
 	_storeSong320 : (id, song) ->
@@ -405,65 +406,65 @@ class Nhacvui extends Module
 	
 	processAlbumData : (id,data)=>
 		if data.search('Album không tồn tại.') is -1
-					title_artist = data.match(/nghenhac-baihat.+/g)[0]
-						.replace(/\<\/h\d\>\<\/div\>/g,'')
-						.replace(/^.+>/g,'')
+			title_artist = data.match(/nghenhac-baihat.+/g)[0]
+				.replace(/\<\/h\d\>\<\/div\>/g,'')
+				.replace(/^.+>/g,'')
 
-					plays = data.match(/Lượt\snghe:.+/g)?[0]
-						.replace(/<\/p>/g,'')
-						.replace(/^.+>/g,'')
-						.replace(/,/g,'').trim()
+			plays = data.match(/Lượt\snghe:.+/g)?[0]
+				.replace(/<\/p>/g,'')
+				.replace(/^.+>/g,'')
+				.replace(/,/g,'').trim()
 
-					topic = data.match(/Thể\sloại:.+/g)?[0]
-						.replace(/<\/a><\/p>.+$/g,'')
-						.replace(/^.+>/g,'')
-					
+			topic = data.match(/Thể\sloại:.+/g)?[0]
+				.replace(/<\/a><\/p>.+$/g,'')
+				.replace(/^.+>/g,'')
+			
 
-					nsongs = data.match(/Số\sbài\shát:\s.+/g)?[0]
-						.replace(/<\/p>$/g,'')
-						.replace(/^.+>/g,'')
+			nsongs = data.match(/Số\sbài\shát:\s.+/g)?[0]
+				.replace(/<\/p>$/g,'')
+				.replace(/^.+>/g,'')
 
-					thumbnail = data.match(/albumInfo-img.+[\n\t\r]+.+/g)?[0]
-													.replace(/\"\salt.+$/g,'').replace(/^.+\s.+\"/g,'')
+			thumbnail = data.match(/albumInfo-img.+[\n\t\r]+.+/g)?[0]
+											.replace(/\"\salt.+$/g,'').replace(/^.+\s.+\"/g,'')
 
-					created = ""
+			created = ""
 
-					if thumbnail?.match(/\d+_/g)
-						created = thumbnail.match(/\d{10,14}_/g)?[0]?.replace(/_/g,'')
+			if thumbnail?.match(/\d+_/g)
+				created = thumbnail.match(/\d{10,14}_/g)?[0]?.replace(/_/g,'')
 
-					if !thumbnail?.match(/http/)
-						thumbnail = "http://hcm.nhac.vui.vn" + thumbnail
+			if !thumbnail?.match(/http/)
+				thumbnail = "http://hcm.nhac.vui.vn" + thumbnail
 
-					songids = data.match(/javascript:liked_onclick\(\'\d+\'\)/g)
-					songids = songids?.map (v)-> v.match(/\d+/)[0]
-					data = ""
-					
-					#split by dash sign (-) EX: "Cpop Chart (15/6 - 22/6 ) - Various Artists"
-					#_name = "Cpop Chart (15/6 - 22/6 )" and _artist="Various Artists"
-					_arr = title_artist.split(/\s\-\s/)
-					_artist = _arr[_arr.length-1]
-					_arr.splice(_arr.length-1,1)
-					_name = _arr.join(" - ")
-					_arr = ""
+			songids = data.match(/javascript:liked_onclick\(\'\d+\'\)/g)
+			songids = songids?.map (v)-> v.match(/\d+/)[0]
+			data = ""
+			
+			#split by dash sign (-) EX: "Cpop Chart (15/6 - 22/6 ) - Various Artists"
+			#_name = "Cpop Chart (15/6 - 22/6 )" and _artist="Various Artists"
+			_arr = title_artist.split(/\s\-\s/)
+			_artist = _arr[_arr.length-1]
+			_arr.splice(_arr.length-1,1)
+			_name = _arr.join(" - ")
+			_arr = ""
 
-					album = 
-						aid : id
-						album_name : encoder.htmlDecode _name.trim()
-						album_artist : encoder.htmlDecode _artist.trim()
-						topic : topic
-						plays : plays
-						nsongs : nsongs
-						thumbnail : thumbnail
-					
-					if created isnt "" then album.created = @formatDate new Date(parseInt(created,0)*1000)
-					else album.created = ""
+			album = 
+				aid : id
+				album_name : encoder.htmlDecode _name.trim()
+				album_artist : encoder.htmlDecode _artist.trim()
+				topic : topic
+				plays : plays
+				nsongs : nsongs
+				thumbnail : thumbnail
+			
+			if created isnt "" then album.created = @formatDate new Date(parseInt(created,0)*1000)
+			else album.created = ""
 
-					result = 
-						album : album
-						songids : songids
+			result = 
+				album : album
+				songids : songids
 
 		else null
-
+		result
 
 	update : ->
 		@connect()
@@ -511,7 +512,7 @@ class Nhacvui extends Module
 		@connect()
 
 		processLinkCallback  = (id)-> "http://hcm.nhac.vui.vn/-m#{id}c2p1a1.html"
-		processDataCallback = (id,data)->
+		processSongCallback = (id,data)->
 			if !data.match(/Bài\shát\skhông\stồn\stại/)
 				_t = data.match(/Nhạc\ssĩ:.+/g)?[0]
 				song = 
@@ -551,7 +552,7 @@ class Nhacvui extends Module
 				@stats.failedItemCount +=1
 				@stats.passedItemCount -=1
 
-		@getFiles range,processLinkCallback,processDataCallback
+		@getFiles range,processLinkCallback,processSongCallback
 
 	showStats : ->
 		@_printTableStats NV_CONFIG.table

@@ -67,6 +67,7 @@ class Gomusic extends Module
 
 		@connection.query @query._insertIntoGMSongs, _item, (err) ->
 		 	if err then console.log "Cannot insert the song into table. ERROR: " + err
+		_item
 	_storeAlbum : (album) ->		
 		
 		#convert dd/mm/yyyy to yyyy/mm/dd
@@ -125,6 +126,8 @@ class Gomusic extends Module
 		 		@stats.passedItemCount+=1
 		 		@_updateSongs_Albums _album.AlbumId
 				@utils.printUpdateRunning _album.AlbumId, @stats, "Fetching..."
+
+		_album
 	_storeSongs_Album : (songs) ->
 		for song in songs
 			_song = 

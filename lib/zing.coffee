@@ -529,13 +529,10 @@ class Zing extends Module
 						sid : _song.sid
 
 					# console.log _song
-					@song = _song # using for testing
-
-
 					@connection.query @query._insertIntoZISongs, _song, (err)=>
 						if err then console.log "Cannot insert song: #{_song.songid} into table"
 						else @_updateLyric _tempSong
-		_song = ""
+		_song
 	_updateSongs : (songid) ->
 		link = "http://mp3.zing.vn/bai-hat/joke-link/#{@_convertToId songid}.html"
 		@_getFileByHTTP link, (data)=>
