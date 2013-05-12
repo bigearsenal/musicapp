@@ -803,9 +803,9 @@ class Nhaccuatui extends Module
 			fields : ['id']
 			table : @table.Songs
 			limit : 500
-			onCondition : " WHERE plays=0 or plays is null "
+			onCondition : " WHERE plays=0 order by id DESC"
 		songs = []
-		@stats.totalItems = 300000
+		@stats.totalItems = 17340
 		@stats.currentTable = @table.Songs
 		# @getField()
 		@_getSongsPlays()

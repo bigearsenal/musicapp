@@ -95,6 +95,7 @@ class Chacha extends Module
 
 		@connection.query @query._insertIntoCCSongs, _item, (err) ->
 		 	if err then console.log "Cannot insert the song into table. ERROR: " + err	
+		_item
 	_storeAlbum : (id, album, name, artist) ->
 		for song, index in album
 			if song.thumb.match(/artists\/\/s5\/\d+/) 
@@ -184,7 +185,7 @@ class Chacha extends Module
 				plays.forEach (v)-> if v isnt '' then sum += parseInt(v)
 				album.nsongs = plays.length-1
 				sum = sum/album.nsongs if plays.length > 1
-			album.plays = sum
+			album.plays = sum | 0
 
 			songs = data.match(/avatar\sinline\splayer\ssong\d+/g)
 			if songs isnt null
@@ -208,8 +209,12 @@ class Chacha extends Module
 			if @temp.totalFail < 100
 				@_updateAlbum options.id+1
 			else
-				@utils.printFinalResult @stats
-				@_writeLog @log
+				if @stats.totalItemCount is 100
+					console.log ""
+					console.log "Table: #{@table.Albums} is up-to-date"
+				else 
+					@utils.printFinalResult @stats
+					@_writeLog @log
 		@getFileByHTTP link, @processAlbum, onFail, options
 
 	_updateAlbumName : (id, album) ->

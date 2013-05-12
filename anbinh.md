@@ -13,6 +13,17 @@
    - [THE WEBSITE NHAC.VUI.VN](#the-website-nhacvuivn)
      - [Song ID: 183352](#the-website-nhacvuivn-song-id-183352)
      - [Album ID: 26989](#the-website-nhacvuivn-album-id-26989)
+   - [THE WEBSITE CHACHA.VN](#the-website-chachavn)
+     - [Song ID: 614150](#the-website-chachavn-song-id-614150)
+     - [Album ID: 9456](#the-website-chachavn-album-id-9456)
+   - [THE WEBSITE NGHENHAC.INFO](#the-website-nghenhacinfo)
+     - [Song ID: 12600](#the-website-nghenhacinfo-song-id-12600)
+     - [Album ID: 21159](#the-website-nghenhacinfo-album-id-21159)
+   - [THE WEBSITE KEENG.VN](#the-website-keengvn)
+     - [Album ID: E33I4MQG](#the-website-keengvn-album-id-e33i4mqg)
+   - [THE WEBSITE NHACCUATUI.COM](#the-website-nhaccuatuicom)
+     - [Song ID: W5JMxHZr08Sb](#the-website-nhaccuatuicom-song-id-w5jmxhzr08sb)
+     - [Album ID: 0nXnIALOOIP2](#the-website-nhaccuatuicom-album-id-0nxnialooip2)
 <a name=""></a>
  
 <a name="the-website-mp3zingvn"></a>
@@ -377,7 +388,7 @@ should be called "Anh Sẽ Quên" by "MT Phan" and has link property.
 ```js
 var id, link;
 id = 318186;
-link = "http://hcm.nhac.vui.vn/asx2.php?type=1&id=" + 318186;
+link = "http://hcm.nhac.vui.vn/asx2.php?type=1&id=" + id;
 return getFileByHTTP(link, function(data) {
   var parser, xml2js,
     _this = this;
@@ -438,6 +449,279 @@ return getFileByHTTP(link, function(data) {
   expect(result.album.thumbnail).to.equal('http://nv-ad-hcm.24hstatic.com/upload/album/2-2013/1366001419_Aprils-Spring-Album-40-(Forty).jpg');
   expect(result.album.created).to.equal('2013-4-1 11:50:19');
   expect(result.songids).to.eql(['314212', '314211']);
+  return done();
+});
+```
+
+<a name="the-website-chachavn"></a>
+# THE WEBSITE CHACHA.VN
+<a name="the-website-chachavn-song-id-614150"></a>
+## Song ID: 614150
+should be called "Lòng mẹ" by "Khánh Ly" and has certain properties.
+
+```js
+var id, link;
+id = 614150;
+link = "http://www.chacha.vn/song/play/" + id;
+return getFileByHTTP(link, function(data) {
+  var song;
+  data = JSON.parse(data);
+  chacha.connect();
+  chacha.connection.query = function() {};
+  chacha.end();
+  song = chacha._storeSong(data);
+  expect(parseInt(song.songid, 10)).to.equal(614150);
+  expect(song.song_name).to.equal('Lòng mẹ');
+  expect(song.artistid).to.equal(206);
+  expect(song.artist_name).to.equal('Khánh Ly');
+  expect(song.duration).to.equal(335);
+  expect(song.bitrate).to.equal(128);
+  expect(song.thumbnail).to.equal('http://s2.chacha.vn/artists//s5/206/206.jpg?v=0');
+  expect(song.link).to.equal('http://audio.chacha.vn/songs/output/74/614150/2/s/ - .mp3?s=1');
+  return done();
+});
+```
+
+<a name="the-website-chachavn-album-id-9456"></a>
+## Album ID: 9456
+should be called "Xin Còn Gọi Tên Nhau" by "Tình Khúc Trường Sa" and has certain properties .
+
+```js
+var id, link;
+id = 9456;
+link = "http://www.chacha.vn/album/fake-link," + id + ".html";
+return getFileByHTTP(link, function(data) {
+  var album, options;
+  options = {
+    id: id
+  };
+  album = chacha.processAlbum(data, options);
+  expect(album.albumid).to.equal(9456);
+  expect(album.album_name).to.equal('Xin Còn Gọi Tên Nhau');
+  expect(album.album_artist).to.equal('Tình Khúc Trường Sa');
+  expect(album.nsongs).to.equal(11);
+  expect(album.thumbnail).to.equal('http://s2.chacha.vn/albums//s2/1/9456/9456.jpg');
+  expect(album.plays).to.be.at.least(93);
+  expect(album.description).to.equal("");
+  expect(album.songs).to.eql(['535549', '611624', '611630', '611634', '443173', '611636', '611638', '611642', '611644', '611650', '611652']);
+  return done();
+});
+```
+
+<a name="the-website-nghenhacinfo"></a>
+# THE WEBSITE NGHENHAC.INFO
+<a name="the-website-nghenhacinfo-song-id-12600"></a>
+## Song ID: 12600
+should be called "Cây guitar ngày hôm qua" by "Quách Thành Danh" and has certain properties.
+
+```js
+var id, link;
+id = 12600;
+link = "http://nghenhac.info/joke/" + id + "/joke.html";
+return getFileByHTTP(link, function(data) {
+  var options, song;
+  options = {
+    id: id
+  };
+  song = nghenhac.processSong(data, options);
+  expect(song.id).to.equal(12600);
+  expect(song.encoded_id).to.equal("F95CF637BF2C1067");
+  expect(song.name).to.equal('Cây guitar ngày hôm qua');
+  expect(song.artist_id).to.equal('6303');
+  expect(song.artist).to.equal('Quách Thành Danh');
+  expect(song.author).to.equal('');
+  expect(song.albumid).to.equal('40');
+  expect(song.topic).to.equal('["Nhạc Hải Ngoại"]');
+  expect(song.plays).to.be.at.least(40);
+  expect(song.lyric).to.equal('Cây đàn guitar của ngày hôm qua,đã mua khi tôi lên mươ.Chiều chiều ra sân bâng quơ hát chơi lòng hay ước mơ xa vời.<br>   Tôi mơ làm cánh chim trời, phiêu du vờn bay khắp nơi,sánh bước bên em tôi đâu ngờ tới .<br>   Cây đàn guitar của ngày hôm qua, bạn thân yêu trong cuộc đời .<br>   Buồn buồn ra sân bâng quơ hát chơi mẹ tôi lắng nghe miệng cười .<br>   Tôi mơ một đêm trăng rằm guitar cùng em hát ca,ước muốn xa xôi tôi đâu ngờ tới .Ôi guitar của tôi.<br>   Tháng năm vụt qua mau, mẹ tôi nay tóc điểm bạc màu sương gió . Có ai nào ngờ đâu em đã đến,đến bên tôi cho đời xanh mãi .<br>   Tháng năm dần trôi mau,mẹ tôi nay tóc điểm bạc màu sương gió .Có ai nào ngờ đâu emđã đến ,đến bên tôi cho đời xanh mãi .<br>  Gay đàn cuitar của ngày hôm qua giờ đây xác thân hao gầy . Dòng đời cứ thế bon chen khắp nơi một hôm bước chân rã rời .<br>  khi tim mình thôi mơ mộng trên môi can khô tiếng ca<br>  Nhức nhối trong tim hư danh tàn úa . Ôi guitar của tôi . Ôi guitar của tôi..........<br>');
+  expect(song.link).to.equal('http://data20.nghenhac.info/magpie/anhso/magolon.net/qtd/qtd_cayguitarngayhomqua.mp3');
+  return done();
+});
+```
+
+<a name="the-website-nghenhacinfo-album-id-21159"></a>
+## Album ID: 21159
+should be called "Tay đấm huyền thoại IV (Rocky IV)" by "Various Artists" and has certain properties.
+
+```js
+var id, link;
+id = 21159;
+link = "http://nghenhac.info/Album/joke-link/" + id + "/.html";
+return getFileByHTTP(link, function(data) {
+  var album, options;
+  options = {
+    id: id
+  };
+  album = nghenhac.processAlbum(data, options);
+  expect(album.id).to.equal(21159);
+  expect(album.encoded_id).to.equal('2DE1BC9C93DC64BE');
+  expect(album.name).to.equal('Tay đấm huyền thoại IV (Rocky IV)');
+  expect(album.artist).to.equal('Various Artists');
+  expect(album.topic).to.equal('["Nhạc Phim","Quốc Tế"]');
+  expect(album.nsongs).to.be.at.least(10);
+  expect(album.plays).to.at.least(0);
+  expect(album.thumbnail).to.equal('http://img.nghenhac.info/Album/21159.jpg');
+  expect(album.songs).to.eql(['287141', '287140', '287139', '287138', '287137', '287136', '287135', '287134', '287133', '287132']);
+  return done();
+});
+```
+
+<a name="the-website-keengvn"></a>
+# THE WEBSITE KEENG.VN
+<a name="the-website-keengvn-album-id-e33i4mqg"></a>
+## Album ID: E33I4MQG
+should be called "Bring The Rain" and has 7 songs.
+
+```js
+var id, link;
+id = "E33I4MQG";
+link = "http://www.keeng.vn/album/get-album-xml?album_identify=" + id;
+return getFileByHTTP(link, function(data) {
+  var Encoder, album, encoder, i, ids, locations, song, songs, titles, _i, _ref;
+  album = {
+    id: "E33I4MQG",
+    title: "Bring The Rain",
+    artist_name: "Candyland"
+  };
+  Encoder = require('node-html-encoder').Encoder;
+  encoder = new Encoder('entity');
+  data = data.replace(/\r/g, '');
+  titles = data.match(/\<title\>.+\<\/title\>/g);
+  locations = data.match(/\<location\>.+\<\/location\>/g);
+  ids = data.match(/\<info\>.+\<\/info\>/g);
+  songs = [];
+  if (locations !== null) {
+    for (i = _i = 0, _ref = locations.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
+      song = {
+        albumid: album.id,
+        album_name: encoder.htmlDecode(album.title),
+        songid: ids[i + 1].replace(/\<info\>/, '').replace(/<\/info\>/, '').trim(),
+        song_name: encoder.htmlDecode(titles[i + 1].replace(/\<title\>/, '').replace(/<\/title\>/, '').trim()),
+        song_link: locations[i].replace(/\<location\>/, '').replace(/<\/location\>/, '').trim(),
+        artist_name: encoder.htmlDecode(album.artist_name)
+      };
+      if (song.song_link.match(/\d{4}\/\d{2}\/\d{2}/) !== null) {
+        song.created = song.song_link.match(/\d{4}\/\d{2}\/\d{2}/)[0].replace(/\//g, '-');
+      }
+      songs.push(song);
+    }
+  }
+  expect(songs.length).to.equal(7);
+  expect(songs[0].albumid).to.equal("E33I4MQG");
+  expect(songs[0].album_name).to.equal("Bring The Rain");
+  expect(songs[0].songid).to.equal("2VNI1NTP");
+  expect(songs[0].song_name).to.equal('It\'s A Shark! (Original Mix)');
+  expect(songs[0].song_link).to.equal('http://media.keeng.vn/medias_2/audio/2013/05/10/4d5a17db7f5a68275537e06c18a8bb7adbefd21b.mp3');
+  expect(songs[0].artist_name).to.equal("Candyland");
+  expect(songs[0].created).to.equal('2013-05-10');
+  return done();
+});
+```
+
+<a name="the-website-nhaccuatuicom"></a>
+# THE WEBSITE NHACCUATUI.COM
+<a name="the-website-nhaccuatuicom-song-id-w5jmxhzr08sb"></a>
+## Song ID: W5JMxHZr08Sb
+should be called "Ván Cờ Cuối Cùng" by "Afan","YunjBoo" and has certain properties.
+
+```js
+var link, song;
+song = {
+  id: 2529341,
+  key: "W5JMxHZr08Sb"
+};
+link = "http://www.nhaccuatui.com/bai-hat/joke-link." + song.key + ".html";
+return getFileByHTTP(link, function(data) {
+  var options;
+  options = {
+    id: song.id,
+    key: song.key
+  };
+  nhaccuatui.processSimilarSongs = function() {};
+  song = nhaccuatui.processSong(data, options);
+  expect(song.id).to.equal(2529341);
+  expect(song.key).to.equal("W5JMxHZr08Sb");
+  expect(song.title).to.equal('Ván Cờ Cuối Cùng');
+  expect(song.artists).to.equal('["Afan","YunjBoo"]');
+  expect(song.topic).to.equal('Rap Việt');
+  expect(song.bitrate).to.equal('320');
+  expect(song.type).to.equal('song');
+  expect(song.link_key).to.equal('d4304846929dab954e4f823d40a2d2a6');
+  expect(song.lyric).to.equal('Mel:\n<br />Ngày đánh mất tình yêu em mới hiểu\n<br />Và em biết em đã sai thật nhiều.\n<br />Buông đôi tay, dẫu đang nắm thật chặt\n<br />Tìm vui mới …với những nối đau.\n<br />Đêm đêm dòng lệ ướt trên mi\n<br />Vì ngày qua đã không, cố giữ lấy.\n<br />Nuốt nước mắt, sâu trong lòng\n<br />Xin người thứ tha…\n<br />\n<br />Verse 1:\n<br />Thôi baby àh..- mọi chuyện đã vậy rồi\n<br />Có hối hận..- hay tiếc nuối..-cũng ko thay đổi\n<br />Từng là người mà em yêu nhất…- nay bây giờ cũng chính làm em đau\n<br />Hãy lau khô những giọt nước mắt..- để anh ko thấy em thêm sầu\n<br />Ván cờ ngày hôm nay….- là do anh sai đi nước bước\n<br />Ko thể lường trước mọi việc xảy ra..- quên em đi..-là bắt buộc\n<br />Vì ta đã từng ..- Đúng\n<br />Yêu nhau thật nhìu ..-Đúng\n<br />Xoá tan 1 phút chỉ vì câu nói anh ko còn yêu….-huh’\n<br />Em hãy đi đi..-anh sẽ chờ đợi dù rất đau đớn\n<br />Nói lời tạm biệt..-gởi vài lời chúc..- dù biết ai đó đang rất giận hờn\n<br />Anh sẽ ko vậy đâu..-sẽ ko mềm lòng đau\n<br />Buông tay em yêu là cách tốt nhất..-để cho sợi dây kia..-ko còn rời nhau\n<br />Thắc mắc vì tại sao..- yêu nhau rồi như thế\n<br />Trả lời 1 câu rằng : Vì Anh Đây Ko Thể\n<br />Afan à…- mày rất ngu ngốc\n<br />Có rồi ko biết gìn giữ..-để bây giờ lạc mất..- rồi mày ngồi khóc …..! \n<br />\n<br />\n<br />Mel:\n<br />Ngày đánh mất tình yêu em mới hiểu\n<br />Và em biết em đã sai thật nhiều.\n<br />Buông đôi tay, dẫu đang nắm thật chặt\n<br />Tìm vui mới …với những nối đau.\n<br />Đêm đêm dòng lệ ướt trên mi\n<br />Vì ngày qua đã không, cố giữ lấy.\n<br />Nuốt nước mắt, sâu trong lòng\n<br />Xin người thứ tha…\n<br />\n<br />\n<br />Verse 2 :\n<br />Và ver 2 này..- trước tiên anh gởi lời xin lỗi\n<br />Xin lỗi tất cả..- vì tình yêu này..- anh ko muốn nói [Goodbye]\n<br />Trao nhau nhiều lắm…-rồi yêu nhìu lắm..-tại sao mình ko biết giữ\n<br />Để rồi 1 ngày cả 2 mất hết…-đợi chờ 1 lần để tha thứ\n<br />Ko cần nữa..-vì chính bản thân anh thay đổi\n<br />Em đã cố..-giải thích tất cả tại sao ko nghe…-anh là thằng tồi\n<br />Em…- đừng miễn cưỡng nữa ?\n<br />Vì cái tình cảm..-đã ko còn giá trị..-nó chỉ là thừa\n<br />Hãy cố đi tìm 1 người tốt hơn…- xin đừng bao giờ nhắc anh nữa\n<br />Khoảng trống mòn mỏi đợi chờ lấp đầy..-ko bao giờ ..-nó được chất chứa\n<br />Vì sao đêm nay…-Cái ngôi saoem thích nhất\n<br />Nó cũng xoá đi..-chạy theo thời gian..-mà bao lâu qua anh đã tích cực…rồi\n<br />Soi sáng cho em..-một con đường riêng..- và hạnh phúc\n<br />Bước chân anh đã chậm nhịp\n<br />quay lại nhìn anh thầm chúc\n<br />Tất cả trở lại ban đầu..- bàn tay ngày xưa..-nhường người đến sau\n<br />Kết thúc ở sau màn mưa…-nhìn lại quá khứ..-chỉ có mình anh ngồi thầm khắc sâu…!\n<br />\n<br />[Bridge]:\n<br />Sẽ còn sẽ còn sẽ còn\n<br />Những ký ức xưa…\n<br />Chỉ còn chỉ còn\n<br />Mình em với đêm\n<br />Từng nỗi nhớ thoáng qua đêm đêm\n<br />Một lần nỡ đánh mất con tim anh\n<br />Để giờ em bơ vơ ngậm ngùi\n<br />Bên em nỗi nhớ…!\n<br />\n<br />Mel :\n<br />Ngày đánh mất tình yêu em mới hiểu\n<br />Và em biết em đã sai thật nhiều.\n<br />Buông đôi tay, dẫu đang nắm thật chặt\n<br />Tìm vui mới …với những nối đau.\n<br />Đêm đêm dòng lệ ướt trên mi\n<br />Vì ngày qua đã không, cố giữ lấy.\n<br />Nuốt nước mắt, sâu trong lòng\n<br />Xin người thứ tha…');
+  return done();
+});
+```
+
+should be played at least 3816 times.
+
+```js
+var id, link;
+id = 2529341;
+link = "http://www.nhaccuatui.com/wg/get-counter?listSongIds=" + id;
+return getFileByHTTP(link, function(data) {
+  var song;
+  data = JSON.parse(data);
+  song = data.data.songs;
+  expect(song[id]).to.be.at.least(3816);
+  return done();
+});
+```
+
+<a name="the-website-nhaccuatuicom-album-id-0nxnialooip2"></a>
+## Album ID: 0nXnIALOOIP2
+should be called "Tuyết Lạnh (2013)" by "Thúy Vy", "Lương Mạnh Hùng" and has certain properties.
+
+```js
+var album, link;
+album = {
+  id: 11997829,
+  key: "0nXnIALOOIP2"
+};
+link = "http://www.nhaccuatui.com/playlist/joke-link." + album.key + ".html";
+return getFileByHTTP(link, function(data) {
+  var options;
+  options = {
+    id: album.id,
+    key: album.key,
+    plays: 0
+  };
+  album = nhaccuatui.processAlbum(data, options);
+  expect(album.id).to.equal(11997829);
+  expect(album.key).to.equal("0nXnIALOOIP2");
+  expect(album.title).to.equal('Tuyết Lạnh (2013)');
+  expect(album.artists).to.equal('["Thúy Vy","Lương Mạnh Hùng"]');
+  expect(album.topic).to.equal('Trữ Tình');
+  expect(album.nsongs).to.equal(3);
+  expect(album.thumbnail).to.equal('http://p.img.nct.nixcdn.com/playlist/2013/04/25/e/5/8/5/1366902514487.jpg');
+  expect(album.link_key).to.equal('1ffc9e71de0805c18a588165a200b008');
+  expect(album.created).to.equal('2013-04-25 22:8:34');
+  expect(album.songs).to.eql([
+    {
+      id: '2505185',
+      key: 'MCFGGOJ52cLM'
+    }, {
+      id: '2505189',
+      key: 'PZAjh6mFUDhR'
+    }, {
+      id: '2507968',
+      key: 'pxdnb4Wgb9gv'
+    }
+  ]);
+  return done();
+});
+```
+
+should be played at least 1158 times.
+
+```js
+var id, link;
+id = 11997829;
+link = "http://www.nhaccuatui.com/wg/get-counter?listPlaylistIds=" + id;
+return getFileByHTTP(link, function(data) {
+  var album;
+  data = JSON.parse(data);
+  album = data.data.playlists;
+  expect(album[id]).to.be.at.least(1158);
   return done();
 });
 ```

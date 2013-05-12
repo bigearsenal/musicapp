@@ -227,8 +227,12 @@ class Nhacvui extends Module
 			if @temp.totalFail < 100
 				@_updateAlbum id+1
 			else 
-				@utils.printFinalResult @stats
-				@_writeLog @log
+				if @stats.totalItemCount is 100
+					console.log ""
+					console.log "Table: #{@table.Albums} is up-to-date"
+				else 
+					@utils.printFinalResult @stats
+					@_writeLog @log
 
 		), (err) ->
 			console.log "We have an error while fetching files"
@@ -463,7 +467,7 @@ class Nhacvui extends Module
 				album : album
 				songids : songids
 
-		else null
+		else return null
 		result
 
 	update : ->
@@ -485,7 +489,6 @@ class Nhacvui extends Module
 		@eventEmitter.on 'result', (result)=>
 			if result isnt null
 				# console.log @log.lastAlbumId
-				
 				@connection.query @query._insertIntoNVAlbums, result.album, (err)=>
 					if err then console.log "cannt insert album: #{result.album.aid} into table. ERROR: #{err}"
 					else 
