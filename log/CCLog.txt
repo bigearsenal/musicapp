@@ -1,1 +1,1 @@
-{"serverType":"chacha.vn","lastSongId":614394,"lastAlbumId":9490,"updated_at":1368323963188,"totalPassedSongs":0}
+{"serverType":"chacha.vn","lastSongId":615560,"lastAlbumId":9518,"updated_at":1368459035188,"totalPassedSongs":0}

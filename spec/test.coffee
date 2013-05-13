@@ -1,3 +1,4 @@
+#!/usr/local/bin/mocha
 chai = require "chai"
 expect = chai.expect
 http = require 'http'
@@ -10,7 +11,7 @@ getFileByHTTP = (link, callback) ->
             res.on 'data', (chunk) =>
               data += chunk;
             res.on 'end', () =>
-              
+
               callback data
           else callback(null)
         .on 'error', (e) =>
@@ -56,7 +57,7 @@ describe 'THE WEBSITE MP3.ZING.VN', ->
                         expect(song.song_link).to.equal('http://m.mp3.zing.vn/xml/song-load/MjAxMyUyRjA0JTJGMDclMkY3JTJGNCUyRjc0ZGQ3YWM4MzMyNTQxZDEwNjNhNTg4MGM5MWU1NGQxLm1wMyU3QzI=')
                         expect(song.path).to.equal('2013/04/07/7/4/74dd7ac8332541d1063a5880c91e54d1.mp3')
                         expect(song.created).to.equal('2013-04-07')
-                        done()        
+                        done()
       describe "Album ID: ZWZAAIW0",->
             it 'should be called "Anh Muốn Quay Lại... Đến Khi Nào" and has certain properties', (done)->
                   zing.connect()
@@ -68,8 +69,8 @@ describe 'THE WEBSITE MP3.ZING.VN', ->
                         # console.log result
                         expect(result.albumid).to.equal("ZWZAAIW0")
                         expect(result.album_name).to.equal("Anh Muốn Quay Lại... Đến Khi Nào")
-                        expect(result.album_artist).to.equal('["Khắc Việt"]')      
-                        expect(result.topic).to.equal('["Việt Nam","Nhạc Trẻ"]') 
+                        expect(result.album_artist).to.equal('["Khắc Việt"]')
+                        expect(result.topic).to.equal('["Việt Nam","Nhạc Trẻ"]')
                         expect(parseInt(result.plays,10)).to.match(/\d+/)
                         expect(parseInt(result.released_year,10)).to.equal(2013)
                         expect(parseInt(result.nsongs,10)).to.equal(2)
@@ -115,7 +116,7 @@ describe 'THE WEBSITE NHACSO.NET', ->
             it 'should be official, 320kbps, "Nhạc Trữ Tình", and has lyric',(done)->
                   encoded_id = "X1pZVkpYbg"
                   link = "http://nhacso.net/nghe-nhac/link-joke.#{encoded_id}==.html"
-                  options = 
+                  options =
                         id : encode(encoded_id)
                         song : {}
                   getFileByHTTP link, (data)=>
@@ -133,7 +134,7 @@ describe 'THE WEBSITE NHACSO.NET', ->
                   id = 1285971
                   link = "http://nhacso.net/flash/song/xnl/1/id/" + ns._decodeId(id)
                   # console.log "Fetching from link #{link}"
-                  options = 
+                  options =
                     id : id
                   getFileByHTTP link, (data)=>
                         ns.data = data
@@ -153,7 +154,7 @@ describe 'THE WEBSITE NHACSO.NET', ->
             it 'should be called "B-Sides And Other Things I Forgot" and has certain properties',(done)->
                   encoded_id = "WF5YUEVY"
                   link = "http://nhacso.net/nghe-album/ab.#{encoded_id}.html"
-                  options = 
+                  options =
                         id : encode(encoded_id)
                   getFileByHTTP link, (data)=>
                         # disable callback function
@@ -198,7 +199,7 @@ describe 'THE WEBSITE NHACSO.NET', ->
             it 'should be called "Người Yêu Cũ" and has certain properties' ,(done)->
                   encoded_id = "X15RV0N"
                   link = "http://nhacso.net/xem-video/joke-link.#{encoded_id}=.html"
-                  options = 
+                  options =
                         id : encode(encoded_id)
                   getFileByHTTP link, (data)=>
                         ns.getVideoDurationAndSublink = ->
@@ -228,10 +229,10 @@ describe "THE WEBSITE MUSIC.GO.VN",->
       gm = new GM()
       describe "Song ID: 183352",->
             it 'should be called "Xa Mất Rồi" by "Thủy Tiên" and has certain properties',(done)->
-                  link = "http://music.go.vn/Ajax/SongHandler.ashx?type=getsonginfo&sid=183352" 
+                  link = "http://music.go.vn/Ajax/SongHandler.ashx?type=getsonginfo&sid=183352"
                   getFileByHTTP link, (data)->
                         gm.connect()
-                        gm.connection.query = -> 
+                        gm.connection.query = ->
                         song = gm._storeSong JSON.parse data
                         # console.log song
                         expect(song.SongId).to.equal(183352)
@@ -256,7 +257,7 @@ describe "THE WEBSITE MUSIC.GO.VN",->
                         expect(song.CreateTime).to.equal('2013-05-09')
                         expect(song.UpdateTime).to.equal('2013-05-09')
                         done()
-      describe "Album ID: 18963",->    
+      describe "Album ID: 18963",->
             it 'should be called "Có Bao Điều" by "Tiêu Châu Như Quỳnh" and has certain properties ',(done)->
                   link = "http://music.go.vn/Ajax/AlbumHandler.ashx?type=getinfo&album=18963"
                   getFileByHTTP link, (data)->
@@ -305,7 +306,7 @@ describe "THE WEBSITE NHAC.VUI.VN",->
                   id = 318186
                   link = "http://hcm.nhac.vui.vn/-m#{id}c2p1a1.html"
                   getFileByHTTP link, (data)->
-                        item = 
+                        item =
                               song_name : ""
                               artist_name : ""
                               link : ""
@@ -358,7 +359,7 @@ describe "THE WEBSITE CHACHA.VN",->
                   id = 9456
                   link = "http://www.chacha.vn/album/fake-link,#{id}.html"
                   getFileByHTTP link, (data)->
-                        options = 
+                        options =
                           id : id
                         album = chacha.processAlbum data, options
                         expect(album.albumid).to.equal(9456)
@@ -378,7 +379,7 @@ describe "THE WEBSITE NGHENHAC.INFO",->
                   id = 12600
                   link = "http://nghenhac.info/joke/#{id}/joke.html"
                   getFileByHTTP link, (data)->
-                        options = 
+                        options =
                           id : id
                         song = nghenhac.processSong data, options
                         expect(song.id).to.equal(12600)
@@ -398,7 +399,7 @@ describe "THE WEBSITE NGHENHAC.INFO",->
                   id = 21159
                   link = "http://nghenhac.info/Album/joke-link/#{id}/.html"
                   getFileByHTTP link, (data)->
-                        options = 
+                        options =
                           id : id
                         album = nghenhac.processAlbum data, options
                         expect(album.id).to.equal(21159)
@@ -419,12 +420,12 @@ describe "THE WEBSITE KEENG.VN",->
                   id = "E33I4MQG"
                   link = "http://www.keeng.vn/album/get-album-xml?album_identify=#{id}"
                   getFileByHTTP link, (data)->
-                        album = 
+                        album =
                           id : "E33I4MQG"
                           title : "Bring The Rain"
                           artist_name : "Candyland"
                         Encoder = require('node-html-encoder').Encoder
-                        encoder = new Encoder('entity');    
+                        encoder = new Encoder('entity');
                         data = data.replace(/\r/g,'')
                         titles = data.match(/\<title\>.+\<\/title\>/g)
                         locations = data.match(/\<location\>.+\<\/location\>/g)
@@ -432,7 +433,7 @@ describe "THE WEBSITE KEENG.VN",->
                         songs = []
                         if locations isnt null
                               for i in [0..locations.length-1]
-                                    song = 
+                                    song =
                                           albumid : album.id
                                           album_name : encoder.htmlDecode album.title
                                           songid : ids[i+1].replace(/\<info\>/,'').replace(/<\/info\>/,'').trim()
@@ -455,12 +456,12 @@ describe "THE WEBSITE NHACCUATUI.COM",->
       nhaccuatui = new Nhaccuatui()
       describe "Song ID: W5JMxHZr08Sb",->
             it 'should be called "Ván Cờ Cuối Cùng" by "Afan","YunjBoo" and has certain properties',(done)->
-                  song = 
+                  song =
                         id : 2529341
                         key : "W5JMxHZr08Sb"
                   link = "http://www.nhaccuatui.com/bai-hat/joke-link.#{song.key}.html"
                   getFileByHTTP link, (data)->
-                        options = 
+                        options =
                               id : song.id
                               key : song.key
                         nhaccuatui.processSimilarSongs = ->
@@ -485,12 +486,12 @@ describe "THE WEBSITE NHACCUATUI.COM",->
                         done()
       describe "Album ID: 0nXnIALOOIP2",->
             it 'should be called "Tuyết Lạnh (2013)" by "Thúy Vy", "Lương Mạnh Hùng" and has certain properties',(done)->
-                  album = 
+                  album =
                         id : 11997829
                         key : "0nXnIALOOIP2"
                   link = "http://www.nhaccuatui.com/playlist/joke-link.#{album.key}.html"
                   getFileByHTTP link, (data)->
-                        options = 
+                        options =
                               id : album.id
                               key : album.key
                               plays : 0 # the plays will be tested later

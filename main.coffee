@@ -208,7 +208,8 @@ runNhaccuatui = ->
 	console.log "\t" + "CREATE".inverse.red + " tables\t" + "RESET".inverse.red + " tables "
 	console.log "\t1.UPDATE ALBUMS AND SONGS\t2.updateSongsPlay"
 	console.log "\t3.fetchArtist\t4.getSongs"
-	console.log "\t5.getSongsPlays\t6.XXXXXX"
+	console.log "\t5.getSongsPlays\t6.getAlbumsPlays"
+	console.log "\t7.getAlbumsDesciption\t8.updateSongsByCategory"
 	
 	nct = new Nhaccuatui(mysqlConfig)
 	rl.question "=> ", (answer) ->
@@ -220,6 +221,11 @@ runNhaccuatui = ->
 			when "3" then nct.fetchArtist()
 			when "4" then nct.getSongs()
 			when "5" then nct.getSongsPlays()
+			when "6" then nct.getAlbumsPlays()
+			when "7" then nct.getAlbumsDesciption()
+			when "8" then nct.updateSongsByCategory()
+
+			
 
 			else console.log "Wrong type".red
 
