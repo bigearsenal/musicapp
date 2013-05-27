@@ -49,7 +49,7 @@ class Stats extends Site
 
         @recordCount videosTables, "total videos is "
 
-        
+   
 
 
     

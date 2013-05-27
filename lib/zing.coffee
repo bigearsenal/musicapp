@@ -130,8 +130,9 @@ class Zing extends Module
 		http.get link, (res) =>
 				res.setEncoding 'utf8'
 				data = ''
+				# console.log "ANBINH + #{new Date().getTime()}"
 				# callback res.headers.location
-				if res.statusCode isnt 302
+				if res.statusCode isnt 302 and res.statusCode isnt 403
 					res.on 'data', (chunk) =>
 						data += chunk;
 					res.on 'end', () =>
@@ -639,15 +640,13 @@ class Zing extends Module
 		@fetchRows range0, range1, type, (arr)=>
 			console.log "The # of items is: #{arr.length}"
 			@stats.totalItems = arr.length
-			for id in arr
-				do (id)=>
-					# console.log id
-					if type is 1 then link = "http://mp3.zing.vn/bai-hat/joke-link/#{@_convertToId id}.html"
-					else if type is 2 then link = "http://mp3.zing.vn/album/joke-link/#{@_convertToId id}.html"
-					# console.log link
-					@_getFileByHTTP link, (data)=>
+			arr.map (id)=>
+				# console.log id
+				if type is 1 then link = "http://mp3.zing.vn/bai-hat/joke-link/#{@_convertToId id}.html"
+				else if type is 2 then link = "http://mp3.zing.vn/album/joke-link/#{@_convertToId id}.html"
+				@_getFileByHTTP link, (data)=>
 						try
-							# console.log data
+							# console.log link
 							@stats.totalItemCount +=1
 							@stats.currentId = id
 							if data isnt null

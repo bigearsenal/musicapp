@@ -221,6 +221,8 @@ On Jan 11, scan 977721 songs; ~14016 videos ~500000 abums
 	`keyword=em ve dau` -- `top=[1..100]` -- `per =`  
 	<http://music.go.vn/Ajax/Suggestion.ashx?jsoncallback=&keyword=toi&top=100&per=4&blacklist=Artist>  
 
+* Base URL: <http://farm11.gox.vn:8080/streams/>  
+
 *STATS:* Total songs: 173733. Total albums: 17556 .  
 Updated on December 12, 2012
 
@@ -370,6 +372,17 @@ Crawl .html to get the value "decodeURIComponent"
 ```bash
 http://data.yeucahat.com/downloads/92/3/06fea2c2b85d7c0e57eea7efe46d608e/Ng…n%20Long%20Phung%20Xum%20Vay%20-%20Khoi%20My_%20%28www.YeuCaHat.com%29.mp3
 ```
+<http://download.chiasenhac.com/download.php?m=93404>  
+<http://download.chiasenhac.com/download.php?m=1094220>   
+
+```bash
+curl 'http://download.chiasenhac.com/download.php?m=1067123' --silent -H 'Cookie:  csn_sid=ca404dfca9556f5830b5fb96add51691;' | grep Download | grep '<a href="http:'  
+``` 
+
+NOTE: THE LINK  
+`http://data.chiasenhac.com/downloads/1031/#{days of week}/1030109-056c7572/320/joke-link.mp3` 
+
+`0` => `Sunday`,`1` => `Monday` ..... `5` => `Friday`, `6` => `Saturday`  
 
 ---
 
@@ -528,13 +541,15 @@ only available in 6hours due to the consistency between the hash `4ce95480fb0b14
 * Get album  
 <http://mp3.zing.vn/xml/album-xml/LGxnyLnsVcbZDdbtLvJyvGLG>  
 <http://m.mp3.zing.vn/xml/album/LGxnyLnsVcbZDdbtLvJyvGLG>  
+<http://mp3.zing.vn/html5/album/LHJHykHsdaJLxnsyyFmZm>  
 
 * Get song  
 <http://m.mp3.zing.vn/xml/song/ZGJGTknazzupuzaTZDJTDGLG>  
 <http://mp3.zing.vn/download/song/Chi-Con-Lai-Tinh-Yeu-Bui-Anh-Tuan/ZGJGyLGNldSnHdptLDcyvmLn>  
-**the encrypted links**
+**the encrypted links**  
 <http://mp3.zing.vn/xml/load-song/MjAxMSUyRjAyJTJGMjIlMkZlJTJGYSUyRmVhMWI5OTU4YWY5MTM5YjA2ODE5MTU2NzFlMjVhN2JiLm1wMyU3QzI=>  
-<http://m.mp3.zing.vn/xml/song-load/MjAxMSUyRjAyJTJGMjIlMkZlJTJGYSUyRmVhMWI5OTU4YWY5MTM5YjA2ODE5MTU2NzFlMjVhN2JiLm1wMyU3QzI=>  
+<http://m.mp3.zing.vn/xml/song-load/MjAxMSUyRjAyJTJGMjIlMkZlJTJGYSUyRmVhMWI5OTU4YWY5MTM5YjA2ODE5MTU2NzFlMjVhN2JiLm1wMyU3QzI=>    
+<http://mp3.zing.vn/html5/song/ZnJHyLHadixLdbDyTbHLH>  
 * Get video  
 <http://mp3.zing.vn/xml/video-xml/kGJmykGaBaavclGykbcybmLn>  
 <http://mp3.zing.vn/html5/video/ZGJmykHslWmJsmZySJmybGZm>  
@@ -605,6 +620,10 @@ Check duplicated albums in database. EX: albumid `I1umglqa8dMM` has 2 performers
 <http://avatar.nct.nixcdn.com/playlist/2012/12/20/0XehgKp67tZ5.jpg>  
 => Same file, same host => `ip=123.30.134.21`    
 
+Changing resolution of an image: add _640 before the file extension  
+<http://avatar.nct.nixcdn.com/mv/2013/02/21/3/5/c/f/1361418082787_640.jpg>  
+<http://avatar.nct.nixcdn.com/mv/2013/02/21/3/5/c/f/1361418082787.jpg>  
+
 * Get Lyrics  
 <http://www.nhaccuatui.com/ajax/get-lyric?key=2414745>  
 
@@ -640,6 +659,19 @@ rtmpdump -r "rtmpe://118.69.196.80:1935/VoD/cot-moc-23\850.mp4" -o film.mp4
 5.or to get ordinary file <http://icine.vn/jwplayer/playlist/flight.xml>  
 6.get sub <http://icine.vn/jwplayer/sub/flight-vn.srt>  
 7.check the `crossdomain.xml`
+
+http://icine.vn:1935/mediacache/_definst_/smil:http22/dragon-fight/playlist.smil/jwplayer.smil
+
+`first10mPlayed = function(){}`  
+
+<http://icine.vn/a/iCineWebDetail?id=1771&securecode=9cf03aee837fe1af94b60e8db0dabb39>   
+
+`loadVideo("http://icine.vn:1935/mediacache/_definst_/smil:http22/the-hobbit--an-unexpected-journey/playlist.smil/jwplayer.smil")`  
+
+loadVideo function in `http://icine.vn/js/pls.js`  
+
+`SECRET_KEY:String = "secrete123!@#";    MD5.hash((_local3 + this.SECRET_KEY));`
+for example `217secrete123!@#`
 
 ---
 

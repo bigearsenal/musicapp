@@ -287,7 +287,7 @@ describe "THE WEBSITE MUSIC.GO.VN",->
 describe "THE WEBSITE NHAC.VUI.VN",->
       NV = require '../lib/nhacvui'
       nv = new NV()
-      describe "Song ID: 183352",->
+      describe "Song ID: 318186",->
             it 'should be called "Anh Sẽ Quên" by "MT Phan" and has link property',(done)->
                   id = 318186
                   link = "http://hcm.nhac.vui.vn/asx2.php?type=1&id=#{id}"

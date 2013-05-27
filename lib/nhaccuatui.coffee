@@ -10,8 +10,8 @@ encoder = new Encoder('entity');
 
 events = require('events')
 
-NCT_CONFIG = 
-	table : 
+NCT_CONFIG =
+	table :
 		Songs : "NCTSongs"
 		Albums : "NCTAlbums"
 		Videos : "NCTVideos"
@@ -24,7 +24,7 @@ NCT_CONFIG =
 class Nhaccuatui extends Module
 	constructor : (@mysqlConfig, @config = NCT_CONFIG) ->
 		@table = @config.table
-		@query = 
+		@query =
 			_insertIntoNCTSongs : "INSERT IGNORE INTO " + @table.Songs + " SET ?"
 			_insertIntoNCTAlbums : "INSERT  INTO " + @table.Albums + " SET ?"
 			_insertIntoNCTVideos : "INSERT IGNORE INTO " + @table.Videos + " SET ?"
@@ -64,19 +64,19 @@ class Nhaccuatui extends Module
 					res.on 'data', (chunk) =>
 						data += chunk;
 					res.on 'end', () =>
-						
+
 						onSucess data, options
 				else onFail("The link: #{link} is temporary moved",options)
 			.on 'error', (e) =>
 				onFail  "Cannot get file: #{link} from server. ERROR: " + e.message, options
 				@stats.failedItemCount +=1
-	
+
 	_onFail : (err)->
 		console.log "#{err}".red
 
-
+	# 1. THIS IS PART 1- UPDATE ALBUMS, INCLUDING SONGS-ALBUMS
 	_fetchAlbumsPlays : (ids)->
-		
+
 		link = "http://www.nhaccuatui.com/wg/get-counter?listPlaylistIds=#{ids}"
 		@getFileByHTTP(link, (data)=>
 			@stats.totalItemCount +=1
@@ -99,7 +99,7 @@ class Nhaccuatui extends Module
 
 		if n%lengthOfGroup is 0
 			nChunks = n/lengthOfGroup | 0
-		else 
+		else
 			nChunks = (n/lengthOfGroup|0) + 1
 
 		@resetStats()
@@ -109,17 +109,17 @@ class Nhaccuatui extends Module
 		for album in albums
 			if a.length < lengthOfGroup
 				a.push album.id
-			else 
+			else
 				@_fetchAlbumsPlays a.join(',')
 				a = []
 				a.push album.id
 		@_fetchAlbumsPlays a.join(',')
-		
+
 		@eventEmitter.on "album-plays-result", (albums)->
 			onDone albums
-	_fetchSongsPlays : (ids)->
+	_fetchItemsPlays : (ids,table)->
 		link = "http://www.nhaccuatui.com/wg/get-counter?listSongIds=#{ids}"
-		onSucess = (data)=> 
+		onSucess = (data)=>
 			@stats.totalItemCount +=1
 			@stats.passedItemCount +=1
 			data = JSON.parse data
@@ -127,43 +127,50 @@ class Nhaccuatui extends Module
 			# console.log songs
 			for  id, plays of songs
 				do (id, plays)=>
-					_u = "update #{@table.Songs} SET plays=#{plays} where id=#{id}"
+					_u = "update #{table} SET plays=#{plays} where id=#{id}"
+					# console.log _u
+					@stats.currentId = id
 					@connection.query _u, (err)->
-								if err then console.log "Cannt update the total plays of the song #{id} into database. ERROR: #{err}"
+						if err then console.log "Cannt update the total plays of the song #{id} into database. ERROR: #{err}"
 			@utils.printRunning @stats
 			if @stats.totalItemCount is @stats.totalItems
 				@utils.printFinalResult @stats
+				if table is @table.Videos
+					console.log "VIDEOS HAVE ALREADY BEEN UPDATED".inverse.red
+					@eventEmitter.emit "update-video-finish"
 
 		@getFileByHTTP link, onSucess, @_onFail
-	updateSongsPlays : ->
+	updateItemsPlays  : (table = @table.Songs)->
 		@connect()
 		@resetStats()
-		console.log " |STEP 6: Update plays of songs in DB".magenta
-		@stats.currentTable = @table.Songs
-		_q = "select id, #{@table.Songs}.key from #{@table.Songs} where plays = 0"
+		console.log " |LAST STEP: Update plays of #{table} in DB".magenta
+		@stats.currentTable = table
+		_q = "select id from #{table} where plays = 0 or plays is null "
 		# console.log  _q
 		@connection.query _q, (err,results)=>
-			if err then console.log "Cannt query song where plays is 0"
-			else 
+			if err then console.log "Cannt query song where plays is 0. ERROR: #{err}"
+			else
 				n = results.length
 				lengthOfGroup = 200
 
 				if n%lengthOfGroup is 0
 					nChunks = n/lengthOfGroup | 0
-				else 
+				else
 					nChunks = (n/lengthOfGroup|0) + 1
 				a = []
 				@stats.totalItems = nChunks
-				@stats.currentTable = @table.Songs
+				@stats.currentTable = table
 
 				for song in results
 					if a.length < lengthOfGroup
 						a.push song.id
-					else 
-						@_fetchSongsPlays a.join(',')
+					else
+						@_fetchItemsPlays a.join(','), table
 						a = []
 						a.push song.id
-				@_fetchSongsPlays a.join(',')
+				@_fetchItemsPlays a.join(','), table
+	updateSongsPlays : -> @updateItemsPlays(@table.Songs)
+	updateVideosPlays : -> @updateItemsPlays(@table.Videos)
 	insertAlbumsIntoDB : (albums)->
 		console.log " |STEP 5: Inserting new albums into table".magenta
 		@resetStats()
@@ -183,13 +190,13 @@ class Nhaccuatui extends Module
 							do (song,album) =>
 								@connection.query @query._insertIntoNCTSongs_Albums, {songid: song.id, albumid : album.id}, (err1)=>
 									if err1 then console.log "cannt insert song: #{song.key} of album: #{album.key}. ERROR: #{err1}"
-						
+
 					@utils.printRunning @stats
 					if @stats.totalItemCount is @stats.totalItems
 						@utils.printFinalResult @stats
 						@updateSongsPlays()
 	processSong : (data,options)=>
-		song = 
+		song =
 			id : options.id
 			key : options.key
 			title : ""
@@ -201,7 +208,7 @@ class Nhaccuatui extends Module
 			link_key : ""
 			lyric : ""
 
-		if options.official then if options.official is 1  
+		if options.official then if options.official is 1
 			song.official = 1
 
 		id = data.match(/hidden.+\"(\d+)\".+inpHiddenId/)?[1]
@@ -226,23 +233,42 @@ class Nhaccuatui extends Module
 		type =  data.match(/.+inpHiddenType/g)?[0]
 		if type then song.type = type.replace(/\"\sid.+$/g,'').replace(/^.+\"/g,'')
 
-		if song.type is "mv"
-			title = data.match(/songname.+/g)?[0]
-			if title then song.title = encoder.htmlDecode title.replace(/<\/h1>.+/g,'').replace(/^.+>/,'')
 
 		lyric = data.match(/divLyric[^]+inpLyricId/g)?[0]
 		if lyric then song.lyric = encoder.htmlDecode lyric.replace(/<input.+$/g,'').replace(/[^]+hidden;\">\n/g,'').trim().replace(/<\/div>$/g,'').trim()
-	
-		bitrate = data.match(/<meta content=.+\s(\d+)kb/)?[1] 
-		if bitrate 
+
+		bitrate = data.match(/<meta content=.+\s(\d+)kb/)?[1]
+		if bitrate
 			song.bitrate = bitrate
 		# THIS PART IS OPTIONAL. Only use for getting new songs
 		# @processSimilarSongs data, options
 		# END OF OPTIONAL PART
 
-		@eventEmitter.emit "song-result", song
-
-		song
+		if song.type is "mv"
+			title = data.match(/songname.+/g)?[0]
+			if title then song.title = encoder.htmlDecode title.replace(/<\/h1>.+/g,'').replace(/^.+>/,'')
+			thumbnail = data.match(/image_src.+\"(http.+)\"/)?[1]
+			if thumbnail
+				song.thumbnail = thumbnail
+				if song.thumbnail
+					if song.thumbnail.match(/\d{4}\/\d{2}\/\d{2}/g)
+						song.created = song.thumbnail.match(/\d{4}\/\d{2}\/\d{2}/g)[0].replace(/\//g,'-')
+					else if song.thumbnail.match(/\d{4}_\d{2}\//g)
+						song.created = song.thumbnail.match(/\d{4}_\d{2}\//g)[0].replace(/_/g,':').replace(/\//g,'')
+						song.created += ":01"
+			delete song.bitrate
+			if options.duration
+				song.duration = options.duration
+			@processSimilarVideos data, options
+			# console.log "emit video"
+			@eventEmitter.emit "video-result", song
+		else if song.type is "song"
+			@eventEmitter.emit "song-result", song
+		else if song.type is ""
+			song = null
+			@eventEmitter.emit "song-result", song
+		# console.log song
+		return song
 	fetchSongs : (albums)->
 		# albums has full stats and array of songs
 		songs = []
@@ -250,20 +276,19 @@ class Nhaccuatui extends Module
 			for song in album.songs
 				songs.push song
 
-		@eventEmitter.on "song-result", (song)=>
+		callback = (song)=>
 			# console.log song
 			@stats.totalItemCount +=1
 			@stats.passedItemCount +=1
 			@stats.currentId = song.id
 			@utils.printRunning @stats
-
 			@connection.query @query._insertIntoNCTSongs, song, (err)->
 				if err then console.log "Cannt insert song: #{song.key}. ERROR #{err} "
-
 			if @stats.totalItems is @stats.totalItemCount
 				@utils.printFinalResult @stats
 				@insertAlbumsIntoDB @albums
-				
+		@eventEmitter.on "song-result", callback
+		@eventEmitter.on "video-result", callback
 		console.log " |The number of songs found in new albums: #{songs.length}"
 		console.log " |STEP 4: Fetching & inserting new songs".magenta
 		@resetStats()
@@ -272,17 +297,26 @@ class Nhaccuatui extends Module
 
 		# for testing
 		# songs = [{ id: '2442282',key: 'GbV3lZa2Yifq'}]
+		_options =
+			field : "id"
+			table : @table.Songs
+		@filterNonExistedRecordInDB songs, _options, (results)=>
+			console.log " |The # of items AFTER being filtered :" + results.length
+			if results.length > 0
+				for song in results
+					do (song)=>
+						link = "http://www.nhaccuatui.com/bai-hat/joke-link.#{song.key}.html"
+						options =
+							id : song.id
+							key : song.key
+						@getFileByHTTP link, @processSong, @_onFail, options
+			else 
+				console.log "All the Songs are available in database"
+				@insertAlbumsIntoDB @albums
 		
-		for song in songs
-				do (song)=>
-					link = "http://www.nhaccuatui.com/bai-hat/joke-link.#{song.key}.html"
-					options = 
-						id : song.id
-						key : song.key
-					@getFileByHTTP link, @processSong, @_onFail, options
 	processAlbum : (data,options)=>
-		try 
-			album = 
+		try
+			album =
 				id : options.id
 				key : options.key
 				title : ""
@@ -296,12 +330,12 @@ class Nhaccuatui extends Module
 				created : "0000-00-00"
 
 			if data.match(/<p\sclass\=\"category\"\>Thể\sloại\:.+/g)
-				
+
 				_info = data.match(/<p\sclass\=\"category\"\>Thể\sloại\:.+/g)[0].split('|')
-				
+
 				album.nsongs = parseInt _info[2].replace(/Số\sbài\:\s|<\/p\>/g,'').trim(), 10
 
-				
+
 				if album.id > 1000000000
 					id = data.match(/hidden.+\"(\d+)\".+inpHiddenId/)?[1]
 					# console.log "#{id}".red
@@ -330,8 +364,8 @@ class Nhaccuatui extends Module
 
 				songs = data.match(/btnDownload.+/g)
 				if songs
-					album.songs = songs.map (v)-> 
-						_song = 
+					album.songs = songs.map (v)->
+						_song =
 							id :  v.match(/rel=\"\d+\"/g)?[0]?.replace(/rel=|\"/g,'')
 							key : v.match(/key=\".+\"\srelTitle/g)?[0]?.replace(/key=|\"|\srelTitle/g,'')
 
@@ -343,10 +377,10 @@ class Nhaccuatui extends Module
 			return album
 		catch e
 			console.log "NBINH: eROOR: #{e}"
-		
+
 	fetchAlbums : (albums)->
 		# album Object has only id and key properties
-		# 
+		#
 		console.log " |The number of new albums in STEP 1: #{albums.length}"
 		console.log " |STEP 2: Fetching plays of new albums from results".magenta
 
@@ -361,7 +395,7 @@ class Nhaccuatui extends Module
 				@utils.printFinalResult @stats
 				@fetchSongs @albums
 
-		# update plays of the current albums containing only keys and ids 
+		# update plays of the current albums containing only keys and ids
 		@updateAlbumsPlays albums, (albums)=>
 			@resetStats()
 			@stats.totalItems = albums.length
@@ -373,31 +407,68 @@ class Nhaccuatui extends Module
 			for album in albums
 				do (album)=>
 					link = "http://www.nhaccuatui.com/playlist/joke-link.#{album.key}.html"
-					options = 
+					options =
 						id : album.id
 						key : album.key
 						plays : album.plays
 					@getFileByHTTP link, @processAlbum, @_onFail, options
-	# options parameter in filterNonExistedRecordInDB() is an object 
+	# options parameter in filterNonExistedRecordInDB() is an object
 	# containing field and table needed to be filtered
+	# filterNonExistedRecordInDB_BK : (items,options,callback)->
+	# 	temp = []
+	# 	count = 0
+	# 	for item in items
+	# 		do (item)=>
+	# 			_select = "select #{options.field} from #{options.table} where #{options.field} =#{item[options.field]}"
+	# 			if options.table is @table.Videos
+	# 				_select = "select #{options.table}.#{options.field} from #{options.table} where #{options.table}.#{options.field} =#{@connection.escape item[options.field]}"
+	# 			@printUpdateInfo "Filtering......"
+	# 			@connection.query _select, (err, result)=>
+	# 				@printUpdateInfo "Filtering......"
+	# 				count +=1
+	# 				if result.length is  0
+	# 					temp.push item
+	# 				if count is items.length
+	# 					callback(temp)
 	filterNonExistedRecordInDB : (items,options,callback)->
 		temp = []
 		count = 0
-		for item in items
-			do (item)=>
-				_select = "select #{options.field} from #{options.table} where id=#{item[options.field]}"
-				# console.log _select
+		tempItems = []
+		chunkLength = 100
+		currentChunk = 0
+		if items.length%chunkLength is 0 then nChunks = items.length/chunkLength
+		else nChunks = (items.length/chunkLength|0) + 1
+		# console.log  "n chunks is #{nChunks}"
+		processTempItems = (items)=>
+			if options.table is @table.Videos
+				condition = items.map((v)-> "#{options.table}.#{options.field}='#{v[options.field]}'").join(' or ')
+				_select = "select #{options.table}.#{options.field} from #{options.table} where #{condition}"
+			else 
+				condition = items.map((v)-> "#{options.field}=#{v[options.field]}").join(' or ')
+				_select = "select #{options.field} from #{options.table} where #{condition}"
+			# console.log _select
+			_tempArray = []
+			@connection.query _select, (err, results)=>
 				@printUpdateInfo "Filtering......"
-				@connection.query _select, (err, result)=>
-					@printUpdateInfo "Filtering......"
-					count +=1
-					if result.length is  0
-						temp.push item
-					if count is items.length 
-						callback(temp)
+				count +=1
+				for result in results
+					_tempArray.push result[options.field]
+				# console.log JSON.stringify _tempArray
+				temp = temp.concat(items.filter((v)-> if _tempArray.indexOf(v[options.field]) > -1 then return false else return true))
+				if count is nChunks
+					callback(temp)	
+		items.map (item, index)=>
+			if (index/chunkLength|0) isnt currentChunk
+				currentChunk +=1
+				processTempItems tempItems
+				tempItems = []
+			tempItems.push item
+			if index%chunkLength isnt 0 and index is items.length-1
+				processTempItems tempItems
+			@printUpdateInfo "Filtering......"
 	getAlbumKeysAndIds : (topicLink,page = 1) ->
 		link = topicLink + page
-		options = 
+		options =
 			link : link.replace(/^.+playlist\//g,'').replace(/\.html.+/g,'')
 			page : page
 		onSucess = (data,options)=>
@@ -410,13 +481,13 @@ class Nhaccuatui extends Module
 				else albumids[i] = '0' for album, i in albumids
 
 				for album, index in albums
-					_album = 
+					_album =
 						id : parseInt albumids[index].replace(/NCTCounter_pl_/g, ''), 10
 					if album.match(/<a.+\.html/)
 						_album.key = album.match(/<a.+\.html/)[0].replace(/\.html/g,'').replace(/<a.+\./,'')
 					else _album.key = ''
-					@printUpdateInfo "Topic:#{options.link} | Page=#{options.page} | nAlbums = #{@albums.length}" 
-					
+					@printUpdateInfo "Topic:#{options.link} | Page=#{options.page} | nAlbums = #{@albums.length}"
+
 					# filter new albums if available
 					# if _album.id > 11986716
 					# 	@albums.push _album
@@ -429,9 +500,10 @@ class Nhaccuatui extends Module
 				console.log ""
 				console.log " |The # of albums UNIQUE BEFORE being filtered :" + @albums.length
 				# console.log " |Filtering.............."
-				options = 
+				options =
 					field : "id"
-					table : @table.Albums 
+					table : @table.Albums
+				# console.log @albums
 				@filterNonExistedRecordInDB @albums, options, (results)=>
 					console.log " |The # of albums AFTER being filtered :" + results.length
 					@albums = results
@@ -469,177 +541,243 @@ class Nhaccuatui extends Module
 				@getAlbumKeysAndIds link, page
 		null
 
+	# 2. THIS PART IS FOR UPDATING SONGS & VIDEOS ONLY
+	processItemsAfterFilter : (items, options)->
 
-	# THIS PART IS FOR UPDATING SONGS ONLY
-	getSongsAfterFilter : (songs)->
+		if options.config.type is "song"
+			@eventEmitter.on "song-result", (song)=>
+				# console.log song
+				@stats.totalItemCount +=1
+				@stats.passedItemCount +=1
+				@stats.currentId = song.id
+				# @utils.printRunning @stats
+				# console.log "call song result"
+				# console.log song
+				if song isnt null
+					@connection.query @query._insertIntoNCTSongs, song, (err)->
+						if err then console.log "Cannt insert song: #{song.key}. ERROR #{err} "
+				else
+					@stats.passedItemCount -=1
+					@stats.failedItemCount +=1
+				@utils.printRunning @stats
 
-		@eventEmitter.on "song-result", (song)=>
-			# console.log song
-			@stats.totalItemCount +=1
-			@stats.passedItemCount +=1
-			@stats.currentId = song.id
-			@utils.printRunning @stats
+				if @stats.totalItems is @stats.totalItemCount
+					@utils.printFinalResult @stats
+					console.log "SONGS HAVE ALREADY BEEN UPDATED".inverse.red
+					@eventEmitter.emit "update-song-finish"
+		else if options.config.type is "video"
+			@eventEmitter.on "video-result", (video)=>
+				# console.log video
+				@stats.totalItemCount +=1
+				@stats.passedItemCount +=1
+				@stats.currentId = video.id
+				# @utils.printRunning @stats
 
-			# console.log song
-			@connection.query @query._insertIntoNCTSongs, song, (err)->
-				if err then console.log "Cannt insert song: #{song.key}. ERROR #{err} "
+				# console.log video
+				if video isnt null
+					@connection.query @query._insertIntoNCTVideos, video, (err)->
+						if err then console.log "Cannt insert video: #{song.key}. ERROR #{err} "
+				else
+					@stats.passedItemCount -=1
+					@stats.failedItemCount +=1
+				@utils.printRunning @stats
 
-			if @stats.totalItems is @stats.totalItemCount
-				@utils.printFinalResult @stats
-				@updateSongsPlays()
-				
-		console.log " |The number of songs found: #{songs.length}"
-		console.log " |STEP 2: Fetching & inserting new songs".magenta
+				if @stats.totalItems is @stats.totalItemCount
+					@utils.printFinalResult @stats
+					@updateVideosPlays()
+
+		console.log " |The number of #{options.config.type}s found: #{items.length}"
+		console.log " |STEP 2: Fetching & inserting new #{options.config.type}s".magenta
 		@resetStats()
-		@stats.totalItems = songs.length
-		@stats.currentTable = @table.Songs
+		@stats.totalItems = items.length
+		@stats.currentTable = options.config.table
 
 		# for testing
 		# songs = [{ id: '2442282',key: 'GbV3lZa2Yifq'}]
-		
-		for song in songs
-				do (song)=>
-					link = "http://www.nhaccuatui.com/bai-hat/joke-link.#{song.key}.html"
-					options = 
-						id : song.id
-						key : song.key
-						official : song.official
-					@getFileByHTTP link, @processSong, @_onFail, options
-	getSongsKeysAndIds : (topicLink,page = 1)->
+		# item may be song or video
+		# console.log items
+		for item in items
+			do (item)=>
+				if options.config.type is "song"
+					link = "http://www.nhaccuatui.com/bai-hat/joke-link.#{item.key}.html"
+					_options =
+						id : item.id
+						key : item.key
+						official : item.official
+				else if options.config.type is "video"
+					link = "http://www.nhaccuatui.com/mv/joke-link.#{item.key}.html"
+					_options =
+						key : item.key
+						duration : item.duration
+				# console.log link
+				@getFileByHTTP link, @processSong, @_onFail, _options
+	getSongsFromData : (data,options)->
+		ids = data.match(/btnAddPlaylist_(\d+)/g)
+		songs = []
+		if ids
+			ids = ids.map (v)-> parseInt(v.replace(/btnAddPlaylist_/,''),10)
+		keys = data.match(/song-name.+\s+.+\s+.+\s+.+\s+.+\s+/g)
+		if keys
+			if keys.length is ids.length
+				keys.forEach (v,index)=>
+					song =
+						id : ids[index]
+					song.key = v.match(/<a.+\.(.+)\.html/)?[1]
+					if v.match(/class=\"mof\"/g)
+						song.official = 1
+					else song.official = 0
+					if v.match(/class=\"m320\"/g)
+						song.bitrate = 320
+					else song.bitrate = 0
+					# console.log song
+					songs.push song
+		return songs
+	getVideosFromData : (data,options)->
+		videos = []
+		times  = data.match(/times\">.+/g)
+		ids = data.match(/<h3><a href=\".+/g)
+		if times and ids
+			if times.length? and ids.length?
+				if times.length is ids.length
+					ids = ids.map (v)-> v.replace(/\.html.+$/g,'').replace(/^.+\./g,'')
+					times =  times.map (v)->
+						t = v.match(/>(.+)</)?[1].split(':')
+						if t.length
+							if t.length is 2
+								return parseInt(t[0],10)*60 + parseInt(t[1],10)
+							else return 0
+						else return 0
+					for v,index in times
+						video =
+							key :  ids[index]
+							duration : times[index]
+						videos.push video
+				else
+					console.log "ERROR: lengths of videos durations and ids do not match"
+					console.log JSON.stringify options
+			else
+				console.log "ERROR: videos duration and ids do not have length property"
+				console.log JSON.stringify options
+		# else
+		# 	console.log "ERROR: Videos duration and times do not exist at the same time"
+		# 	console.log JSON.stringify options
+		return videos
+	getItemsKeysAndIds : (topicLink,page = 1,config)->
 		link = topicLink + page
-		options = 
-			link : link.replace(/^.+bai-hat\//g,'').replace(/\.html.+/g,'')
-			page : page
+		if config.type is "song"
+			options =
+				link : link.replace(/^.+bai-hat\//g,'').replace(/\.html.+/g,'')
+				page : page
+				config : config
+		else if config.type is "video"
+			options =
+				link : link.replace(/^.+mv\//g,'').replace(/\.html.+/g,'')
+				page : page
+				config : config
 		onSucess = (data,options)=>
 			@stats.totalPageCount +=1
+			if options.config.type is "song"
+				songs = @getSongsFromData(data,options)
+				for song in songs
+					@items.push song
+			else if  options.config.type is "video"
+				videos = @getVideosFromData(data,options)
+				# console.log videos
+				for video in videos
+					@items.push video
+				# console.log "ASFKSJAHF"
 
-			ids = data.match(/btnAddPlaylist_(\d+)/g)
-			if ids 
-				ids = ids.map (v)-> parseInt(v.replace(/btnAddPlaylist_/,''),10)
-			keys = data.match(/song-name.+\s+.+\s+.+\s+.+\s+.+\s+/g)
-			if keys 
-				if keys.length is ids.length
-					keys.forEach (v,index)=> 
-						song = 
-							id : ids[index]
-						song.key = v.match(/<a.+\.(.+)\.html/)?[1]
-						if v.match(/class=\"mof\"/g)
-							song.official = 1
-						else song.official = 0
-						if v.match(/class=\"m320\"/g)
-							song.bitrate = 320
-						else song.bitrate = 0	
-						# console.log song
-						@songs.push song
-			
-			@printUpdateInfo "Topic:#{options.link} | Page=#{options.page} | nSongs = #{@songs.length}" 
-			
+
+			@printUpdateInfo "Topic:#{options.link} | Page=#{options.page} | nItems = #{@items.length}"
+
 			# fetchsongs func will be invoked when done
 			if @stats.totalPageCount is @stats.totalPages
-				@songs = @songs.unique("id")
+				if options.config.type is "song"
+					@items = @items.unique("id")
+				else if  options.config.type is "video"
+					@items = @items.unique("key")
 				console.log ""
-				console.log " |The # of songs UNIQUE BEFORE being filtered :" + @songs.length
-				# console.log @songs
+				console.log " |The # of items UNIQUE BEFORE being filtered :" + @items.length
+				# console.log @items
 				# console.log " |Filtering.............."
-				options = 
-					field : "id"
-					table : @table.Songs 
-				@filterNonExistedRecordInDB @songs, options, (results)=>
-					console.log " |The # of songs AFTER being filtered :" + results.length
-					@songs = results
-					# console.log @songs
-					if @songs.length is 0
-						console.log " |songs TABLE  UP-TO-DATE".green
-					else @getSongsAfterFilter @songs
+				if options.config.type is "song"
+					_options =
+						field : "id"
+						table : options.config.table
+				else
+					if options.config.type is "video"
+						_options =
+							field : "key"
+							table : options.config.table
+				# console.log @items
+				@filterNonExistedRecordInDB @items, _options, (results)=>
+					console.log " |The # of items AFTER being filtered :" + results.length
+					@items = results
+					# console.log @items
+					if @items.length is 0
+						console.log " |items TABLE  UP-TO-DATE".green
+						if _options.table is @table.Songs
+							@eventEmitter.emit "update-song-finish"
+						else if _options.table is @table.Videos
+							@eventEmitter.emit "update-video-finish"
+					else @processItemsAfterFilter @items, options
+
 		@getFileByHTTP link, onSucess, @_onFail, options
-	updateSongsByCategory:  ->
+	setup: (config) ->
 		@connect()
 		console.log "Running on: #{new Date(Date.now())}"
-		console.log " |"+"Updating songs to table: #{@table.Songs}".magenta
-		console.log " |STEP 1: Fetching ids and keys of new Songs from existing topics".magenta
+		console.log " |"+"Updating #{config.type}s to table: #{config.table}".magenta
+		console.log " |STEP 1: Fetching ids and keys of new #{config.type}s from existing topics".magenta
 
-		topics = "playlist-moi nhac-tre tru-tinh cach-mang tien-chien nhac-trinh thieu-nhi rap-viet rock-viet khong-loi au-my han-quoc nhac-hoa nhac-nhat nhac-phim the-loai-khac"
-		# topics = "nhac-tre"
-		topics = topics.split(' ')
-		url = "http://www.nhaccuatui.com/bai-hat/"
+		if config.type is 'song'
+			topics = "bai-hat-moi nhac-tre tru-tinh cach-mang tien-chien nhac-trinh thieu-nhi rap-viet rock-viet khong-loi au-my han-quoc nhac-hoa nhac-nhat nhac-phim the-loai-khac"
+			# topics = "nhac-tre"
+			topics = topics.split(' ')
+			url = "http://www.nhaccuatui.com/bai-hat/"
+			nPages = 50
+		else if config.type is "video"
+			topics = "video-moi viet-nam au-my han-quoc nhac-nhat nhac-hoa shining-show sea-show house-of-dreams the-loai-khac"
+			# topics = "video-moi"
+			topics = topics.split(' ')
+			url = "http://www.nhaccuatui.com/mv/"
+			nPages = 42
 
-
-		@stats.currentTable = @table.Songs
-
-		# init conditions to stop
-		nPages = 50
+		@stats.currentTable = config.table
 		@stats.totalPageCount = 0
 		@stats.totalPages = nPages * topics.length
-		# init the album array
-		@songs = []
+		# init the items array
+		@items = []
 
 		for topic in topics
 			link =  url + topic + ".html" + "?sort=1&page="
 			# link =  url + topic + ".html" + "?page="
 			for page in [1..nPages]
-				@getSongsKeysAndIds link, page
+				@getItemsKeysAndIds link, page, config
 		null
+	# ------------------------------------
+	# END OF PART 2
+	updateSongsByCategory : ->
+		config =
+			type : 'song'
+			table : @table.Songs
+		@setup(config)
+	updateVideosByCategory : ->
+		config =
+			type : 'video'
+			table : @table.Videos
+		@setup(config)
 
-
-
-
-
-
-	# THIS PART FOR UPDATING DESCRIPTION IN DB
-	onDoneAlbumDesc : ->
-		@eventEmitter.on "album-result", (album)=>
-			@stats.totalItemCount +=1
-			@stats.passedItemCount +=1
-			@stats.currentId = album.id
-			_u = "UPDATE #{@table.Albums} SET description=#{@connection.escape album.description.trim()} WHERE #{@table.Albums}.key=#{@connection.escape album.key} "
-			# console.log _u
-			@connection.query _u, (err)=>
-				if err then console.log "Cannt insert album: #{album.key} into table. ERROR: #{err}"
-			
-			@utils.printRunning @stats
-			if @stats.totalItemCount%@params.limit is 0 and @stats.totalItemCount < @stats.totalItems
-				console.log ""
-				console.log "GO TO NEXT STEP: #{@stats.totalItemCount/@params.limit+1}".inverse.yellow
-				@_getAlbumDesc()
-			if @stats.totalItemCount is @stats.totalItems
-				@utils.printFinalResult @stats
-	_onFailAlbumDesc : (err)=>
-		@stats.totalItemCount +=1
-		@stats.failedItemCount +=1
-		@utils.printRunning @stats
-		if @stats.totalItemCount%@params.limit is 0 and @stats.totalItemCount < @stats.totalItems
-			console.log ""
-			console.log "GO TO NEXT STEP: #{@stats.totalItemCount/@params.limit+1}".inverse.yellow
-			@_getAlbumDesc()
-		if @stats.totalItemCount is @stats.totalItems
-			@utils.printFinalResult @stats
-	_getAlbumDesc : ->
-		@_getFieldsFromTable @params, (albums)=>
-			# albums = [{"id" : 12006730, "key" : "rl7c9slLIsK2"}]
-			for album in albums
-				do (album)=>
-					link = "http://www.nhaccuatui.com/playlist/joke-link.#{album.key}.html"
-					# console.log link
-					options = 
-						id : album.id
-						key : album.key
-					@getFileByHTTP link, @processAlbum, @_onFailAlbumDesc, options
-	getAlbumsDesciption : ->
-		@connect()
-		console.log "Running on: #{new Date(Date.now())}"
-		console.log " |"+" UPDATE SONGS DESCRIPTION from #{@table.Albums}".magenta	
-		@params = 
-			fields : ['id','key']
-			table : @table.Albums
-			limit : 5000
-			onCondition : " where description is null "
-		albums = []
-		@stats.totalItems = 70000
-		@stats.currentTable = @table.Albums
-		@onDoneAlbumDesc()
-		@_getAlbumDesc()
-	# --------------------------------------
-	
+	# THIS PART IS FOR UPDATE
+	update : ->
+		# @updateAlbumsAndSongs()
+		@eventEmitter.on "update-song-finish", =>
+			@updateVideosByCategory()
+		@eventEmitter.on "update-video-finish", =>
+			# to avoid conflict between event callbacks
+			@eventEmitter.removeAllListeners()
+			@resetStats()
+			@updateAlbumsAndSongs()
+		@updateSongsByCategory()
 	# THIS PART FOR PROCESSING SONG, EXPANDING DB TO MILLIONS RECORDS May-05
 	processArtistSongs : (data, options)=>
 		nSongs = data.match(/Tìm được (.+) kết quả cho/)?[1]
@@ -651,14 +789,14 @@ class Nhaccuatui extends Module
 			if options.page < maxPage
 				@_fetchArtist options.artistName, options.page+1
 			ids = data.match(/btnAddPlaylist_(\d+)/g)
-			if ids 
+			if ids
 				ids = ids.map (v)-> parseInt(v.replace(/btnAddPlaylist_/,''),10)
 			keys = data.match(/song-name.+\s+.+\s+.+\s+.+\s+.+\s+/g)
 			songs = []
-			if keys 
+			if keys
 				if keys.length is ids.length
-					keys.forEach (v,index)-> 
-						song = 
+					keys.forEach (v,index)->
+						song =
 							id : ids[index]
 						song.key = v.match(/<a.+\.(.+)\.html/)?[1]
 						if v.match(/class=\"mof\"/g)
@@ -666,13 +804,13 @@ class Nhaccuatui extends Module
 						else song.official = 0
 						if v.match(/class=\"m320\"/g)
 							song.bitrate = 320
-						else song.bitrate = 0	
+						else song.bitrate = 0
 						songs.push song
 					@eventEmitter.emit "fetch-song-artist-done", songs, options
 					# THIS EVENT CALLBACK IS OPTIONAL. USE ONLY FOR getSongs()
 					# @eventEmitter.emit "fetch-song-artist-done-the-FULL", songs, options
 					# END OF OPTIONAL PART
-				else 
+				else
 					console.log "Artist: #{options.artistName} page: #{options.page} has keys and ids mismatched                                       "
 			else console.log "Artist: #{options.artistName} page: #{options.page} has keys and ids which do not exit                                       "
 		else console.log "Artist: #{options.artistName} page: #{options.page} has keys and ids which do not exit --- BBBB                                       "
@@ -692,12 +830,12 @@ class Nhaccuatui extends Module
 			# console.log "max page is" + maxPage + " .Current page is:" +options.page
 			# if options.page < maxPage and options.page isnt 1
 			if options.page < maxPage
-				@_fetchArtist options.artistName, options.page+1, "mobile"
+				@_fetchArtist options.artistName, options.page+1, options.type
 			# if options.page is 1
 			# 	@_fetchArtist options.artistName, 100, "mobile"
-			if songs 
-				songs = songs.map (v)-> 
-					t = 
+			if songs
+				songs = songs.map (v)->
+					t =
 						key : v.match(/http.+\.(.+)\.html/)?[1]
 				@eventEmitter.emit "fetch-song-artist-done-mobile-version", songs, options
 	onProcessArtistSongsFail : (err,options)=>
@@ -705,20 +843,25 @@ class Nhaccuatui extends Module
 		@stats.failedItemCount +=1
 		console.log "ERROR while fetching http file. ERROR:#{err}".red
 	_fetchArtist : (artistName,page = 1, type = "desktop") ->
-		# link = "http://www.nhaccuatui.com/tim-kiem/bai-hat?q=#{artistName}&b=&page=#{page}"
-		if type is "desktop"
-			link = "http://www.nhaccuatui.com/tim-kiem/bai-hat?q=#{artistName}&b=title&page=#{page}"
-		else if type is "mobile"
-			# link = "http://m.nhaccuatui.com/tim-kiem/bai-hat?q=#{artistName}&b=&page=#{page}"
-			link = "http://m.nhaccuatui.com/tim-kiem/playlist?q=#{artistName}&b=&page=#{page}"
-		options = 
+		options =
 			artistName : artistName
 			page : page
-		if link.match(/www\.nhaccuatui\.com/)
+			type : type
+		if type is "desktop"
+			link = "http://www.nhaccuatui.com/tim-kiem/bai-hat?q=#{artistName}&b=title&page=#{page}"
 			@getFileByHTTP link, @processArtistSongs, @onProcessArtistSongsFail, options
-
-		else if link.match(/m\.nhaccuatui\.com/)
+		else if type is "mobile"
+			link = "http://m.nhaccuatui.com/tim-kiem/bai-hat?q=#{artistName}&b=&page=#{page}"
 			@getFileByHTTP link, @processArtistSongsMobileVersion, @onProcessArtistSongsFail, options
+		else if type is "playlist-mobile"
+			link = "http://m.nhaccuatui.com/tim-kiem/playlist?q=#{artistName}&b=&page=#{page}"
+			@getFileByHTTP link, @processArtistSongsMobileVersion, @onProcessArtistSongsFail, options
+		else if type is "video-mobile"
+			link = "http://m.nhaccuatui.com/tim-kiem/mv?q=#{artistName}&b=&page=#{page}"
+			@getFileByHTTP link, @processArtistSongsMobileVersion, @onProcessArtistSongsFail, options
+
+		# console.log link
+
 	onFetchSongAritstDone : ->
 		@eventEmitter.on "fetch-song-artist-done", (songs, options)=>
 			@stats.totalItemCount +=1
@@ -735,49 +878,49 @@ class Nhaccuatui extends Module
 			# 		@connection.query _u, (err,results)=>
 			# 			if err then console.log "Cannot update song: #{song.id}, key #{song.key}. ERROR: #{err} "
 
-		@eventEmitter.on "fetch-song-artist-done-mobile-version", (songs, options)=>
+		@eventEmitter.on "fetch-song-artist-done-mobile-version", (items, options)=>
 			@stats.totalItemCount +=1
 			@stats.passedItemCount +=1
 			@utils.printUpdateRunning options.artistName + "-" + options.page, @stats, "Fetching..."
 			# console.log options
-			# console.log songs
-			for song in songs
-				do (song)=>
-					@connection.query @query._insertIntoNCTAlbums, song, (err)->
-						if err then console.log "Cannot insert song key #{song.key} into DB. ERROR: #{err}"
+			# console.log items
+			for item in items
+				do (item)=>
+					@connection.query @query._insertIntoNCTVideos, item, (err)->
+						if err then console.log "Cannot insert item key #{item.key} into DB. ERROR: #{err}"
 
-			# for song in songs
-			# 	do (song)=>
-			# 		@connection.query @query._insertIntoNCTSongs, song, (err)->
-			# 			if err then console.log "Cannot insert song key #{song.key} into DB. ERROR: #{err}"
+			# for item in items
+			# 	do (item)=>
+			# 		@connection.query @query._insertIntoNCTSongs, item, (err)->
+			# 			if err then console.log "Cannot insert item key #{item.key} into DB. ERROR: #{err}"
 	fetchArtist : () =>
 		@connect()
 		artists = fs.readFileSync "./log/test/artist.txt" , "utf8"
-		artists = "[\"V.A\"]"
+		artists = '["CS Trang Nhung","No One","My Name","House of Heroes","The Pony","Super Mario Bros. 1","For All I Am","Jung Ki Song","Nguyễn Kiên Giang","The Toxic Avenger","Kim Jun Su","Tâm Vịnh Hà","The Blockhead","Hoàng Lan (Hải Ngoại)","Jin By Jin&","Kang Joon Ha","The Irish Rovers","Nguyễn Đồng Nai","Biển Sáng","Vũ Cát Tường","Mai Trang SMĐH","The Astronauts","Thùy Như","The Peculiar Pretzelmen","Don Gere","Dark Mean","Hoàng Kim Long ft Thanh Ngọc","Soundscape of Silence","Lê Hoa","U Day","The Choirgirl Isabel"]'
 		artists = JSON.parse artists
-		console.log " |"+"Fetching artists, albums  to table: #{@table.Albums}".magenta
+		console.log " |"+"Fetching artists, albums to table: #{@table.Albums}".magenta
 
 		@onFetchSongAritstDone()
-			
+
 		@stats.totalItems = artists.length
 		@stats.currentTable = @table.Songs
 		console.log "get from xxx"
 		for name, index in artists
 			# if 15000<=index
-				@_fetchArtist name, 1, "mobile"
+				@_fetchArtist name, 1, "video-mobile"
 		null
 	#This part is used to update the song info: title, artist, plays..... after scan through the site nhaccuatui
 	processSimilarSongs : (data, options)=>
 		ids = data.match(/btnAddPlaylist_(\d+)\" class=\"add\"/g)
-		if ids 
+		if ids
 			ids = ids.map (v)-> parseInt(v.replace(/btnAddPlaylist_/,'').replace(/\" class=\"add\"/g,''),10)
 		keys = data.match(/class=\"song-name\".+\s+.+\s+.+\s+.+\s+.+\s+/g)
 		songs = []
-		if keys 
+		if keys
 			if ids
 				if keys.length is ids.length
-					keys.forEach (v,index)-> 
-						song = 
+					keys.forEach (v,index)->
+						song =
 							id : ids[index]
 						song.key = v.match(/<a.+\.(.+)\.html/)?[1]
 						if v.match(/class=\"mof\"/g)
@@ -785,19 +928,19 @@ class Nhaccuatui extends Module
 						else song.official = 0
 						if v.match(/class=\"m320\"/g)
 							song.bitrate = 320
-						else song.bitrate = 0	
+						else song.bitrate = 0
 						songs.push song
 					@eventEmitter.emit "fetch-song-artist-done", songs, options
 					# THIS EVENT CALLBACK IS OPTIONAL. USE ONLY FOR getSongs()
 					# @eventEmitter.emit "fetch-song-artist-done-the-FULL", songs, options
 					# END OF OPTIONAL PART
-				else 
+				else
 					# console.log "Song: #{options.id} key: #{options.key} has similar songs mismatched                                                "
 					@_onFailSong_UPDATE "Song: #{options.id} key: #{options.key} has similar songs mismatched                                                "
-			else 
+			else
 				# console.log "Song: #{options.id} key: #{options.key} is not available  !!!!"
 				@_onFailSong_UPDATE  "Song: #{options.id} key: #{options.key} is not available  !!!!"
-		else 
+		else
 			# console.log "Song: #{options.id} key: #{options.key} is not available                                                          "
 			@_onFailSong_UPDATE "Song: #{options.id} key: #{options.key} is not available                                                          "
 
@@ -808,8 +951,8 @@ class Nhaccuatui extends Module
 		if keys and ids
 			if keys.length is ids.length
 				ids = ids.map (v)-> v.match(/NCTCounter_sg_(\d+)/)?[1]
-				keys.forEach (v,index)-> 
-					song = 
+				keys.forEach (v,index)->
+					song =
 						id : ids[index]
 					song.key = v.match(/<a.+\.(.+)\.html/)?[1]
 					if v.match(/class=\"mof\"/g)
@@ -817,12 +960,42 @@ class Nhaccuatui extends Module
 					else song.official = 0
 					if v.match(/class=\"m320\"/g)
 						song.bitrate = 320
-					else song.bitrate = 0	
+					else song.bitrate = 0
 					songs.push song
 			@eventEmitter.emit "fetch-song-artist-done", songs, options
-		else 
+		else
 			# console.log "Song: #{options.id} key: #{options.key} is not available 2222      "
-			@_onFailSong_UPDATE "Song: #{options.id} key: #{options.key} is not available 2222      "	
+			@_onFailSong_UPDATE "Song: #{options.id} key: #{options.key} is not available 2222      "
+	processSimilarVideos : (data, options) =>
+		times  = data.match(/times.+/g)
+		ids = data.match(/<h3><a href=\".+/g)
+		if times and ids
+			if times.length? and ids.length?
+				if times.length is ids.length
+					ids = ids.map (v)-> v.replace(/\.html.+$/g,'').replace(/^.+\./g,'')
+					times =  times.map (v)->
+						t = v.match(/>(.+)</)?[1].split(':')
+						if t.length
+							if t.length is 2
+								return parseInt(t[0],10)*60 + parseInt(t[1],10)
+							else return 0
+						else return 0
+					videos = []
+					for v,index in times
+						video =
+							key :  ids[index]
+							duration : times[index]
+						videos.push video
+
+					for video in videos
+						do (video)=>
+							@connection.query @query._insertIntoNCTVideos, video,(err)=>
+								if err then console.log "cannt insert video into table. #{err}"
+							_u = "UPDATE #{@table.Videos} SET duration=#{video.duration} WHERE #{@table.Videos}.key=#{@connection.escape video.key}"
+							@connection.query _u,(err1)=>
+								if err1 then console.log "Cannt update video #{err1}"
+
+
 	_getFieldsFromTable : (param, callback)->
 		fields = "id"
 		if param.fields
@@ -844,19 +1017,21 @@ class Nhaccuatui extends Module
 		if @stats.totalItemCount%@params.limit is 0 and @stats.totalItemCount < @stats.totalItems
 				console.log ""
 				console.log "GO TO NEXT STEP: #{@stats.totalItemCount/@params.limit+1}".inverse.yellow
-				# @getField()
-				@getFieldBitrate()
-		
+				@getField()
+				# @getFieldBitrate()
+
 		if @stats.totalItemCount is @stats.totalItems
 				@utils.printFinalResult @stats
 	getField : =>
 		@_getFieldsFromTable @params, (songs)=>
 			console.log "THE NUMBERE OF #{songs.length}"
+
+			# songs = [{"id": 1000030186 , "key" : "TD4AyHBgpDSu"}]
 			for song in songs
 				do (song)=>
 					link = "http://www.nhaccuatui.com/bai-hat/joke-link.#{song.key}.html"
 					# link = "http://www.nhaccuatui.com/playlist/joke-link.#{song.key}.html"
-					options = 
+					options =
 						id : song.id
 						key : song.key
 					@getFileByHTTP link, @processSong, @_onFailSong_UPDATE, options
@@ -881,7 +1056,7 @@ class Nhaccuatui extends Module
 			@stats.currentId = song.id
 			@utils.printRunning @stats
 			# insert song into table
-			# 
+			#
 			_u = "update #{@table.Songs} SET "
 			# _u += " id=#{song.id}," # this option is enable when song.id > 1.000.000.000
 			_u += " title=#{@connection.escape song.title},"
@@ -889,24 +1064,10 @@ class Nhaccuatui extends Module
 			_u += " topic=#{@connection.escape song.topic},"
 			_u += " type=#{@connection.escape song.type},"
 			_u += " link_key=#{@connection.escape song.link_key},"
-			_u += " bitrate=#{song.bitrate},"
+			# _u += " bitrate=#{song.bitrate},"
 			_u += " lyric=#{@connection.escape song.lyric}"
 			_u += " WHERE #{@table.Songs}.key=#{@connection.escape song.key}"
 
-			# _u = "update #{@table.Albums} SET "
-			# _u += " id=#{song.id}," # this option is enable when song.id > 1.000.000.000
-			# _u += " title=#{@connection.escape song.title},"
-			# _u += " artists=#{@connection.escape song.artists},"
-			# _u += " topic=#{@connection.escape song.topic},"
-			# _u += " link_key=#{@connection.escape song.link_key},"
-			# _u += " nsongs=#{song.nsongs},"
-			# _u += " thumbnail=#{@connection.escape song.thumbnail},"
-			# _u += " description=#{@connection.escape song.description},"
-			# _u += " created=#{@connection.escape song.created}"
-			# _u += " WHERE #{@table.Albums}.key=#{@connection.escape song.key}"
-			# THIS PART IS FOR ALBUM
-			# console.log song
-			
 			@connection.query _u, (err)=>
 				if err then console.log "Cannt insert song: #{song.key} into table. ERROR: #{err}"
 
@@ -914,7 +1075,38 @@ class Nhaccuatui extends Module
 				console.log ""
 				console.log "GO TO NEXT STEP: #{@stats.totalItemCount/@params.limit+1}".inverse.yellow
 				@getField()
-			
+
+			if @stats.totalItemCount is @stats.totalItems
+				@utils.printFinalResult @stats
+
+		@eventEmitter.on "video-result", (video)=>
+			@stats.totalItemCount +=1
+			@stats.passedItemCount +=1
+			@stats.currentId = video.id
+			@utils.printRunning @stats
+			# insert video into table
+			#
+			_u = "update #{@table.Videos} SET "
+			_u += " id=#{video.id}," # this option is enable when video.id > 1.000.000.000
+			_u += " title=#{@connection.escape video.title},"
+			_u += " artists=#{@connection.escape video.artists},"
+			_u += " topic=#{@connection.escape video.topic},"
+			_u += " type=#{@connection.escape video.type},"
+			_u += " link_key=#{@connection.escape video.link_key},"
+			_u += " thumbnail=#{@connection.escape video.thumbnail},"
+			_u += " created=#{@connection.escape video.created}," if video.created
+			_u += " lyric=#{@connection.escape video.lyric}"
+			_u += " WHERE #{@table.Videos}.key=#{@connection.escape video.key}"
+
+			# console.log _u
+			@connection.query _u, (err)=>
+				if err then console.log "Cannt insert video: #{video.key} into table. ERROR: #{err}"
+
+			if @stats.totalItemCount%@params.limit is 0 and @stats.totalItemCount < @stats.totalItems
+				console.log ""
+				console.log "GO TO NEXT STEP: #{@stats.totalItemCount/@params.limit+1}".inverse.yellow
+				@getField()
+
 			if @stats.totalItemCount is @stats.totalItems
 				@utils.printFinalResult @stats
 		@eventEmitter.on "update-song-bitrate-mobile-version", (song)=>
@@ -937,7 +1129,7 @@ class Nhaccuatui extends Module
 				console.log "GO TO NEXT STEP : #{@stats.totalItemCount/@params.limit+1} - MOBILE-VERSION".inverse.yellow
 				# @getField()
 				@getFieldBitrate()
-			
+
 			if @stats.totalItemCount is @stats.totalItems
 				@utils.printFinalResult @stats
 		@eventEmitter.on "fetch-song-artist-done-mobile-version", (songs, options)=>
@@ -949,163 +1141,32 @@ class Nhaccuatui extends Module
 	getSongs : ->
 		@connect()
 		console.log "Running on: #{new Date(Date.now())}"
-		console.log " |"+" UPDATE SONGS WHERE BITRATE = 0 OR BITRATE IS NULL from #{@table.Songs}".magenta	
-		@params = 
+		console.log " |"+" UPDATE VIDEOS lyric is null from #{@table.Videos}".magenta
+		@params =
 			fields : ['id','key']
-			table : @table.Songs
-			limit : 20000
-			onCondition : "  where checktime > '2013-05-13 00:33:23' and title = '' "
-		songs = []
-		@stats.totalItems = 20000
-		@stats.currentTable = @table.Songs
+			table : @table.Videos
+			limit : 5000
+			onCondition : "  where id > 1000000000 "
+		@stats.totalItems = 100000
+		@stats.currentTable = @table.Videos
 		@onSongResultDone()
 		@getField()
 		# @getFieldBitrate()
 
-	#THIS PART USED FOR FILLED UP BITRATE IN TABLE
-	getFieldBitrate : =>
-		@_getFieldsFromTable @params, (songs)=>
-			for song in songs
-				do (song)=>
-					link = "http://m.nhaccuatui.com/bai-hat/joke-link.#{song.key}.html"
-					# console.log link
-					options = 
-						id : song.id
-						key : song.key
-					@getFileByHTTP link, @processSongBitrate, @_onFailSong_UPDATE, options
-	processSongBitrate : (data,options)=>
-		song =
-			id : options.id
-			key : options.key
-			bitrate : 0
-		bitrate = data.match(/<span><img.+\s(\d+)kbps/)?[1]
-		if bitrate 
-			song.bitrate = bitrate
-		@eventEmitter.emit "update-song-bitrate-mobile-version", song
-		songs = data.match(/<h3><a href.+html/g)
-		if songs 
-			songs = songs.map (v)->
-				ob = 
-					key : v.match(/.+\.([a-zA-Z0-9-_]+)\.html/)?[1]
-			@eventEmitter.emit "fetch-song-artist-done-mobile-version", songs	
 
-	#This part is not supposed to replace the func updateSongsPlays()
-	#It is used to fetch a large amount of songs which ends up to a million ones
-	#It will be removed later
-	onSongsPlaysFail : (err,options)=>
-		@stats.totalItemCount +=1
-		@stats.failedItemCount +=1
-		@utils.printRunning @stats
-
-		if @stats.totalItemCount<@stats.totalItems
-			@_getSongsPlays()
-
-		if @stats.totalItemCount is @stats.totalItems
-			@utils.printFinalResult @stats
-	processSongsPlays : (data, options)=>
-		data = JSON.parse data
-		songs = data.data.songs
-		# console.log songs
-		for  id, plays of songs
-			do (id, plays)=>
-				@stats.totalItemCount +=1
-				@stats.passedItemCount +=1
-				_u = "update #{@table.Songs} SET plays=#{plays} where id=#{id}"
-				@stats.currentId = id
-				# console.log _u
-				@connection.query _u, (err)->
-							if err then console.log "Cannt update the total plays of the song #{id} into database. ERROR: #{err}"
-				@utils.printRunning @stats
-
-		if @stats.totalItemCount<@stats.totalItems
-			@_getSongsPlays()
-
-		if @stats.totalItemCount is @stats.totalItems
-			@utils.printFinalResult @stats
-	_getSongsPlays : =>
-		@_getFieldsFromTable @params, (songs)=>
-			ids = []
-			for song in songs
-				ids.push song.id
-			ids = ids.join(',')
-			link = "http://www.nhaccuatui.com/wg/get-counter?listSongIds=#{ids}"
-			# console.log link
-			options = 
-				id : song.id
-			@getFileByHTTP link, @processSongsPlays, @onSongsPlaysFail, options
-	getSongsPlays : ->
-		@connect()
-		console.log "Running on: #{new Date(Date.now())}"
-		console.log " |"+" UPDATE PLAYS OF SONGS WHERE PLAYS = 0 from #{@table.Songs}".magenta	
-		@params = 
-			fields : ['id']
-			table : @table.Songs
-			limit : 500
-			onCondition : " WHERE plays=0"
-		songs = []
-		@stats.totalItems = 30000
-		@stats.currentTable = @table.Songs
-		# @getField()
-		@_getSongsPlays()
-	
+	# this is for testing
+	# testing : ->
+	# 	@connect()
+	# 	a = [ { id: 112551772, key: 'UQlpB3L0PuI8', official: 0, bitrate: 320 },{ id: 112551267, key: '7sG9EYq5PXxS', official: 1, bitrate: 0 },{ id: 2550305, key: 'LJ9PRAXNRr73', official: 0, bitrate: 320 },{ id: 2550792, key: 'ZTpaNKY6Z0lt', official: 0, bitrate: 0 },{ id: 2550182, key: 'OC3NZx1Gi8Cg', official: 0, bitrate: 0 },{ id: 2550050, key: 'g1flJ7SzKeAp', official: 0, bitrate: 320 },{ id: 2551576, key: 'OUnlflpbHBaH', official: 1, bitrate: 0 },{ id: 2549950, key: 'fBXuSJ9s4ADN', official: 1, bitrate: 0 },{ id: 2547244, key: 'qAfgFblkf5AL', official: 0, bitrate: 0 },{ id: 2547231, key: 'll3VME4g23p1', official: 0, bitrate: 0 },{ id: 2547223, key: '6FGQ0UWQkn3p', official: 0, bitrate: 0 },{ id: 2547222, key: 'cJSayZOfenUi', official: 0, bitrate: 0 },{ id: 2547214, key: 'LZRkGqPN08h9', official: 0, bitrate: 0 },{ id: 2547065, key: '3meQJ96UDwym', official: 0, bitrate: 320 },{ id: 2547061, key: '9JbSjwfoDktE', official: 0, bitrate: 320 },{ id: 2545401, key: 'EfPcdZdahlBs', official: 0, bitrate: 0 },{ id: 2543210, key: '4vwub4IeSre3', official: 0, bitrate: 320 },{ id: 2545054, key: 'Ujnhct1AYMXa', official: 1, bitrate: 0 },{ id: 2544648, key: 'J5DZwW9sdlzR', official: 1, bitrate: 0 },{ id: 2546229, key: 'BnxCXbzx9uEA', official: 1, bitrate: 0 },{ id: 2553510, key: 'PkGFgNrWAAsJ', official: 0, bitrate: 320 },{ id: 2546231, key: 'DYvBulFzrCTb', official: 1, bitrate: 0 },{ id: 2546224, key: '68G5ZKbowAYB', official: 1, bitrate: 0 },{ id: 2546227, key: '2XaiUnapc6PM', official: 1, bitrate: 0 },{ id: 2546226, key: 'QGN42gmVYQRL', official: 1, bitrate: 0 },{ id: 2546237, key: '102g4ssNvFMI', official: 1, bitrate: 0 },{ id: 2546236, key: '3PS93B7OsJy5', official: 1, bitrate: 0 },{ id: 2553517, key: '5EIJlVa4Ubdl', official: 1, bitrate: 0 },{ id: 2546238, key: '9wuOhI67n202', official: 1, bitrate: 0 },{ id: 112546232, key: 'KeFCjS4YQEMc', official: 1, bitrate: 0 }]
+	# 	console.log a.length
+	# 	_options =
+	# 		field : "id"
+	# 		table : @table.Songs
+	# 	@filterNonExistedRecordInDB a, _options, (results)=>
+	# 		console.log "------- LENGTH: #{results.length}"
+	# 		console.log JSON.stringify results
 
 
-	# --------------------
-	onAlbumsPlaysFail : (err,options)=>
-		@stats.totalItemCount +=1
-		@stats.failedItemCount +=1
-		@utils.printRunning @stats
-
-		if @stats.totalItemCount<@stats.totalItems
-			@_getAlbumsPlays()
-
-		if @stats.totalItemCount is @stats.totalItems
-			@utils.printFinalResult @stats
-	processAlbumsPlays : (data, options)=>
-		data = JSON.parse data
-		albums = data.data.playlists
-		# console.log albums
-		for  id, plays of albums
-			do (id, plays)=>
-				@stats.totalItemCount +=1
-				@stats.passedItemCount +=1
-				_u = "update #{@table.Albums} SET plays=#{plays} where id=#{id}"
-				@stats.currentId = id
-				# console.log _u
-				@connection.query _u, (err)->
-							if err then console.log "Cannt update the total plays of the song #{id} into database. ERROR: #{err}"
-				@utils.printRunning @stats
-
-		if @stats.totalItemCount<@stats.totalItems
-			@_getAlbumsPlays()
-
-		if @stats.totalItemCount is @stats.totalItems
-			@utils.printFinalResult @stats
-	_getAlbumsPlays : =>
-		@_getFieldsFromTable @params, (songs)=>
-			ids = []
-			for song in songs
-				ids.push song.id
-			ids = ids.join(',')
-			link = "http://www.nhaccuatui.com/wg/get-counter?listPlaylistIds=#{ids}"
-			# console.log link
-			options = 
-				id : song.id
-			@getFileByHTTP link, @processAlbumsPlays, @onAlbumsPlaysFail, options
-	getAlbumsPlays : ->
-		@connect()
-		console.log "Running on: #{new Date(Date.now())}"
-		console.log " |"+" UPDATE PLAYS OF Albums WHERE PLAYS = 0 from #{@table.Albums}".magenta	
-		@params = 
-			fields : ['id']
-			table : @table.Albums
-			limit : 500
-			onCondition : " where plays = 0"
-		Albums = []
-		@stats.totalItems = 36000
-		@stats.currentTable = @table.Albums
-		# @getField()
-		@_getAlbumsPlays()
 	showStats : -> @_printTableStats NCT_CONFIG.table
 
 

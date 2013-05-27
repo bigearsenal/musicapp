@@ -206,24 +206,27 @@ runNhaccuatui = ->
 		logPath : "./log/test_NCTLog.txt"
 	console.log "STEP 2:".inverse.blue + " " + "Choose the type of command:".underline.blue
 	console.log "\t" + "CREATE".inverse.red + " tables\t" + "RESET".inverse.red + " tables "
-	console.log "\t1.UPDATE ALBUMS AND SONGS\t2.updateSongsPlay"
+	console.log "\t1.UPDATE SONGS & VIDEOS && ALBUMS\t2.updateSongsPlay"
 	console.log "\t3.fetchArtist\t4.getSongs"
 	console.log "\t5.getSongsPlays\t6.getAlbumsPlays"
-	console.log "\t7.getAlbumsDesciption\t8.updateSongsByCategory"
+	console.log "\t7.updateAlbumsAndSongs\t8.UPDATE SONG BY CATS"
+	console.log "\t9.UPDATE VIDEOS BY CATS\t10.testing"
 	
 	nct = new Nhaccuatui(mysqlConfig)
 	rl.question "=> ", (answer) ->
 		switch answer.trim()
 			when "CREATE" then nct.createTables()
 			when "RESET" then nct.resetTables()
-			when "1" then nct.updateAlbumsAndSongs()
+			when "1" then nct.update()
 			when "2" then nct.updateSongsPlays()
 			when "3" then nct.fetchArtist()
 			when "4" then nct.getSongs()
 			when "5" then nct.getSongsPlays()
 			when "6" then nct.getAlbumsPlays()
-			when "7" then nct.getAlbumsDesciption()
+			when "7" then nct.updateAlbumsAndSongs()
 			when "8" then nct.updateSongsByCategory()
+			when "9" then nct.updateVideosByCategory()
+			when "10" then nct.testing()
 
 			
 
@@ -261,6 +264,21 @@ runVietGiaitri = ->
 			when "2" then runWithRange(vietGiaitri.xxxxx)
 			when "3" then vietGiaitri.showStats()
 			else console.log "Wrong type".red
+runChiaSeNhac = ->
+	ChiaSeNhac = require './lib/chiasenhac'
+	console.log "Running with "+"Chiasenhac.vn".inverse.green
+	console.log "STEP 2:".inverse.blue + " " + "Choose the type of command:".underline.blue
+	console.log "\t1.fetchSongs\t2.fetchSongsStats"
+	console.log "\t3.show stats\t4.xxxxxxxxxxx"
+	# console.log "\t5.updateVideos\t6.axxxxxxxxxx"
+	chiaSeNhac = new ChiaSeNhac()
+	rl.question "=> ", (answer) ->
+		switch answer.trim()
+			when "1" then runWithRange chiaSeNhac.fetchSongs
+			when "2" then chiaSeNhac.fetchSongsStats()
+			when "3" then chiaSeNhac.showStats()
+			else console.log "Wrong type".red
+
 runStats = ->
 	Stats = require './lib/stats'
 	console.log "Running with "+"statistics".inverse.green
@@ -293,7 +311,9 @@ startingLog = ->
 	console.log	"        "+ "5.chacha.vn".inverse.green + "\t" + "6.nghenhac.info".inverse.green+ "\t" + "7.mp3.zing.vn".inverse.green + "\t" + 
 				"8.nhaccuatui.com".inverse.green
 	console.log ""
-	console.log	"        "+ "9.music.vnn.vn".inverse.green + "\t"+ "10.nhac.vietgiaitri.com".inverse.green+ "\t" + "11. STATISTICS".inverse.green
+	console.log	"        "+ "9.music.vnn.vn".inverse.green + "\t"+ "10.nhac.vietgiaitri.com".inverse.green+ "\t" + "11.chiasenhac.com".inverse.green
+	console.log ""
+	console.log	"        "+ "12.STATISTICS".inverse.green 
 	console.log "        Type 'q' to quit".grey
 
 rl.setPrompt('=>', 3)
@@ -311,7 +331,8 @@ rl.on("line", (line) ->
 		when "8" then runNhaccuatui()
 		when "9" then runMusicVNN()
 		when "10" then runVietGiaitri()
-		when "11" then runStats()
+		when "11" then runChiaSeNhac()
+		when "12" then runStats()
 		when "q"
 			rl.close()
 		else startingLog()
