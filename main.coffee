@@ -268,15 +268,17 @@ runChiaSeNhac = ->
 	ChiaSeNhac = require './lib/chiasenhac'
 	console.log "Running with "+"Chiasenhac.vn".inverse.green
 	console.log "STEP 2:".inverse.blue + " " + "Choose the type of command:".underline.blue
-	console.log "\t1.fetchSongs\t2.fetchSongsStats"
-	console.log "\t3.show stats\t4.xxxxxxxxxxx"
-	# console.log "\t5.updateVideos\t6.axxxxxxxxxx"
+	console.log "\t1.UPDATE SONGS & ALBUMS\t2.UPDATE ALBUMS"
+	console.log "\t3.fetch Songs with range\t4.fetchSongsStats"
+	console.log "\t5.show stats \t6.axxxxxxxxxx"
 	chiaSeNhac = new ChiaSeNhac()
 	rl.question "=> ", (answer) ->
 		switch answer.trim()
-			when "1" then runWithRange chiaSeNhac.fetchSongs
-			when "2" then chiaSeNhac.fetchSongsStats()
-			when "3" then chiaSeNhac.showStats()
+			when "1" then chiaSeNhac.updateSongs()
+			when "2" then chiaSeNhac.updateAlbums()
+			when "3" then runWithRange chiaSeNhac.fetchSongs
+			when "4" then chiaSeNhac.fetchSongsStats()
+			when "5" then chiaSeNhac.showStats()
 			else console.log "Wrong type".red
 
 runStats = ->
@@ -311,7 +313,7 @@ startingLog = ->
 	console.log	"        "+ "5.chacha.vn".inverse.green + "\t" + "6.nghenhac.info".inverse.green+ "\t" + "7.mp3.zing.vn".inverse.green + "\t" + 
 				"8.nhaccuatui.com".inverse.green
 	console.log ""
-	console.log	"        "+ "9.music.vnn.vn".inverse.green + "\t"+ "10.nhac.vietgiaitri.com".inverse.green+ "\t" + "11.chiasenhac.com".inverse.green
+	console.log	"        "+ "9.chiasenhac".inverse.green + "\t"+ "10.vietgiaitri".inverse.green+ "\t" + "11.music.vnn.vn".inverse.green
 	console.log ""
 	console.log	"        "+ "12.STATISTICS".inverse.green 
 	console.log "        Type 'q' to quit".grey
@@ -329,9 +331,9 @@ rl.on("line", (line) ->
 		when "6" then runNghenhac()
 		when "7" then runZing()
 		when "8" then runNhaccuatui()
-		when "9" then runMusicVNN()
+		when "9" then runChiaSeNhac()
 		when "10" then runVietGiaitri()
-		when "11" then runChiaSeNhac()
+		when "11" then runMusicVNN()
 		when "12" then runStats()
 		when "q"
 			rl.close()
@@ -342,3 +344,9 @@ rl.on("line", (line) ->
   console.log "YOU HAVE LOGGED OUT!".inverse.red
   process.exit 0
 
+
+
+
+
+
+  

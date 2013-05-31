@@ -1,1 +1,1 @@
-{"serverType":"mp3.zing.vn","lastSongId":1382455755,"lastAlbumId":1381676860,"lastVideoId":1382455681,"updated_at":1369654513074}
+{"serverType":"mp3.zing.vn","lastSongId":1382456858,"lastAlbumId":1381677014,"lastVideoId":1382456779,"updated_at":1369915846344}

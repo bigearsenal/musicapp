@@ -639,6 +639,44 @@ Changing resolution of an image: add _640 before the file extension
 
 ---
 
+## 17. ZAZOO.IT ##
+
+* Content link: <http://www.zazoo-music.com/HomepagePanel3.aspx>  
+
+* Get lyric of a link:  
+ LINK: <http://lyrics.zazoo.it/getlyrics>  
+ METHOD: POST  
+
+ ```json
+ values={"format":"timed","keyword_id":"615596","clip_id":"67319","artist_name":"Backstreet Boys","song_title":"Backstreet Boys - As Long As You Love Me","page_title":"Backstreet Boys - As Long As You Love Me - YouTube","clip_url":"http://www.youtube.com/watch?v=0Gl2QnHNpkA","request_id":"m2rvh01xuu40a4i_698","duration_ms":219000,"view_count":14100406,"upload_date":"May 25, 2011"}  
+ -----------------  
+ values={"format":"timed","keyword_id":"","clip_id":"","artist_name":"","song_title":"","page_title":"","clip_url":"http://www.youtube.com/watch?v=6M6samPEMpM","request_id":"","duration_ms":0,"view_count":0,"upload_date":""}
+ ```
+
+* Get singer list:  
+
+```json
+METHOD = POST (singer started with 'g')
+LINK = http://api.zazoo.it/api/playlists/artists/
+FORM = APIKey=23fdffd9fd764cb&ElementID=ArtistsBodyContent&KeywordID=0&ClipID=0&StartingLetter=g&ResultsLimit=0&PlaylistID=21
+```
+
+* Get artist image:  
+
+GET IMAGES URL
+"http://cdn.zazoo.it/Images/Authors/" + "615354.jpg"  
+`615354.jpg` from artist list
+
+* Get clip in Artist File
+
+```json
+METHOD = POST // test with GET method
+LINK = http://api.zazoo.it/api/playlists/artists/clips/
+FORM = APIKey=23fdffd9fd764cb&ElementID=ClipBodyContent&KeywordID=615354&ClipID=0&StartingLetter=&ResultsLimit=-1
+```
+
+---
+
 ## 17.iCine.vn ##
 
 * Get mp4 movie

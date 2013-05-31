@@ -274,6 +274,7 @@ class Nhaccuatui extends Module
 		songs = []
 		for album in albums
 			for song in album.songs
+				song.id = parseInt song.id,10
 				songs.push song
 
 		callback = (song)=>
@@ -292,16 +293,16 @@ class Nhaccuatui extends Module
 		console.log " |The number of songs found in new albums: #{songs.length}"
 		console.log " |STEP 4: Fetching & inserting new songs".magenta
 		@resetStats()
-		@stats.totalItems = songs.length
 		@stats.currentTable = @table.Songs
 
 		# for testing
-		# songs = [{ id: '2442282',key: 'GbV3lZa2Yifq'}]
+		# songs = [{ id: 2442282,key: 'GbV3lZa2Yifq'}]
 		_options =
 			field : "id"
 			table : @table.Songs
 		@filterNonExistedRecordInDB songs, _options, (results)=>
 			console.log " |The # of items AFTER being filtered :" + results.length
+			@stats.totalItems = results.length
 			if results.length > 0
 				for song in results
 					do (song)=>
@@ -456,6 +457,7 @@ class Nhaccuatui extends Module
 				# console.log JSON.stringify _tempArray
 				temp = temp.concat(items.filter((v)-> if _tempArray.indexOf(v[options.field]) > -1 then return false else return true))
 				if count is nChunks
+					# console.log temp
 					callback(temp)	
 		items.map (item, index)=>
 			if (index/chunkLength|0) isnt currentChunk
