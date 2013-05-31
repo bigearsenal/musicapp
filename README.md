@@ -655,29 +655,25 @@ Changing resolution of an image: add _640 before the file extension
 
 * Get singer list:  
 
-```json
-METHOD = POST (singer started with 'g')
-LINK = http://api.zazoo.it/api/playlists/artists/
-FORM = APIKey=23fdffd9fd764cb&ElementID=ArtistsBodyContent&KeywordID=0&ClipID=0&StartingLetter=g&ResultsLimit=0&PlaylistID=21
-```
+ METHOD = POST (singer started with 'g')  
+ LINK = http://api.zazoo.it/api/playlists/artists/  
+ FORM = APIKey=23fdffd9fd764cb&ElementID=ArtistsBodyContent&KeywordID=0&ClipID=0&StartingLetter=g& ResultsLimit=0&PlaylistID=21  
 
 * Get artist image:  
 
 GET IMAGES URL
-"http://cdn.zazoo.it/Images/Authors/" + "615354.jpg"  
-`615354.jpg` from artist list
+ "http://cdn.zazoo.it/Images/Authors/" + "615354.jpg"  
+ `615354.jpg` from artist list  
 
 * Get clip in Artist File
 
-```json
-METHOD = POST // test with GET method
-LINK = http://api.zazoo.it/api/playlists/artists/clips/
-FORM = APIKey=23fdffd9fd764cb&ElementID=ClipBodyContent&KeywordID=615354&ClipID=0&StartingLetter=&ResultsLimit=-1
-```
+ METHOD = POST // test with GET method  
+ LINK = http://api.zazoo.it/api/playlists/artists/clips/  
+ FORM = APIKey=23fdffd9fd764cb&ElementID=ClipBodyContent&KeywordID=615354&ClipID=0&StartingLetter=& ResultsLimit=-1   
 
 ---
 
-## 17.iCine.vn ##
+## 18.iCine.vn ##
 
 * Get mp4 movie
 
@@ -713,7 +709,7 @@ for example `217secrete123!@#`
 
 ---
 
-## 18.Movies.hdviet.com ##
+## 19.Movies.hdviet.com ##
 
 * Get files  
 
@@ -771,7 +767,7 @@ http://ncs06.vn-hd.com/02022013/Deadwood_S02/E001/1280/Deadwood_S02_E001_1280_0.
 
 ---
 
-## 19.iphone.uphim.vn ##
+## 20.iphone.uphim.vn ##
 
 * Get files
 
