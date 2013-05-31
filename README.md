@@ -662,7 +662,7 @@ Changing resolution of an image: add _640 before the file extension
  "http://cdn.zazoo.it/Images/Authors/615354.jpg"  
  `615354.jpg` from artist list  
 
-* Get clip in Artist File
+* Get clip in Artist File  
  METHOD = POST // test with GET method  
  LINK = http://api.zazoo.it/api/playlists/artists/clips/  
  FORM = APIKey=23fdffd9fd764cb&ElementID=ClipBodyContent&KeywordID=615354&ClipID=0&StartingLetter=& ResultsLimit=-1   
