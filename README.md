@@ -661,7 +661,7 @@ Changing resolution of an image: add _640 before the file extension
 
 * Get artist image:  
 
-GET IMAGES URL
+* Get image url:  
  "http://cdn.zazoo.it/Images/Authors/" + "615354.jpg"  
  `615354.jpg` from artist list  
 
