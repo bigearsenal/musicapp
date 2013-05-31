@@ -669,8 +669,9 @@ Changing resolution of an image: add _640 before the file extension
  LINK = http://api.zazoo.it/api/playlists/artists/clips/  
  FORM = APIKey=23fdffd9fd764cb&ElementID=ClipBodyContent&KeywordID=615354&ClipID=0&StartingLetter=& ResultsLimit=-1   
 
+## 18. GOOGLE CHROME EXTENSIONS	 ##
 
-#### NOTICE: Lyrics for google chrome extension ####  
+#### NOTICE: Lyrics for google chrome extension 
 
 Search on google  
 
@@ -690,17 +691,15 @@ Result example : http://lyrics.wikia.com/Selena_Gomez:Come_%26_Get_It
 
 Get lyric from file  
 
-#### NOTICE: Lyrics for METRO LYRICS ####  
+#### NOTICE: Lyrics for METRO LYRICS  
 
 `X-API-KEY=5bbf1fa36f0050fe7f7d6271ed09dad0e236ac87`  
 METRO API: `http://api.metrolyrics.com/v1/`  
 `deviceid : 'chrome_extension'`  
 
-
-
 ---
 
-## 18.iCine.vn ##
+## 19.iCine.vn ##
 
 * Get mp4 movie
 
@@ -736,7 +735,7 @@ for example `217secrete123!@#`
 
 ---
 
-## 19.Movies.hdviet.com ##
+## 20.Movies.hdviet.com ##
 
 * Get files  
 
@@ -794,7 +793,7 @@ http://ncs06.vn-hd.com/02022013/Deadwood_S02/E001/1280/Deadwood_S02_E001_1280_0.
 
 ---
 
-## 20.iphone.uphim.vn ##
+## 21.iphone.uphim.vn ##
 
 * Get files
 
