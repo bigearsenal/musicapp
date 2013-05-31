@@ -643,6 +643,8 @@ Changing resolution of an image: add _640 before the file extension
 
 * Content link: <http://www.zazoo-music.com/HomepagePanel3.aspx>  
 
+* Zazoo panel: http://panel.zazoo.it/panel/html/20130520-1400/panel.html?ClipID=6171&KeywordID=615354
+
 * Get lyric of a link  
  LINK: <http://lyrics.zazoo.it/getlyrics>  
  METHOD: POST  
@@ -666,6 +668,35 @@ Changing resolution of an image: add _640 before the file extension
  METHOD = POST // test with GET method  
  LINK = http://api.zazoo.it/api/playlists/artists/clips/  
  FORM = APIKey=23fdffd9fd764cb&ElementID=ClipBodyContent&KeywordID=615354&ClipID=0&StartingLetter=& ResultsLimit=-1   
+
+
+#### NOTICE: Lyrics for google chrome extension ####  
+
+Search on google  
+
+```javascript
+$.ajax({
+    url: 'https://ajax.googleapis.com/ajax/services/search/web',
+    data: {
+      v:'1.0',
+      q: 'site:lyrics.wikia.com ' + title + ' -"Page Ranking Information"'
+    },
+    dataType: 'jsonp',
+    type: 'GET',
+    success: function(googleData, status){  //do something  }
+``` 
+
+Result example : http://lyrics.wikia.com/Selena_Gomez:Come_%26_Get_It  
+
+Get lyric from file  
+
+#### NOTICE: Lyrics for METRO LYRICS ####  
+
+`X-API-KEY=5bbf1fa36f0050fe7f7d6271ed09dad0e236ac87`  
+METRO API: `http://api.metrolyrics.com/v1/`  
+`deviceid : 'chrome_extension'`  
+
+
 
 ---
 
