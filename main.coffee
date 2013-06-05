@@ -280,7 +280,37 @@ runChiaSeNhac = ->
 			when "4" then chiaSeNhac.fetchSongsStats()
 			when "5" then chiaSeNhac.showStats()
 			else console.log "Wrong type".red
+runSongFreaks = ->
+	SongFreaks = require './lib/songfreaks'
+	console.log "Running with "+"songfreaks.com".inverse.green
+	console.log "STEP 2:".inverse.blue + " " + "Choose the type of command:".underline.blue
+	console.log "\t1.XXXXXXXXXX \t2.fetchSongs"
+	# console.log "\t3.fetch Songs with range\t4.fetchSongsStats"
+	# console.log "\t5.show stats \t6.axxxxxxxxxx"
+	songFreaks = new SongFreaks()
+	rl.question "=> ", (answer) ->
+		switch answer.trim()
+			when "1" then songFreaks.updateSongs()
+			when "2" then runWithRange songFreaks.fetchSongs
+			
+			else console.log "Wrong type".red
 
+runLyricWiki = ->
+	LyricWiki = require './lib/lyricwiki'
+	console.log "Running with "+"LyricWiki.com".inverse.green
+	console.log "STEP 2:".inverse.blue + " " + "Choose the type of command:".underline.blue
+	console.log "\t1.fetchSongs\t2.updateSongsLyrics"
+	console.log "\t3.updateSongsMetrolyrics\t4.xxxxxxxxx"
+	# console.log "\t5.show stats \t6.axxxxxxxxxx"
+	lyricWiki = new LyricWiki()
+	rl.question "=> ", (answer) ->
+		switch answer.trim()
+			when "1" then lyricWiki.fetchSongs()
+			when "2" then lyricWiki.updateSongsLyrics()
+			when "3" then lyricWiki.updateSongsMetrolyrics()
+
+			
+			else console.log "Wrong type".red
 runStats = ->
 	Stats = require './lib/stats'
 	console.log "Running with "+"statistics".inverse.green
@@ -315,7 +345,7 @@ startingLog = ->
 	console.log ""
 	console.log	"        "+ "9.chiasenhac".inverse.green + "\t"+ "10.vietgiaitri".inverse.green+ "\t" + "11.music.vnn.vn".inverse.green
 	console.log ""
-	console.log	"        "+ "12.STATISTICS".inverse.green 
+	console.log	"        "+"12.songfreaks".inverse.green + "\t"+ "13.lyrics.wikia.com".inverse.green+ "\t"+  "14.STATISTICS".inverse.green 
 	console.log "        Type 'q' to quit".grey
 
 rl.setPrompt('=>', 3)
@@ -334,7 +364,9 @@ rl.on("line", (line) ->
 		when "9" then runChiaSeNhac()
 		when "10" then runVietGiaitri()
 		when "11" then runMusicVNN()
-		when "12" then runStats()
+		when "12" then runSongFreaks()
+		when "13" then runLyricWiki()
+		when "14" then runStats()
 		when "q"
 			rl.close()
 		else startingLog()

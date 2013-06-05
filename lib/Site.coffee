@@ -34,7 +34,7 @@ class Site extends Module
 				res.setEncoding 'utf8'
 				data = ''
 				# onSucess res.headers.location
-				if res.statusCode isnt 302
+				if res.statusCode isnt 302 and res.statusCode isnt 404
 					res.on 'data', (chunk) =>
 						data += chunk;
 					res.on 'end', () =>

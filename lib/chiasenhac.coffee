@@ -327,11 +327,11 @@ class Nhacso extends Site
                   if err then console.log "cannt get max id from table. ERROR: #{err}"
                   else 
                         max = result[0].max
-                        _selectQuery = "select title,artists,link ,sum(nsongs) as nsongs,coverart, producer,downloads, " +
-                              "plays,date_released, group_concat(songids) as songids  from " + 
+                        _selectQuery = "select title,artists,link ,sum(nsongs) as nsongs,coverart, producer,floor(avg(downloads)) as downloads, " +
+                              "floor(avg(plays)) as plays,date_released, group_concat(songids) as songids  from " + 
                               "(" + 
                               "select album_title as title,artists,album_link as link, count(*) as nsongs, album_coverart as coverart, "+ 
-                              "producer, downloads, plays, date_released, group_concat(id) as songids from CSNSongs where id > #{@temp.reservedLastSongId} " + 
+                              "producer, floor(avg(downloads)) as downloads, floor(avg(plays)) as plays, date_released, group_concat(id) as songids from CSNSongs where id > #{@temp.reservedLastSongId} " + 
                               "and album_title <> '' and album_link <> '' group by album_coverart " +
                               ") as anbinh  " + 
                               "group by title"
@@ -361,7 +361,7 @@ class Nhacso extends Site
                                     else console.log "ALL ALBUMS UP-TO-DATE!".red
 
       showStats : ->
-        @_printTableStats NS_CONFIG.table
+        @_printTableStats @table
 
 
 module.exports = Nhacso
