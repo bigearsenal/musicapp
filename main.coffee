@@ -182,7 +182,7 @@ runZing = ->
 
 	console.log "\t1.UPDATE SONGS, ALBUMS & VIDEOS\t2.UPDATE ALBUMS"
 	console.log "\t3.UPDATE VIDEOS\t4.UPDATE SONGS WITH RANGE"
-	console.log "\t5.UPDATE ALBUMS WITH RANGE"
+	console.log "\t5.UPDATE ALBUMS WITH RANGE\t6.UPDATE VIDEOS WITH RANGE"
 
 	zing = new Zing(mysqlConfig)
 	rl.question "=> ", (answer) ->
@@ -194,6 +194,9 @@ runZing = ->
 			when "3" then zing.updateVideos()
 			when "4" then runWithRange zing.updateSongsWithRange
 			when "5" then runWithRange zing.updateAlbumsWithRange
+			when "6" then runWithRange zing.updateVideosWithRange
+
+			
 			
 
 			else console.log "Wrong type".red
@@ -270,7 +273,7 @@ runChiaSeNhac = ->
 	console.log "STEP 2:".inverse.blue + " " + "Choose the type of command:".underline.blue
 	console.log "\t1.UPDATE SONGS & ALBUMS\t2.UPDATE ALBUMS"
 	console.log "\t3.fetch Songs with range\t4.fetchSongsStats"
-	console.log "\t5.show stats \t6.axxxxxxxxxx"
+	console.log "\t5.show stats \t6.updateVideoLessthan10exp5"
 	chiaSeNhac = new ChiaSeNhac()
 	rl.question "=> ", (answer) ->
 		switch answer.trim()
@@ -279,6 +282,7 @@ runChiaSeNhac = ->
 			when "3" then runWithRange chiaSeNhac.fetchSongs
 			when "4" then chiaSeNhac.fetchSongsStats()
 			when "5" then chiaSeNhac.showStats()
+			when "6" then chiaSeNhac.updateVideoLessthan10exp5()
 			else console.log "Wrong type".red
 runSongFreaks = ->
 	SongFreaks = require './lib/songfreaks'
@@ -300,16 +304,17 @@ runLyricWiki = ->
 	console.log "Running with "+"LyricWiki.com".inverse.green
 	console.log "STEP 2:".inverse.blue + " " + "Choose the type of command:".underline.blue
 	console.log "\t1.fetchSongs\t2.updateSongsLyrics"
-	console.log "\t3.updateSongsMetrolyrics\t4.xxxxxxxxx"
-	# console.log "\t5.show stats \t6.axxxxxxxxxx"
+	console.log "\t3.updateSongsMetrolyrics\t4.updateGraceNoteSongsLyrics"
+	console.log "\t5.fetchGenres \t6.fetchAlbumsArtistsGenres"
 	lyricWiki = new LyricWiki()
 	rl.question "=> ", (answer) ->
 		switch answer.trim()
 			when "1" then lyricWiki.fetchSongs()
 			when "2" then lyricWiki.updateSongsLyrics()
 			when "3" then lyricWiki.updateSongsMetrolyrics()
-
-			
+			when "4" then lyricWiki.updateGraceNoteSongsLyrics()
+			when "5" then lyricWiki.fetchGenres()
+			when "6" then lyricWiki.fetchAlbumsArtistsGenres()
 			else console.log "Wrong type".red
 runStats = ->
 	Stats = require './lib/stats'

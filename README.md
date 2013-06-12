@@ -595,6 +595,8 @@ HUNDREDSOFTHOUSANDS = ['','MC0x','MC0y','MC0z','MC00','MC01','MC02','MC03','MC04
 	<http://store.zing.vn/mediaxml?mediaId=MC02MzU2MDc=>  
 	`mediaId=MC02MzU2MDc=` <=> `mediaId=735607=` . Notice the equal sign  
 
+Note: http://store.zing.vn/mediaxml?mediaId=MC02MzU2MDc= ----->  http://store.zing.vn/mediaxml?mediaId=MC02MzU2MDc=_1  
+
 * Get A Chunk of A Video  
 
  Get File : http://store.zing.vn/mediaxml?mediaId=MC02NDIzNjk=_3  

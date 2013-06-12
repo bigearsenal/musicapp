@@ -435,7 +435,7 @@ class Nhaccuatui extends Module
 		temp = []
 		count = 0
 		tempItems = []
-		chunkLength = 100
+		chunkLength = 150
 		currentChunk = 0
 		if items.length%chunkLength is 0 then nChunks = items.length/chunkLength
 		else nChunks = (items.length/chunkLength|0) + 1
@@ -450,8 +450,9 @@ class Nhaccuatui extends Module
 			# console.log _select
 			_tempArray = []
 			@connection.query _select, (err, results)=>
-				@printUpdateInfo "Filtering......"
 				count +=1
+				@printUpdateInfo "Count : #{count}.Filtering......"
+				if err then console.log err
 				for result in results
 					_tempArray.push result[options.field]
 				# console.log JSON.stringify _tempArray
@@ -465,9 +466,9 @@ class Nhaccuatui extends Module
 				processTempItems tempItems
 				tempItems = []
 			tempItems.push item
-			if index%chunkLength isnt 0 and index is items.length-1
+			if index is items.length-1
 				processTempItems tempItems
-			@printUpdateInfo "Filtering......"
+			@printUpdateInfo "Count : #{count}.Filtering......"
 	getAlbumKeysAndIds : (topicLink,page = 1) ->
 		link = topicLink + page
 		options =

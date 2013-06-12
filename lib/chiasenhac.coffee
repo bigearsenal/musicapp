@@ -52,6 +52,8 @@ class Nhacso extends Site
                           if not _t then _t = v.match(/<a href=\"(.+)" onmouseover.+Link Download \d: ([a-zA-Z0-9]+) .+>(Lossless).+> (.+) MB/)
                           if not _t then _t = v.match(/<a href=\"(.+)" onmouseover.+Mobile Download: ([a-zA-Z0-9]+) (.+) (.+) MB/)
                           if not _t then _t = v.match(/<a href=\"(.+)" onmouseover.+Link Download.+: ([a-zA-Z0-9]+) (\d+kbps) (.+) MB/)
+                          if not _t then _t = v.match(/<a href=\"(.+)" onmouseover.+Link Download.+([a-zA-Z0-9]+) (.+) (.+) MB/)
+
                           
                           # console.log v + "-------"
                           if _t
@@ -359,6 +361,41 @@ class Nhacso extends Site
                                                                                     if err3 then console.log "cannt insert new recording #{soal} into song_album table. Error: #{err3}"
                                     if albums.length > 0 then  console.log "UPDATING ALBUMS DONE!".green
                                     else console.log "ALL ALBUMS UP-TO-DATE!".red
+
+
+
+      # THIS PART RUN ONCE ONLY. IT IS SUPPOSED TO FETCH VIDEO FROM CHIASENHAC WHOSE IDS ARE LESS THAN 10^5
+      updateVideoLessthan10exp5 : ->
+            @connect()
+            @showStartupMessage "Updating new hrefs  to table", @table.Songs
+            @stats.currentTable = @table.Songs 
+            @eventEmitter.on "result-song", (song,options)=>
+                  @stats.totalItemCount +=1
+                  @stats.passedItemCount +=1
+                  
+                  if song isnt null
+                        # console.log song
+                        _u = "UPDATE CSNSongs set formats = #{@connection.escape song.formats} where id=#{song.id}"
+                        # console.log _u 
+                        @connection.query _u, (err)->
+                             if err then console.log "CANNTO INSER SSONGS #{song.id}------#{err}"
+                  else 
+                        @stats.passedItemCount -=1
+                        @stats.failedItemCount +=1
+                        @temp.totalFail += 1
+                  
+                  @utils.printRunning @stats
+                  
+                  if @stats.totalItems is @stats.totalItemCount
+                      @utils.printFinalResult @stats
+            _select = "select id from CSNSongs where id < 100000 and topic like '[\"Video Clip%' "
+            @connection.query _select, (err, results)=>
+                  if err then console.log "EROROORORORO"
+                  else 
+                        @stats.totalItems = results.length
+                        console.log "total item #{@stats.totalItems}"
+                        for song in results
+                              @_getSong song.id
 
       showStats : ->
         @_printTableStats @table

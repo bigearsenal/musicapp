@@ -92,8 +92,8 @@ getEncryptedID = (id,bitrate='128')->
 #  We index the letters L, O, S ,E.  'L' => 11, 'O'=>12 , 'S' => 13 , 'E' => 14
 #  Therefore: L O S S L E S S means 11,12,13,13,11,14,13,13
 console.log "http://mp3.zing.vn/html5/video/" + encryptId 1382441101
-console.log _decodeIntegerToId_ZING 307843200+4118441
-console.log _encodeIdToInteger_ZING("ZW668FED")-307843200+307843200
+console.log _decodeIntegerToId_ZING 1382084402
+console.log _encodeIdToInteger_ZING("ZW6ZZB7F")-307843200+307843200
 console.log "Video: 				http://mp3.zing.vn/html5/video/" + encryptZingID "ZW6OII9O"
 console.log "Song 320kbps: 	http://mp3.zing.vn/download/song/joke-link/" + getEncryptedID "ZW6UAFD0",'320'
 console.log "Song Lossless: 		http://mp3.zing.vn/download/song/joke-link/" + getEncryptedID "ZW6UAFD0",'lossless'

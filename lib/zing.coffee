@@ -599,7 +599,7 @@ class Zing extends Module
 		else if type is 3
 			typeId = "vid"
 			table = @table.Videos
-			
+		# console.log "TPYE is #{typeId} #### #{table}"
 		nSteps = (range1 - range0 + 1)/1000 | 0 + 1
 		resultArray = []
 
@@ -636,6 +636,9 @@ class Zing extends Module
 		else if type is 2
 			console.log " |"+"Update Albums to table: #{@table.Albums}".magenta
 			@stats.currentTable = @table.Albums
+		else if type is 3
+			console.log " |"+"Update Videos to table: #{@table.Videos}".magenta
+			@stats.currentTable = @table.Videos
 
 		@fetchRows range0, range1, type, (arr)=>
 			console.log "The # of items is: #{arr.length}"
@@ -644,6 +647,7 @@ class Zing extends Module
 				# console.log id
 				if type is 1 then link = "http://mp3.zing.vn/bai-hat/joke-link/#{@_convertToId id}.html"
 				else if type is 2 then link = "http://mp3.zing.vn/album/joke-link/#{@_convertToId id}.html"
+				else if type is 3 then link = "http://mp3.zing.vn/video-clip/oke-link/#{@_convertToId id}.html"
 				@_getFileByHTTP link, (data)=>
 						try
 							# console.log link
@@ -652,6 +656,14 @@ class Zing extends Module
 							if data isnt null
 								if type is 1 then @_processSong id, data
 								else if type is 2 then @_processAlbum id, data
+								else if type is 3  
+									video = @_processVideo id, data
+									if video isnt null 
+										@connection.query @query._insertIntoZIVideos, video, (err)=>
+											if err then console.log "Cannot insert video #{video.videoid} into table. Error: #{err}"
+									else 
+										@stats.failedItemCount += 1
+										@stats.passedItemCount -=1
 								@stats.passedItemCount +=1
 								data = ""
 							else 
@@ -660,52 +672,92 @@ class Zing extends Module
 							if @stats.totalItems is @stats.totalItemCount
 								@utils.printFinalResult @stats
 								@eventEmitter.emit "fetch-new-songs-done"
+	# updateSongsWithRange : (range0, range1) =>
+	# 	@connect()
+	# 	# if both range0 and range1 equal 1. Then we trigger the special case. 
+	# 	# Fetching the max and min id in the last 100 pages 
+	# 	if range0 is 1 and range1 is 1
+	# 		console.log "Fetching items in last 100 pages. Each page contains 500 records"
+	# 		_q = "select max(sid) as max from #{@table.Songs}"
+	# 		max = ""
+	# 		@connection.query _q, (err, results)=>
+	# 			if err then console.log "cannt getting max item from table. ERROR: #{err}"
+	# 			else 
+	# 				for result in results
+	# 					max = result.max
+	# 					_q = "select sid as min from #{@table.Songs} order by sid DESC LIMIT 50000,1"
+	# 					@connection.query _q, (err, results)=>
+	# 						if err then console.log "cannt getting max item from table. ERROR: #{err}"
+	# 						else 
+	# 							for result in results
+	# 								min = result.min
+	# 								console.log "Fetching items in range: #{min} - #{max}"
+	# 								@_updateSongsOrAlbumsWithRange min, max, 1
+
+	# 	else @_updateSongsOrAlbumsWithRange range0, range1, 1
+	# updateAlbumsWithRange : (range0, range1) =>
+	# 	@connect()
+	# 	# if both range0 and range1 equal 1. Then we trigger the special case. 
+	# 	# Fetching the max and min id in the last 100 pages 
+	# 	if range0 is 1 and range1 is 1
+	# 		console.log "Fetching items in last 100 pages. Each page contains 500 records"
+	# 		_q = "select max(aid) as max from #{@table.Albums}"
+	# 		max = ""
+	# 		@connection.query _q, (err, results)=>
+	# 			if err then console.log "cannt getting max item from table. ERROR: #{err}"
+	# 			else 
+	# 				for result in results
+	# 					max = result.max
+	# 					_q = "select aid as min from #{@table.Albums} order by aid DESC LIMIT 50000,1"
+	# 					@connection.query _q, (err, results)=>
+	# 						if err then console.log "cannt getting max item from table. ERROR: #{err}"
+	# 						else 
+	# 							for result in results
+	# 								min = result.min
+	# 								console.log "Fetching items in range: #{min} - #{max}"
+	# 								@_updateSongsOrAlbumsWithRange min, max, 2
+	# 	else @_updateSongsOrAlbumsWithRange range0, range1, 2
+	
+	updateRecording : (range0,range1, type) ->
+
+		@connect()
+		if type is 1
+			typeId = "sid"
+			table = @table.Songs
+		else if type is 2
+			typeId = "aid"
+			table = @table.Albums
+		else if type is 3
+			typeId = "vid"
+			table = @table.Videos
+		# if both range0 and range1 equal 1. Then we trigger the special case. 
+		# Fetching the max and min id in the last 100 pages 
+		if range0 is 1 and range1 is 1
+			console.log "Fetching items in last 100 pages. Each page contains 500 records"
+			limit = 100*500 # 100 pages x 500 records each
+			if type is 3 then limit = 5*500 # applied only with video
+			_q = "select max(#{typeId}) as max, min(#{typeId}) as min from (select #{typeId} from #{table} order by #{typeId} DESC limit #{limit}) as anbinh;"
+			@connection.query _q, (err, results)=>
+				if err then console.log "cannt getting max item from table. ERROR: #{err}"
+				else 
+					for result in results
+						max = result.max
+						min = result.min
+						console.log "Fetching items in range: #{min} - #{max}"
+						@_updateSongsOrAlbumsWithRange min, max, type
+		else
+			console.log "Fetching items in range: #{range0} - #{range1}" 
+			@_updateSongsOrAlbumsWithRange range0, range1, type
+	
+	updateVideosWithRange : (range0, range1)=>
+		type = 3
+		@updateRecording range0, range1, type
+	updateAlbumsWithRange : (range0, range1)=>
+		type = 2
+		@updateRecording range0, range1, type
 	updateSongsWithRange : (range0, range1) =>
-		@connect()
-		# if both range0 and range1 equal 1. Then we trigger the special case. 
-		# Fetching the max and min id in the last 100 pages 
-		if range0 is 1 and range1 is 1
-			console.log "Fetching items in last 100 pages. Each page contains 500 records"
-			_q = "select max(sid) as max from #{@table.Songs}"
-			max = ""
-			@connection.query _q, (err, results)=>
-				if err then console.log "cannt getting max item from table. ERROR: #{err}"
-				else 
-					for result in results
-						max = result.max
-						_q = "select sid as min from #{@table.Songs} order by sid DESC LIMIT 50000,1"
-						@connection.query _q, (err, results)=>
-							if err then console.log "cannt getting max item from table. ERROR: #{err}"
-							else 
-								for result in results
-									min = result.min
-									console.log "Fetching items in range: #{min} - #{max}"
-									@_updateSongsOrAlbumsWithRange min, max, 1
-
-		else @_updateSongsOrAlbumsWithRange range0, range1, 1
-	updateAlbumsWithRange : (range0, range1) =>
-		@connect()
-		# if both range0 and range1 equal 1. Then we trigger the special case. 
-		# Fetching the max and min id in the last 100 pages 
-		if range0 is 1 and range1 is 1
-			console.log "Fetching items in last 100 pages. Each page contains 500 records"
-			_q = "select max(aid) as max from #{@table.Albums}"
-			max = ""
-			@connection.query _q, (err, results)=>
-				if err then console.log "cannt getting max item from table. ERROR: #{err}"
-				else 
-					for result in results
-						max = result.max
-						_q = "select aid as min from #{@table.Albums} order by aid DESC LIMIT 50000,1"
-						@connection.query _q, (err, results)=>
-							if err then console.log "cannt getting max item from table. ERROR: #{err}"
-							else 
-								for result in results
-									min = result.min
-									console.log "Fetching items in range: #{min} - #{max}"
-									@_updateSongsOrAlbumsWithRange min, max, 2
-		else @_updateSongsOrAlbumsWithRange range0, range1, 2
-
+		type = 1
+		@updateRecording range0, range1, type
 	# fetching ffrom data base
 	# ------------------------------------------
 	showStats : ->
