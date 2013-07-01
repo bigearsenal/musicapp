@@ -94,6 +94,9 @@ Direct link :  <http://nhacso.net/html5/song/id/X1pZUEVaaA==>
 
 > View page source to get the structure. XML Format  
 
+> NOTICE:  Load Balancing: http://`st01|st02`.freesocialmusic.com/mp3/2013/05/10/1178050012/136817005912_7480.mp3  
+
+
 ###c.Video###
 <http://nhacso.net/flash/video/xnl/1/id/X1xSV0Y>  
 > `/id/X1xSV0Y` can be replaced by `id/14345`  
@@ -546,6 +549,7 @@ only available in 6hours due to the consistency between the hash `4ce95480fb0b14
 * Get song  
 <http://m.mp3.zing.vn/xml/song/ZGJGTknazzupuzaTZDJTDGLG>  
 <http://mp3.zing.vn/download/song/Chi-Con-Lai-Tinh-Yeu-Bui-Anh-Tuan/ZGJGyLGNldSnHdptLDcyvmLn>  
+
 **the encrypted links**  
 <http://mp3.zing.vn/xml/load-song/MjAxMSUyRjAyJTJGMjIlMkZlJTJGYSUyRmVhMWI5OTU4YWY5MTM5YjA2ODE5MTU2NzFlMjVhN2JiLm1wMyU3QzI=>  
 <http://m.mp3.zing.vn/xml/song-load/MjAxMSUyRjAyJTJGMjIlMkZlJTJGYSUyRmVhMWI5OTU4YWY5MTM5YjA2ODE5MTU2NzFlMjVhN2JiLm1wMyU3QzI=>    

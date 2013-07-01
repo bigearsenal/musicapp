@@ -390,83 +390,142 @@ class LyricWiki extends Site
             @_getSongsLyrics("gracenote")
       # THIS PART FOR UPDATING METRO LYRIC
       # --------------------------------------------------------------------------------
-       onSongMetroLyricFail : (error, options)=>
+       onAlbumFail : (error, options)=>
             # console.log "err  has an errorq: #{error}, #{options.id}"
             @stats.totalItemCount +=1
             @stats.failedItemCount +=1
-            _u = "UPDATE #{@table.Songs} SET "
-            _u += "  download_metrolyric_done = -1 "
+            _u = "UPDATE #{@table.Albums} SET "
+            _u += "  download_done = -1 "
             _u += " where id=#{options.id}"
-            # console.log song
+            # console.log album
             # console.log _u
             @connection.query _u, (err)->
-                  if err then console.log "Cannot insert song #{song.id} . ERROR: #{err}"
+                  if err then console.log "Cannot insert album #{options.id} . ERROR: #{err}"
             @utils.printRunning @stats
             if @stats.totalItems is @stats.totalItemCount
                   @utils.printFinalResult @stats
                   @count +=1
                   console.log " |GET NEXT STEP :#{@count}".inverse.red
                   @resetStats()
-                  @_getSongsMetrolyrics()
-       processSongMetrolyric: (data,options)=>
+                  @_getAlbum()
+       processAlbum: (data,options)=>
             try 
 
-                  song = 
+                  album = 
                         id : options.id
                         title : options.title
                         artist : options.artist
-                        lyric : ""
-                        tags : ""
-                        download_metrolyric_done : 1
+                        year : options.year
+                        genre : ""
+                        duration : 0
+                        thumbnail : ""
+                        allmusic_link : ""
+                        discogs_link : ""
+                        musicbrainz_link : ""
+                        download_done : 1
 
-                  lyric = data.match(/line line\-s.+/g)
-                  if lyric then song.lyric = @processStringorArray lyric.map((v)-> 
-                        _t = v.replace(/<\/span>$|<\/span>.+$/,'').replace(/^.+>/,'')
-                        if _t.match(/From\: http\:\/\/www\.metrolyrics\.com/) then return null
-                        else return _t
-                        ).filter((v)-> if v is null then return false else return true ).join('<br/>')
+                  # DO SOMETHING
+                  duration = data.match(/Length:.+<\/td><\/tr>.+/)?[0]
+                  if duration 
+                        duration = duration.replace(/<\/td><\/tr>.+/,'').replace(/^.+>/,'').split(":").map (v)-> parseInt v,10
+                        if duration.length is 2
+                              album.duration = duration[0]*60 + duration[1]
+                        else if duration.length is 3
+                              album.duration = duration[0]*3600 + duration[1]*60 + duration[2]
+                        else console.log "ERROR ar duration. #{options.id} ---"
 
-                  tags = data.match(/tag\-tag first.+/)?[0]
-                  if tags then song.tags = @processStringorArray tags.split(/<\/a>/).map((v)->
-                        v.replace(/^.+>/,'')
-                        ).filter((v)-> if v is null or v is "" then return false else return true )
+                  genre = data.match(/Genre:.+<\/a><\/td><\/tr>.+/)?[0]
+                  if genre then album.genre = @processStringorArray genre.replace(/<\/a><\/td><\/tr>.+/,'').replace(/^.+>/,'')
 
-                  if song.lyric is "" then song.download_metrolyric_done = 0
+                  thumbnail = data.match(/<\/div><\/div><\/div><td>.+/)?[0]
+                  if thumbnail then album.thumbnail = thumbnail.replace(/" class.+/,'').replace(/^.+"/,'')
 
-                  @eventEmitter.emit "result-song", song, options
+                  musicbrainz_link = data.match(/MusicBrainz:.+/)?[0]
+                  if musicbrainz_link then album.musicbrainz_link = musicbrainz_link.replace(/">.+/,'').replace(/^.+"/,'')
 
-                  return song
+                  discogs_link = data.match(/Discogs:.+/)?[0]
+                  if discogs_link then album.discogs_link = discogs_link.replace(/">.+/,'').replace(/^.+"/,'')
+
+                  allmusic_link = data.match(/allmusic:.+/)?[0]
+                  if allmusic_link then album.allmusic_link = allmusic_link.replace(/">.+/,'').replace(/^.+"/,'')
+
+                  if  album.thumbnail is "" and album.musicbrainz_link is "" and album.discogs_link is "" and album.allmusic_link is "" and album.genre is "" and album.duration is 0
+                        album.download_done = 0
+
+                  @eventEmitter.emit "result-album", album, options
+
+                  return album
             catch error
                 console.log "ERROR : at link #{options.link}. ---> #{error}"
-      _getSongsMetrolyrics : (artist)=>
+      _getAlbum : (artist)=>
             params =
-                sourceField : "id, #{@table.Songs}.title,#{@table.Songs}.artist"
-                table : @table.Songs
+                sourceField : "id, #{@table.Albums}.title,#{@table.Albums}.artist,#{@table.Albums}.year"
+                table : @table.Albums
                 limit : @temp.nItems
                 skip : @temp.nItemsSkipped
-                condition : " download_metrolyric_done is null"
+                condition : " year is not null and download_done is null"
+                # condition : " id=160884 "
             
-            @_getFieldFromTable params, (songs)=>
-
-                  # songs = [{id : 123232323, artist : "Justin Bieber", title : "Never say never"},{id:343232323,artist : "heaven shall burn", title : "to harvest the storm"}]
-
-                  @stats.totalItems = songs.length
+            @_getFieldFromTable params, (albums)=>
+                  @stats.totalItems = albums.length
                   console.log " |# of items : #{@stats.totalItems}"
-                  console.log " |Getting from range: #{songs[0].id} ---> #{songs[songs.length-1].id}"
-                  for song in songs
-                          # console.log song
+                  console.log " |Getting from range: #{albums[0].id} ---> #{albums[albums.length-1].id}"
+                  for album in albums
+                          # console.log album
                         options = 
-                              id : song.id
-                              title : song.title
-                              artist : song.artist
+                              id : album.id
+                              title : album.title
+                              artist : album.artist
+                              year : album.year
       
-                        uri = song.title.replace(/\s/g,'-').toLowerCase() + "-lyrics-" +  song.artist.replace(/\s/g,'-').toLowerCase()
+                        uri = "#{album.artist}:#{album.title}_(#{album.year})".replace(/\s/g,'_')
       
-                        link = "http://www.metrolyrics.com/#{encodeURIComponent(uri).toLowerCase()}.html"
+                        link = "http://lyrics.wikia.com/#{encodeURIComponent(uri)}"
                         options.link = link
-                        # console.log "#{link}".inverse.red
-                        @getFileByHTTP link, @processSongMetrolyric, @onSongMetroLyricFail, options 
+                        # console.log "#{options.id} \t- #{link}".inverse.red
+                        @getFileByHTTPv2 link, @processAlbum, @onAlbumFail, options 
+      updateAlbums :->
+            @connect()
+            @showStartupMessage "Fetching METROLYRIC of albums to table", @table.Albums
+            @count = 0
+            @stats.currentTable = @table.Albums
+            @temp = 
+                nItems : 1000
+                nItemsSkipped : 0
+            console.log " |The number of items to skip: #{@temp.nItemsSkipped}"
 
+            @eventEmitter.on "result-album", (album, options)=>
+                @stats.totalItemCount +=1
+                @stats.passedItemCount +=1
+                @stats.currentId  = options.id
+                if album isnt null
+                      _u = "UPDATE #{@table.Albums} SET "
+                      _u += "  genre = #{@connection.escape album.genre}, " 
+                      _u += "  duration = #{album.duration}, "
+                      _u += "  thumbnail = #{@connection.escape album.thumbnail}, "
+                      _u += "  allmusic_link = #{@connection.escape album.allmusic_link}, "
+                      _u += "  discogs_link = #{@connection.escape album.discogs_link}, "
+                      _u += "  musicbrainz_link = #{@connection.escape album.musicbrainz_link}, "
+                      _u += "  download_done = #{album.download_done} "
+                      _u += " where id=#{album.id}"
+                      # console.log album
+                      # console.log _u
+                      @connection.query _u, (err)->
+                            if err then console.log "Cannot insert album #{album.id} . ERROR: #{err}"
+                else 
+                      @stats.passedItemCount -=1
+                      @stats.failedItemCount +=1
+                @utils.printRunning @stats
+
+                if @stats.totalItems is @stats.totalItemCount
+                      @utils.printFinalResult @stats
+                      @count +=1
+                      console.log " |GET NEXT STEP :#{@count}".inverse.red
+                      @resetStats()
+                      @_getAlbum()
+
+
+            @_getAlbum()
 
 
       # THIS PART FOR fetching GENRE
@@ -476,12 +535,10 @@ class LyricWiki extends Site
             @stats.totalItemCount +=1
             @stats.failedItemCount +=1
             @utils.printUpdateRunning @stats.totalItemCount*200, @stats, "Fetching...."
-
       processItem : (data,options)=>
             nextlink = data.match(/previous 200.+href=\"(.+)\" title.+next 200/)?[1]
             @eventEmitter.emit "item-processing", data, options
             if nextlink then @_getItem "http://lyrics.wikia.com#{nextlink}"
-
       _getItem : (link)->
             options = 
                   link : link
@@ -576,7 +633,6 @@ class LyricWiki extends Site
                               items.push _t
                   # console.log items
                   @eventEmitter.emit "item-result", items, options
-      
       fetchAlbumsArtistsGenres : ->
             @connect()
             @connection.query "select link from LWGenres", (err,results)=>
@@ -590,46 +646,6 @@ class LyricWiki extends Site
                         @_getAlbumsArtistsGenres genres
             # lang = "Category:Language/Japanese"
 
-      updateSongsMetrolyrics :->
-            @connect()
-            @showStartupMessage "Fetching METROLYRIC of songs to table", @table.Songs
-            @count = 0
-            @stats.currentTable = @table.Songs
-            @temp = 
-                nItems : 1000
-                nItemsSkipped : 0
-            console.log " |The number of items to skip: #{@temp.nItemsSkipped}"
-
-            @eventEmitter.on "result-song", (song, options)=>
-                @stats.totalItemCount +=1
-                @stats.passedItemCount +=1
-                @stats.currentId  = options.id
-                # @log.lastSongId = song.songid
-                # @temp.totalFail = 0
-                if song isnt null
-                      _u = "UPDATE #{@table.Songs} SET "
-                      _u += "  tags = #{@connection.escape song.tags}, " if song.tags
-                      _u += "  download_metrolyric_done = #{song.download_metrolyric_done}, "
-                      _u += "  metrolyric = #{@connection.escape song.lyric} "
-                      _u += " where id=#{song.id}"
-                      # console.log song
-                      # console.log _u
-                      @connection.query _u, (err)->
-                            if err then console.log "Cannot insert song #{song.id} . ERROR: #{err}"
-                else 
-                      @stats.passedItemCount -=1
-                      @stats.failedItemCount +=1
-                @utils.printRunning @stats
-
-                if @stats.totalItems is @stats.totalItemCount
-                      @utils.printFinalResult @stats
-                      @count +=1
-                      console.log " |GET NEXT STEP :#{@count}".inverse.red
-                      @resetStats()
-                      @_getSongsMetrolyrics()
-
-
-            @_getSongsMetrolyrics()
       showStats : ->
         @_printTableStats @table
 

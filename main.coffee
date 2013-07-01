@@ -304,17 +304,43 @@ runLyricWiki = ->
 	console.log "Running with "+"LyricWiki.com".inverse.green
 	console.log "STEP 2:".inverse.blue + " " + "Choose the type of command:".underline.blue
 	console.log "\t1.fetchSongs\t2.updateSongsLyrics"
-	console.log "\t3.updateSongsMetrolyrics\t4.updateGraceNoteSongsLyrics"
+	console.log "\t3.UPDATE ALBUMS\t4.updateGraceNoteSongsLyrics"
 	console.log "\t5.fetchGenres \t6.fetchAlbumsArtistsGenres"
 	lyricWiki = new LyricWiki()
 	rl.question "=> ", (answer) ->
 		switch answer.trim()
 			when "1" then lyricWiki.fetchSongs()
 			when "2" then lyricWiki.updateSongsLyrics()
-			when "3" then lyricWiki.updateSongsMetrolyrics()
+			when "3" then lyricWiki.updateAlbums()
 			when "4" then lyricWiki.updateGraceNoteSongsLyrics()
 			when "5" then lyricWiki.fetchGenres()
 			when "6" then lyricWiki.fetchAlbumsArtistsGenres()
+			else console.log "Wrong type".red
+runEchoNest = ->
+	EchoNest = require './lib/echonest'
+	console.log "Running with "+"EchoNest.com".inverse.green
+	console.log "STEP 2:".inverse.blue + " " + "Choose the type of command:".underline.blue
+	console.log "\t1.updateArtists\t2.fetchArtists"
+	console.log "\t3.fetchSongsFromArtists\t4.fetchABunchOfArtistsInDB_first"
+	console.log "\t5. DOWNLOAD ARTISTS TO DISK \t6.putArtistsFromDiskToDB"
+	console.log "\t7. PUT SONGS FROM DISK TO DB \t8.DOWNLOAD VIDEOS to DISK"
+	console.log "\t9. putVideosFromDiskToDB \t10.downloadImages"
+	echoNest = new EchoNest()
+	rl.question "=> ", (answer) ->
+		switch answer.trim()
+			when "1" then echoNest.updateArtists()
+			when "2" then echoNest.fetchArtists()
+			when "3" then echoNest.fetchSongsFromArtists()
+			when "4" then echoNest.fetchABunchOfArtistsInDB_first()
+			when "5" then echoNest.downloadArtists()
+			when "6" then echoNest.putArtistsFromDiskToDB()
+			when "7" then echoNest.putSongsFromDiskToDB()
+			when "8" then echoNest.downloadVideos()
+			when "9" then echoNest.putVideosFromDiskToDB()
+			when "10" then echoNest.downloadImages()
+			
+
+			
 			else console.log "Wrong type".red
 runStats = ->
 	Stats = require './lib/stats'
@@ -350,7 +376,8 @@ startingLog = ->
 	console.log ""
 	console.log	"        "+ "9.chiasenhac".inverse.green + "\t"+ "10.vietgiaitri".inverse.green+ "\t" + "11.music.vnn.vn".inverse.green
 	console.log ""
-	console.log	"        "+"12.songfreaks".inverse.green + "\t"+ "13.lyrics.wikia.com".inverse.green+ "\t"+  "14.STATISTICS".inverse.green 
+	console.log	"        "+"12.songfreaks".inverse.green + "\t"+ "13.lyrics.wikia.com".inverse.green+ "\t"+  "14.echonest".inverse.green 
+	console.log	"        "+"15.STATISTICS".inverse.green + "\t"+ "16.xxxxx".inverse.green+ "\t"+  "17.yyyy".inverse.green
 	console.log "        Type 'q' to quit".grey
 
 rl.setPrompt('=>', 3)
@@ -371,7 +398,8 @@ rl.on("line", (line) ->
 		when "11" then runMusicVNN()
 		when "12" then runSongFreaks()
 		when "13" then runLyricWiki()
-		when "14" then runStats()
+		when "14" then runEchoNest()
+		when "15" then runStats()
 		when "q"
 			rl.close()
 		else startingLog()

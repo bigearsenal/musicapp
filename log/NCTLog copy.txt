@@ -1,1 +1,0 @@
-{"serverType":"nhaccuatui.com","maxAlbumId":11971842,"updated_at":1366774926838,"tempMaxAlbumId":11995929,"lastVideoUpdatedDate":"2013-02-09","tempLastVideoUpdatedDate":"2013-03-05"}

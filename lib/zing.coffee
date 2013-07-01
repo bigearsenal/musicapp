@@ -243,7 +243,10 @@ class Zing extends Module
 															.replace(/Tìm\sbài\shát\scủa\s/g,'').split(' ft. ')
 				
 			if data.match(/og:image/g)
-				_video.thumbnail = data.match(/og:image.+/g)[0].match(/http.+"/g)[0].replace('"','')
+				# console.log data.match(/og:image.+/g)[0]
+				_temp = data.match(/og:image.+/g)?[0]
+				if _temp then _temp = _temp.match(/http.+"/g)?[0]
+				if _temp then _video.thumbnail = _temp.replace('"','')
 
 			link = _video.thumbnail
 			if link.match /\d{10}\.jpg/g
@@ -276,6 +279,7 @@ class Zing extends Module
 			
 	_updateVideo : (id)->
 		link = "http://mp3.zing.vn/video-clip/joke-link/#{@_convertToId id}.html"
+		# console.log link
 		@_getFileByHTTP link, (data)=>
 			@stats.totalItemCount +=1
 			@stats.currentId = id		
@@ -672,52 +676,7 @@ class Zing extends Module
 							if @stats.totalItems is @stats.totalItemCount
 								@utils.printFinalResult @stats
 								@eventEmitter.emit "fetch-new-songs-done"
-	# updateSongsWithRange : (range0, range1) =>
-	# 	@connect()
-	# 	# if both range0 and range1 equal 1. Then we trigger the special case. 
-	# 	# Fetching the max and min id in the last 100 pages 
-	# 	if range0 is 1 and range1 is 1
-	# 		console.log "Fetching items in last 100 pages. Each page contains 500 records"
-	# 		_q = "select max(sid) as max from #{@table.Songs}"
-	# 		max = ""
-	# 		@connection.query _q, (err, results)=>
-	# 			if err then console.log "cannt getting max item from table. ERROR: #{err}"
-	# 			else 
-	# 				for result in results
-	# 					max = result.max
-	# 					_q = "select sid as min from #{@table.Songs} order by sid DESC LIMIT 50000,1"
-	# 					@connection.query _q, (err, results)=>
-	# 						if err then console.log "cannt getting max item from table. ERROR: #{err}"
-	# 						else 
-	# 							for result in results
-	# 								min = result.min
-	# 								console.log "Fetching items in range: #{min} - #{max}"
-	# 								@_updateSongsOrAlbumsWithRange min, max, 1
 
-	# 	else @_updateSongsOrAlbumsWithRange range0, range1, 1
-	# updateAlbumsWithRange : (range0, range1) =>
-	# 	@connect()
-	# 	# if both range0 and range1 equal 1. Then we trigger the special case. 
-	# 	# Fetching the max and min id in the last 100 pages 
-	# 	if range0 is 1 and range1 is 1
-	# 		console.log "Fetching items in last 100 pages. Each page contains 500 records"
-	# 		_q = "select max(aid) as max from #{@table.Albums}"
-	# 		max = ""
-	# 		@connection.query _q, (err, results)=>
-	# 			if err then console.log "cannt getting max item from table. ERROR: #{err}"
-	# 			else 
-	# 				for result in results
-	# 					max = result.max
-	# 					_q = "select aid as min from #{@table.Albums} order by aid DESC LIMIT 50000,1"
-	# 					@connection.query _q, (err, results)=>
-	# 						if err then console.log "cannt getting max item from table. ERROR: #{err}"
-	# 						else 
-	# 							for result in results
-	# 								min = result.min
-	# 								console.log "Fetching items in range: #{min} - #{max}"
-	# 								@_updateSongsOrAlbumsWithRange min, max, 2
-	# 	else @_updateSongsOrAlbumsWithRange range0, range1, 2
-	
 	updateRecording : (range0,range1, type) ->
 
 		@connect()

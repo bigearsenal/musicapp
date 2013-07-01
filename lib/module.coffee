@@ -6,6 +6,7 @@ MYSQL_DEFAULT_CONFIG =
 	password: 'root'
 	database: 'anbinh'
 	port: '8889'
+	multipleStatements : true
 
 class Module
 	constructor : (@serverConfig = MYSQL_DEFAULT_CONFIG) ->
@@ -28,6 +29,7 @@ class Module
 			@connection.connect()
 			@hasConnection = true
 		@
+
 	resetStats : ->
 		@stats = 
 			totalItemCount :0
@@ -40,6 +42,7 @@ class Module
 			range1 : 0
 	end : ->
 		@connection.end()
+		@hasConnection = false
 		@
 	_readLog : ->
 		data = fs.readFileSync @logPath , "utf8"

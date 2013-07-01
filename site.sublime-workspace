@@ -4,516 +4,516 @@
 		"selected_items":
 		[
 			[
-				"_on",
-				"_onFailSong_UPDATE"
-			],
-			[
-				"updateAlbu",
-				"updateAlbumsCategory"
-			],
-			[
-				"update-song",
-				"update-songs-category-done"
-			],
-			[
-				"procesA",
-				"processArtistSongs"
-			],
-			[
-				"conn",
-				"connection"
-			],
-			[
-				"co",
-				"connection"
-			],
-			[
-				"par",
-				"param"
-			],
-			[
-				"total",
-				"totalItems"
-			],
-			[
-				"tot",
-				"totalItems"
-			],
-			[
-				"tta",
-				"totalItems"
-			],
-			[
-				"totl",
-				"totalItemCount"
-			],
-			[
-				"tota",
-				"totalItemCount"
-			],
-			[
-				"get",
-				"getField"
-			],
-			[
-				"_ge",
-				"_getFieldFromTable"
-			],
-			[
-				"of",
-				"official"
-			],
-			[
-				"artist",
-				"artistName"
-			],
-			[
-				"max",
-				"maxPage"
-			],
-			[
-				"index",
-				"index"
-			],
-			[
-				"filter",
-				"filterType"
-			],
-			[
-				"al",
-				"albums"
-			],
-			[
-				"_in",
-				"_insertIntoSongs"
-			],
-			[
-				"print",
-				"printRunning"
-			],
-			[
-				"totalitem",
-				"totalItemCount"
-			],
-			[
-				"inde",
-				"indexOf"
-			],
-			[
-				"Ba",
-				"Baby"
-			],
-			[
-				"B",
-				"Bầu"
-			],
-			[
-				"topic",
-				"topicsOfSongs"
-			],
-			[
-				"updae",
-				"updateAlbums"
-			],
-			[
-				"updateS",
-				"updateSongs"
-			],
-			[
-				"update",
-				"updateVideos"
-			],
-			[
-				"pro",
-				"producerid"
-			],
-			[
-				"proce",
-				"processStringorArray"
-			],
-			[
-				"Conse",
-				"nConsecutiveFailedItems"
-			],
-			[
-				"res",
-				"result-album"
-			],
-			[
-				"album",
-				"albumid"
-			],
-			[
-				"des",
-				"description"
-			],
-			[
-				"art",
-				"artistid"
-			],
-			[
-				"proces",
-				"processAlbum"
-			],
-			[
-				"is",
-				"islyric"
-			],
-			[
-				"updateSon",
-				"updateSongLink"
-			],
-			[
 				"err",
 				"error"
 			],
 			[
-				"on",
-				"onSongFail"
+				"dic",
+				"directory"
 			],
 			[
-				"to",
-				"totaltime"
+				"tra",
+				"tracks"
 			],
 			[
-				"autho",
-				"authorid"
+				"fore",
+				"foreign_ids"
 			],
 			[
-				"a",
-				"author"
+				"tr",
+				"tracks"
 			],
 			[
 				"re",
-				"replace"
+				"foreign_release_ids"
 			],
 			[
-				"pr",
-				"processStringorArray"
+				"getS",
+				"getInsertStatement"
 			],
 			[
-				"last",
-				"lastSongId"
+				"c",
+				"countries"
 			],
 			[
-				"_update",
-				"_updateVideo"
+				"Art",
+				"ArtistTransformation"
 			],
 			[
-				"_upda",
-				"_updateVideo"
+				"Ar",
+				"ArtistTransformation"
 			],
 			[
-				"test",
-				"testID"
+				"Song",
+				"SongTransformation"
 			],
 			[
-				"rang",
-				"range1"
+				"Son",
+				"SongTransformation"
 			],
 			[
-				"resul",
-				"results"
+				"OBje",
+				"ObjectTransformation"
 			],
 			[
-				"curr",
-				"currentId"
-			],
-			[
-				"_inser",
-				"_insertIntoNCTSongs"
-			],
-			[
-				"_inse",
-				"_insertIntoNCTSongs_Albums"
-			],
-			[
-				"le",
-				"length"
-			],
-			[
-				"leng",
-				"length"
-			],
-			[
-				"prin",
-				"printFinalResult"
-			],
-			[
-				"pla",
-				"playlists"
-			],
-			[
-				"curren",
-				"currentTable"
-			],
-			[
-				"se",
-				"searchTerm"
-			],
-			[
-				"albu",
-				"albums"
-			],
-			[
-				"link",
-				"link_key"
-			],
-			[
-				"alb",
-				"albums"
-			],
-			[
-				"connec",
-				"connection"
-			],
-			[
-				"even",
-				"eventEmitter"
-			],
-			[
-				"encode",
-				"encoded_id"
-			],
-			[
-				"ar",
-				"artist"
-			],
-			[
-				"arit",
-				"artist_id"
-			],
-			[
-				"song",
-				"song"
-			],
-			[
-				"_insertI",
-				"_insertIntoCCSongs_Albums"
-			],
-			[
-				"te",
-				"temp"
-			],
-			[
-				"ran",
-				"range0"
-			],
-			[
-				"resu",
-				"resultArray"
-			],
-			[
-				"len",
-				"length"
+				"getin",
+				"getInsertStatement"
 			],
 			[
 				"fail",
 				"failedItemCount"
 			],
 			[
-				"thum",
-				"thumbnail"
+				"res",
+				"result"
 			],
 			[
-				"totalIte",
-				"totalItemCount"
+				"file",
+				"fileName"
 			],
 			[
-				"updatAlb",
-				"_updateAlbum"
+				"connect",
+				"connection"
 			],
 			[
-				"range",
-				"range1"
+				"save",
+				"saveArtist"
 			],
 			[
-				"proc",
-				"processAlbumData"
+				"wrt",
+				"writeFileSync"
 			],
 			[
-				"t",
-				"trim"
+				"forei",
+				"foreign_ids"
 			],
 			[
-				"las",
-				"lastSongId"
+				"rev",
+				"reviews"
 			],
 			[
-				"son",
-				"song"
+				"inser",
+				"insert"
 			],
 			[
-				"so",
-				"songCount"
+				"ter",
+				"terms"
 			],
 			[
-				"songs",
-				"songTables"
+				"blo",
+				"blogs"
 			],
 			[
-				"songT",
-				"songTable"
+				"ca",
+				"catalog"
 			],
 			[
-				"eve",
-				"eventEmitter"
+				"repl",
+				"replace"
 			],
 			[
-				"onpr",
-				"onProcessData"
+				"group",
+				"groupBy"
 			],
 			[
-				"curre",
+				"lo",
+				"log	log"
+			],
+			[
+				"get",
+				"getBiographies"
+			],
+			[
+				"image",
+				"image_url"
+			],
+			[
+				"_blo",
+				"_blogs"
+			],
+			[
+				"_lo",
+				"_blog"
+			],
+			[
+				"artis",
+				"artist"
+			],
+			[
+				"blog",
+				"blog_id"
+			],
+			[
+				"artisttr",
+				"ArtistTransformation"
+			],
+			[
+				"cons",
+				"console"
+			],
+			[
+				"year",
+				"years_active"
+			],
+			[
+				"yrst",
+				"yearsActive"
+			],
+			[
+				"yeaactive",
+				"yearsActive"
+			],
+			[
+				"yea",
+				"years_active"
+			],
+			[
+				"nw",
+				"news"
+			],
+			[
+				"sta",
+				"statements"
+			],
+			[
+				"objec",
+				"objects"
+			],
+			[
+				"va",
+				"values"
+			],
+			[
+				"val",
+				"value"
+			],
+			[
+				"un",
+				"undefined"
+			],
+			[
+				"l",
+				"log	log"
+			],
+			[
+				"totalr",
+				"totalArtistsInFile"
+			],
+			[
+				"echonest",
+				"echonest"
+			],
+			[
+				"echon",
+				"echonest"
+			],
+			[
+				"curr",
+				"currentFile"
+			],
+			[
+				"current",
 				"currentId"
 			],
 			[
-				"_proce",
-				"_processAlbum"
+				"pat",
+				"pathToDisk"
 			],
 			[
-				"_ca",
-				"_callbackOnFail"
+				"max",
+				"maxConcurrentJobs"
 			],
 			[
-				"_call",
-				"_callbackOnSuccess"
+				"artisha",
+				"artistHavingSongsGreaterThanZero"
 			],
 			[
-				"c",
-				"callbackOnFail"
+				"inde",
+				"indexCount"
 			],
 			[
-				"cal",
-				"callbackOnSucess"
+				"upta",
+				"updateStats"
 			],
 			[
-				"_up",
-				"_updateVideos"
+				"Ati",
+				"Artists"
 			],
 			[
-				"up",
-				"updateVideos"
+				"Data",
+				"DatabaseInsertion"
 			],
 			[
-				"_updateL",
-				"_updateLyricForVideo"
+				"con",
+				"connection"
 			],
 			[
-				"en",
-				"video_encodedId"
+				"apike",
+				"apikey"
 			],
 			[
-				"_conve",
-				"_convertToId"
+				"vid",
+				"videos"
 			],
 			[
-				"crete",
-				"created"
+				"dis",
+				"distribution"
 			],
 			[
-				"Songs",
-				"Songs_Albums"
+				"ap",
+				"apiKeys"
 			],
 			[
-				"updateAl",
-				"updateAlbums"
+				"ran",
+				"ranges"
 			],
 			[
-				"_tem",
-				"_tempSong"
+				"apik",
+				"apiKeys"
 			],
 			[
-				"_temp",
-				"_tempSong"
+				"api",
+				"apiKey"
 			],
 			[
-				"INSER",
-				"_insertIntoZISongs"
+				"total",
+				"totalWeights"
 			],
 			[
-				"ori",
-				"originalLink"
+				"apiKey",
+				"apiKey"
 			],
 			[
-				"de",
-				"decode"
+				"te",
+				"testApiKeys"
 			],
 			[
-				"char",
-				"charCode"
+				"apikey",
+				"apiKeys"
 			],
 			[
-				"cha",
-				"charCode"
+				"conn",
+				"connection"
 			],
 			[
-				"charCoe",
-				"charCodeAt"
+				"artist",
+				"artist_id"
 			],
 			[
-				"type",
-				"typeB"
+				"art",
+				"artist"
 			],
 			[
-				"n",
-				"n"
+				"set",
+				"setTemplateLink"
 			],
 			[
-				"deco",
-				"decodeString"
+				"download",
+				"download_done"
 			],
 			[
-				"base",
-				"base62"
+				"nar",
+				"nAritsts"
 			],
 			[
-				"bse",
-				"base62"
+				"nart",
+				"nArtistsSkipped"
 			],
 			[
-				"HTML",
-				"htmlDecode"
+				"downloa",
+				"downloadEchoNest"
 			],
 			[
-				"sec",
-				"secondaryData"
+				"down",
+				"downloadEchoNest"
 			],
 			[
-				"chrac",
-				"character_14th"
+				"inc",
+				"indices"
 			],
 			[
-				"rang1",
-				"range1"
+				"na",
+				"nArtistsSkipped"
 			],
 			[
-				"_get",
-				"_getFileByHTTP"
+				"tota",
+				"totalSongs"
 			],
 			[
-				"conne",
-				"connect"
+				"path",
+				"path"
 			],
 			[
-				"conver",
-				"_convertToInt"
+				"ind",
+				"indices"
 			],
 			[
-				"ptin",
-				"printRunning"
+				"cu",
+				"currentCursor"
+			],
+			[
+				"compose",
+				"composedIndices"
+			],
+			[
+				"ar",
+				"artist"
+			],
+			[
+				"arti",
+				"artist_name"
+			],
+			[
+				"temp",
+				"templateLink"
+			],
+			[
+				"resul",
+				"results"
+			],
+			[
+				"totalItem",
+				"totalItemCount"
+			],
+			[
+				"albu",
+				"album"
+			],
+			[
+				"allmusic_",
+				"allmusic_link"
+			],
+			[
+				"music",
+				"musicbrainz_link"
+			],
+			[
+				"musc",
+				"musicbrainz_link"
+			],
+			[
+				"all",
+				"allmusic_link"
+			],
+			[
+				"lang",
+				"langs"
 			],
 			[
 				"stat",
-				"statusCode"
+				"statement"
 			],
 			[
-				"read",
-				"readFileSync"
+				"nex",
+				"nextlink"
 			],
 			[
-				"_conver",
-				"_convertToId"
+				"rea",
+				"replace"
+			],
+			[
+				"se",
+				"search"
+			],
+			[
+				"coo",
+				"connection"
+			],
+			[
+				"pr",
+				"processStringorArray"
+			],
+			[
+				"song",
+				"songwriters"
+			],
+			[
+				"lyric",
+				"lyricwiki"
+			],
+			[
+				"lyri",
+				"lyricwiki"
+			],
+			[
+				"range",
+				"range0"
+			],
+			[
+				"type",
+				"typeId"
+			],
+			[
+				"nIte",
+				"nItemsSkipped"
+			],
+			[
+				"mui",
+				"musicbrainz_link"
+			],
+			[
+				"musi",
+				"musicbrainz_link"
+			],
+			[
+				"yo",
+				"youtubeLink"
+			],
+			[
+				"you",
+				"youtube"
+			],
+			[
+				"yout",
+				"youtubeLink"
+			],
+			[
+				"allmu",
+				"allmusicLink"
+			],
+			[
+				"mu",
+				"musicbrainzLink"
+			],
+			[
+				"em",
+				"encodeURIComponent"
+			],
+			[
+				"al",
+				"album"
+			],
+			[
+				"li",
+				"link"
+			],
+			[
+				"arts",
+				"artists"
+			],
+			[
+				"rang",
+				"range1"
+			],
+			[
+				"curre",
+				"currentStep"
+			],
+			[
+				"tot",
+				"totalItems"
+			],
+			[
+				"album",
+				"album_id"
+			],
+			[
+				"alu",
+				"album_id"
+			],
+			[
+				"ress",
+				"reservedLastSongId"
 			]
 		]
 	},
@@ -523,7 +523,23 @@
 			"file": "main.coffee",
 			"settings":
 			{
-				"buffer_size": 11652,
+				"buffer_size": 15719,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "lib/echonest.coffee",
+			"settings":
+			{
+				"buffer_size": 42383,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "lib/echonest/download_echonest.coffee",
+			"settings":
+			{
+				"buffer_size": 4156,
 				"line_ending": "Unix"
 			}
 		},
@@ -531,55 +547,15 @@
 			"file": "lib/Site.coffee",
 			"settings":
 			{
-				"buffer_size": 2129,
+				"buffer_size": 2176,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "lib/nhacso.coffee",
+			"file": "spec/test.coffee",
 			"settings":
 			{
-				"buffer_size": 27742,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "lib/nhacso copy.coffee",
-			"settings":
-			{
-				"buffer_size": 25838,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "lib/zing.coffee",
-			"settings":
-			{
-				"buffer_size": 24519,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "lib/utils.coffee",
-			"settings":
-			{
-				"buffer_size": 2761,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "lib/module.coffee",
-			"settings":
-			{
-				"buffer_size": 1681,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/Users/daonguyenanbinh/Box Documents/Sites/index.coffee",
-			"settings":
-			{
-				"buffer_size": 6445,
+				"buffer_size": 45671,
 				"line_ending": "Unix"
 			}
 		},
@@ -587,23 +563,15 @@
 			"file": "lib/nhaccuatui.coffee",
 			"settings":
 			{
-				"buffer_size": 25091,
+				"buffer_size": 47381,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "lib/nhaccuatui2.coffee",
+			"file": "lib/echonest/api_key.coffee",
 			"settings":
 			{
-				"buffer_size": 59068,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "zing-cipher.coffee",
-			"settings":
-			{
-				"buffer_size": 1368,
+				"buffer_size": 2414,
 				"line_ending": "Unix"
 			}
 		}
@@ -611,9 +579,13 @@
 	"build_system": "",
 	"command_palette":
 	{
-		"height": 375.0,
+		"height": 374.0,
 		"selected_items":
 		[
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
 			[
 				"fet",
 				"Fetch: File"
@@ -632,10 +604,6 @@
 			],
 			[
 				"install",
-				"Package Control: Install Package"
-			],
-			[
-				"insta",
 				"Package Control: Install Package"
 			],
 			[
@@ -819,7 +787,7 @@
 				"Set Syntax: PHP"
 			]
 		],
-		"width": 435.0
+		"width": 417.0
 	},
 	"console":
 	{
@@ -836,24 +804,50 @@
 	},
 	"file_history":
 	[
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/misc/table.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/nhacvui.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/vietgiaitri.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/echonest/object_transformation.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/echonest/artist_transformation.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/echonest/song_transformation.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/echonest/download_echonest.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/echonest/database_insertion.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/echonest/api_key.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/lib/echonest/object_transformation.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/utils.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/module.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/nhaccuatui.js",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/zing.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/nhaccuatui.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/spec/test.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/main.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/zing-cipher.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/index.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/nhacso.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/Site.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/lyricwiki.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/echonest.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/echonest.js",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/gomusic.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/chiasenhac.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/songfreaks.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/stats.coffee",
+		"/Users/daonguyenanbinh/Library/Application Support/Sublime Text 2/Packages/User/Default (OSX).sublime-keymap",
+		"/Users/daonguyenanbinh/Library/Application Support/Sublime Text 2/Packages/User/Preferences.sublime-settings",
+		"/Users/daonguyenanbinh/Downloads/zing store swf.as",
+		"/Users/daonguyenanbinh/Box Documents/Sites/lib/chiasenhac.coffee",
+		"/Users/daonguyenanbinh/Library/Application Support/Sublime Text 2/Packages/Default/Default (OSX).sublime-keymap",
+		"/Users/daonguyenanbinh/Library/Application Support/Sublime Text 2/Packages/Default/Preferences.sublime-settings",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/nhaccuatui2.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/keeng.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/nghenhac.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/chacha.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/nhacvui.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/nhacso copy.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/misc/table.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/vietgiaitri.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/nhacso.coffee copy",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/RC4.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/zing.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/xxx.js",
 		"/Users/daonguyenanbinh/Box Documents/Sites/xxx.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/index.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/zing-cipher.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/stats.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/chacha.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/nhacso.coffee",
-		"/Users/daonguyenanbinh/Library/Application Support/Sublime Text 2/Packages/User/Preferences.sublime-settings",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/keeng.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/spec/site.spec.coffee",
-		"/Users/daonguyenanbinh/Library/Application Support/Sublime Text 2/Packages/Default/Preferences.sublime-settings",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/musicvnn.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/junk.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/musicvnn",
@@ -861,10 +855,7 @@
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/musicvnn.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/README.md",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/main",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/main.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/zing-cipher.js",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/gomusic.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/nhaccuatui.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/hdviet_tv.as",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/testZINGLyric.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/anbinh.as",
@@ -873,7 +864,6 @@
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/test.js",
 		"/Users/daonguyenanbinh/Box Documents/Sites/index.html",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/test.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/nhaccuatui.js",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/nhacso.js",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/zing.js",
 		"/Users/daonguyenanbinh/Box Documents/Sites/temp.js",
@@ -881,7 +871,6 @@
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/cld-min.js",
 		"/Users/daonguyenanbinh/Library/Application Support/Sublime Text 2/Packages/User/Fetch.sublime-settings",
 		"/Users/daonguyenanbinh/Box Documents/Sites/README.md",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/module.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/elasticsearch-0.19-9/plugins/PolishAnalyzerProvider.class",
 		"/Users/daonguyenanbinh/Box Documents/Sites/elasticsearch-0.19-9/README.textile",
 		"/Users/daonguyenanbinh/Box Documents/Sites/elasticsearch-0.19-9/bin/elasticsearch.in.sh",
@@ -909,7 +898,6 @@
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/module.js",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/dna.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/model.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/utils.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/dna.js",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/module",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/utils.js",
@@ -931,7 +919,6 @@
 		"/Users/daonguyenanbinh/Box Documents/Sites/lyrics_NS.srt",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/cNhacso.js",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/resources/NS.coffee",
-		"/Users/daonguyenanbinh/Library/Application Support/Sublime Text 2/Packages/User/Default (OSX).sublime-keymap",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/fetchdatafromNS.js",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/fetchdatafromNS.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/library/ns_decodeid.js",
@@ -944,26 +931,7 @@
 		"/Users/daonguyenanbinh/Box Documents/Sites/createALbumlTable.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/app.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/laravel/application/tasks/nhacso.php",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/app.js",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/nodejs/library/ns_decodeid.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/nodejs/ns_decodeid.js",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/nodejs/library/ns_decodeid.js",
-		"/Users/daonguyenanbinh/Downloads/iTerm-2-Color-Themes-master/README.md",
-		"/Users/daonguyenanbinh/Downloads/tomorrow-theme-master/textmate/Tomorrow.tmTheme",
-		"/Users/daonguyenanbinh/Box Documents/Sites/elasticsearch-0.19-9/plugins/transport-couchbase/couchbase_template.json",
-		"/Applications/MAMP/htdocs/README.md",
-		"/Users/daonguyenanbinh/Box Documents/Sites/elasticsearch-0.19-9/config/elasticsearch.yml",
-		"/Users/daonguyenanbinh/Downloads/elasticsearch-transport-couchbase-master/README.md",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/nodejs/app.js",
-		"/Applications/MAMP/htdocs/index.coffee",
-		"/Applications/MAMP/htdocs/host.php",
-		"/Applications/MAMP/htdocs/index.js",
-		"/Users/daonguyenanbinh/Downloads/index.php",
-		"/Applications/MAMP/htdocs/index.php",
-		"/Users/daonguyenanbinh/Library/Application Support/Sublime Text 2/Packages/SublimeLinter/README.md",
-		"/Users/daonguyenanbinh/Downloads/readline-6.2/terminal.c",
-		"/Applications/MAMP/htdocs/index.html",
-		"/Users/daonguyenanbinh/Library/Application Support/Sublime Text 2/Packages/User/PHP.sublime-build"
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/app.js"
 	],
 	"find":
 	{
@@ -981,134 +949,134 @@
 		"case_sensitive": false,
 		"find_history":
 		[
-			"Songs",
-			"songs",
-			"Songs",
-			"SONGS",
-			"songs",
-			"onFail",
-			"type",
-			"artists",
-			"str",
-			"@table.Songs",
-			"_getFieldFromTable",
-			"@params",
-			"updateAlbumsPlays",
-			"fetchSongs",
-			"maxPage",
-			"Cannt insert song:",
-			"albums",
-			"songs",
-			"Songs",
-			"songs",
-			"OfSongs",
-			"songs",
-			"Song",
-			"song",
-			"songs",
-			".Songs",
-			"songs",
-			"Songs",
-			"JSON.parse",
-			"genre",
-			"nsStop",
-			"@temp.nConsecutiveFailedItems",
-			"100",
-			"lyric",
-			"album",
-			"artist_list",
-			"album",
-			"lastAlbumId",
-			"album",
-			"Album",
-			"album",
-			"Albums",
-			"hasConnection",
-			"3000",
-			"1000",
-			"albumtotallisten",
-			"Song",
-			"song",
-			"Song",
-			"song",
-			"Song",
-			"song",
-			"Song",
-			"song",
-			"Song",
-			"song",
-			"lastSongId",
-			"processSongLink",
-			"updated",
+			"nsongs",
+			"totalSongs",
+			"Cannot insert new song into table",
 			"artist",
-			"_updateAlbum",
-			"vid",
-			" ",
-			"_video",
-			"sid",
-			"Songs",
-			"album",
-			"Albums",
-			"topic",
-			"flashPlayer",
-			"album",
-			"200",
-			"mainAlbums",
-			"albums",
-			"song",
-			"genre",
-			"Genre",
-			"genre",
-			"myArray",
-			"arrayObjectIndexOf",
-			"i",
-			"a",
-			"{",
-			"isnt undefined",
-			"_album",
-			"created",
-			"crea",
-			"created",
-			"_updateAlbumTopic",
-			"click",
-			"song",
-			"Album",
-			"Song",
-			"song",
-			"Song",
-			"song",
-			"Song",
-			"song",
-			"Song",
-			"song",
-			"Song",
-			"song",
-			"Song",
-			"song",
-			" ",
-			"title",
-			"eventEmitter.on",
-			"emit",
-			"encoder.",
-			"encoder",
-			"encoder.ht",
-			"song.topic",
-			"song.albumid",
-			"song.author ",
-			"song.artist",
-			"song.name",
-			" ",
+			"Artist",
+			"artist",
+			"Artist",
+			"artist",
+			"Artist",
+			"artist",
+			"transformer.",
+			"foreignId",
+			"DownloadEchoNest",
+			"artist",
+			"groupBy",
+			"@artist",
+			"(artist) -",
+			") ",
+			"()",
+			" : ->",
+			":",
+			"getInsertStatement",
+			"fileName",
+			"table",
+			" \"",
+			"=",
+			"transformer.",
+			"EN",
+			"en",
+			"EN",
+			"category",
+			"name",
+			"Id",
+			"id",
+			"blog",
+			"term",
+			"url",
+			"summary",
+			"blog",
+			"date",
+			"length",
+			"audio",
+			"audios",
+			"audio",
+			"date_posted",
+			"summary",
+			"name",
+			"blog",
+			"image_url",
+			"date_found",
+			"date_posted",
+			"blog",
+			"posted",
+			"blog",
+			"name",
+			"artist",
+			"artist.",
+			"artist",
+			"fetchSongs",
+			"updateAlbumsPlays",
+			"onDone",
+			"album-plays-result",
+			":",
+			"totalSongsInFile",
 			"totalItemCount",
-			"totalItems",
-			"55",
-			"27",
-			"281",
-			"977",
-			"27",
-			"19",
-			"164",
-			"46",
-			"64"
+			"totalItemCountInFile",
+			"totalArtists",
+			"TotalArtists",
+			"totalArtists",
+			"artist",
+			"Artist",
+			"artist",
+			"totalSongInFile",
+			"totalArtistsInFile",
+			"Artists",
+			"Songs",
+			"_insertIntoArtists",
+			"is temporary moved",
+			"song",
+			"'",
+			"song",
+			"Song",
+			"song",
+			"Song",
+			"song",
+			"updateSongsPlays",
+			"updateItemsPlays",
+			"_fetchItemsPlays",
+			"getItemsKeysAndIds",
+			"ENApiKeys",
+			"dbInsertion.",
+			"artistHavingSongsGTZero",
+			"artistHavingSongsCount",
+			"path",
+			"=",
+			"= ",
+			"apiKey",
+			"count",
+			"count ",
+			"Index",
+			"items",
+			"downloadEchoNest",
+			"DownloadEchoNest",
+			"downloadEchoNest",
+			"We have an  error at item",
+			"Indices",
+			"@Indices",
+			"composed",
+			"Composed",
+			"composed",
+			"Composed",
+			"composed",
+			"Composed",
+			"composedIndices",
+			"enery",
+			"JSON.stringify",
+			"artists",
+			"familarity",
+			"familiarity",
+			"terms",
+			"genres",
+			"stringift",
+			"location",
+			"id",
+			"genre",
+			"items",
+			"genres",
+			"callback"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1133,7 +1101,7 @@
 	"groups":
 	[
 		{
-			"selected": 8,
+			"selected": 1,
 			"sheets":
 			[
 				{
@@ -1141,15 +1109,15 @@
 					"file": "main.coffee",
 					"settings":
 					{
-						"buffer_size": 11652,
+						"buffer_size": 15719,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								174,
-								174
+								13063,
+								13063
 							]
 						],
 						"settings":
@@ -1246,25 +1214,25 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 499.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "lib/Site.coffee",
+					"file": "lib/echonest.coffee",
 					"settings":
 					{
-						"buffer_size": 2129,
+						"buffer_size": 42383,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2031,
-								1933
+								34165,
+								34165
 							]
 						],
 						"settings":
@@ -1361,25 +1329,25 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1070.0,
+						"translation.y": 2172.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 2,
-					"file": "lib/nhacso.coffee",
+					"file": "lib/echonest/download_echonest.coffee",
 					"settings":
 					{
-						"buffer_size": 27742,
+						"buffer_size": 4156,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								19188,
-								19188
+								1495,
+								1455
 							]
 						],
 						"settings":
@@ -1476,25 +1444,25 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1045.0,
+						"translation.y": 1332.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 3,
-					"file": "lib/nhacso copy.coffee",
+					"file": "lib/Site.coffee",
 					"settings":
 					{
-						"buffer_size": 25838,
+						"buffer_size": 2176,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								8034,
-								8034
+								1781,
+								1791
 							]
 						],
 						"settings":
@@ -1591,25 +1559,25 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 968.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 4,
-					"file": "lib/zing.coffee",
+					"file": "spec/test.coffee",
 					"settings":
 					{
-						"buffer_size": 24519,
+						"buffer_size": 45671,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3607,
-								3219
+								45221,
+								45221
 							]
 						],
 						"settings":
@@ -1703,28 +1671,29 @@
 							},
 							"sublimelinter_wrap_find": true,
 							"syntax": "Packages/CoffeeScript/CoffeeScript.tmLanguage",
-							"translate_tabs_to_spaces": false
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
 						},
-						"translation.x": 0.0,
-						"translation.y": 531.0,
+						"translation.x": 10.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 5,
-					"file": "lib/utils.coffee",
+					"file": "lib/nhaccuatui.coffee",
 					"settings":
 					{
-						"buffer_size": 2761,
+						"buffer_size": 47381,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2009,
-								2009
+								5813,
+								5813
 							]
 						],
 						"settings":
@@ -1821,25 +1790,25 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 2787.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 6,
-					"file": "lib/module.coffee",
+					"file": "lib/echonest/api_key.coffee",
 					"settings":
 					{
-						"buffer_size": 1681,
+						"buffer_size": 2414,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								376,
-								386
+								111,
+								111
 							]
 						],
 						"settings":
@@ -1936,467 +1905,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 7,
-					"file": "/Users/daonguyenanbinh/Box Documents/Sites/index.coffee",
-					"settings":
-					{
-						"buffer_size": 6445,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								891,
-								891
-							]
-						],
-						"settings":
-						{
-							"annotations":
-							[
-								"TODO",
-								"README",
-								"FIXME"
-							],
-							"csslint_options":
-							{
-								"adjoining-classes": "warning",
-								"box-model": true,
-								"box-sizing": "warning",
-								"compatible-vendor-prefixes": "warning",
-								"display-property-grouping": true,
-								"duplicate-background-images": "warning",
-								"duplicate-properties": true,
-								"empty-rules": true,
-								"errors": true,
-								"fallback-colors": "warning",
-								"floats": "warning",
-								"font-faces": "warning",
-								"font-sizes": "warning",
-								"gradients": "warning",
-								"ids": "warning",
-								"import": "warning",
-								"important": "warning",
-								"known-properties": true,
-								"outline-none": "warning",
-								"overqualified-elements": "warning",
-								"qualified-headings": "warning",
-								"regex-selectors": "warning",
-								"rules-count": "warning",
-								"shorthand": "warning",
-								"star-property-hack": "warning",
-								"text-indent": "warning",
-								"underscore-property-hack": "warning",
-								"unique-headings": "warning",
-								"universal-selector": "warning",
-								"vendor-prefix": true,
-								"zero-units": "warning"
-							},
-							"gjslint_ignore":
-							[
-								110.0
-							],
-							"gjslint_options":
-							[
-							],
-							"javascript_linter": "jshint",
-							"jshint_options":
-							{
-								"browser": true,
-								"evil": true,
-								"regexdash": true,
-								"sub": true,
-								"trailing": true,
-								"wsh": true
-							},
-							"pep8": true,
-							"pep8_ignore":
-							[
-								"E501"
-							],
-							"perl_linter": "perlcritic",
-							"pyflakes_ignore":
-							[
-							],
-							"pyflakes_ignore_import_*": true,
-							"sublimelinter": true,
-							"sublimelinter_delay": 2.0,
-							"sublimelinter_disable":
-							[
-							],
-							"sublimelinter_executable_map":
-							{
-							},
-							"sublimelinter_fill_outlines": false,
-							"sublimelinter_gutter_marks": false,
-							"sublimelinter_mark_style": "outline",
-							"sublimelinter_notes": false,
-							"sublimelinter_objj_check_ascii": false,
-							"sublimelinter_popup_errors_on_save": false,
-							"sublimelinter_syntax_map":
-							{
-								"C++": "c",
-								"Python Django": "python",
-								"Ruby on Rails": "ruby"
-							},
-							"sublimelinter_wrap_find": true,
-							"syntax": "Packages/CoffeeScript/CoffeeScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 168.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 8,
-					"file": "lib/nhaccuatui.coffee",
-					"settings":
-					{
-						"buffer_size": 25091,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								24846,
-								24846
-							]
-						],
-						"settings":
-						{
-							"annotations":
-							[
-								"TODO",
-								"README",
-								"FIXME"
-							],
-							"csslint_options":
-							{
-								"adjoining-classes": "warning",
-								"box-model": true,
-								"box-sizing": "warning",
-								"compatible-vendor-prefixes": "warning",
-								"display-property-grouping": true,
-								"duplicate-background-images": "warning",
-								"duplicate-properties": true,
-								"empty-rules": true,
-								"errors": true,
-								"fallback-colors": "warning",
-								"floats": "warning",
-								"font-faces": "warning",
-								"font-sizes": "warning",
-								"gradients": "warning",
-								"ids": "warning",
-								"import": "warning",
-								"important": "warning",
-								"known-properties": true,
-								"outline-none": "warning",
-								"overqualified-elements": "warning",
-								"qualified-headings": "warning",
-								"regex-selectors": "warning",
-								"rules-count": "warning",
-								"shorthand": "warning",
-								"star-property-hack": "warning",
-								"text-indent": "warning",
-								"underscore-property-hack": "warning",
-								"unique-headings": "warning",
-								"universal-selector": "warning",
-								"vendor-prefix": true,
-								"zero-units": "warning"
-							},
-							"gjslint_ignore":
-							[
-								110.0
-							],
-							"gjslint_options":
-							[
-							],
-							"javascript_linter": "jshint",
-							"jshint_options":
-							{
-								"browser": true,
-								"evil": true,
-								"regexdash": true,
-								"sub": true,
-								"trailing": true,
-								"wsh": true
-							},
-							"pep8": true,
-							"pep8_ignore":
-							[
-								"E501"
-							],
-							"perl_linter": "perlcritic",
-							"pyflakes_ignore":
-							[
-							],
-							"pyflakes_ignore_import_*": true,
-							"sublimelinter": true,
-							"sublimelinter_delay": 2.0,
-							"sublimelinter_disable":
-							[
-							],
-							"sublimelinter_executable_map":
-							{
-							},
-							"sublimelinter_fill_outlines": false,
-							"sublimelinter_gutter_marks": false,
-							"sublimelinter_mark_style": "outline",
-							"sublimelinter_notes": false,
-							"sublimelinter_objj_check_ascii": false,
-							"sublimelinter_popup_errors_on_save": false,
-							"sublimelinter_syntax_map":
-							{
-								"C++": "c",
-								"Python Django": "python",
-								"Ruby on Rails": "ruby"
-							},
-							"sublimelinter_wrap_find": true,
-							"syntax": "Packages/CoffeeScript/CoffeeScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 1669.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 9,
-					"file": "lib/nhaccuatui2.coffee",
-					"settings":
-					{
-						"buffer_size": 59068,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								17501,
-								20639
-							]
-						],
-						"settings":
-						{
-							"annotations":
-							[
-								"TODO",
-								"README",
-								"FIXME"
-							],
-							"csslint_options":
-							{
-								"adjoining-classes": "warning",
-								"box-model": true,
-								"box-sizing": "warning",
-								"compatible-vendor-prefixes": "warning",
-								"display-property-grouping": true,
-								"duplicate-background-images": "warning",
-								"duplicate-properties": true,
-								"empty-rules": true,
-								"errors": true,
-								"fallback-colors": "warning",
-								"floats": "warning",
-								"font-faces": "warning",
-								"font-sizes": "warning",
-								"gradients": "warning",
-								"ids": "warning",
-								"import": "warning",
-								"important": "warning",
-								"known-properties": true,
-								"outline-none": "warning",
-								"overqualified-elements": "warning",
-								"qualified-headings": "warning",
-								"regex-selectors": "warning",
-								"rules-count": "warning",
-								"shorthand": "warning",
-								"star-property-hack": "warning",
-								"text-indent": "warning",
-								"underscore-property-hack": "warning",
-								"unique-headings": "warning",
-								"universal-selector": "warning",
-								"vendor-prefix": true,
-								"zero-units": "warning"
-							},
-							"gjslint_ignore":
-							[
-								110.0
-							],
-							"gjslint_options":
-							[
-							],
-							"javascript_linter": "jshint",
-							"jshint_options":
-							{
-								"browser": true,
-								"evil": true,
-								"regexdash": true,
-								"sub": true,
-								"trailing": true,
-								"wsh": true
-							},
-							"pep8": true,
-							"pep8_ignore":
-							[
-								"E501"
-							],
-							"perl_linter": "perlcritic",
-							"pyflakes_ignore":
-							[
-							],
-							"pyflakes_ignore_import_*": true,
-							"sublimelinter": true,
-							"sublimelinter_delay": 2.0,
-							"sublimelinter_disable":
-							[
-							],
-							"sublimelinter_executable_map":
-							{
-							},
-							"sublimelinter_fill_outlines": false,
-							"sublimelinter_gutter_marks": false,
-							"sublimelinter_mark_style": "outline",
-							"sublimelinter_notes": false,
-							"sublimelinter_objj_check_ascii": false,
-							"sublimelinter_popup_errors_on_save": false,
-							"sublimelinter_syntax_map":
-							{
-								"C++": "c",
-								"Python Django": "python",
-								"Ruby on Rails": "ruby"
-							},
-							"sublimelinter_wrap_find": true,
-							"syntax": "Packages/CoffeeScript/CoffeeScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 10,
-					"file": "zing-cipher.coffee",
-					"settings":
-					{
-						"buffer_size": 1368,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								159,
-								159
-							]
-						],
-						"settings":
-						{
-							"annotations":
-							[
-								"TODO",
-								"README",
-								"FIXME"
-							],
-							"csslint_options":
-							{
-								"adjoining-classes": "warning",
-								"box-model": true,
-								"box-sizing": "warning",
-								"compatible-vendor-prefixes": "warning",
-								"display-property-grouping": true,
-								"duplicate-background-images": "warning",
-								"duplicate-properties": true,
-								"empty-rules": true,
-								"errors": true,
-								"fallback-colors": "warning",
-								"floats": "warning",
-								"font-faces": "warning",
-								"font-sizes": "warning",
-								"gradients": "warning",
-								"ids": "warning",
-								"import": "warning",
-								"important": "warning",
-								"known-properties": true,
-								"outline-none": "warning",
-								"overqualified-elements": "warning",
-								"qualified-headings": "warning",
-								"regex-selectors": "warning",
-								"rules-count": "warning",
-								"shorthand": "warning",
-								"star-property-hack": "warning",
-								"text-indent": "warning",
-								"underscore-property-hack": "warning",
-								"unique-headings": "warning",
-								"universal-selector": "warning",
-								"vendor-prefix": true,
-								"zero-units": "warning"
-							},
-							"gjslint_ignore":
-							[
-								110.0
-							],
-							"gjslint_options":
-							[
-							],
-							"javascript_linter": "jshint",
-							"jshint_options":
-							{
-								"browser": true,
-								"evil": true,
-								"regexdash": true,
-								"sub": true,
-								"trailing": true,
-								"wsh": true
-							},
-							"pep8": true,
-							"pep8_ignore":
-							[
-								"E501"
-							],
-							"perl_linter": "perlcritic",
-							"pyflakes_ignore":
-							[
-							],
-							"pyflakes_ignore_import_*": true,
-							"sublimelinter": true,
-							"sublimelinter_delay": 2.0,
-							"sublimelinter_disable":
-							[
-							],
-							"sublimelinter_executable_map":
-							{
-							},
-							"sublimelinter_fill_outlines": false,
-							"sublimelinter_gutter_marks": false,
-							"sublimelinter_mark_style": "outline",
-							"sublimelinter_notes": false,
-							"sublimelinter_objj_check_ascii": false,
-							"sublimelinter_popup_errors_on_save": false,
-							"sublimelinter_syntax_map":
-							{
-								"C++": "c",
-								"Python Django": "python",
-								"Ruby on Rails": "ruby"
-							},
-							"sublimelinter_wrap_find": true,
-							"syntax": "Packages/CoffeeScript/CoffeeScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 598.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -2450,12 +1959,132 @@
 		"selected_items":
 		[
 			[
-				"nhacvui",
-				"nodejs/lib/nhacvui.coffee"
+				"enapi",
+				"nodejs/lib/echonest/api_key.coffee"
+			],
+			[
+				"down",
+				"nodejs/lib/echonest/download_echonest.coffee"
+			],
+			[
+				"artist_",
+				"nodejs/lib/echonest/artist_transformation.coffee"
+			],
+			[
+				"objec",
+				"nodejs/lib/echonest/object_transformation.coffee"
+			],
+			[
+				"utils",
+				"nodejs/lib/utils.coffee"
+			],
+			[
+				"site",
+				"nodejs/lib/Site.coffee"
+			],
+			[
+				"modul",
+				"nodejs/lib/module.coffee"
+			],
+			[
+				"nhacc",
+				"nodejs/lib/nhaccuatui.js"
+			],
+			[
+				"nhaccu",
+				"nodejs/lib/nhaccuatui.coffee"
+			],
+			[
+				"zing.coff",
+				"nodejs/lib/zing.coffee"
+			],
+			[
+				"testco",
+				"nodejs/spec/test.coffee"
+			],
+			[
+				"spec/",
+				"nodejs/spec/test.coffee"
+			],
+			[
+				"echone",
+				"nodejs/lib/echonest.coffee"
+			],
+			[
+				"main",
+				"nodejs/main.coffee"
+			],
+			[
+				"echo",
+				"nodejs/lib/echonest.js"
 			],
 			[
 				"zing",
 				"nodejs/lib/zing.coffee"
+			],
+			[
+				"gomus",
+				"nodejs/lib/gomusic.coffee"
+			],
+			[
+				"module",
+				"nodejs/lib/module.coffee"
+			],
+			[
+				"echoe",
+				"nodejs/lib/echonest.coffee"
+			],
+			[
+				"mod",
+				"nodejs/lib/module.coffee"
+			],
+			[
+				"echon",
+				"nodejs/lib/echonest.coffee"
+			],
+			[
+				"lyric",
+				"nodejs/lib/lyricwiki.coffee"
+			],
+			[
+				"lr",
+				"nodejs/lib/lyricwiki.coffee"
+			],
+			[
+				"lyricwi",
+				"nodejs/lib/lyricwiki.coffee"
+			],
+			[
+				"chias",
+				"nodejs/lib/chiasenhac.coffee"
+			],
+			[
+				"stats",
+				"nodejs/lib/stats.coffee"
+			],
+			[
+				"keen",
+				"nodejs/lib/keeng.coffee"
+			],
+			[
+				"nghenh",
+				"nodejs/lib/nghenhac.coffee"
+			],
+			[
+				"nhacvui",
+				"nodejs/lib/nhacvui.coffee"
+			],
+			[
+				"nhac",
+				"nodejs/lib/nhacvui.coffee"
+			],
+			[
+				"gomu",
+				"nodejs/lib/gomusic.coffee"
+			],
+			[
+				"chac",
+				"nodejs/lib/chacha.coffee"
 			],
 			[
 				"vietgia",
@@ -2494,15 +2123,7 @@
 				"nodejs/lib/nghenhac.coffee"
 			],
 			[
-				"chac",
-				"nodejs/lib/chacha.coffee"
-			],
-			[
 				"nhacvu",
-				"nodejs/lib/nhacvui.coffee"
-			],
-			[
-				"nhac",
 				"nodejs/lib/nhacvui.coffee"
 			],
 			[
@@ -2512,14 +2133,6 @@
 			[
 				"music",
 				"nodejs/musicvnn"
-			],
-			[
-				"site",
-				"nodejs/lib/Site.coffee"
-			],
-			[
-				"keen",
-				"nodejs/lib/keeng.coffee"
 			],
 			[
 				"mainco",
@@ -2554,20 +2167,8 @@
 				"nodejs/lib/gomusic.coffee"
 			],
 			[
-				"nhacc",
-				"nodejs/lib/nhaccuatui.coffee"
-			],
-			[
 				"z",
 				"nodejs/lib/zing.coffee"
-			],
-			[
-				"nhaccu",
-				"nodejs/lib/nhaccuatui.js"
-			],
-			[
-				"gomus",
-				"nodejs/lib/gomusic.coffee"
 			],
 			[
 				"nhacs",
@@ -2590,10 +2191,6 @@
 				"nodejs/lib/nghenhac.coffee"
 			],
 			[
-				"gomu",
-				"nodejs/lib/gomusic.coffee"
-			],
-			[
 				"ke",
 				"nodejs/lib/keeng.coffee"
 			],
@@ -2604,10 +2201,6 @@
 			[
 				"read",
 				"README.md"
-			],
-			[
-				"modul",
-				"nodejs/lib/module.coffee"
 			],
 			[
 				"go",

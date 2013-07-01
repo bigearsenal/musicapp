@@ -69,10 +69,18 @@ class Nhaccuatui extends Module
 				else onFail("The link: #{link} is temporary moved",options)
 			.on 'error', (e) =>
 				onFail  "Cannot get file: #{link} from server. ERROR: " + e.message, options
+				@stats.totalItemCount +=1
 				@stats.failedItemCount +=1
 
-	_onFail : (err)->
+	_onFail : (err)=>
 		console.log "#{err}".red
+		@stats.totalItemCount +=1
+		@stats.failedItemCount +=1
+		@utils.printRunning @stats
+
+		if @stats.totalItems is @stats.totalItemCount
+			@utils.printFinalResult @stats
+			@updateVideosPlays()
 
 	# 1. THIS IS PART 1- UPDATE ALBUMS, INCLUDING SONGS-ALBUMS
 	_fetchAlbumsPlays : (ids)->
@@ -178,8 +186,10 @@ class Nhaccuatui extends Module
 		@stats.currentTable = @table.Albums
 		for album in albums
 			do (album)=>
-				songs = album.songs
-				delete album.songs
+				if album.songs 
+					songs = album.songs
+					delete album.songs
+				else songs = []
 				@connection.query @query._insertIntoNCTAlbums, album, (err)=>
 					@stats.totalItemCount +=1
 					@stats.currentId = album.id
@@ -221,11 +231,11 @@ class Nhaccuatui extends Module
 		topic =  data.match(/inpHiddenGenre.+/g)?[0]
 		if topic then song.topic = topic.replace(/inpHiddenGenre.+value\=|\"|\s\/\>/g,'')
 
-		artists = data.match(/inpHiddenSingerIds.+/g)?[0]
-		if artists then song.artists = JSON.stringify artists.replace(/inpHiddenSingerIds.+value\=|\"|\s\/\>/g,'').split(',').map((v)->encoder.htmlDecode(v).trim())
+		artists = data.match(/songname.+[\r\t\n]+.+/g)?[0]
+		if artists then song.artists = JSON.stringify artists.match(/title.+"/)[0].replace(/>.+$/,'').replace(/title=|"/g,'').split(',').map((v)->encoder.htmlDecode(v).trim())
 
 		title = data.match(/songname.+[\r\t\n]+.+/g)?[0]
-		if title then song.title = encoder.htmlDecode title.replace(/<\/h1>.+/g,'').replace(/^.+[\r\t\n]+.+>/,'')
+		if title then song.title = encoder.htmlDecode title.replace(/\- <a href.+/g,'').replace(/^.+\s+.+>/,'').trim()
 
 		link_key = data.match(/flashPlayer\"\,\s\".+/g)?[0]
 		if link_key then song.link_key = link_key.replace(/0\..+/g,'').replace(/\s\"/g,'').replace(/\"\,$/g,'').replace(/flashPlayer.+\,/g,'')
@@ -237,7 +247,7 @@ class Nhaccuatui extends Module
 		lyric = data.match(/divLyric[^]+inpLyricId/g)?[0]
 		if lyric then song.lyric = encoder.htmlDecode lyric.replace(/<input.+$/g,'').replace(/[^]+hidden;\">\n/g,'').trim().replace(/<\/div>$/g,'').trim()
 
-		bitrate = data.match(/<meta content=.+\s(\d+)kb/)?[1]
+		bitrate = data.match(/<meta content=.+\s(\d+) Kb/)?[1]
 		if bitrate
 			song.bitrate = bitrate
 		# THIS PART IS OPTIONAL. Only use for getting new songs
@@ -271,11 +281,14 @@ class Nhaccuatui extends Module
 		return song
 	fetchSongs : (albums)->
 		# albums has full stats and array of songs
+		# console.log "we have error at album. #{JSON.stringify albums}"
 		songs = []
 		for album in albums
-			for song in album.songs
-				song.id = parseInt song.id,10
-				songs.push song
+			if album.songs
+				for song in album.songs
+					song.id = parseInt song.id,10
+					songs.push song
+		
 
 		callback = (song)=>
 			# console.log song
@@ -330,12 +343,11 @@ class Nhaccuatui extends Module
 				description : ""
 				created : "0000-00-00"
 
-			if data.match(/<p\sclass\=\"category\"\>Thể\sloại\:.+/g)
+			if data.match(/<div\sclass\=\"category\"\>[\s]+.+Thể\sloại\:.+/g)
 
-				_info = data.match(/<p\sclass\=\"category\"\>Thể\sloại\:.+/g)[0].split('|')
+				_info = data.match(/<div\sclass\=\"category\"\>[\s]+.+Thể\sloại\:.+/g)[0].split('|')
 
 				album.nsongs = parseInt _info[2].replace(/Số\sbài\:\s|<\/p\>/g,'').trim(), 10
-
 
 				if album.id > 1000000000
 					id = data.match(/hidden.+\"(\d+)\".+inpHiddenId/)?[1]
@@ -348,11 +360,11 @@ class Nhaccuatui extends Module
 				topic =  data.match(/inpHiddenGenre.+/g)?[0]
 				if topic then album.topic = topic.replace(/inpHiddenGenre.+value\=|\"|\s\/\>/g,'')
 
-				artists = data.match(/inpHiddenSingerIds.+/g)?[0]
-				if artists then album.artists = JSON.stringify artists.replace(/inpHiddenSingerIds.+value\=|\"|\s\/\>/g,'').split(',').map((v)->encoder.htmlDecode(v).trim())
+				artists = data.match(/songname.+\s+.+/g)?[0]
+				if artists then album.artists = JSON.stringify artists.match(/title.+"/)[0].replace(/>.+$/,'').replace(/title=|"/g,'').split(',').map((v)->encoder.htmlDecode(v).trim())
 
-				title = data.match(/songname.+/g)?[0]
-				if title then album.title = encoder.htmlDecode title.replace(/<\/h1>.+/g,'').replace(/^.+>/,'')
+				title = data.match(/songname.+\s+.+/g)?[0]
+				if title then album.title = encoder.htmlDecode title.replace(/\- <a href.+/g,'').replace(/^.+\s+.+>/,'').trim()
 
 				thumbnail = data.match(/.+img152/g)?[0]
 				if thumbnail then album.thumbnail = thumbnail.match(/src=\"http.+\"\swidth/g)?[0].replace(/src=\"|\"\swidth/g,'')
@@ -362,6 +374,7 @@ class Nhaccuatui extends Module
 				if album.thumbnail.match(/\/\d+\.jpg$/g)
 					_t = new Date(parseInt(album.thumbnail.match(/\/\d+\.jpg/g)[0].replace(/\/|\.jpg/g,'')))
 					album.created += " " + _t.getHours() + ":" + _t.getMinutes() + ":" + _t.getSeconds()
+
 
 				songs = data.match(/btnDownload.+/g)
 				if songs
@@ -377,7 +390,7 @@ class Nhaccuatui extends Module
 			@eventEmitter.emit "album-result",album
 			return album
 		catch e
-			console.log "NBINH: eROOR: #{e}"
+			console.log "Catching error while trying to process album [key : #{options.key}, id : #{options.id}] content: #{JSON.stringify album}: Error message: #{e}"
 
 	fetchAlbums : (albums)->
 		# album Object has only id and key properties
@@ -413,24 +426,6 @@ class Nhaccuatui extends Module
 						key : album.key
 						plays : album.plays
 					@getFileByHTTP link, @processAlbum, @_onFail, options
-	# options parameter in filterNonExistedRecordInDB() is an object
-	# containing field and table needed to be filtered
-	# filterNonExistedRecordInDB_BK : (items,options,callback)->
-	# 	temp = []
-	# 	count = 0
-	# 	for item in items
-	# 		do (item)=>
-	# 			_select = "select #{options.field} from #{options.table} where #{options.field} =#{item[options.field]}"
-	# 			if options.table is @table.Videos
-	# 				_select = "select #{options.table}.#{options.field} from #{options.table} where #{options.table}.#{options.field} =#{@connection.escape item[options.field]}"
-	# 			@printUpdateInfo "Filtering......"
-	# 			@connection.query _select, (err, result)=>
-	# 				@printUpdateInfo "Filtering......"
-	# 				count +=1
-	# 				if result.length is  0
-	# 					temp.push item
-	# 				if count is items.length
-	# 					callback(temp)
 	filterNonExistedRecordInDB : (items,options,callback)->
 		temp = []
 		count = 0
@@ -470,7 +465,7 @@ class Nhaccuatui extends Module
 				processTempItems tempItems
 			@printUpdateInfo "Count : #{count}.Filtering......"
 	getAlbumKeysAndIds : (topicLink,page = 1) ->
-		link = topicLink + page
+		link = topicLink.replace(".html","." + page + ".html")
 		options =
 			link : link.replace(/^.+playlist\//g,'').replace(/\.html.+/g,'')
 			page : page
@@ -521,7 +516,7 @@ class Nhaccuatui extends Module
 		console.log " |"+"Updating albums and songs to table: #{@table.Albums}".magenta
 		console.log " |STEP 1: Fetching ids and keys of new albums from existing topics".magenta
 
-		topics = "playlist-moi nhac-tre tru-tinh cach-mang tien-chien nhac-trinh thieu-nhi rap-viet rock-viet khong-loi au-my han-quoc nhac-hoa nhac-nhat nhac-phim the-loai-khac"
+		topics = "bai-hat-moi-nhat nhac-tre-moi-nhat tru-tinh-moi-nhat cach-mang-moi-nhat tien-chien-moi-nhat nhac-trinh-moi-nhat thieu-nhi-moi-nhat rap-viet-moi-nhat rock-viet-moi-nhat khong-loi-moi-nhat au-my-moi-nhat han-quoc-moi-nhat nhac-hoa-moi-nhat nhac-nhat-moi-nhat nhac-phim-moi-nhat the-loai-khac-moi-nhat"
 		# topics = "nhac-tre"
 		topics = topics.split(' ')
 		url = "http://www.nhaccuatui.com/playlist/"
@@ -538,11 +533,65 @@ class Nhaccuatui extends Module
 		@albums = []
 
 		for topic in topics
-			link =  url + topic + ".html" + "?sort=1&page="
-			# link =  url + topic + ".html" + "?page="
+			# link =  url + topic + ".html" + "?sort=1&page="
+			link =  url + topic + ".html"
 			for page in [1..nPages]
 				@getAlbumKeysAndIds link, page
 		null
+
+
+	processVideo : (data,options)=>
+		video =
+			id : options.id
+			key : options.key
+			title : ""
+			artists : ""
+			topic : ""
+			plays : 0
+			thumbnail : ""
+			type : ""
+			link_key : ""
+			lyric : ""
+
+		#new version in June 2013 does not support lyric of videos
+
+		id = data.match(/hidden.+\"(\d+)\".+inpHiddenId/)?[1]
+
+		if id
+			id = parseInt(id,10)
+			if id isnt video.id
+				video.id = id
+
+		type =  data.match(/.+inpHiddenType/g)?[0]
+		if type then video.type = type.replace(/\"\sid.+$/g,'').replace(/^.+\"/g,'')
+
+		info = data.match(/<h1 class="name">.+/g)?[0]
+		if info
+			info = info.replace(/<h1 class="name">/,'').replace(/<\/h1>/,'')
+			info = info.split(' - ')
+			video.title = encoder.htmlDecode info[0].trim()
+			video.artists = JSON.stringify info[1].split(', ').map((v)->encoder.htmlDecode(v).trim())
+
+		topic = data.match(/nowPlayingListenCount.+\s+.+\s+.+/g)?[0]
+		if topic
+			video.topic = JSON.stringify topic.split("&nbsp;<img").filter((v,idx)-> if idx > 0 then yes else no)
+						.map (v)-> encoder.htmlDecode(v.replace(/<\/.+/,'').replace(/.+>/,'')).trim()
+		
+		thumbnail = data.match(/image_src.+\"(http.+)\"/)?[1]
+		if thumbnail
+			video.thumbnail = thumbnail
+			if video.thumbnail
+					if video.thumbnail.match(/\d{4}\/\d{2}\/\d{2}/g)
+						video.created = video.thumbnail.match(/\d{4}\/\d{2}\/\d{2}/g)[0].replace(/\//g,'-')
+					else if video.thumbnail.match(/\d{4}_\d{2}\//g)
+						video.created = video.thumbnail.match(/\d{4}_\d{2}\//g)[0].replace(/_/g,':').replace(/\//g,'')
+						video.created += ":01"
+			
+		link_key = data.match(/flashPlayer\"\,\s\".+/g)?[0]
+		if link_key then video.link_key = link_key.replace(/0\..+/g,'').replace(/\s\"/g,'').replace(/\"\,$/g,'').replace(/flashPlayer.+\,/g,'')
+
+		@eventEmitter.emit "video-result", video
+		return video
 
 	# 2. THIS PART IS FOR UPDATING SONGS & VIDEOS ONLY
 	processItemsAfterFilter : (items, options)->
@@ -567,6 +616,7 @@ class Nhaccuatui extends Module
 				if @stats.totalItems is @stats.totalItemCount
 					@utils.printFinalResult @stats
 					console.log "SONGS HAVE ALREADY BEEN UPDATED".inverse.red
+					# @updateSongsPlays()
 					@eventEmitter.emit "update-song-finish"
 		else if options.config.type is "video"
 			@eventEmitter.on "video-result", (video)=>
@@ -607,13 +657,15 @@ class Nhaccuatui extends Module
 						id : item.id
 						key : item.key
 						official : item.official
+					@getFileByHTTP link, @processSong, @_onFail, _options
 				else if options.config.type is "video"
-					link = "http://www.nhaccuatui.com/mv/joke-link.#{item.key}.html"
+					link = "http://www.nhaccuatui.com/video/joke-link.#{item.key}.html"
 					_options =
 						key : item.key
 						duration : item.duration
+					@getFileByHTTP link, @processVideo, @_onFail, _options
 				# console.log link
-				@getFileByHTTP link, @processSong, @_onFail, _options
+				
 	getSongsFromData : (data,options)->
 		ids = data.match(/btnAddPlaylist_(\d+)/g)
 		songs = []
@@ -637,27 +689,14 @@ class Nhaccuatui extends Module
 		return songs
 	getVideosFromData : (data,options)->
 		videos = []
-		times  = data.match(/times\">.+/g)
-		ids = data.match(/<h3><a href=\".+/g)
-		if times and ids
-			if times.length? and ids.length?
-				if times.length is ids.length
+		ids = data.match(/.+img150/g)
+		if ids
+			if  ids.length?
 					ids = ids.map (v)-> v.replace(/\.html.+$/g,'').replace(/^.+\./g,'')
-					times =  times.map (v)->
-						t = v.match(/>(.+)</)?[1].split(':')
-						if t.length
-							if t.length is 2
-								return parseInt(t[0],10)*60 + parseInt(t[1],10)
-							else return 0
-						else return 0
-					for v,index in times
+					for v,index in ids
 						video =
 							key :  ids[index]
-							duration : times[index]
 						videos.push video
-				else
-					console.log "ERROR: lengths of videos durations and ids do not match"
-					console.log JSON.stringify options
 			else
 				console.log "ERROR: videos duration and ids do not have length property"
 				console.log JSON.stringify options
@@ -666,7 +705,7 @@ class Nhaccuatui extends Module
 		# 	console.log JSON.stringify options
 		return videos
 	getItemsKeysAndIds : (topicLink,page = 1,config)->
-		link = topicLink + page
+		link = topicLink.replace(".html","." + page + ".html")
 		if config.type is "song"
 			options =
 				link : link.replace(/^.+bai-hat\//g,'').replace(/\.html.+/g,'')
@@ -733,16 +772,16 @@ class Nhaccuatui extends Module
 		console.log " |STEP 1: Fetching ids and keys of new #{config.type}s from existing topics".magenta
 
 		if config.type is 'song'
-			topics = "bai-hat-moi nhac-tre tru-tinh cach-mang tien-chien nhac-trinh thieu-nhi rap-viet rock-viet khong-loi au-my han-quoc nhac-hoa nhac-nhat nhac-phim the-loai-khac"
+			topics = "bai-hat-moi-nhat nhac-tre-moi-nhat tru-tinh-moi-nhat cach-mang-moi-nhat tien-chien-moi-nhat nhac-trinh-moi-nhat thieu-nhi-moi-nhat rap-viet-moi-nhat rock-viet-moi-nhat khong-loi-moi-nhat au-my-moi-nhat han-quoc-moi-nhat nhac-hoa-moi-nhat nhac-nhat-moi-nhat nhac-phim-moi-nhat the-loai-khac-moi-nhat"
 			# topics = "nhac-tre"
 			topics = topics.split(' ')
 			url = "http://www.nhaccuatui.com/bai-hat/"
 			nPages = 50
 		else if config.type is "video"
-			topics = "video-moi viet-nam au-my han-quoc nhac-nhat nhac-hoa shining-show sea-show house-of-dreams the-loai-khac"
+			topics = "video-moi video-am-nhac-viet-nam-nhac-tre video-am-nhac-viet-nam-tru-tinh video-am-nhac-viet-nam-que-huong video-am-nhac-viet-nam-cach-mang video-am-nhac-viet-nam-thieu-nhi video-am-nhac-viet-nam-nhac-rap video-am-nhac-viet-nam-nhac-rock video-am-nhac-au-my-pop video-am-nhac-au-my-rock video-am-nhac-au-my-dance video-am-nhac-au-my-r-b-hip-hop-rap video-am-nhac-au-my-blue-jazz video-am-nhac-au-my-country video-am-nhac-au-my-latin video-am-nhac-au-my-indie video-am-nhac-han-quoc video-am-nhac-nhac-hoa video-am-nhac-nhac-nhat video-am-nhac-the-loai-khac video-giai-tri-hai-kich video-giai-tri-phim video-giai-tri-khac"
 			# topics = "video-moi"
 			topics = topics.split(' ')
-			url = "http://www.nhaccuatui.com/mv/"
+			url = "http://www.nhaccuatui.com/"
 			nPages = 42
 
 		@stats.currentTable = config.table
@@ -752,8 +791,8 @@ class Nhaccuatui extends Module
 		@items = []
 
 		for topic in topics
-			link =  url + topic + ".html" + "?sort=1&page="
-			# link =  url + topic + ".html" + "?page="
+			# link =  url + topic + ".html" + "?sort=1&page="
+			link =  url + topic + ".html"
 			for page in [1..nPages]
 				@getItemsKeysAndIds link, page, config
 		null

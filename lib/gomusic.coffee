@@ -79,7 +79,7 @@ class Gomusic extends Module
 		_updateTime += album.UpdateTime.match(/[0-9]+\//g)[1].replace(/\//g,'') + "-"
 		_updateTime += album.UpdateTime.match(/[0-9]+\//g)[0].replace(/\//g,'')
 
-		if album.Id is 18429  
+		if album.Id is 18429  or album.Id is 19019
 			_tempAl = album.Publisher.trim()
 			_tempAl = _tempAl.replace(/\./g,'/')
 		else 
