@@ -303,18 +303,21 @@ runLyricWiki = ->
 	LyricWiki = require './lib/lyricwiki'
 	console.log "Running with "+"LyricWiki.com".inverse.green
 	console.log "STEP 2:".inverse.blue + " " + "Choose the type of command:".underline.blue
-	console.log "\t1.fetchSongs\t2.updateSongsLyrics"
-	console.log "\t3.UPDATE ALBUMS\t4.updateGraceNoteSongsLyrics"
-	console.log "\t5.fetchGenres \t6.fetchAlbumsArtistsGenres"
+	console.log "\t1.UPDATE LYRICS\t2.updateGraceNoteSongsLyrics"
+	# console.log "\t1.fetchSongs\t2.updateSongsLyrics"
+	# console.log "\t3.UPDATE ALBUMS\t4.updateGraceNoteSongsLyrics"
+	# console.log "\t5.fetchGenres \t6.fetchAlbumsArtistsGenres"
 	lyricWiki = new LyricWiki()
 	rl.question "=> ", (answer) ->
 		switch answer.trim()
-			when "1" then lyricWiki.fetchSongs()
-			when "2" then lyricWiki.updateSongsLyrics()
-			when "3" then lyricWiki.updateAlbums()
-			when "4" then lyricWiki.updateGraceNoteSongsLyrics()
-			when "5" then lyricWiki.fetchGenres()
-			when "6" then lyricWiki.fetchAlbumsArtistsGenres()
+			when "1" then lyricWiki.updateLyrics()
+			when "2" then lyricWiki.updateGraceNoteSongsLyrics()
+			# when "1" then lyricWiki.fetchSongs()
+			# when "2" then lyricWiki.updateSongsLyrics()
+			# when "3" then lyricWiki.updateAlbums()
+			# when "4" then lyricWiki.updateGraceNoteSongsLyrics()
+			# when "5" then lyricWiki.fetchGenres()
+			# when "6" then lyricWiki.fetchAlbumsArtistsGenres()
 			else console.log "Wrong type".red
 runEchoNest = ->
 	EchoNest = require './lib/echonest'

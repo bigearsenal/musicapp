@@ -4,8 +4,108 @@
 		"selected_items":
 		[
 			[
+				"cae",
+				"created_at"
+			],
+			[
+				"_al",
+				"_albums"
+			],
+			[
+				"art",
+				"artistName"
+			],
+			[
+				"occur",
+				"occured"
+			],
+			[
+				"has",
+				"hasError"
+			],
+			[
+				"newAr",
+				"isNewArtist"
+			],
+			[
+				"_art",
+				"_artists"
+			],
+			[
+				"_ar",
+				"_artist"
+			],
+			[
+				"nwe",
+				"newArtists"
+			],
+			[
+				"max",
+				"maxArtistId"
+			],
+			[
+				"filter",
+				"filterNewArtists"
+			],
+			[
+				"arti",
+				"artists"
+			],
+			[
+				"artis",
+				"artists"
+			],
+			[
+				"artist",
+				"artists"
+			],
+			[
+				"isn",
+				"isNewArtist"
+			],
+			[
 				"err",
-				"error"
+				"err"
+			],
+			[
+				"alb",
+				"albums"
+			],
+			[
+				"lang",
+				"language"
+			],
+			[
+				"creat",
+				"created_at"
+			],
+			[
+				"crea",
+				"created_at"
+			],
+			[
+				"new",
+				"newPages"
+			],
+			[
+				"get",
+				"getNextPage"
+			],
+			[
+				"last",
+				"lastUpdatedTimestamp"
+			],
+			[
+				"resul",
+				"result"
+			],
+			[
+				"Ima",
+				"ImageInsertion"
+			],
+			[
+				"ar",
+				"artist_id"
 			],
 			[
 				"dic",
@@ -120,10 +220,6 @@
 				"log	log"
 			],
 			[
-				"get",
-				"getBiographies"
-			],
-			[
 				"image",
 				"image_url"
 			],
@@ -134,10 +230,6 @@
 			[
 				"_lo",
 				"_blog"
-			],
-			[
-				"artis",
-				"artist"
 			],
 			[
 				"blog",
@@ -220,10 +312,6 @@
 				"pathToDisk"
 			],
 			[
-				"max",
-				"maxConcurrentJobs"
-			],
-			[
 				"artisha",
 				"artistHavingSongsGreaterThanZero"
 			],
@@ -296,14 +384,6 @@
 				"connection"
 			],
 			[
-				"artist",
-				"artist_id"
-			],
-			[
-				"art",
-				"artist"
-			],
-			[
 				"set",
 				"setTemplateLink"
 			],
@@ -356,20 +436,8 @@
 				"composedIndices"
 			],
 			[
-				"ar",
-				"artist"
-			],
-			[
-				"arti",
-				"artist_name"
-			],
-			[
 				"temp",
 				"templateLink"
-			],
-			[
-				"resul",
-				"results"
 			],
 			[
 				"totalItem",
@@ -394,10 +462,6 @@
 			[
 				"all",
 				"allmusic_link"
-			],
-			[
-				"lang",
-				"langs"
 			],
 			[
 				"stat",
@@ -450,70 +514,6 @@
 			[
 				"mui",
 				"musicbrainz_link"
-			],
-			[
-				"musi",
-				"musicbrainz_link"
-			],
-			[
-				"yo",
-				"youtubeLink"
-			],
-			[
-				"you",
-				"youtube"
-			],
-			[
-				"yout",
-				"youtubeLink"
-			],
-			[
-				"allmu",
-				"allmusicLink"
-			],
-			[
-				"mu",
-				"musicbrainzLink"
-			],
-			[
-				"em",
-				"encodeURIComponent"
-			],
-			[
-				"al",
-				"album"
-			],
-			[
-				"li",
-				"link"
-			],
-			[
-				"arts",
-				"artists"
-			],
-			[
-				"rang",
-				"range1"
-			],
-			[
-				"curre",
-				"currentStep"
-			],
-			[
-				"tot",
-				"totalItems"
-			],
-			[
-				"album",
-				"album_id"
-			],
-			[
-				"alu",
-				"album_id"
-			],
-			[
-				"ress",
-				"reservedLastSongId"
 			]
 		]
 	},
@@ -523,23 +523,15 @@
 			"file": "main.coffee",
 			"settings":
 			{
-				"buffer_size": 15719,
+				"buffer_size": 15994,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "lib/echonest.coffee",
+			"file": "lib/lyricwiki.coffee",
 			"settings":
 			{
-				"buffer_size": 42383,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "lib/echonest/download_echonest.coffee",
-			"settings":
-			{
-				"buffer_size": 4156,
+				"buffer_size": 32839,
 				"line_ending": "Unix"
 			}
 		},
@@ -552,10 +544,10 @@
 			}
 		},
 		{
-			"file": "spec/test.coffee",
+			"file": "lib/echonest/api_key.coffee",
 			"settings":
 			{
-				"buffer_size": 45671,
+				"buffer_size": 2414,
 				"line_ending": "Unix"
 			}
 		},
@@ -563,15 +555,7 @@
 			"file": "lib/nhaccuatui.coffee",
 			"settings":
 			{
-				"buffer_size": 47381,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "lib/echonest/api_key.coffee",
-			"settings":
-			{
-				"buffer_size": 2414,
+				"buffer_size": 47376,
 				"line_ending": "Unix"
 			}
 		}
@@ -791,7 +775,10 @@
 	},
 	"console":
 	{
-		"height": 167.0
+		"height": 167.0,
+		"history":
+		[
+		]
 	},
 	"distraction_free":
 	{
@@ -805,25 +792,29 @@
 	"file_history":
 	[
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/echonest/object_transformation.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/echonest/artist_transformation.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/echonest/song_transformation.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/echonest/download_echonest.coffee",
+		"/Users/daonguyenanbinh/Library/Application Support/Sublime Text 3/Packages/User/Default (OSX).sublime-keymap",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/lyricwiki_v3.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/lyricwiki.coffee",
+		"/Users/daonguyenanbinh/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/lyricwiki_v2.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/echonest/database_insertion.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/echonest/download_echonest.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/echonest.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/spec/test.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/nhaccuatui.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/echonest/artist_transformation.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/echonest/api_key.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/lib/echonest/object_transformation.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/utils.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/module.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/nhaccuatui.js",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/zing.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/nhaccuatui.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/spec/test.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/main.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/zing-cipher.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/index.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/nhacso.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/Site.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/lyricwiki.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/echonest.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/echonest.js",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/gomusic.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/chiasenhac.coffee",
@@ -927,11 +918,7 @@
 		"/Users/daonguyenanbinh/Downloads/play.google.com.text",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/createAlbumTable.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/createAlbumTable.js",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/createALbumlTable.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/createALbumlTable.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/app.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/laravel/application/tasks/nhacso.php",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/app.js"
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/createALbumlTable.coffee"
 	],
 	"find":
 	{
@@ -939,7 +926,7 @@
 	},
 	"find_in_files":
 	{
-		"height": 0.0,
+		"height": 127.0,
 		"where_history":
 		[
 		]
@@ -949,6 +936,37 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"newAlbums",
+			"album",
+			"_albums",
+			"_album",
+			"newSongs",
+			"newAlbums",
+			"_",
+			"math",
+			"=",
+			"_song",
+			"uri",
+			"URI",
+			"uri",
+			"URI",
+			"uri",
+			"URI",
+			"uri",
+			"URL",
+			"url",
+			"getNextPage",
+			"      ",
+			"nvideos",
+			"totalVideos",
+			"is_video_being_processed",
+			"nvideos",
+			"downloadVideos",
+			"\"",
+			"song",
+			"Songs",
+			"songs",
+			"Songs",
 			"nsongs",
 			"totalSongs",
 			"Cannot insert new song into table",
@@ -1045,38 +1063,7 @@
 			"path",
 			"=",
 			"= ",
-			"apiKey",
-			"count",
-			"count ",
-			"Index",
-			"items",
-			"downloadEchoNest",
-			"DownloadEchoNest",
-			"downloadEchoNest",
-			"We have an  error at item",
-			"Indices",
-			"@Indices",
-			"composed",
-			"Composed",
-			"composed",
-			"Composed",
-			"composed",
-			"Composed",
-			"composedIndices",
-			"enery",
-			"JSON.stringify",
-			"artists",
-			"familarity",
-			"familiarity",
-			"terms",
-			"genres",
-			"stringift",
-			"location",
-			"id",
-			"genre",
-			"items",
-			"genres",
-			"callback"
+			"apiKey"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1084,6 +1071,11 @@
 		"regex": true,
 		"replace_history":
 		[
+			"\\t",
+			"    ",
+			"\\t",
+			"    ",
+			"\\t",
 			"@strToChars",
 			"GMAlbums",
 			"GMLog",
@@ -1107,17 +1099,18 @@
 				{
 					"buffer": 0,
 					"file": "main.coffee",
+					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 15719,
+						"buffer_size": 15994,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								13063,
-								13063
+								11749,
+								11749
 							]
 						],
 						"settings":
@@ -1214,244 +1207,43 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 499.0,
+						"translation.y": 318.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "lib/echonest.coffee",
+					"file": "lib/lyricwiki.coffee",
+					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 42383,
+						"buffer_size": 32839,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								34165,
-								34165
+								30613,
+								30613
 							]
 						],
 						"settings":
 						{
-							"annotations":
-							[
-								"TODO",
-								"README",
-								"FIXME"
-							],
-							"csslint_options":
-							{
-								"adjoining-classes": "warning",
-								"box-model": true,
-								"box-sizing": "warning",
-								"compatible-vendor-prefixes": "warning",
-								"display-property-grouping": true,
-								"duplicate-background-images": "warning",
-								"duplicate-properties": true,
-								"empty-rules": true,
-								"errors": true,
-								"fallback-colors": "warning",
-								"floats": "warning",
-								"font-faces": "warning",
-								"font-sizes": "warning",
-								"gradients": "warning",
-								"ids": "warning",
-								"import": "warning",
-								"important": "warning",
-								"known-properties": true,
-								"outline-none": "warning",
-								"overqualified-elements": "warning",
-								"qualified-headings": "warning",
-								"regex-selectors": "warning",
-								"rules-count": "warning",
-								"shorthand": "warning",
-								"star-property-hack": "warning",
-								"text-indent": "warning",
-								"underscore-property-hack": "warning",
-								"unique-headings": "warning",
-								"universal-selector": "warning",
-								"vendor-prefix": true,
-								"zero-units": "warning"
-							},
-							"gjslint_ignore":
-							[
-								110.0
-							],
-							"gjslint_options":
-							[
-							],
-							"javascript_linter": "jshint",
-							"jshint_options":
-							{
-								"browser": true,
-								"evil": true,
-								"regexdash": true,
-								"sub": true,
-								"trailing": true,
-								"wsh": true
-							},
-							"pep8": true,
-							"pep8_ignore":
-							[
-								"E501"
-							],
-							"perl_linter": "perlcritic",
-							"pyflakes_ignore":
-							[
-							],
-							"pyflakes_ignore_import_*": true,
-							"sublimelinter": true,
-							"sublimelinter_delay": 2.0,
-							"sublimelinter_disable":
-							[
-							],
-							"sublimelinter_executable_map":
-							{
-							},
-							"sublimelinter_fill_outlines": false,
-							"sublimelinter_gutter_marks": false,
-							"sublimelinter_mark_style": "outline",
-							"sublimelinter_notes": false,
-							"sublimelinter_objj_check_ascii": false,
-							"sublimelinter_popup_errors_on_save": false,
-							"sublimelinter_syntax_map":
-							{
-								"C++": "c",
-								"Python Django": "python",
-								"Ruby on Rails": "ruby"
-							},
-							"sublimelinter_wrap_find": true,
 							"syntax": "Packages/CoffeeScript/CoffeeScript.tmLanguage",
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 2172.0,
+						"translation.y": 2364.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 2,
-					"file": "lib/echonest/download_echonest.coffee",
-					"settings":
-					{
-						"buffer_size": 4156,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1495,
-								1455
-							]
-						],
-						"settings":
-						{
-							"annotations":
-							[
-								"TODO",
-								"README",
-								"FIXME"
-							],
-							"csslint_options":
-							{
-								"adjoining-classes": "warning",
-								"box-model": true,
-								"box-sizing": "warning",
-								"compatible-vendor-prefixes": "warning",
-								"display-property-grouping": true,
-								"duplicate-background-images": "warning",
-								"duplicate-properties": true,
-								"empty-rules": true,
-								"errors": true,
-								"fallback-colors": "warning",
-								"floats": "warning",
-								"font-faces": "warning",
-								"font-sizes": "warning",
-								"gradients": "warning",
-								"ids": "warning",
-								"import": "warning",
-								"important": "warning",
-								"known-properties": true,
-								"outline-none": "warning",
-								"overqualified-elements": "warning",
-								"qualified-headings": "warning",
-								"regex-selectors": "warning",
-								"rules-count": "warning",
-								"shorthand": "warning",
-								"star-property-hack": "warning",
-								"text-indent": "warning",
-								"underscore-property-hack": "warning",
-								"unique-headings": "warning",
-								"universal-selector": "warning",
-								"vendor-prefix": true,
-								"zero-units": "warning"
-							},
-							"gjslint_ignore":
-							[
-								110.0
-							],
-							"gjslint_options":
-							[
-							],
-							"javascript_linter": "jshint",
-							"jshint_options":
-							{
-								"browser": true,
-								"evil": true,
-								"regexdash": true,
-								"sub": true,
-								"trailing": true,
-								"wsh": true
-							},
-							"pep8": true,
-							"pep8_ignore":
-							[
-								"E501"
-							],
-							"perl_linter": "perlcritic",
-							"pyflakes_ignore":
-							[
-							],
-							"pyflakes_ignore_import_*": true,
-							"sublimelinter": true,
-							"sublimelinter_delay": 2.0,
-							"sublimelinter_disable":
-							[
-							],
-							"sublimelinter_executable_map":
-							{
-							},
-							"sublimelinter_fill_outlines": false,
-							"sublimelinter_gutter_marks": false,
-							"sublimelinter_mark_style": "outline",
-							"sublimelinter_notes": false,
-							"sublimelinter_objj_check_ascii": false,
-							"sublimelinter_popup_errors_on_save": false,
-							"sublimelinter_syntax_map":
-							{
-								"C++": "c",
-								"Python Django": "python",
-								"Ruby on Rails": "ruby"
-							},
-							"sublimelinter_wrap_find": true,
-							"syntax": "Packages/CoffeeScript/CoffeeScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 1332.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 3,
 					"file": "lib/Site.coffee",
+					"semi_transient": false,
 					"settings":
 					{
 						"buffer_size": 2176,
@@ -1461,8 +1253,8 @@
 						"selection":
 						[
 							[
-								1781,
-								1791
+								533,
+								486
 							]
 						],
 						"settings":
@@ -1559,245 +1351,15 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 968.0,
+						"translation.y": 268.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
-					"buffer": 4,
-					"file": "spec/test.coffee",
-					"settings":
-					{
-						"buffer_size": 45671,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								45221,
-								45221
-							]
-						],
-						"settings":
-						{
-							"annotations":
-							[
-								"TODO",
-								"README",
-								"FIXME"
-							],
-							"csslint_options":
-							{
-								"adjoining-classes": "warning",
-								"box-model": true,
-								"box-sizing": "warning",
-								"compatible-vendor-prefixes": "warning",
-								"display-property-grouping": true,
-								"duplicate-background-images": "warning",
-								"duplicate-properties": true,
-								"empty-rules": true,
-								"errors": true,
-								"fallback-colors": "warning",
-								"floats": "warning",
-								"font-faces": "warning",
-								"font-sizes": "warning",
-								"gradients": "warning",
-								"ids": "warning",
-								"import": "warning",
-								"important": "warning",
-								"known-properties": true,
-								"outline-none": "warning",
-								"overqualified-elements": "warning",
-								"qualified-headings": "warning",
-								"regex-selectors": "warning",
-								"rules-count": "warning",
-								"shorthand": "warning",
-								"star-property-hack": "warning",
-								"text-indent": "warning",
-								"underscore-property-hack": "warning",
-								"unique-headings": "warning",
-								"universal-selector": "warning",
-								"vendor-prefix": true,
-								"zero-units": "warning"
-							},
-							"gjslint_ignore":
-							[
-								110.0
-							],
-							"gjslint_options":
-							[
-							],
-							"javascript_linter": "jshint",
-							"jshint_options":
-							{
-								"browser": true,
-								"evil": true,
-								"regexdash": true,
-								"sub": true,
-								"trailing": true,
-								"wsh": true
-							},
-							"pep8": true,
-							"pep8_ignore":
-							[
-								"E501"
-							],
-							"perl_linter": "perlcritic",
-							"pyflakes_ignore":
-							[
-							],
-							"pyflakes_ignore_import_*": true,
-							"sublimelinter": true,
-							"sublimelinter_delay": 2.0,
-							"sublimelinter_disable":
-							[
-							],
-							"sublimelinter_executable_map":
-							{
-							},
-							"sublimelinter_fill_outlines": false,
-							"sublimelinter_gutter_marks": false,
-							"sublimelinter_mark_style": "outline",
-							"sublimelinter_notes": false,
-							"sublimelinter_objj_check_ascii": false,
-							"sublimelinter_popup_errors_on_save": false,
-							"sublimelinter_syntax_map":
-							{
-								"C++": "c",
-								"Python Django": "python",
-								"Ruby on Rails": "ruby"
-							},
-							"sublimelinter_wrap_find": true,
-							"syntax": "Packages/CoffeeScript/CoffeeScript.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 10.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "lib/nhaccuatui.coffee",
-					"settings":
-					{
-						"buffer_size": 47381,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								5813,
-								5813
-							]
-						],
-						"settings":
-						{
-							"annotations":
-							[
-								"TODO",
-								"README",
-								"FIXME"
-							],
-							"csslint_options":
-							{
-								"adjoining-classes": "warning",
-								"box-model": true,
-								"box-sizing": "warning",
-								"compatible-vendor-prefixes": "warning",
-								"display-property-grouping": true,
-								"duplicate-background-images": "warning",
-								"duplicate-properties": true,
-								"empty-rules": true,
-								"errors": true,
-								"fallback-colors": "warning",
-								"floats": "warning",
-								"font-faces": "warning",
-								"font-sizes": "warning",
-								"gradients": "warning",
-								"ids": "warning",
-								"import": "warning",
-								"important": "warning",
-								"known-properties": true,
-								"outline-none": "warning",
-								"overqualified-elements": "warning",
-								"qualified-headings": "warning",
-								"regex-selectors": "warning",
-								"rules-count": "warning",
-								"shorthand": "warning",
-								"star-property-hack": "warning",
-								"text-indent": "warning",
-								"underscore-property-hack": "warning",
-								"unique-headings": "warning",
-								"universal-selector": "warning",
-								"vendor-prefix": true,
-								"zero-units": "warning"
-							},
-							"gjslint_ignore":
-							[
-								110.0
-							],
-							"gjslint_options":
-							[
-							],
-							"javascript_linter": "jshint",
-							"jshint_options":
-							{
-								"browser": true,
-								"evil": true,
-								"regexdash": true,
-								"sub": true,
-								"trailing": true,
-								"wsh": true
-							},
-							"pep8": true,
-							"pep8_ignore":
-							[
-								"E501"
-							],
-							"perl_linter": "perlcritic",
-							"pyflakes_ignore":
-							[
-							],
-							"pyflakes_ignore_import_*": true,
-							"sublimelinter": true,
-							"sublimelinter_delay": 2.0,
-							"sublimelinter_disable":
-							[
-							],
-							"sublimelinter_executable_map":
-							{
-							},
-							"sublimelinter_fill_outlines": false,
-							"sublimelinter_gutter_marks": false,
-							"sublimelinter_mark_style": "outline",
-							"sublimelinter_notes": false,
-							"sublimelinter_objj_check_ascii": false,
-							"sublimelinter_popup_errors_on_save": false,
-							"sublimelinter_syntax_map":
-							{
-								"C++": "c",
-								"Python Django": "python",
-								"Ruby on Rails": "ruby"
-							},
-							"sublimelinter_wrap_find": true,
-							"syntax": "Packages/CoffeeScript/CoffeeScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 2787.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 6,
+					"buffer": 3,
 					"file": "lib/echonest/api_key.coffee",
+					"semi_transient": false,
 					"settings":
 					{
 						"buffer_size": 2414,
@@ -1807,8 +1369,8 @@
 						"selection":
 						[
 							[
-								111,
-								111
+								45,
+								62
 							]
 						],
 						"settings":
@@ -1905,7 +1467,35 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 598.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "lib/nhaccuatui.coffee",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 47376,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1859,
+								1866
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CoffeeScript/CoffeeScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1948,9 +1538,10 @@
 	{
 		"height": 262.0
 	},
+	"project": "site.sublime-project",
 	"replace":
 	{
-		"height": 64.0
+		"height": 86.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -1958,6 +1549,46 @@
 		"height": 0.0,
 		"selected_items":
 		[
+			[
+				"nhacc",
+				"nodejs/lib/nhaccuatui.coffee"
+			],
+			[
+				"obejc",
+				"nodejs/lib/echonest/object_transformation.coffee"
+			],
+			[
+				"tran",
+				"nodejs/lib/echonest/song_transformation.coffee"
+			],
+			[
+				"wik",
+				"nodejs/lib/lyricwiki.coffee"
+			],
+			[
+				"lyri",
+				"nodejs/lib/lyricwiki_v2.coffee"
+			],
+			[
+				"l",
+				"nodejs/lib/lyricwiki.coffee"
+			],
+			[
+				"trans",
+				"nodejs/lib/echonest/song_transformation.coffee"
+			],
+			[
+				"object",
+				"nodejs/lib/echonest/object_transformation.coffee"
+			],
+			[
+				"insert",
+				"nodejs/lib/echonest/database_insertion.coffee"
+			],
+			[
+				"nhac",
+				"nodejs/lib/nhaccuatui.coffee"
+			],
 			[
 				"enapi",
 				"nodejs/lib/echonest/api_key.coffee"
@@ -1985,10 +1616,6 @@
 			[
 				"modul",
 				"nodejs/lib/module.coffee"
-			],
-			[
-				"nhacc",
-				"nodejs/lib/nhaccuatui.js"
 			],
 			[
 				"nhaccu",
@@ -2072,10 +1699,6 @@
 			],
 			[
 				"nhacvui",
-				"nodejs/lib/nhacvui.coffee"
-			],
-			[
-				"nhac",
 				"nodejs/lib/nhacvui.coffee"
 			],
 			[
@@ -2289,10 +1912,24 @@
 		],
 		"width": 380.0
 	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"settings":
+	{
+	},
 	"show_minimap": true,
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": false,
 	"side_bar_width": 181.0,
-	"status_bar_visible": true
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
 }

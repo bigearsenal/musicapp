@@ -216,8 +216,6 @@ class EchoNest extends Site
 			catch e
 				@onItemFail "data has error", options			
 				
-
-
 	# FETCH ALL SONGS FROM ARTISTS
 	fetchSongsFromArtists : =>
 		@connect()
@@ -874,8 +872,6 @@ class EchoNest extends Site
 					@utils.printUpdateRunning @stats.currentId, @stats, "Fetching...."
 				else 
 					@updateStats()
-
-
 
 	fetchABunchOfArtistsInDB_first : ->
 		
