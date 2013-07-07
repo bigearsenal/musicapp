@@ -9,6 +9,8 @@ class ENApiKeys
 		return true
 	getApiKeys : ->
 		return @apiKeys
+	setApiKeys : (keys)->
+		@apiKeys = keys
 
 	testDistrubutionOfRandomIndex : ->
 		distribution = @apiKeys.map (v)-> return 0

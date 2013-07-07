@@ -323,24 +323,25 @@ runEchoNest = ->
 	EchoNest = require './lib/echonest'
 	console.log "Running with "+"EchoNest.com".inverse.green
 	console.log "STEP 2:".inverse.blue + " " + "Choose the type of command:".underline.blue
-	console.log "\t1.updateArtists\t2.fetchArtists"
-	console.log "\t3.fetchSongsFromArtists\t4.fetchABunchOfArtistsInDB_first"
-	console.log "\t5. DOWNLOAD ARTISTS TO DISK \t6.putArtistsFromDiskToDB"
-	console.log "\t7. PUT SONGS FROM DISK TO DB \t8.DOWNLOAD VIDEOS to DISK"
-	console.log "\t9. putVideosFromDiskToDB \t10.downloadImages"
+	console.log "\t1.UPDATE SONGS\t2.xxxxx"
+	# console.log "\t1.updateArtists\t2.fetchArtists"
+	# console.log "\t3.fetchSongsFromArtists\t4.fetchABunchOfArtistsInDB_first"
+	# console.log "\t5. DOWNLOAD ARTISTS TO DISK \t6.putArtistsFromDiskToDB"
+	# console.log "\t7. PUT SONGS FROM DISK TO DB \t8.DOWNLOAD VIDEOS to DISK"
+	# console.log "\t9. putVideosFromDiskToDB \t10.downloadImages"
 	echoNest = new EchoNest()
 	rl.question "=> ", (answer) ->
 		switch answer.trim()
-			when "1" then echoNest.updateArtists()
-			when "2" then echoNest.fetchArtists()
-			when "3" then echoNest.fetchSongsFromArtists()
-			when "4" then echoNest.fetchABunchOfArtistsInDB_first()
-			when "5" then echoNest.downloadArtists()
-			when "6" then echoNest.putArtistsFromDiskToDB()
-			when "7" then echoNest.putSongsFromDiskToDB()
-			when "8" then echoNest.downloadVideos()
-			when "9" then echoNest.putVideosFromDiskToDB()
-			when "10" then echoNest.downloadImages()
+			when "1" then echoNest.updateSongs()
+			# when "2" then echoNest.fetchArtists()
+			# when "3" then echoNest.fetchSongsFromArtists()
+			# when "4" then echoNest.fetchABunchOfArtistsInDB_first()
+			# when "5" then echoNest.downloadArtists()
+			# when "6" then echoNest.putArtistsFromDiskToDB()
+			# when "7" then echoNest.putSongsFromDiskToDB()
+			# when "8" then echoNest.downloadVideos()
+			# when "9" then echoNest.putVideosFromDiskToDB()
+			# when "10" then echoNest.downloadImages()
 			
 
 			

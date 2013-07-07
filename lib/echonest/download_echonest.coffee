@@ -12,6 +12,7 @@ class DownloadEchoNest
 		@exec = require('child_process').exec
 		ENApiKeys = require './api_key'
 		@apikey = new ENApiKeys()
+		
 	
 	setMaxConcurrentJobs : (max)->
 		@maxConcurrentJobs = max

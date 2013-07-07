@@ -692,9 +692,17 @@ class Zing extends Module
 		# if both range0 and range1 equal 1. Then we trigger the special case. 
 		# Fetching the max and min id in the last 100 pages 
 		if range0 is 1 and range1 is 1
-			console.log "Fetching items in last 100 pages. Each page contains 500 records"
-			limit = 100*500 # 100 pages x 500 records each
-			if type is 3 then limit = 5*500 # applied only with video
+			if type is 1
+				nPages = 100
+				recordEarchPage = 500
+			if type is 3 
+				nPages = 5
+				recordEarchPage = 500 # applied only with video
+			if type is 2  
+				nPages = 100
+				recordEarchPage = 500 # applied only with album
+			limit = nPages*recordEarchPage
+			console.log "Fetching items in last #{nPages} pages. Each page contains #{recordEarchPage} records"
 			_q = "select max(#{typeId}) as max, min(#{typeId}) as min from (select #{typeId} from #{table} order by #{typeId} DESC limit #{limit}) as anbinh;"
 			@connection.query _q, (err, results)=>
 				if err then console.log "cannt getting max item from table. ERROR: #{err}"

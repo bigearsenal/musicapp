@@ -937,6 +937,40 @@ class EchoNest extends Site
 					# 		else @onItemFail "data.response.songs does not exit", options
 					# 	else @onItemFail "data.response does not exit", options
 
+	# Major update: update new songs based on some attributes
+	updateSongs : ->
+		@connect()
+		@showStartupMessage "Update new songs on table", @table.Songs
+
+		UpdateNewSongsAndArtists = require './echonest/update_song'
+		us = new UpdateNewSongsAndArtists(@table,@connection,@getFileByHTTP)
+		us.setDefaultTotalItems(1000)
+		
+		# sids = ['SODCHZN1311AFDE225','SOZTASP131343A05BA','SOPLRQU131343905EF','SOZVFBC1312A8AFE1B','SOLIBKD1311AFE84CC','SOIOPGD1313439B00E','SOKIOVV131343959D4','SOMRDXU1312FDFDE15','SORXXID1311AFD787B','SOMUOPA1311AFDB7AF','SOMAAXM1313439793D','SOUTAJC131343967AD','SOYDHKW13134392D56','SOKOHAQ13134387D8F','SOBWUHO1311AFE7029','SOOLHJI1311AFDF206','SOXVKCF1311AFE3C9A','SOQJMQH1313439D4A2','SOAOLCY1311AFDE1C8','SOYUFKA1311AFDCE59','SOUKBLY1311AFDE5D3','SOMXIYD1312FE00724','SOXHMPZ1311AFE5CE9','SONVPPB1312FE00ED4','SOEQQSR13134392E19','SOXSRRJ1311AFE0A6B','SOJFGZO1313438951E','SOVPUDN1311AFE0318','SOGRKNC1312A8A8B43','SOOISAO131343A6823','SOMOCPX131343A0052','SOULTCL131343A2681','SOEJHIN1311AFE4F0E','SOYCEFA136F1608EB4','SOUILFX136F1A1FD6B','SOPYZXX136C5A2FE88','SOQSQJQ136C5711F49','SODARDS136C73BA443','SOSAFFK136C74CE673']
+		# us.requestNewSongsWithItsProperties sids, (songStatements)->
+		# 	console.log "DONE"
+		# 	console.log songStatements
+		us.addAttribute("sort","danceability-desc")
+		us.getNewSongAndArtistIds "max_danceability",1,(statements,songids)=>
+			console.log "HELLO!"
+			console.log "statmens length: #{statements.length}"
+			console.log "# of new songs #{statements.match(/INSERT IGNORE INTO ENSongs /g)?.length}"
+			fs = require 'fs'
+			fs.appendFileSync "/Volumes/Data/website/database/anbinh_xxxx_new.sql",statements
+			console.log "WRITTING NEW ARTISTS TO DISK DONE!"
+			console.log "Getting #{songids.length} new songs"
+			us.requestNewSongsWithItsProperties songids, (songsStatements)->
+				fs.appendFileSync "/Volumes/Data/website/database/anbinh_xxxx_new.sql",songsStatements
+				console.log "WRITTING NEW SONGS TO DISK DONE!" 
+			# console.log "songs length #{songids.length}"
+			# console.log songids
+			# console.log "Getting new songs with their tracks and their foreign_ids..."
+			# us.requestNewSongsWithItsProperties songids, (songStatements)->
+			# 	console.log "DONE"
+			# 	console.log songStatements
+
+			# us.filterNewAlbumIds artistids
+
 
 
 	showStats : ->

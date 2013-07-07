@@ -152,23 +152,25 @@ class ObjectFinding
 					callback(null,_artists)
 	# callback(err:String,artists:Array)
 	assignNewIdsToAlbums : (albums,callback)->
-		@getMaxAlbumIdinDB (err,maxId)=>
-			if err then callback "#{err}", null
-			else 
-				@maxAlbumId = maxId
-				_albums = []
-				@filterNewAlbums albums, (newAlbums)=>
-					for album, index in newAlbums
-						_album = 
-							id : @maxAlbumId + index + 1
-							title : album.title
-							artist_id : album.artist_id
-							artist : album.artist
-							created_at  : album.created_at
-							year : album.year
-						_albums.push _album
+		if albums.length > 0 
+			@getMaxAlbumIdinDB (err,maxId)=>
+				if err then callback "#{err}", null
+				else 
+					@maxAlbumId = maxId
+					_albums = []
+					@filterNewAlbums albums, (newAlbums)=>
+						for album, index in newAlbums
+							_album = 
+								id : @maxAlbumId + index + 1
+								title : album.title
+								artist_id : album.artist_id
+								artist : album.artist
+								created_at  : album.created_at
+								year : album.year
+							_albums.push _album
 
-					callback(null,_albums)
+						callback(null,_albums)
+		else callback null,[]
 	#callback(err:String)
 	insertArtistsToDB : (artists, callback) ->
 		@assignNewIDsToArtists artists, (err,newArtists)=>
@@ -191,10 +193,13 @@ class ObjectFinding
 									else callback null
 	#callback(err:String)
 	insertAlbumsToDB : (artists,albums, callback) ->
+		# console.log "insertAlbumsToDB triggered"
 		@addArtistIds artists,albums,"album",(newAlbs)=>
+			# console.log newAlbs
 			@assignNewIdsToAlbums newAlbs, (err,newAlbums)=>
 				if err then console.log "#{err}"
 				else  
+					# console.log "assignNewIdsToAlbums triggered inside insertAlbumsToDB"
 					count = 0
 					hasError = null
 					if newAlbums.length is 0 then callback null
@@ -221,9 +226,8 @@ class ObjectFinding
 		@insertArtistsToDB artists,(err)=>
 			if err then console.log err
 			else 
-				console.log "INSERT DONE.......!!!!"
-				console.log "#{items.length}"
-				
+				console.log "#{items.length} ArtistsIds have been inserted!"
+				if items.length is 0 then callback null, []
 				if type is "album"
 					_albums = []
 					count = 0
@@ -271,6 +275,16 @@ class ObjectFinding
 			if err then callback err + "in addArtistIdsAndAlbumIdsToNewSongs"
 			else 
 				callback null,yes
-
+	#callback(err:String,result:object)
+	findLastCreatedDate : (callback)->
+		@connection.query "select max(created_at) as max from #{@table.Songs}", (err, result)->
+			if err then callback err, null
+			else 
+				if result.length > 1 or result.length is 0 then callback "The returned value is invalid"
+				else 
+					if result.length is 1 
+						if result[0].max
+							callback null,result[0].max
+						else callback "Max value can not be found!",null
 
 module.exports = ObjectFinding

@@ -361,7 +361,7 @@ class LyricWiki extends Site
 			console.log " |GET NEXT STEP :#{@count}".inverse.red
 			@resetStats()
 			@_getSongsLyrics("gracenote")
-	updateGraceNoteSongsLyrics : ->
+	updateGraceNoteSongsLyrics : (datetime)->
 		@connect()
 		@showStartupMessage "Fetching GRACENOTE songs lyric to table", @table.Songs
 		@count = 0
@@ -371,8 +371,10 @@ class LyricWiki extends Site
 			nItemsSkipped : 0
 			condition : "  download_gracenote_done is null and isGracenote=1 "
 			# condition : " download_done=1 and download_gracenote_done=0 "
+		if datetime 
+			@temp.condition = "  checktime > '#{datetime}' and download_gracenote_done is null and isGracenote=1 "
+
 		console.log " |The number of items to skip: #{@temp.nItemsSkipped}"
-		console.log "ANBINH"
 		@eventEmitter.on "result-song", (song, options)=>
 			@stats.totalItemCount +=1
 			@stats.passedItemCount +=1
@@ -665,8 +667,6 @@ class LyricWiki extends Site
 		@connect()
 		@showStartupMessage "Fetching new lyric to table", @table.Songs
 		
-		lastUpdatedDate = "2013-06-11 00:30"
-
 		@newPages = []
 
 		@helpers = {}
@@ -717,13 +717,7 @@ class LyricWiki extends Site
 		ObjectFinding = require './lyricwiki/object_finding'
 
 		itemSearching = new ObjectFinding(@table,@connection)
-		# console.log "ITEM search......."
-		# console.log itemSearching
-		@config = 
-			lastUpdatedTimestamp : @helpers.getTimestamp lastUpdatedDate
-
-		console.log "Last posted date: #{new Date(@config.lastUpdatedTimestamp)}"
-		
+				
 		@processNewItems = =>
 			artists = []
 			albums = []
@@ -734,8 +728,8 @@ class LyricWiki extends Site
 			for album in temporaryAlbums
 				temp = album.name.split(':')
 				_album = 
-					title : temp[1]
-					artist : temp[0]
+					title : @processStringorArray temp[1]
+					artist : @processStringorArray temp[0]
 					created_at : @formatDate(new Date(album.created_at))
 				artists.push _album.artist
 				if _album.title
@@ -746,8 +740,8 @@ class LyricWiki extends Site
 			for song in temporarySongs
 				temp = song.name.split(':')
 				_song = 
-					title : temp[1]
-					artist : temp[0]
+					title : @processStringorArray temp[1]
+					artist : @processStringorArray temp[0]
 					created_at : @formatDate(new Date(song.created_at))
 				artists.push _song.artist
 				songs.push _song
@@ -771,27 +765,28 @@ class LyricWiki extends Site
 			songs = songs.filter (v)-> if v.artist and v.title then return yes else return false
 			console.log "# of legitimate songs #{songs.length}".inverse.green
 
-
+			# console.log songs
 			itemSearching.insertNewArtistsAnNewAlbumsToDB artists,albums,(err)=>
 				if err then console.log "CANNT BE DONE #{err}"
 				else 
-					console.log "FINISHED"
+					console.log "New artists and new albums have been inserted!"
 					@stats.totalItems = songs.length
 					# console.log songs
 					for song in songs
 						@_fetchLyric song
-		
 		@eventEmitter.on "result-song", (song, options)=>
 
 			@stats.totalItemCount +=1
 			@stats.passedItemCount +=1
+
+
 			
-			itemSearching.findArtist song.artist,(err,result)->
+			itemSearching.findArtist song.artist,(err,result)=>
 				if err then console.log err
 				else	
 					song.artist_id =  result.id
 					if song.album
-						itemSearching.findAlbum song.album,song.artist_id, (err,result)->
+						itemSearching.findAlbum song.album,song.artist_id, (err,result)=>
 							if err  
 								if err.match(/Cannt find item on condition/)
 									album = 
@@ -800,24 +795,24 @@ class LyricWiki extends Site
 										artist : song.artist
 										year : song.album.match(/\(([0-9]+)\)/,'')?[1]
 										created_at  : song.created_at
-									itemSearching.addNewAlbum album,(err,al)->
+									itemSearching.addNewAlbum album,(err,al)=>
 										if err then console.log err
 										else 
 											song.album_id = al.id
 											if song.album
-												song.album = song.album.replace(/\([0-9]+\)/,'').trim()
+												song.album = @processStringorArray song.album.replace(/\([0-9]+\)/,'').trim()
 											itemSearching.addNewSong song, (err)->
 												if err then console.log err
 								else console.log err
 							else 
 								song.album_id  = result.id
 								if song.album
-									song.album = song.album.replace(/\([0-9]+\)/,'').trim()
+									song.album = @processStringorArray song.album.replace(/\([0-9]+\)/,'').trim()
 								itemSearching.addNewSong song, (err)->
 									if err then console.log err
 					else 
 						if song.album
-							song.album = song.album.replace(/\([0-9]+\)/,'').trim()
+							song.album = @processStringorArray song.album.replace(/\([0-9]+\)/,'').trim()
 						itemSearching.addNewSong song, (err)->
 							if err then console.log err
 			
@@ -825,9 +820,7 @@ class LyricWiki extends Site
 
 			if @stats.totalItems is @stats.totalItemCount
 				@utils.printFinalResult @stats
-
-
-
+				@updateGraceNoteSongsLyrics(@config.datetime)
 		@onFail = (data, options)=>
 			console.log "failed"
 		@onSucess = (data,options)=>
@@ -857,6 +850,8 @@ class LyricWiki extends Site
 			isNextpage = true
 			pages.forEach (v)=> if v.created_at <  @config.lastUpdatedTimestamp then isNextpage = false
 
+			pages = pages.filter (v)=> if v.created_at >  @config.lastUpdatedTimestamp then return yes else return no
+
 			pages.forEach (v)=> @newPages.push v
 
 			# console.log "Get next page: #{isNextpage}"
@@ -875,7 +870,19 @@ class LyricWiki extends Site
 				console.log "Total new pages (songs+albums) found: #{@newPages.length}"
 				# console.log @newPages
 				@processNewItems()
-		@_updateLyric("/Special:NewPages?limit=500")
+		
+		@config = 
+			lastUpdatedTimestamp : 0
+			datetime : ""
+
+		itemSearching.findLastCreatedDate (err,lastDate)=>
+			if err then console.log err
+			else 
+				@config.lastUpdatedTimestamp = lastDate.getTime()
+				@config.datetime = @formatDate lastDate
+				# console.log @config.datetime
+				console.log "Last posted date: #{new Date(@config.lastUpdatedTimestamp)}"
+				@_updateLyric("/Special:NewPages?limit=500")
 	
 
 	showStats : ->
