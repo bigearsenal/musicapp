@@ -342,7 +342,18 @@ runEchoNest = ->
 			# when "8" then echoNest.downloadVideos()
 			# when "9" then echoNest.putVideosFromDiskToDB()
 			# when "10" then echoNest.downloadImages()
-			
+runZazoo = ->
+	Zazoo = require './lib/zazoo'
+	console.log "Running with "+"Zazoo.com".inverse.green
+	console.log "STEP 2:".inverse.blue + " " + "Choose the type of command:".underline.blue
+	console.log "\t1.UPDATE SONGS\t2.getClipsOfAnArtist"
+	console.log "\t3.getLyrics\t4.xxxxxxxx"
+	zazoo = new Zazoo()
+	rl.question "=> ", (answer) ->
+		switch answer.trim()
+			when "1" then zazoo.getArtists()
+			when "2" then zazoo.getClipsOfAnArtist()
+			when "3" then zazoo.getLyrics()
 
 			
 			else console.log "Wrong type".red
@@ -381,7 +392,7 @@ startingLog = ->
 	console.log	"        "+ "9.chiasenhac".inverse.green + "\t"+ "10.vietgiaitri".inverse.green+ "\t" + "11.music.vnn.vn".inverse.green
 	console.log ""
 	console.log	"        "+"12.songfreaks".inverse.green + "\t"+ "13.lyrics.wikia.com".inverse.green+ "\t"+  "14.echonest".inverse.green 
-	console.log	"        "+"15.STATISTICS".inverse.green + "\t"+ "16.xxxxx".inverse.green+ "\t"+  "17.yyyy".inverse.green
+	console.log	"        "+"15.Zazoo".inverse.green + "\t"+ "16.STATISTICS".inverse.green+ "\t"+  "17.yyyy".inverse.green
 	console.log "        Type 'q' to quit".grey
 
 rl.setPrompt('=>', 3)
@@ -403,7 +414,8 @@ rl.on("line", (line) ->
 		when "12" then runSongFreaks()
 		when "13" then runLyricWiki()
 		when "14" then runEchoNest()
-		when "15" then runStats()
+		when "15" then runZazoo()
+		when "16" then runStats()
 		when "q"
 			rl.close()
 		else startingLog()

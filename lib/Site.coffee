@@ -4,11 +4,12 @@ Module = require './module'
 Utils = require './utils'
 colors = require 'colors'
 events = require('events')
-
+url = require 'url'
 
 Encoder = require('node-html-encoder').Encoder
 encoder = new Encoder('entity');
 
+http.globalAgent.maxSockets = 100
 
 class Site extends Module
 	constructor : (PREFIX) ->
@@ -29,6 +30,29 @@ class Site extends Module
 			super()
 		else console.log "You do not specify any PREFIX".red
 	
+	getFileByHTTPWithPostMethod : (link, dataString, onSucess, onFail, options) ->
+		options  = url.parse link
+		options.method = "POST"
+		options.headers = 
+				'Content-Type': 'application/x-www-form-urlencoded',  
+				'Content-Length': dataString.length
+		# console.log dataString
+		req = http.request options, (res) =>
+					res.setEncoding 'utf8'
+					data = ''
+					# onSucess res.headers.location
+					if res.statusCode isnt 302 and res.statusCode isnt 404
+						res.on 'data', (chunk) =>
+							data += chunk;
+						res.on 'end', () =>
+							onSucess data, options
+					else onFail("The link is temporary moved: #{res.statusCode}",options)
+				.on 'error', (e) =>
+					onFail  "Cannot get file from server. ERROR: " + e.message, options
+		req.write(dataString)
+		req.end()
+
+
 	getFileByHTTP : (link, onSucess, onFail, options) ->
 		http.get link, (res) =>
 				res.setEncoding 'utf8'
@@ -54,7 +78,6 @@ class Site extends Module
 			JSON.stringify a.map((v)->encoder.htmlDecode(v).trim())
 		else 
 			encoder.htmlDecode(a).trim()
-
 	# format Datetimt to insert into table
 	formatDate : (dt)->
 		dt.getFullYear() + "-" + (dt.getMonth()+1) + "-" + dt.getDate() + " " + dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds()
