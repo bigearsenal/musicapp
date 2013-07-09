@@ -92,7 +92,7 @@ class UpdateNewSongsAndArtists
 			callback errMessage, null,null
 		for start in [0...@defaultTotalItems] by @itemsPerRequest
 			link =  @getLink(start)
-			console.log link
+			# console.log link
 			do (link,start)=>
 				options = 
 					link : link

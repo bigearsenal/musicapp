@@ -52,7 +52,6 @@ class Zazoo extends Site
 							if err 
 								@updateStats(false)
 								console.log _value.clip_url + "----" + err
-
 							else 
 								@updateStats(true)
 								song = JSON.parse(data).data
@@ -87,7 +86,6 @@ class Zazoo extends Site
 							if err then console.log err
 	getClipsOfAnArtist : ->
 		@connect()
-		
 		@connection.query "select KeywordID as id from #{@table.Artists}",(err,results)=>
 			if err then console.log "cannt get id #{err}"
 			else 
@@ -96,7 +94,6 @@ class Zazoo extends Site
 						# console.log artist.id
 						@stats.totalItems = results.length
 						# console.log @stats
-
 						link = 'http://api.zazoo.it/api/playlists/artists/clips/'
 						values = "APIKey=23fdffd9fd764cb&ElementID=ClipBodyContent&KeywordID=#{artist.id}&ClipID=0&StartingLetter=&ResultsLimit=-1  "
 						dataString = "#{values}"
@@ -110,6 +107,7 @@ class Zazoo extends Site
 								for clip in clips
 									do (clip)=>
 										_clip = clip
+										_clip.KeywordID = artist.id
 										_clip.YoutubeID = _clip.URL.replace(/^.+watch\?v\=/,'')
 										@connection.query "INSERT IGNORE INTO #{@table.Clips} SET ?", _clip, (err)->
 											if err then console.log err

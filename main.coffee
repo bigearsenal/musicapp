@@ -357,6 +357,19 @@ runZazoo = ->
 
 			
 			else console.log "Wrong type".red
+runDeezer = ->
+	Deezer = require './lib/deezer'
+	console.log "Running with "+"Deezer.com".inverse.green
+	console.log "STEP 2:".inverse.blue + " " + "Choose the type of command:".underline.blue
+	console.log "\t1.Get Albums\t2.getArtists"
+	# console.log "\t3.getLyrics\t4.xxxxxxxx"
+	deezer = new Deezer()
+	rl.question "=> ", (answer) ->
+		switch answer.trim()
+			when "1" then deezer.getAlbums()
+			when "2" then deezer.getArtists()
+			else console.log "Wrong type".red
+
 runStats = ->
 	Stats = require './lib/stats'
 	console.log "Running with "+"statistics".inverse.green
@@ -392,7 +405,7 @@ startingLog = ->
 	console.log	"        "+ "9.chiasenhac".inverse.green + "\t"+ "10.vietgiaitri".inverse.green+ "\t" + "11.music.vnn.vn".inverse.green
 	console.log ""
 	console.log	"        "+"12.songfreaks".inverse.green + "\t"+ "13.lyrics.wikia.com".inverse.green+ "\t"+  "14.echonest".inverse.green 
-	console.log	"        "+"15.Zazoo".inverse.green + "\t"+ "16.STATISTICS".inverse.green+ "\t"+  "17.yyyy".inverse.green
+	console.log	"        "+"15.Zazoo".inverse.green + "\t"+ "16.Deezer".inverse.green+ "\t"+  "17.yyyy".inverse.green
 	console.log "        Type 'q' to quit".grey
 
 rl.setPrompt('=>', 3)
@@ -415,7 +428,8 @@ rl.on("line", (line) ->
 		when "13" then runLyricWiki()
 		when "14" then runEchoNest()
 		when "15" then runZazoo()
-		when "16" then runStats()
+		when "16" then runDeezer()
+		when "17" then runStats()
 		when "q"
 			rl.close()
 		else startingLog()

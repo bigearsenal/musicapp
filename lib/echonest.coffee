@@ -950,8 +950,8 @@ class EchoNest extends Site
 		# us.requestNewSongsWithItsProperties sids, (songStatements)->
 		# 	console.log "DONE"
 		# 	console.log songStatements
-		us.addAttribute("sort","danceability-desc")
-		us.getNewSongAndArtistIds "max_danceability",1,(statements,songids)=>
+		us.addAttribute("sort","song_hotttnesss-desc")
+		us.getNewSongAndArtistIds "song_max_hotttnesss",1,(statements,songids)=>
 			console.log "HELLO!"
 			console.log "statmens length: #{statements.length}"
 			console.log "# of new songs #{statements.match(/INSERT IGNORE INTO ENSongs /g)?.length}"
