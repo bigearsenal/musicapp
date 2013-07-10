@@ -245,7 +245,11 @@ class Nhaccuatui extends Module
 
 
 		lyric = data.match(/divLyric[^]+inpLyricId/g)?[0]
-		if lyric then song.lyric = encoder.htmlDecode lyric.replace(/<input.+$/g,'').replace(/[^]+hidden;\">\n/g,'').trim().replace(/<\/div>$/g,'').trim()
+		
+		if lyric 
+			lyric = lyric.replace(/<input.+$/g,'').replace(/[^]+hidden;\">\n/g,'').trim().replace(/<\/div>$/g,'').trim()
+			lyric = lyric.replace(/^divLyricHtml[^]+overflow\:hidden\;\"\>/g,'').trim()
+			song.lyric = encoder.htmlDecode lyric
 
 		bitrate = data.match(/<meta content=.+\s(\d+) Kb/)?[1]
 		if bitrate
@@ -1194,19 +1198,6 @@ class Nhaccuatui extends Module
 		@onSongResultDone()
 		@getField()
 		# @getFieldBitrate()
-
-
-	# this is for testing
-	# testing : ->
-	# 	@connect()
-	# 	a = [ { id: 112551772, key: 'UQlpB3L0PuI8', official: 0, bitrate: 320 },{ id: 112551267, key: '7sG9EYq5PXxS', official: 1, bitrate: 0 },{ id: 2550305, key: 'LJ9PRAXNRr73', official: 0, bitrate: 320 },{ id: 2550792, key: 'ZTpaNKY6Z0lt', official: 0, bitrate: 0 },{ id: 2550182, key: 'OC3NZx1Gi8Cg', official: 0, bitrate: 0 },{ id: 2550050, key: 'g1flJ7SzKeAp', official: 0, bitrate: 320 },{ id: 2551576, key: 'OUnlflpbHBaH', official: 1, bitrate: 0 },{ id: 2549950, key: 'fBXuSJ9s4ADN', official: 1, bitrate: 0 },{ id: 2547244, key: 'qAfgFblkf5AL', official: 0, bitrate: 0 },{ id: 2547231, key: 'll3VME4g23p1', official: 0, bitrate: 0 },{ id: 2547223, key: '6FGQ0UWQkn3p', official: 0, bitrate: 0 },{ id: 2547222, key: 'cJSayZOfenUi', official: 0, bitrate: 0 },{ id: 2547214, key: 'LZRkGqPN08h9', official: 0, bitrate: 0 },{ id: 2547065, key: '3meQJ96UDwym', official: 0, bitrate: 320 },{ id: 2547061, key: '9JbSjwfoDktE', official: 0, bitrate: 320 },{ id: 2545401, key: 'EfPcdZdahlBs', official: 0, bitrate: 0 },{ id: 2543210, key: '4vwub4IeSre3', official: 0, bitrate: 320 },{ id: 2545054, key: 'Ujnhct1AYMXa', official: 1, bitrate: 0 },{ id: 2544648, key: 'J5DZwW9sdlzR', official: 1, bitrate: 0 },{ id: 2546229, key: 'BnxCXbzx9uEA', official: 1, bitrate: 0 },{ id: 2553510, key: 'PkGFgNrWAAsJ', official: 0, bitrate: 320 },{ id: 2546231, key: 'DYvBulFzrCTb', official: 1, bitrate: 0 },{ id: 2546224, key: '68G5ZKbowAYB', official: 1, bitrate: 0 },{ id: 2546227, key: '2XaiUnapc6PM', official: 1, bitrate: 0 },{ id: 2546226, key: 'QGN42gmVYQRL', official: 1, bitrate: 0 },{ id: 2546237, key: '102g4ssNvFMI', official: 1, bitrate: 0 },{ id: 2546236, key: '3PS93B7OsJy5', official: 1, bitrate: 0 },{ id: 2553517, key: '5EIJlVa4Ubdl', official: 1, bitrate: 0 },{ id: 2546238, key: '9wuOhI67n202', official: 1, bitrate: 0 },{ id: 112546232, key: 'KeFCjS4YQEMc', official: 1, bitrate: 0 }]
-	# 	console.log a.length
-	# 	_options =
-	# 		field : "id"
-	# 		table : @table.Songs
-	# 	@filterNonExistedRecordInDB a, _options, (results)=>
-	# 		console.log "------- LENGTH: #{results.length}"
-	# 		console.log JSON.stringify results
 
 
 	showStats : -> @_printTableStats NCT_CONFIG.table

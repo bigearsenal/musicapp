@@ -213,7 +213,7 @@ runNhaccuatui = ->
 	console.log "\t3.fetchArtist\t4.getSongs"
 	console.log "\t5.getSongsPlays\t6.getAlbumsPlays"
 	console.log "\t7.updateAlbumsAndSongs\t8.UPDATE SONG BY CATS"
-	console.log "\t9.UPDATE VIDEOS BY CATS\t10.testing"
+	console.log "\t9.UPDATE VIDEOS BY CATS\t10.fixTheErrorOfLyric"
 	
 	nct = new Nhaccuatui(mysqlConfig)
 	rl.question "=> ", (answer) ->
@@ -229,7 +229,7 @@ runNhaccuatui = ->
 			when "7" then nct.updateAlbumsAndSongs()
 			when "8" then nct.updateSongsByCategory()
 			when "9" then nct.updateVideosByCategory()
-			when "10" then nct.testing()
+			when "10" then nct.fixTheErrorOfLyric()
 
 			
 

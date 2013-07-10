@@ -1,4 +1,5 @@
 Site = require "./Site"
+
 class Deezer extends Site
 	constructor : ->
 		super "ZZ"
