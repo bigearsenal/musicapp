@@ -60,18 +60,37 @@ class Nhaccuatui extends Module
 				res.setEncoding 'utf8'
 				data = ''
 				# onSucess res.headers.location
-				if res.statusCode isnt 302
+				# console.log res.statusCode
+				if res.statusCode isnt 302 and res.statusCode isnt 301
 					res.on 'data', (chunk) =>
 						data += chunk;
 					res.on 'end', () =>
-
 						onSucess data, options
-				else onFail("The link: #{link} is temporary moved",options)
+				else 
+					if res.statusCode is 301
+						@getFileByHTTP res.headers.location,onSucess,onFail,options
+					else 
+						onFail("The link: #{link} is temporary moved",options)
 			.on 'error', (e) =>
 				onFail  "Cannot get file: #{link} from server. ERROR: " + e.message, options
 				@stats.totalItemCount +=1
 				@stats.failedItemCount +=1
+	# getFileByHTTP : (link, onSucess, onFail, options) ->
+	# 	http.get link, (res) =>
+	# 			res.setEncoding 'utf8'
+	# 			data = ''
+	# 			# onSucess res.headers.location
+	# 			if res.statusCode isnt 302
+	# 				res.on 'data', (chunk) =>
+	# 					data += chunk;
+	# 				res.on 'end', () =>
 
+	# 					onSucess data, options
+	# 			else onFail("The link: #{link} is temporary moved",options)
+	# 		.on 'error', (e) =>
+	# 			onFail  "Cannot get file: #{link} from server. ERROR: " + e.message, options
+	# 			@stats.totalItemCount +=1
+	# 			@stats.failedItemCount +=1
 	_onFail : (err)=>
 		console.log "#{err}".red
 		@stats.totalItemCount +=1
@@ -218,6 +237,8 @@ class Nhaccuatui extends Module
 			link_key : ""
 			lyric : ""
 
+		# console.log data
+
 		if options.official then if options.official is 1
 			song.official = 1
 
@@ -251,7 +272,7 @@ class Nhaccuatui extends Module
 			lyric = lyric.replace(/^divLyricHtml[^]+overflow\:hidden\;\"\>/g,'').trim()
 			song.lyric = encoder.htmlDecode lyric
 
-		bitrate = data.match(/<meta content=.+\s(\d+) Kb/)?[1]
+		bitrate = data.match(/<title>.+\s(\d+)( Kb|kbps)/)?[1]
 		if bitrate
 			song.bitrate = bitrate
 		# THIS PART IS OPTIONAL. Only use for getting new songs
@@ -605,11 +626,12 @@ class Nhaccuatui extends Module
 				# console.log song
 				@stats.totalItemCount +=1
 				@stats.passedItemCount +=1
-				@stats.currentId = song.id
+				
 				# @utils.printRunning @stats
 				# console.log "call song result"
 				# console.log song
 				if song isnt null
+					@stats.currentId = song.id
 					@connection.query @query._insertIntoNCTSongs, song, (err)->
 						if err then console.log "Cannt insert song: #{song.key}. ERROR #{err} "
 				else

@@ -132,6 +132,7 @@ class Zing extends Module
 				data = ''
 				# console.log "ANBINH + #{new Date().getTime()}"
 				# callback res.headers.location
+				# console.log "#{JSON.stringify res.headers} -- #{res.statusCode} -- should be callbacked"
 				if res.statusCode isnt 302 and res.statusCode isnt 403
 					res.on 'data', (chunk) =>
 						data += chunk;
