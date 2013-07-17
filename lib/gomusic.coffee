@@ -1,10 +1,10 @@
 http = require 'http'
 fs = require 'fs'
-xml2js = require 'xml2js'
+# xml2js = require 'xml2js'
 Module = require './module'
 Utils = require './utils'
-colors = require 'colors'
-Encoder = require('node-html-encoder').Encoder
+colors = require '../node_modules/colors'
+Encoder = require('../node_modules/node-html-encoder').Encoder
 encoder = new Encoder('entity');
 
 GM_CONFIG =
@@ -22,7 +22,7 @@ class Gomusic extends Module
 			_insertIntoGMAlbums : "INSERT INTO " + @table.GMAlbums + " SET ?"
 			_insertIntoGMSongs_Albums : "INSERT INTO " + @table.GMSongs_Albums + " SET ?"
 		@utils = new Utils()
-		@parser = new xml2js.Parser();
+		# @parser = new xml2js.Parser();
 		super @mysqlConfig
 		@logPath = @config.logPath
 		@log = {}

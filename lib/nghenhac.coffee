@@ -2,11 +2,11 @@ http = require 'http'
 xml2js = require 'xml2js'
 Module = require './module'
 Utils = require './utils'
-colors = require 'colors'
+colors = require '../node_modules/colors'
 fs = require 'fs'
 
 events = require('events')
-Encoder = require('node-html-encoder').Encoder
+Encoder = require('../node_modules/node-html-encoder').Encoder
 encoder = new Encoder('entity');
 
 NN_CONFIG = 

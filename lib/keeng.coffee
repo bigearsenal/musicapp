@@ -2,11 +2,11 @@ http = require 'http'
 xml2js = require 'xml2js'
 Module = require './module'
 Utils = require './utils'
-colors = require 'colors'
-atob = require 'atob' 
+colors = require '../node_modules/colors'
+atob = require '../node_modules/atob' 
 fs = require 'fs'
 
-Encoder = require('node-html-encoder').Encoder
+Encoder = require('../node_modules/node-html-encoder').Encoder
 encoder = new Encoder('entity');
 
 KE_CONFIG = 

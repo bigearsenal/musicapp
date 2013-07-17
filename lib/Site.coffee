@@ -1,8 +1,8 @@
 http = require 'http'
-xml2js = require 'xml2js'
+# xml2js = require 'xml2js'
 Module = require './module'
 Utils = require './utils'
-colors = require 'colors'
+colors = require '../node_modules/colors'
 events = require('events')
 url = require 'url'
 
@@ -25,7 +25,7 @@ class Site extends Module
 				_insertIntoSongs_Albums : "INSERT IGNORE INTO " + @table.Songs_Albums + " SET ?"
 				_insertIntoVideos : "INSERT IGNORE INTO " + @table.Videos + " SET ?"
 			@utils = new Utils()
-			@parser = new xml2js.Parser();
+			# @parser = new xml2js.Parser();
 			@eventEmitter = new events.EventEmitter()
 			super()
 		else console.log "You do not specify any PREFIX".red

@@ -1,5 +1,5 @@
 printResutls = require('util').print
-colors = require 'colors'
+colors = require '../node_modules/colors'
 
 class Utils 
 	convertToDate : (link) ->

@@ -1,0 +1,35 @@
+{
+  "name": "musicapp",
+  "preferGlobal": false,
+  "version": "0.0.1",
+  "author": "DNAB anbinh@me.com",
+  "description": "musicapp application - fetching and updating songs, albums and videos from popular sites in VN",
+  "contributors": [ 
+    {
+      "name": "binhdna",
+      "email": "binhdna@gmail.com"
+    } 
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/binhdna/node_modules.git"
+  },
+  "keywords": [
+    "musicapp",
+    "binhdna",
+    "anbinh"
+  ],
+  "dependencies" : {
+    "colors"   :  "*",
+    "mysql" :  "2.0.x",
+    "node-html-encoder"    :  "0.0.x",
+    "chai" :  "1.6.x",
+    "atob" :  "1.1.x",
+    "xml2js" :  "0.2.x"
+  },
+  "analyze": false, 
+  "license": "MIT",
+  "engines": {
+    "node": ">=0.8"
+  }
+}

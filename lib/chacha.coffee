@@ -1,13 +1,13 @@
 http = require 'http'
-xml2js = require 'xml2js'
+# xml2js = require 'xml2js'
 Module = require './module'
 Utils = require './utils'
-colors = require 'colors'
+colors = require '../node_modules/colors'
 fs = require 'fs'
 
 events = require('events')
 
-Encoder = require('node-html-encoder').Encoder
+Encoder = require('../node_modules/node-html-encoder').Encoder
 encoder = new Encoder('entity');
 
 
@@ -26,7 +26,7 @@ class Chacha extends Module
 			_insertIntoCCAlbums : "INSERT INTO " + @table.Albums + " SET ?"
 			_insertIntoCCSongs_Albums : "INSERT INTO " + @table.Songs_Albums + " SET ?"
 		@utils = new Utils()
-		@parser = new xml2js.Parser();
+		# @parser = new xml2js.Parser();
 		@eventEmitter = new events.EventEmitter()
 		super @mysqlConfig
 		@logPath = @config.logPath

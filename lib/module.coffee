@@ -1,4 +1,4 @@
-mysql = require 'mysql'
+mysql = require '../node_modules/mysql'
 fs = require 'fs'
 moduleKeywords = ['extended', 'included']
 MYSQL_DEFAULT_CONFIG = 

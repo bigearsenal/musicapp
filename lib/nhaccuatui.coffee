@@ -1,11 +1,11 @@
 http = require 'http'
-xml2js = require 'xml2js'
+# xml2js = require 'xml2js'
 Module = require './module'
 Utils = require './utils'
-colors = require 'colors'
+colors = require '../node_modules/colors'
 fs = require 'fs'
 
-Encoder = require('node-html-encoder').Encoder
+Encoder = require('../node_modules/node-html-encoder').Encoder
 encoder = new Encoder('entity');
 
 events = require('events')
@@ -33,7 +33,7 @@ class Nhaccuatui extends Module
 			_insertIntoNCTMVPlaylists : "INSERT INTO " + @table.MVPlaylists + " SET ?"
 			_insertIntoNCTMVs_MVPlaylists : "INSERT INTO " + @table.MVs_MVPlaylists + " SET ?"
 		@utils = new Utils()
-		@parser = new xml2js.Parser();
+		# @parser = new xml2js.Parser();
 		@eventEmitter = new events.EventEmitter()
 		super @mysqlConfig
 		@logPath = @config.logPath

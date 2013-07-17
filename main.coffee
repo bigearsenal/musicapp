@@ -1,8 +1,8 @@
 #!/usr/local/bin/coffee
 readline = require 'readline'
-colors = require 'colors'
+colors = require './node_modules/colors'
 
-mysqlConfig = 
+mysqlConfig =
 	user : 'root'
 	password: 'root'
 	database: 'anbinh'
@@ -13,7 +13,7 @@ rl = readline.createInterface
   input: process.stdin,
   output: process.stdout
 
-class FunctionFactory 
+class FunctionFactory
 	constructor : (@className,@classRoot="./lib/",@mysqlConfig) ->
 		@classPath = @classRoot + @className
 		@methods = [""]
@@ -26,8 +26,8 @@ class FunctionFactory
 	runWithRange : (callback) ->
 		console.log "STEP 3:".inverse.blue + " " + "Enter range:".underline.blue
 		console.log "Syntax is NUMBER+SPACE_KEY+NUMBER For instance:12323 12323".grey
-		rl.question "=> ", (range) ->
-			if range.search(/^\d+\s+\d+$/) is 0 
+		rl.question "Select range => ", (range) ->
+			if range.search(/^\d+\s+\d+$/) is 0
 				range0 = parseInt range.split(' ')[0]
 				range1 = parseInt range.split(' ')[1]
 				callback range0, range1
@@ -42,10 +42,10 @@ class FunctionFactory
 			if index > 0
 				if method.rangeEnable is true
 					isRangeContained  = true
-					info +=  " " + " #{index} ".inverse.yellow + "#{method.info}".inverse.blue + "(R)".inverse.red + "\t"
-				else 
-					info +=  " " + " #{index} ".inverse.yellow +  "#{method.info}".inverse.blue + "\t"
-				if index%3 is 0 or index is @methods.length-1
+					info +=  " " + " #{index} ".inverse.yellow + " #{method.info} ".inverse.blue + "(R)".inverse.red + "\t"
+				else
+					info +=  " " + " #{index} ".inverse.yellow +  " #{method.info} ".inverse.blue + "\t"
+				if index%4 is 0 or index is @methods.length-1
 					console.log info
 					console.log ""
 					info = ""
@@ -54,6 +54,7 @@ class FunctionFactory
 
 	logErrorMessage : (str)->
 		console.log "#{str}".red
+		console.log "Enter site number:"
 
 	executeMethodAtIndex : (index)->
 		if index in ["q","quit","cancel","exit"]
@@ -65,7 +66,7 @@ class FunctionFactory
 					if index in [1..@methods.length-1]
 						if @methods[index].rangeEnable and @methods[index].rangeEnable is true
 							@runWithRange @classInstance[@methods[index].name]
-						else 
+						else
 							@classInstance[@methods[index].name]()
 					else @logErrorMessage "Index out out method range"
 				else  @logErrorMessage "Zero index invalid"
@@ -73,24 +74,24 @@ class FunctionFactory
 
 	run : (readline) ->
 		@logStartupInfo()
-		readline.question "=> ", (answer) =>
+		readline.question "Select method index => ", (answer) =>
 			@executeMethodAtIndex(answer.trim())
 
 Main =
-	nhacso : -> 
+	nhacso : ->
 		func = new FunctionFactory("nhacso","./lib/",mysqlConfig)
 		func.addMethod {name : "update", info : "Update albums, songs and videos"}
 		func.addMethod {name : "updateSongsCategory", info : "update songs category"}
 		func.addMethod {name : "updateAlbumsCategory", info : "update albums category"}
 		func.addMethod {name : "updateVideos", info : "update videos"}
-		func.run(rl)	
-	gomusic : -> 
+		func.run(rl)
+	gomusic : ->
 		func = new FunctionFactory("gomusic","./lib/",mysqlConfig)
 		func.addMethod {name : "update", info : "Update albums, songs"}
 		func.addMethod {name : "resetTables", info : "reset tables"}
 		func.addMethod {name : "showStats", info : "show statistics"}
 		func.run(rl)
-	nhacvui : -> 
+	nhacvui : ->
 		func = new FunctionFactory("nhacvui","./lib/",mysqlConfig)
 		func.addMethod {name : "update", info : "Update albums & songs"}
 		func.addMethod {name : "updateAlbums", info : "Update albums only"}
@@ -100,7 +101,7 @@ Main =
 		func.addMethod {name : "updateSongsStats", info : "Update songs' statistics"}
 		func.addMethod {name : "showStats", info : "Show statistics"}
 		func.run(rl)
-	keeng : -> 
+	keeng : ->
 		func = new FunctionFactory("keeng","./lib/",mysqlConfig)
 		func.addMethod {name : "update", info : "Update albums & songs"}
 		func.addMethod {name : "updateVideos", info : "Update songs"}
@@ -108,7 +109,7 @@ Main =
 		func.addMethod {name : "fetchVideos", info : "Getting videos", rangeEnable : true}
 		func.addMethod {name : "showStats", info : "Show statistics"}
 		func.run(rl)
-	chacha : -> 
+	chacha : ->
 		func = new FunctionFactory("chacha","./lib/",mysqlConfig)
 		func.addMethod {name : "update", info : "Update albums & songs"}
 		func.addMethod {name : "updateAlbums", info : "Update albums"}
@@ -117,7 +118,7 @@ Main =
 		func.addMethod {name : "getSongsTopic", info : "Getting songs' topics"}
 		func.addMethod {name : "showStats", info : "Show statistics"}
 		func.run(rl)
-	nghenhac : -> 
+	nghenhac : ->
 		func = new FunctionFactory("nghenhac","./lib/",mysqlConfig)
 		func.addMethod {name : "update", info : "Update albums & songs"}
 		func.addMethod {name : "updateSongs", info : "Update songs"}
@@ -126,7 +127,7 @@ Main =
 		func.addMethod {name : "fetchAlbums", info : "Getting albums", rangeEnable : true}
 		func.addMethod {name : "showStats", info : "Show statistics"}
 		func.run(rl)
-	mp3zing : -> 
+	mp3zing : ->
 		func = new FunctionFactory("zing","./lib/",mysqlConfig)
 		func.addMethod {name : "update", info : "Update albums, songs and videos"}
 		func.addMethod {name : "updateVideos", info : "Update videos"}
@@ -135,7 +136,7 @@ Main =
 		func.addMethod {name : "updateAlbumsWithRange", info : "Update albums with range", rangeEnable : true}
 		func.addMethod {name : "updateVideosWithRange", info : "Update videos with range", rangeEnable : true}
 		func.run(rl)
-	nhaccuatui : -> 
+	nhaccuatui : ->
 		func = new FunctionFactory("nhaccuatui","./lib/",mysqlConfig)
 		func.addMethod {name : "update", info : "Update albums, songs and videos"}
 		# func.addMethod {name : "updateSongsPlays", info : "Update songs' plays"}
@@ -148,17 +149,17 @@ Main =
 		# func.addMethod {name : "updateVideosByCategory", info : "Update videos by category"}
 		# func.addMethod {name : "fixTheErrorOfLyric", info : "Fix error of lyrics"}
 		func.run(rl)
-	musicvnn: -> 
+	musicvnn: ->
 		func = new FunctionFactory("musicvnn","./lib/",mysqlConfig)
 		func.addMethod {name : "fetchSongs", info : "Fetching songs"}
 		func.addMethod {name : "showStats", info : "Show statistics"}
 		func.run(rl)
-	vietgiaitri : -> 
+	vietgiaitri : ->
 		func = new FunctionFactory("vietgiaitri","./lib/",mysqlConfig)
 		func.addMethod {name : "fetchSongs", info : "Fetching songs"}
 		func.addMethod {name : "showStats", info : "Show statistics"}
 		func.run(rl)
-	chiasenhac : -> 
+	chiasenhac : ->
 		func = new FunctionFactory("chiasenhac","./lib/",mysqlConfig)
 		func.addMethod {name : "updateSongs", info : "Update songs and albums"}
 		# func.addMethod {name : "updateAlbums", info : "Update albums"}
@@ -167,12 +168,12 @@ Main =
 		func.addMethod {name : "showStats", info : "Show statistics"}
 		# func.addMethod {name : "updateVideoLessthan10exp5", info : "xxxxx"}
 		func.run(rl)
-	songfreaks : -> 
+	songfreaks : ->
 		func = new FunctionFactory("songfreaks","./lib/",mysqlConfig)
 		func.addMethod {name : "updateSongs", info : "Update songs' lyrics"}
 		func.addMethod {name : "fetchSongs", info : "Getting songs", rangeEnable : true}
-		func.run(rl)	
-	lyricwiki : -> 
+		func.run(rl)
+	lyricwiki : ->
 		func = new FunctionFactory("lyricwiki","./lib/",mysqlConfig)
 		func.addMethod {name : "updateLyrics", info : "Update songs' lyrics"}
 		func.addMethod {name : "updateGraceNoteSongsLyrics", info : "Update gracenote lyrics"}
@@ -182,7 +183,7 @@ Main =
 		# func.addMethod {name : "fetchGenres", info : "xxxxxx"}
 		# func.addMethod {name : "fetchAlbumsArtistsGenres", info : "xxxxxx"}
 		func.run(rl)
-	echonest : -> 
+	echonest : ->
 		func = new FunctionFactory("echonest","./lib/",mysqlConfig)
 		func.addMethod {name : "updateSongs", info : "Update songs"}
 		# func.addMethod {name : "fetchArtists", info : "xxxxxx"}
@@ -195,18 +196,18 @@ Main =
 		# func.addMethod {name : "putVideosFromDiskToDB", info : "xxxxxx"}
 		# func.addMethod {name : "downloadImages", info : "xxxxxx"}
 		func.run(rl)
-	zazoo : -> 
+	zazoo : ->
 		func = new FunctionFactory("zazoo","./lib/",mysqlConfig)
 		func.addMethod {name : "getArtists", info : "Getting all artists"}
 		func.addMethod {name : "getClipsOfAnArtist", info : "Getting metadata of video clips of an artist"}
 		func.addMethod {name : "getLyrics", info : "Getting lyrics"}
 		func.run(rl)
-	deezer : -> 
+	deezer : ->
 		func = new FunctionFactory("deezer","./lib/",mysqlConfig)
 		func.addMethod {name : "getAlbums", info : "Getting albums"}
 		func.addMethod {name : "getArtists", info : "Getting artists"}
 		func.run(rl)
-	getstats : -> 
+	getstats : ->
 		func = new FunctionFactory("stats","./lib/",mysqlConfig)
 		func.addMethod {name : "fetchTable", info : "Getting tables"}
 		func.addMethod {name : "showStats", info : "Show statistics"}
@@ -236,7 +237,7 @@ registerFuncs.push {name: "zazoo", activated : false}
 registerFuncs.push {name: "deezer", activated : false}
 registerFuncs.push {name: "getstats", activated : true}
 
-startingLog = -> 
+startingLog = ->
 	console.log "STEP 1:".inverse.blue + " " + "Choose the following sites:\n".underline.blue
 	info = ""
 
@@ -244,9 +245,9 @@ startingLog = ->
 		for func,index in funcs
 			if index > 0
 				if activated
-					info +=  " " + " #{index} ".inverse.yellow + "#{func.name}".inverse.cyan + "\t"
-				else 
-					info +=  " " + "#{index}.".underline.white + "#{func.name}".underline.white + "\t"
+					info +=  " " + " #{index} ".inverse.yellow + " #{func.name} ".inverse.cyan + "\t"
+				else
+					info +=  " " + "#{index}.".underline.grey + "#{func.name}".underline.grey + "\t"
 				if index%9 is 0 or index is funcs.length-1
 					console.log info
 					console.log ""
@@ -269,10 +270,10 @@ rl.on("line", (line) ->
 	index = line.trim()
 	if index.match(/[0-9]+/)
 		Main.execute(registerFuncs[index].name)
-	else 
+	else
 		if index in ["q","quit","exit"]
 			rl.close()
-		else 
+		else
 			console.log "You have to enter a number or character 'q' "
 
 	rl.prompt()
@@ -286,4 +287,4 @@ rl.on("line", (line) ->
 
 
 
-  
+
