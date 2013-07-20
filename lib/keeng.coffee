@@ -11,8 +11,8 @@ encoder = new Encoder('entity');
 
 KE_CONFIG = 
 	table : 
-		Songs : "KESongs"
-		Videos : "KEVideos"
+		Songs : "kesongs"
+		Videos : "kevideos"
 
 class Keeng extends Module
 	constructor : (@mysqlConfig, @config = KE_CONFIG) ->

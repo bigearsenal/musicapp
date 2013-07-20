@@ -11,9 +11,9 @@ encoder = new Encoder('entity');
 
 NN_CONFIG = 
 	table : 
-		Songs : "NNSongs"
-		Albums : "NNAlbums"
-		Songs_Albums : "NNSongs_Albums"
+		Songs : "nnsongs"
+		Albums : "nnalbums"
+		Songs_Albums : "nnsongs_albums"
 	logPath : "./log/NNLog.txt"
 
 class Nghenhac extends Module

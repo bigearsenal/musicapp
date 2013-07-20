@@ -95,6 +95,8 @@ describe 'THE WEBSITE MP3.ZING.VN', ->
                         expect(parseInt(result.plays,10)).to.match(/\d+/)
                         expect(parseInt(result.released_year,10)).to.equal(2013)
                         expect(parseInt(result.nsongs,10)).to.equal(2)
+                        # console.log result
+                        # expect(result.songids.length).to.equal(2)
                         expect(result.album_thumbnail).to.equal('http://image.mp3.zdn.vn/thumb/165_165/covers/5/2/5284f196b781e762b443f762a612172f_1365388107.jpg')
                         expect(result.description).to.equal('“Đến khi nào”. “Anh muốn quay lại” là nỗi nhớ người yêu da diết được Khắc Việt chuyển tải qua giai điệu sâu lắng từ đầu đến cuối. Đúng như tựa đề, “Anh muốn quay lại” như một đề nghị muộn màng khi tình cảm đã chia ly. Trong khi đó “Đến khi nào” lại là một tình yêu rộng lượng của người con trai sẵn sàng hy sinh để đem lại hạnh phúc cho người mình yêu. Việc sử dụng điệp từ “Đến khi nào” nhiều lần trong ca khúc cùng tên khiến cho người nghe đồng cảm nhiều hơn với tình yêu chung thủy của chàng trai trong ca khúc này. ')
                         expect(result.created).to.equal("2013-4-8 9:28:27")

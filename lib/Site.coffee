@@ -6,7 +6,7 @@ colors = require '../node_modules/colors'
 events = require('events')
 url = require 'url'
 
-Encoder = require('node-html-encoder').Encoder
+Encoder = require('../node_modules/node-html-encoder').Encoder
 encoder = new Encoder('entity');
 
 http.globalAgent.maxSockets = 100
@@ -15,10 +15,10 @@ class Site extends Module
 	constructor : (PREFIX) ->
 		if PREFIX?
 			@table = 
-				Songs : PREFIX + "Songs"
-				Albums: PREFIX + "Albums"
-				Songs_Albums: PREFIX + "Songs_Albums"
-				Videos : PREFIX + "Videos"
+				Songs : PREFIX + "songs"
+				Albums: PREFIX + "albums"
+				Songs_Albums: PREFIX + "songs_albums"
+				Videos : PREFIX + "videos"
 			@query = 
 				_insertIntoSongs : "INSERT IGNORE INTO " + @table.Songs + " SET ?"
 				_insertIntoAlbums : "INSERT IGNORE INTO " + @table.Albums + " SET ?"
@@ -77,7 +77,9 @@ class Site extends Module
 		if a instanceof Array
 			JSON.stringify a.map((v)->encoder.htmlDecode(v).trim())
 		else 
-			encoder.htmlDecode(a).trim()
+			if a isnt undefined
+				return encoder.htmlDecode(a).trim()
+			else return undefined
 	# format Datetimt to insert into table
 	formatDate : (dt)->
 		dt.getFullYear() + "-" + (dt.getMonth()+1) + "-" + dt.getDate() + " " + dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds()

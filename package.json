@@ -25,7 +25,8 @@
     "node-html-encoder"    :  "0.0.x",
     "chai" :  "1.6.x",
     "atob" :  "1.1.x",
-    "xml2js" :  "0.2.x"
+    "xml2js" :  "0.2.x",
+    "pg" : ">= 2.2.0"
   },
   "analyze": false, 
   "license": "MIT",

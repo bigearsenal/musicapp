@@ -12,9 +12,9 @@ encoder = new Encoder('entity');
 
 NV_CONFIG = 
 	table : 
-		Songs : "NVSongs"
-		Albums : "NVAlbums"
-		Songs_Albums : "NVSongs_Albums"
+		Songs : "nvsongs"
+		Albums : "nvalbums"
+		Songs_Albums : "nvsongs_albums"
 	logPath : "./log/NVLog.txt"
 
 class Nhacvui extends Module
@@ -92,8 +92,9 @@ class Nhacvui extends Module
 
 			song.lyric = encoder.htmlDecode data.match(/media_title.+/g)?[0].replace(/<\/div><div\s.+$/g,'').replace(/^.+<\/span><\/i><\/div>/g,'').trim()
 
-			if song.lyric.match(/Hiện\sbài\shát.+chưa\scó\slời/)
-				song.lyric = ""
+			if song.lyric 
+				if song.lyric.match(/Hiện\sbài\shát.+chưa\scó\slời/)
+					song.lyric = ""
 
 			if song.author.match(/Đang\sCập\sNhật/i)
 			 	song.author = ""
@@ -169,7 +170,8 @@ class Nhacvui extends Module
 				song = result.rss.channel[0].item[0]
 				# @stats.totalItemCount+=1
 				@utils.printUpdateRunning id, @stats, "Fetching..."
-				if typeof song.title[0] isnt 'object'	
+				# console.log(typeof song.title[0])
+				if typeof song.title[0] isnt 'object' and	song.title[0] isnt ""
 					@stats.currentId = id
 					@_storeSong id, song
 					@_updateSong id+1
@@ -531,8 +533,9 @@ class Nhacvui extends Module
 
 				song.lyric = data.match(/media_title.+/g)?[0].replace(/<\/div><div\s.+$/g,'').replace(/^.+<\/span><\/i><\/div>/g,'').trim()
 
-				if song.lyric.match(/Hiện\sbài\shát.+chưa\scó\slời/)
-					song.lyric = ""
+				if song.lyric
+					if song.lyric.match(/Hiện\sbài\shát.+chưa\scó\slời/)
+						song.lyric = ""
 
 				if song.author.match(/Đang\sCập\sNhật/)
 					song.author = ""

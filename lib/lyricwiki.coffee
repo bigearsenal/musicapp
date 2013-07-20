@@ -4,9 +4,9 @@ url = require('url')
 zlib = require('zlib')
 class LyricWiki extends Site
 	constructor: ->
-		super "LW"
+		super "lw"
 		@logPath = "./log/LWLog.txt"
-		@table.Artists = "LWArtists"
+		@table.Artists = "lwartists"
 		@log = {}
 		@_readLog()
 		Array::unique = -> @filter -> arguments[2].indexOf(arguments[0], arguments[1] + 1) < 0
@@ -595,7 +595,7 @@ class LyricWiki extends Site
 			# console.log "ANSDNSAD"
 			for item in items
 				if item isnt undefined
-					@insertItemIntoDB item, "INSERT IGNORE INTO LWAlbumsArtistsGenres SET ?"
+					@insertItemIntoDB item, "INSERT IGNORE INTO lwalbums_artists_genres SET ?"
 				else 
 					@stats.totalItemCount +=1
 					@stats.failedItemCount +=1
@@ -629,7 +629,7 @@ class LyricWiki extends Site
 			@eventEmitter.emit "item-result", items, options
 	fetchAlbumsArtistsGenres : ->
 		@connect()
-		@connection.query "select link from LWGenres", (err,results)=>
+		@connection.query "select link from lwgenres", (err,results)=>
 			if err then console.log "#{err}"
 			else 
 				console.log "#n results #{results.length}"

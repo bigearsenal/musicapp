@@ -12,11 +12,11 @@ events = require('events')
 
 ZI_CONFIG = 
 	table : 
-		Songs : "ZISongs"
-		Albums : "ZIAlbums"
-		Songs_Albums : "ZISongs_Albums"
-		Artists : "ZIArtists"
-		Videos : "ZIVideos"
+		Songs : "zisongs"
+		Albums : "zialbums"
+		Songs_Albums : "zisongs_albums"
+		Artists : "ziartists"
+		Videos : "zivideos"
 	logPath : "./log/ZILog.txt"
 
 class Zing extends Module
@@ -241,7 +241,7 @@ class Zing extends Module
 				_video.title = _temp[0].replace(/<\/h1>|>/g,'')
 				# console.log _temp[1]
 				_video.artists = JSON.stringify _temp[1].match(/Tìm\sbài\shát\scủa.+"/g)[0].replace(/"$/g,'')
-															.replace(/Tìm\sbài\shát\scủa\s/g,'').split(' ft. ')
+															.replace(/Tìm\sbài\shát\scủa\s/g,'').split(' ft. ').map((v) -> v.trim())
 				
 			if data.match(/og:image/g)
 				# console.log data.match(/og:image.+/g)[0]
@@ -360,8 +360,8 @@ class Zing extends Module
 			_temp_artist = encoder.htmlDecode _tempArr[_tempArr.length-1]
 
 			if _temp_artist.search(" ft. ") > -1
-				album.album_artist = JSON.stringify _temp_artist.trim().split(' ft. ')
-			else album.album_artist = JSON.stringify _temp_artist.trim().split(',')
+				album.album_artist = JSON.stringify _temp_artist.trim().split(' ft. ').map((v) -> v.trim())
+			else album.album_artist = JSON.stringify _temp_artist.trim().split(',').map((v) -> v.trim())
 
 			_tempArr.splice(-1)
 			album.album_name = encoder.htmlDecode _tempArr.join(' - ')
@@ -380,6 +380,11 @@ class Zing extends Module
 			arr = []
 			_songids = data.match(/_divPlsLite.+\"\sclass/g)
 			arr.push _songid.replace(/_divPlsLite|\"\sclass/g,'') for _songid in _songids
+
+			# SPECIAL CASE when song called "cam on tinh yeu" by "Le Hieu" -- remove it
+			if arr[arr.length-1] is "ZW66BIIA"
+				arr.pop(arr.length-1)
+				
 			songids = arr.map (v)=> @_convertToInt v
 		else album.description = ""
 		data = ""
@@ -518,7 +523,7 @@ class Zing extends Module
 				try
 					data = JSON.parse data
 					_song.song_name	= encoder.htmlDecode data.data[0].title.trim()
-					_song.song_artist = JSON.stringify encoder.htmlDecode(data.data[0].performer.trim()).split(',')
+					_song.song_artist = JSON.stringify encoder.htmlDecode(data.data[0].performer.trim()).split(',').map((v) -> v.trim())
 					_song.song_link = data.data[0].source
 
 					_str =  _song.song_link.replace(/^.+load-song\//g,'').replace(/^.+song-load\//g,'')

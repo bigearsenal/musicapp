@@ -3,7 +3,7 @@ Site = require "./Site"
 
 class Nhacso extends Site
       constructor: ->
-        super "CSN"
+        super "csn"
         @logPath = "./log/CSNLog.txt"
         @log = {}
         @_readLog()
@@ -333,7 +333,7 @@ class Nhacso extends Site
                               "floor(avg(plays)) as plays,date_released, group_concat(songids) as songids  from " + 
                               "(" + 
                               "select album_title as title,artists,album_link as link, count(*) as nsongs, album_coverart as coverart, "+ 
-                              "producer, floor(avg(downloads)) as downloads, floor(avg(plays)) as plays, date_released, group_concat(id) as songids from CSNSongs where id > #{@temp.reservedLastSongId} " + 
+                              "producer, floor(avg(downloads)) as downloads, floor(avg(plays)) as plays, date_released, group_concat(id) as songids from #{@table.Songs} where id > #{@temp.reservedLastSongId} " + 
                               "and album_title <> '' and album_link <> '' group by album_coverart " +
                               ") as anbinh  " + 
                               "group by title"
@@ -375,7 +375,7 @@ class Nhacso extends Site
                   
                   if song isnt null
                         # console.log song
-                        _u = "UPDATE CSNSongs set formats = #{@connection.escape song.formats} where id=#{song.id}"
+                        _u = "UPDATE #{table.Songs} set formats = #{@connection.escape song.formats} where id=#{song.id}"
                         # console.log _u 
                         @connection.query _u, (err)->
                              if err then console.log "CANNTO INSER SSONGS #{song.id}------#{err}"
@@ -388,7 +388,7 @@ class Nhacso extends Site
                   
                   if @stats.totalItems is @stats.totalItemCount
                       @utils.printFinalResult @stats
-            _select = "select id from CSNSongs where id < 100000 and topic like '[\"Video Clip%' "
+            _select = "select id from #{table.Songs} where id < 100000 and topic like '[\"Video Clip%' "
             @connection.query _select, (err, results)=>
                   if err then console.log "EROROORORORO"
                   else 

@@ -13,17 +13,17 @@ encoder = new Encoder('entity');
 
 CC_CONFIG = 
 	table : 
-		Songs : "CCSongs"
-		Albums : "CCAlbums"
-		Songs_Albums : "CCSongs_Albums"
+		Songs : "ccsongs"
+		Albums : "ccalbums"
+		Songs_Albums : "ccsongs_albums"
 	logPath : "./log/CCLog.txt"
 
 class Chacha extends Module
 	constructor : (@mysqlConfig, @config = CC_CONFIG) ->
 		@table = @config.table
 		@query = 
-			_insertIntoCCSongs : "INSERT INTO " + @table.Songs + " SET ?"
-			_insertIntoCCAlbums : "INSERT INTO " + @table.Albums + " SET ?"
+			_insertIntoCCSongs : "INSERT IGNORE INTO " + @table.Songs + " SET ?"
+			_insertIntoCCAlbums : "INSERT IGNORE INTO " + @table.Albums + " SET ?"
 			_insertIntoCCSongs_Albums : "INSERT INTO " + @table.Songs_Albums + " SET ?"
 		@utils = new Utils()
 		# @parser = new xml2js.Parser();

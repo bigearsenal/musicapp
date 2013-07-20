@@ -1,0 +1,10 @@
+change table names of
+nct - DONE
+gomusic - NOT tested!!! seems fine
+keeng - not tested!!!
+chacha - DONE
+nghenhac - NOT tested!!!
+nhacsho - DONE
+zing - DONE
+lyricwiki - DONE
+chiasenhac - DONE

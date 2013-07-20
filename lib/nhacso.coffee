@@ -3,7 +3,7 @@ Site = require "./Site"
 
 class Nhacso extends Site
 	constructor: ->
-		super "NS"
+		super "ns"
 		@logPath = "./log/NSLog.txt"
 		@log = {}
 		@_readLog()

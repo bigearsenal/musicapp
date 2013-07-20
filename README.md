@@ -398,6 +398,8 @@ NOTE: THE LINK
 * Get Video
 	about 20k videos
 
+URL: `http://media.keeng.vn` was changed into `http://media2.keeng.vn`  
+
 *STATS:* get ~17721 albums, ~132052 songs on Feb 7
 
 

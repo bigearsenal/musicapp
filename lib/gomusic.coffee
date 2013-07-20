@@ -9,9 +9,9 @@ encoder = new Encoder('entity');
 
 GM_CONFIG =
 	table :
-		GMSongs : "GMSongs"
-		GMAlbums : "GMAlbums"
-		GMSongs_Albums : "GMSongs_Albums"
+		GMSongs : "gmsongs"
+		GMAlbums : "gmalbums"
+		GMSongs_Albums : "gmsongs_albums"
 	logPath : "./log/GMLog.txt"
 
 class Gomusic extends Module

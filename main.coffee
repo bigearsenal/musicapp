@@ -130,8 +130,9 @@ Main =
 	mp3zing : ->
 		func = new FunctionFactory("zing","./lib/",mysqlConfig)
 		func.addMethod {name : "update", info : "Update albums, songs and videos"}
-		func.addMethod {name : "updateVideos", info : "Update videos"}
+		func.addMethod {name : "updateSongs", info : "Update songs"}
 		func.addMethod {name : "updateAlbums", info : "Update albums"}
+		func.addMethod {name : "updateVideos", info : "Update videos"}
 		func.addMethod {name : "updateSongsWithRange", info : "Update songs with range", rangeEnable : true}
 		func.addMethod {name : "updateAlbumsWithRange", info : "Update albums with range", rangeEnable : true}
 		func.addMethod {name : "updateVideosWithRange", info : "Update videos with range", rangeEnable : true}
@@ -218,7 +219,7 @@ Main.execute = (site)->
 
 # registerFuncs = ["","nhacso","gomusic","nhacvui","keeng","chacha","nghenhac","mp3zing","nhaccuatui","chiasenhac","vietgiaitri","musicvnn","songfreaks","lyricwiki","echonest","zazoo","deezer","getstats"]
 
-registerFuncs = [{name: "", activated : true}]
+registerFuncs = []
 registerFuncs.push {name: "nhacso", activated : true}
 registerFuncs.push {name: "gomusic", activated : true}
 registerFuncs.push {name: "nhacvui", activated : true}
@@ -237,6 +238,9 @@ registerFuncs.push {name: "zazoo", activated : false}
 registerFuncs.push {name: "deezer", activated : false}
 registerFuncs.push {name: "getstats", activated : true}
 
+activatedFuncs = [""]
+disableFuncs = [""]
+
 startingLog = ->
 	console.log "STEP 1:".inverse.blue + " " + "Choose the following sites:\n".underline.blue
 	info = ""
@@ -254,11 +258,12 @@ startingLog = ->
 					info = ""
 
 	# only show the activated site
-	activatedFuncs = registerFuncs.filter (v,index)-> v.activated
+	
+	registerFuncs.forEach (v)-> if v.activated then activatedFuncs.push v
 	show(activatedFuncs,true)
 
 	console.log "Disable sites:"
-	disableFuncs = registerFuncs.filter (v,index)-> not v.activated
+	registerFuncs.forEach (v)-> if  not v.activated then disableFuncs.push v
 	show(disableFuncs,false)
 
 	console.log "\tType 'q' to quit".white
@@ -269,7 +274,7 @@ rl.prompt()
 rl.on("line", (line) ->
 	index = line.trim()
 	if index.match(/[0-9]+/)
-		Main.execute(registerFuncs[index].name)
+		Main.execute(activatedFuncs[index].name)
 	else
 		if index in ["q","quit","exit"]
 			rl.close()

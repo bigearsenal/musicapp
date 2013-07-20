@@ -12,13 +12,13 @@ events = require('events')
 
 NCT_CONFIG =
 	table :
-		Songs : "NCTSongs"
-		Albums : "NCTAlbums"
-		Videos : "NCTVideos"
-		MVs : "NCTMVs"
-		MVPlaylists : "NCTMVPlaylists"
-		MVs_MVPlaylists : "NCTMVs_MVPlaylists"
-		Songs_Albums  : "NCTSongs_Albums"
+		Songs : "nctsongs"
+		Albums : "nctalbums"
+		Videos : "nctvideos"
+		MVs : "nctmvs"
+		MVPlaylists : "nctmvplaylists"
+		MVs_MVPlaylists : "nctmvs_mvplaylists"
+		Songs_Albums  : "nctsongs_albums"
 	logPath : "./log/NCTLog.txt"
 
 class Nhaccuatui extends Module
@@ -401,7 +401,7 @@ class Nhaccuatui extends Module
 					album.created += " " + _t.getHours() + ":" + _t.getMinutes() + ":" + _t.getSeconds()
 
 
-				songs = data.match(/btnDownload.+/g)
+				songs = data.match(/btnDownload.+rel.+key.+relTitle.+/g)
 				if songs
 					album.songs = songs.map (v)->
 						_song =
