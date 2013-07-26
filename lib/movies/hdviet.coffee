@@ -176,7 +176,7 @@ class HDViet extends Site
 		# @getPlaylist 4267, (err,playlist)=>
 		# 	console.log playlist
 
-		@getPlaylist 3971, (err,playlist)=>
+		@getPlaylist 3970, (err,playlist)=>
 			# console.log JSON.stringify playlist
 			episodes = playlist.episodes
 			# console.log episodes

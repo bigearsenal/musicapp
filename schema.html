@@ -1,0 +1,2761 @@
+
+<!-- saved from url=(0134)file://localhost/Users/daonguyenanbinh/Library/Application%20Support/Navicat%20Premium/daonguyenanbinh/daonguyenanbinh/tmp-Schema.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body>
+<h5 align="right" style="color: gray; ">Snapshot on 2013-07-26 12:08:19</h5>
+<h3>Schema: public</h3>
+<br>
+<h4>gmartists</h4>
+<table border="1" width="75%">
+<tbody><tr>
+	<th width="35%">Field</th>
+	<th width="30%">Type</th>
+	<th width="15%">Allow Null</th>
+	<th width="20%">Default Value</th>
+</tr>
+<tr>
+	<td width="35%">artistid</td>
+	<td width="30%">int4</td>
+	<td width="15%">No</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">artist_name</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">artist_display_name</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">real_name</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">No</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">birthday</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">No</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">nation</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">No</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">company</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">No</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">website</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">No</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">description</td>
+	<td width="30%">text</td>
+	<td width="15%">No</td>
+	<td width="20%"></td>
+</tr>
+</tbody></table>
+<br>
+<h4>ccsongs</h4>
+<table border="1" width="75%">
+<tbody><tr>
+	<th width="35%">Field</th>
+	<th width="30%">Type</th>
+	<th width="15%">Allow Null</th>
+	<th width="20%">Default Value</th>
+</tr>
+<tr>
+	<td width="35%">songid</td>
+	<td width="30%">int4</td>
+	<td width="15%">No</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">song_name</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">artistid</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">artist_name</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">plays</td>
+	<td width="30%">int8</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">topic</td>
+	<td width="30%">varchar(70)[]</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">duration</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">bitrate</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">thumbnail</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">link</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">checktime</td>
+	<td width="30%">timestamp(6)</td>
+	<td width="15%">Yes</td>
+	<td width="20%">now()</td>
+</tr>
+</tbody></table>
+<br>
+<h4>csnsongs</h4>
+<table border="1" width="75%">
+<tbody><tr>
+	<th width="35%">Field</th>
+	<th width="30%">Type</th>
+	<th width="15%">Allow Null</th>
+	<th width="20%">Default Value</th>
+</tr>
+<tr>
+	<td width="35%">id</td>
+	<td width="30%">int8</td>
+	<td width="15%">No</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">title</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">artists</td>
+	<td width="30%">varchar(260)[]</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">author</td>
+	<td width="30%">varchar(100)[]</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">topic</td>
+	<td width="30%">varchar(50)[]</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">album_title</td>
+	<td width="30%">varchar(200)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">album_link</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">album_coverart</td>
+	<td width="30%">varchar(200)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">producer</td>
+	<td width="30%">varchar(200)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">downloads</td>
+	<td width="30%">int8</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">plays</td>
+	<td width="30%">int8</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">formats</td>
+	<td width="30%">json</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">links</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">file_href</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">is_lyric</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">lyric</td>
+	<td width="30%">text</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">date_released</td>
+	<td width="30%">varchar(20)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">date_created</td>
+	<td width="30%">timestamp(6)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">checktime</td>
+	<td width="30%">timestamp(6)</td>
+	<td width="15%">Yes</td>
+	<td width="20%">now()</td>
+</tr>
+</tbody></table>
+<br>
+<h4>csnalbums</h4>
+<table border="1" width="75%">
+<tbody><tr>
+	<th width="35%">Field</th>
+	<th width="30%">Type</th>
+	<th width="15%">Allow Null</th>
+	<th width="20%">Default Value</th>
+</tr>
+<tr>
+	<td width="35%">id</td>
+	<td width="30%">int8</td>
+	<td width="15%">No</td>
+	<td width="20%">nextval('csnalbums_id_seq'::regclass)</td>
+</tr>
+<tr>
+	<td width="35%">title</td>
+	<td width="30%">varchar(200)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">artists</td>
+	<td width="30%">varchar(260)[]</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">link</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">nsongs</td>
+	<td width="30%">int8</td>
+	<td width="15%">No</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">coverart</td>
+	<td width="30%">varchar(200)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">producer</td>
+	<td width="30%">varchar(200)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">downloads</td>
+	<td width="30%">int8</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">plays</td>
+	<td width="30%">int8</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">date_released</td>
+	<td width="30%">varchar(20)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">checktime</td>
+	<td width="30%">timestamp(6)</td>
+	<td width="15%">Yes</td>
+	<td width="20%">now()</td>
+</tr>
+<tr>
+	<td width="35%">topic</td>
+	<td width="30%">varchar(50)[]</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">date_created</td>
+	<td width="30%">timestamp(6)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">songids</td>
+	<td width="30%">int8[]</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+</tbody></table>
+<br>
+<h4>kesongs</h4>
+<table border="1" width="75%">
+<tbody><tr>
+	<th width="35%">Field</th>
+	<th width="30%">Type</th>
+	<th width="15%">Allow Null</th>
+	<th width="20%">Default Value</th>
+</tr>
+<tr>
+	<td width="35%">id</td>
+	<td width="30%">int8</td>
+	<td width="15%">No</td>
+	<td width="20%">nextval('kesongs_id_seq'::regclass)</td>
+</tr>
+<tr>
+	<td width="35%">albumid</td>
+	<td width="30%">varchar(20)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">album_name</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">songid</td>
+	<td width="30%">varchar(20)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">song_name</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">artist_name</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">created</td>
+	<td width="30%">date</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">song_link</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">checktime</td>
+	<td width="30%">timestamp(6)</td>
+	<td width="15%">Yes</td>
+	<td width="20%">now()</td>
+</tr>
+</tbody></table>
+<br>
+<h4>kevideos</h4>
+<table border="1" width="75%">
+<tbody><tr>
+	<th width="35%">Field</th>
+	<th width="30%">Type</th>
+	<th width="15%">Allow Null</th>
+	<th width="20%">Default Value</th>
+</tr>
+<tr>
+	<td width="35%">vid</td>
+	<td width="30%">varchar(20)</td>
+	<td width="15%">No</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">playingid</td>
+	<td width="30%">int8</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">name</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">artists</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">author</td>
+	<td width="30%">varchar(100)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">topic</td>
+	<td width="30%">varchar(100)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">plays</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">thumbnail</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">link</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">created</td>
+	<td width="30%">date</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">updated</td>
+	<td width="30%">timestamp(6)</td>
+	<td width="15%">Yes</td>
+	<td width="20%">now()</td>
+</tr>
+</tbody></table>
+<br>
+<h4>lwalbums_artists_genres</h4>
+<table border="1" width="75%">
+<tbody><tr>
+	<th width="35%">Field</th>
+	<th width="30%">Type</th>
+	<th width="15%">Allow Null</th>
+	<th width="20%">Default Value</th>
+</tr>
+<tr>
+	<td width="35%">id</td>
+	<td width="30%">int8</td>
+	<td width="15%">No</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">artist</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">album</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">year</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">genre</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">checktime</td>
+	<td width="30%">timestamp(6)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+</tbody></table>
+<br>
+<h4>lwgenres</h4>
+<table border="1" width="75%">
+<tbody><tr>
+	<th width="35%">Field</th>
+	<th width="30%">Type</th>
+	<th width="15%">Allow Null</th>
+	<th width="20%">Default Value</th>
+</tr>
+<tr>
+	<td width="35%">id</td>
+	<td width="30%">int8</td>
+	<td width="15%">No</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">name</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">npages</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">link</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+</tbody></table>
+<br>
+<h4>lwlanguages</h4>
+<table border="1" width="75%">
+<tbody><tr>
+	<th width="35%">Field</th>
+	<th width="30%">Type</th>
+	<th width="15%">Allow Null</th>
+	<th width="20%">Default Value</th>
+</tr>
+<tr>
+	<td width="35%">id</td>
+	<td width="30%">int8</td>
+	<td width="15%">No</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">name</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">npages</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">link</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+</tbody></table>
+<br>
+<h4>lwalbums</h4>
+<table border="1" width="75%">
+<tbody><tr>
+	<th width="35%">Field</th>
+	<th width="30%">Type</th>
+	<th width="15%">Allow Null</th>
+	<th width="20%">Default Value</th>
+</tr>
+<tr>
+	<td width="35%">id</td>
+	<td width="30%">int8</td>
+	<td width="15%">No</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">title</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">artist_id</td>
+	<td width="30%">int8</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">artist</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">nsongs</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">genre</td>
+	<td width="30%">varchar(100)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">year</td>
+	<td width="30%">varchar(100)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">duration</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">thumbnail</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">allmusic_link</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">discogs_link</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">musicbrainz_link</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">download_done</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">created_at</td>
+	<td width="30%">timestamp(6)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">checktime</td>
+	<td width="30%">timestamp(6)</td>
+	<td width="15%">Yes</td>
+	<td width="20%">now()</td>
+</tr>
+</tbody></table>
+<br>
+<h4>lwsongs_languages</h4>
+<table border="1" width="75%">
+<tbody><tr>
+	<th width="35%">Field</th>
+	<th width="30%">Type</th>
+	<th width="15%">Allow Null</th>
+	<th width="20%">Default Value</th>
+</tr>
+<tr>
+	<td width="35%">id</td>
+	<td width="30%">int8</td>
+	<td width="15%">No</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">name</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">artist</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">language</td>
+	<td width="30%">varchar(200)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">checktime</td>
+	<td width="30%">timestamp(6)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+</tbody></table>
+<br>
+<h4>lwartists</h4>
+<table border="1" width="75%">
+<tbody><tr>
+	<th width="35%">Field</th>
+	<th width="30%">Type</th>
+	<th width="15%">Allow Null</th>
+	<th width="20%">Default Value</th>
+</tr>
+<tr>
+	<td width="35%">id</td>
+	<td width="30%">int8</td>
+	<td width="15%">No</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">name</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">link</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">checktime</td>
+	<td width="30%">timestamp(6)</td>
+	<td width="15%">Yes</td>
+	<td width="20%">now()</td>
+</tr>
+</tbody></table>
+<br>
+<h4>lwsongs</h4>
+<table border="1" width="75%">
+<tbody><tr>
+	<th width="35%">Field</th>
+	<th width="30%">Type</th>
+	<th width="15%">Allow Null</th>
+	<th width="20%">Default Value</th>
+</tr>
+<tr>
+	<td width="35%">id</td>
+	<td width="30%">int8</td>
+	<td width="15%">No</td>
+	<td width="20%">nextval('lwsongs_id_seq'::regclass)</td>
+</tr>
+<tr>
+	<td width="35%">title</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">artist_id</td>
+	<td width="30%">int8</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">artist</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">album_id</td>
+	<td width="30%">int8</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">album</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">year</td>
+	<td width="30%">varchar(100)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">lyric</td>
+	<td width="30%">text</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">download_done</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">is_gracenote</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">download_gracenote_done</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">gracenote_lyric</td>
+	<td width="30%">text</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">gracenote_songwriters</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">gracenote_publishers</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">metrolyric</td>
+	<td width="30%">text</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">tags</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">download_metrolyric_done</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">allmusic_link</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">musicbrainz_link</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">youtube_link</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">language</td>
+	<td width="30%">varchar(50)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">created_at</td>
+	<td width="30%">timestamp(6)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">checktime</td>
+	<td width="30%">timestamp(6)</td>
+	<td width="15%">Yes</td>
+	<td width="20%">now()</td>
+</tr>
+</tbody></table>
+<br>
+<h4>nctsongs</h4>
+<table border="1" width="75%">
+<tbody><tr>
+	<th width="35%">Field</th>
+	<th width="30%">Type</th>
+	<th width="15%">Allow Null</th>
+	<th width="20%">Default Value</th>
+</tr>
+<tr>
+	<td width="35%">id</td>
+	<td width="30%">int8</td>
+	<td width="15%">No</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">key</td>
+	<td width="30%">varchar(100)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">title</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">plays</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">artists</td>
+	<td width="30%">varchar(150)[]</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">topic</td>
+	<td width="30%">varchar(100)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">type</td>
+	<td width="30%">varchar(20)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">bitrate</td>
+	<td width="30%">int8</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">official</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">link_key</td>
+	<td width="30%">varchar(150)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">lyric</td>
+	<td width="30%">text</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">checktime</td>
+	<td width="30%">timestamp(6)</td>
+	<td width="15%">Yes</td>
+	<td width="20%">now()</td>
+</tr>
+</tbody></table>
+<br>
+<h4>nctvideos</h4>
+<table border="1" width="75%">
+<tbody><tr>
+	<th width="35%">Field</th>
+	<th width="30%">Type</th>
+	<th width="15%">Allow Null</th>
+	<th width="20%">Default Value</th>
+</tr>
+<tr>
+	<td width="35%">id</td>
+	<td width="30%">int4</td>
+	<td width="15%">No</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">key</td>
+	<td width="30%">varchar(100)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">title</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">artists</td>
+	<td width="30%">varchar(150)[]</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">duration</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">plays</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">topic</td>
+	<td width="30%">varchar(50)[]</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">thumbnail</td>
+	<td width="30%">varchar(300)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">type</td>
+	<td width="30%">varchar(20)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">link_key</td>
+	<td width="30%">varchar(150)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">lyric</td>
+	<td width="30%">text</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">created</td>
+	<td width="30%">timestamp(6)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">checktime</td>
+	<td width="30%">timestamp(6)</td>
+	<td width="15%">Yes</td>
+	<td width="20%">now()</td>
+</tr>
+</tbody></table>
+<br>
+<h4>nctmvplaylists</h4>
+<table border="1" width="75%">
+<tbody><tr>
+	<th width="35%">Field</th>
+	<th width="30%">Type</th>
+	<th width="15%">Allow Null</th>
+	<th width="20%">Default Value</th>
+</tr>
+<tr>
+	<td width="35%">albumid</td>
+	<td width="30%">int4</td>
+	<td width="15%">No</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">album_key</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">title</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">topic</td>
+	<td width="30%">varchar(100)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">genre</td>
+	<td width="30%">varchar(100)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">artist</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">artist_list</td>
+	<td width="30%">varchar(100)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">plays</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">nsongs</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">thumbnail</td>
+	<td width="30%">varchar(300)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">link_key</td>
+	<td width="30%">varchar(100)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">created</td>
+	<td width="30%">timestamp(6)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">checktime</td>
+	<td width="30%">timestamp(6)</td>
+	<td width="15%">Yes</td>
+	<td width="20%">now()</td>
+</tr>
+<tr>
+	<td width="35%">isMV</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">videoids</td>
+	<td width="30%">int4[]</td>
+	<td width="15%">No</td>
+	<td width="20%"></td>
+</tr>
+</tbody></table>
+<br>
+<h4>ccalbums</h4>
+<table border="1" width="75%">
+<tbody><tr>
+	<th width="35%">Field</th>
+	<th width="30%">Type</th>
+	<th width="15%">Allow Null</th>
+	<th width="20%">Default Value</th>
+</tr>
+<tr>
+	<td width="35%">albumid</td>
+	<td width="30%">int4</td>
+	<td width="15%">No</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">album_name</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">album_artist</td>
+	<td width="30%">varchar(200)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">nsongs</td>
+	<td width="30%">int8</td>
+	<td width="15%">No</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">plays</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">thumbnail</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">description</td>
+	<td width="30%">text</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">checktime</td>
+	<td width="30%">timestamp(6)</td>
+	<td width="15%">Yes</td>
+	<td width="20%">now()</td>
+</tr>
+<tr>
+	<td width="35%">songids</td>
+	<td width="30%">int4[]</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+</tbody></table>
+<br>
+<h4>gmalbums</h4>
+<table border="1" width="75%">
+<tbody><tr>
+	<th width="35%">Field</th>
+	<th width="30%">Type</th>
+	<th width="15%">Allow Null</th>
+	<th width="20%">Default Value</th>
+</tr>
+<tr>
+	<td width="35%">albumid</td>
+	<td width="30%">int4</td>
+	<td width="15%">No</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">album_name</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">master_artistid</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">master_artist_name</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">topicid</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">topic_name</td>
+	<td width="30%">varchar(100)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">genreid</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">genre_name</td>
+	<td width="30%">varchar(100)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">regionid</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">region_name</td>
+	<td width="30%">varchar(100)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">duration</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">release_date</td>
+	<td width="30%">date</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">tags</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">thumbnail</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">description</td>
+	<td width="30%">text</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">song_count</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">play_count</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">create_time</td>
+	<td width="30%">date</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">update_time</td>
+	<td width="30%">date</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">checktime</td>
+	<td width="30%">timestamp(6)</td>
+	<td width="15%">Yes</td>
+	<td width="20%">now()</td>
+</tr>
+<tr>
+	<td width="35%">songids</td>
+	<td width="30%">int4[]</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">song_positions</td>
+	<td width="30%">int4[]</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+</tbody></table>
+<br>
+<h4>gmsongs</h4>
+<table border="1" width="75%">
+<tbody><tr>
+	<th width="35%">Field</th>
+	<th width="30%">Type</th>
+	<th width="15%">Allow Null</th>
+	<th width="20%">Default Value</th>
+</tr>
+<tr>
+	<td width="35%">songid</td>
+	<td width="30%">int4</td>
+	<td width="15%">No</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">song_name</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">artistid</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">artist_name</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">artist_display_name</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">topicid</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">topic_name</td>
+	<td width="30%">varchar(100)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">genreid</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">genre_name</td>
+	<td width="30%">varchar(100)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">regionid</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">region_name</td>
+	<td width="30%">varchar(100)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">thumbnail</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">tags</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">lyric</td>
+	<td width="30%">text</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">file_path</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">bitrate</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">duration</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">file_size</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">play_count</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">create_time</td>
+	<td width="30%">date</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">update_time</td>
+	<td width="30%">date</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">checktime</td>
+	<td width="30%">timestamp(6)</td>
+	<td width="15%">Yes</td>
+	<td width="20%">now()</td>
+</tr>
+</tbody></table>
+<br>
+<h4>nctmvs</h4>
+<table border="1" width="75%">
+<tbody><tr>
+	<th width="35%">Field</th>
+	<th width="30%">Type</th>
+	<th width="15%">Allow Null</th>
+	<th width="20%">Default Value</th>
+</tr>
+<tr>
+	<td width="35%">videoid</td>
+	<td width="30%">int4</td>
+	<td width="15%">No</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">video_key</td>
+	<td width="30%">varchar(100)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">video_name</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">video_artists</td>
+	<td width="30%">varchar(150)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">plays</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">artists</td>
+	<td width="30%">varchar(150)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">topic</td>
+	<td width="30%">varchar(100)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">genre</td>
+	<td width="30%">varchar(100)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">albumid</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">album_key</td>
+	<td width="30%">varchar(100)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">type</td>
+	<td width="30%">varchar(20)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">link_key</td>
+	<td width="30%">varchar(150)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">checktime</td>
+	<td width="30%">timestamp(6)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">temp</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">isAlbum</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+</tbody></table>
+<br>
+<h4>nctvideos_albums</h4>
+<table border="1" width="75%">
+<tbody><tr>
+	<th width="35%">Field</th>
+	<th width="30%">Type</th>
+	<th width="15%">Allow Null</th>
+	<th width="20%">Default Value</th>
+</tr>
+<tr>
+	<td width="35%">videoid</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">albumid</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">checktime</td>
+	<td width="30%">timestamp(6)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+</tbody></table>
+<br>
+<h4>nssongs</h4>
+<table border="1" width="75%">
+<tbody><tr>
+	<th width="35%">Field</th>
+	<th width="30%">Type</th>
+	<th width="15%">Allow Null</th>
+	<th width="20%">Default Value</th>
+</tr>
+<tr>
+	<td width="35%">songid</td>
+	<td width="30%">int4</td>
+	<td width="15%">No</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">totaltime</td>
+	<td width="30%">int4</td>
+	<td width="15%">No</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">name</td>
+	<td width="30%">varchar(200)</td>
+	<td width="15%">No</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">mp3link</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">No</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">artist</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">No</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">artistid</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">author</td>
+	<td width="30%">varchar(200)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">authorid</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">plays</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">topic</td>
+	<td width="30%">varchar(150)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">category</td>
+	<td width="30%">varchar(50)[]</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">bitrate</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">official</td>
+	<td width="30%">int2</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">islyric</td>
+	<td width="30%">int2</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">created</td>
+	<td width="30%">timestamp(6)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">updated</td>
+	<td width="30%">timestamp(6)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">lyric</td>
+	<td width="30%">text</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">checktime</td>
+	<td width="30%">timestamp(6)</td>
+	<td width="15%">Yes</td>
+	<td width="20%">now()</td>
+</tr>
+</tbody></table>
+<br>
+<h4>nsalbums</h4>
+<table border="1" width="75%">
+<tbody><tr>
+	<th width="35%">Field</th>
+	<th width="30%">Type</th>
+	<th width="15%">Allow Null</th>
+	<th width="20%">Default Value</th>
+</tr>
+<tr>
+	<td width="35%">albumid</td>
+	<td width="30%">int4</td>
+	<td width="15%">No</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">title</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">topic</td>
+	<td width="30%">varchar(100)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">genre</td>
+	<td width="30%">varchar(100)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">category</td>
+	<td width="30%">varchar(50)[]</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">description</td>
+	<td width="30%">text</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">released_date</td>
+	<td width="30%">varchar(100)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">nsongs</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">plays</td>
+	<td width="30%">int8</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">thumbnail</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">artist</td>
+	<td width="30%">varchar(150)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">artistid</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">checktime</td>
+	<td width="30%">timestamp(6)</td>
+	<td width="15%">Yes</td>
+	<td width="20%">now()</td>
+</tr>
+<tr>
+	<td width="35%">songids</td>
+	<td width="30%">int4[]</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+</tbody></table>
+<br>
+<h4>nsvideos</h4>
+<table border="1" width="75%">
+<tbody><tr>
+	<th width="35%">Field</th>
+	<th width="30%">Type</th>
+	<th width="15%">Allow Null</th>
+	<th width="20%">Default Value</th>
+</tr>
+<tr>
+	<td width="35%">videoid</td>
+	<td width="30%">int4</td>
+	<td width="15%">No</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">title</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">artists</td>
+	<td width="30%">varchar(50)[]</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">topic</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">plays</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">duration</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">official</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">producerid</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">link</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">sublink</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">thumbnail</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">created</td>
+	<td width="30%">timestamp(6)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">checktime</td>
+	<td width="30%">timestamp(6)</td>
+	<td width="15%">Yes</td>
+	<td width="20%">now()</td>
+</tr>
+</tbody></table>
+<br>
+<h4>nvalbums</h4>
+<table border="1" width="75%">
+<tbody><tr>
+	<th width="35%">Field</th>
+	<th width="30%">Type</th>
+	<th width="15%">Allow Null</th>
+	<th width="20%">Default Value</th>
+</tr>
+<tr>
+	<td width="35%">aid</td>
+	<td width="30%">int8</td>
+	<td width="15%">No</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">album_name</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">album_artist</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">topic</td>
+	<td width="30%">varchar(100)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">nsongs</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">plays</td>
+	<td width="30%">int8</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">thumbnail</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">created</td>
+	<td width="30%">timestamp(6)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">checktime</td>
+	<td width="30%">timestamp(6)</td>
+	<td width="15%">Yes</td>
+	<td width="20%">now()</td>
+</tr>
+<tr>
+	<td width="35%">songids</td>
+	<td width="30%">int8[]</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+</tbody></table>
+<br>
+<h4>nctalbums</h4>
+<table border="1" width="75%">
+<tbody><tr>
+	<th width="35%">Field</th>
+	<th width="30%">Type</th>
+	<th width="15%">Allow Null</th>
+	<th width="20%">Default Value</th>
+</tr>
+<tr>
+	<td width="35%">id</td>
+	<td width="30%">int8</td>
+	<td width="15%">No</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">key</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">title</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">artists</td>
+	<td width="30%">varchar(100)[]</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">topic</td>
+	<td width="30%">varchar(100)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">plays</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">nsongs</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">description</td>
+	<td width="30%">text</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">thumbnail</td>
+	<td width="30%">varchar(300)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">link_key</td>
+	<td width="30%">varchar(100)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">created</td>
+	<td width="30%">timestamp(6)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">checktime</td>
+	<td width="30%">timestamp(6)</td>
+	<td width="15%">Yes</td>
+	<td width="20%">now()</td>
+</tr>
+<tr>
+	<td width="35%">songids</td>
+	<td width="30%">int8[]</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+</tbody></table>
+<br>
+<h4>zivideos</h4>
+<table border="1" width="75%">
+<tbody><tr>
+	<th width="35%">Field</th>
+	<th width="30%">Type</th>
+	<th width="15%">Allow Null</th>
+	<th width="20%">Default Value</th>
+</tr>
+<tr>
+	<td width="35%">vid</td>
+	<td width="30%">int8</td>
+	<td width="15%">No</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">title</td>
+	<td width="30%">varchar(150)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">artists</td>
+	<td width="30%">varchar(50)[]</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">topic</td>
+	<td width="30%">varchar(50)[]</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">plays</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">thumbnail</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">link</td>
+	<td width="30%">varchar(300)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">lyric</td>
+	<td width="30%">text</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">created</td>
+	<td width="30%">date</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">checktime</td>
+	<td width="30%">timestamp(6)</td>
+	<td width="15%">Yes</td>
+	<td width="20%">now()</td>
+</tr>
+</tbody></table>
+<br>
+<h4>nvsongs</h4>
+<table border="1" width="75%">
+<tbody><tr>
+	<th width="35%">Field</th>
+	<th width="30%">Type</th>
+	<th width="15%">Allow Null</th>
+	<th width="20%">Default Value</th>
+</tr>
+<tr>
+	<td width="35%">songid</td>
+	<td width="30%">int8</td>
+	<td width="15%">No</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">song_name</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">artist_name</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">annotation</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">author</td>
+	<td width="30%">varchar(100)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">topic</td>
+	<td width="30%">varchar(100)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">plays</td>
+	<td width="30%">int8</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">lyric</td>
+	<td width="30%">text</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">link</td>
+	<td width="30%">varchar(400)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">link320</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">checktime</td>
+	<td width="30%">timestamp(6)</td>
+	<td width="15%">Yes</td>
+	<td width="20%">now()</td>
+</tr>
+</tbody></table>
+<br>
+<h4>ziartists</h4>
+<table border="1" width="75%">
+<tbody><tr>
+	<th width="35%">Field</th>
+	<th width="30%">Type</th>
+	<th width="15%">Allow Null</th>
+	<th width="20%">Default Value</th>
+</tr>
+<tr>
+	<td width="35%">id</td>
+	<td width="30%">int4</td>
+	<td width="15%">No</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">name</td>
+	<td width="30%">varchar(100)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">real_name</td>
+	<td width="30%">varchar(100)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">dateofbirth</td>
+	<td width="30%">varchar(100)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">publisher</td>
+	<td width="30%">varchar(50)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">country</td>
+	<td width="30%">varchar(300)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">topic</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">description</td>
+	<td width="30%">text</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+</tbody></table>
+<br>
+<h4>zialbums</h4>
+<table border="1" width="75%">
+<tbody><tr>
+	<th width="35%">Field</th>
+	<th width="30%">Type</th>
+	<th width="15%">Allow Null</th>
+	<th width="20%">Default Value</th>
+</tr>
+<tr>
+	<td width="35%">aid</td>
+	<td width="30%">int4</td>
+	<td width="15%">No</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">albumid</td>
+	<td width="30%">varchar(100)</td>
+	<td width="15%">No</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">album_encoded_id</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">album_name</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">album_artist</td>
+	<td width="30%">varchar(100)[]</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">album_thumbnail</td>
+	<td width="30%">varchar(300)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">topic</td>
+	<td width="30%">varchar(100)[]</td>
+	<td width="15%">No</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">plays</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">released_year</td>
+	<td width="30%">varchar(20)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">nsongs</td>
+	<td width="30%">int4</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">description</td>
+	<td width="30%">text</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">created</td>
+	<td width="30%">timestamp(6)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">checktime</td>
+	<td width="30%">timestamp(6)</td>
+	<td width="15%">Yes</td>
+	<td width="20%">now()</td>
+</tr>
+<tr>
+	<td width="35%">songids</td>
+	<td width="30%">int4[]</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+</tbody></table>
+<br>
+<h4>nnsongs</h4>
+<table border="1" width="75%">
+<tbody><tr>
+	<th width="35%">Field</th>
+	<th width="30%">Type</th>
+	<th width="15%">Allow Null</th>
+	<th width="20%">Default Value</th>
+</tr>
+<tr>
+	<td width="35%">id</td>
+	<td width="30%">int8</td>
+	<td width="15%">No</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">encoded_id</td>
+	<td width="30%">varchar(100)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">name</td>
+	<td width="30%">varchar(200)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">artist_id</td>
+	<td width="30%">int8</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">artist</td>
+	<td width="30%">varchar(200)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">author</td>
+	<td width="30%">varchar(150)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">albumid</td>
+	<td width="30%">int8</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">topic</td>
+	<td width="30%">varchar(100)[]</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">plays</td>
+	<td width="30%">int8</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">lyric</td>
+	<td width="30%">text</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">link</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">checktime</td>
+	<td width="30%">timestamp(6)</td>
+	<td width="15%">Yes</td>
+	<td width="20%">now()</td>
+</tr>
+</tbody></table>
+<br>
+<h4>nnalbums</h4>
+<table border="1" width="75%">
+<tbody><tr>
+	<th width="35%">Field</th>
+	<th width="30%">Type</th>
+	<th width="15%">Allow Null</th>
+	<th width="20%">Default Value</th>
+</tr>
+<tr>
+	<td width="35%">id</td>
+	<td width="30%">int8</td>
+	<td width="15%">No</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">encoded_id</td>
+	<td width="30%">varchar(150)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">name</td>
+	<td width="30%">varchar(200)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">artist</td>
+	<td width="30%">varchar(200)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">topic</td>
+	<td width="30%">varchar(100)[]</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">nsongs</td>
+	<td width="30%">int8</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">plays</td>
+	<td width="30%">int8</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">thumbnail</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">checktime</td>
+	<td width="30%">timestamp(6)</td>
+	<td width="15%">Yes</td>
+	<td width="20%">now()</td>
+</tr>
+<tr>
+	<td width="35%">songids</td>
+	<td width="30%">int8[]</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+</tbody></table>
+<br>
+<h4>test</h4>
+<table border="1" width="75%">
+<tbody><tr>
+	<th width="35%">Field</th>
+	<th width="30%">Type</th>
+	<th width="15%">Allow Null</th>
+	<th width="20%">Default Value</th>
+</tr>
+<tr>
+	<td width="35%">sid</td>
+	<td width="30%">int4</td>
+	<td width="15%">No</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">songid</td>
+	<td width="30%">varchar(30)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">song_name</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">song_artist</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">author</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">plays</td>
+	<td width="30%">int8</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">topic</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">song_link</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">path</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">lyric</td>
+	<td width="30%">text</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">created</td>
+	<td width="30%">timestamp(6)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">checktime</td>
+	<td width="30%">timestamp(6)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+</tbody></table>
+<br>
+<h4>zisongs</h4>
+<table border="1" width="75%">
+<tbody><tr>
+	<th width="35%">Field</th>
+	<th width="30%">Type</th>
+	<th width="15%">Allow Null</th>
+	<th width="20%">Default Value</th>
+</tr>
+<tr>
+	<td width="35%">sid</td>
+	<td width="30%">int4</td>
+	<td width="15%">No</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">songid</td>
+	<td width="30%">varchar(30)</td>
+	<td width="15%">No</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">song_name</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">song_artist</td>
+	<td width="30%">varchar(50)[]</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">author</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">plays</td>
+	<td width="30%">int8</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">topic</td>
+	<td width="30%">varchar(50)[]</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">song_link</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">path</td>
+	<td width="30%">varchar(255)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">lyric</td>
+	<td width="30%">text</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">created</td>
+	<td width="30%">timestamp(6)</td>
+	<td width="15%">Yes</td>
+	<td width="20%"></td>
+</tr>
+<tr>
+	<td width="35%">checktime</td>
+	<td width="30%">timestamp(6)</td>
+	<td width="15%">Yes</td>
+	<td width="20%">now()</td>
+</tr>
+</tbody></table>
+
+
+</body></html>
