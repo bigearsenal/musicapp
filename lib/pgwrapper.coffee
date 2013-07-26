@@ -49,32 +49,44 @@ class PostgresqlWrapper
 				return true
 			else return false
 	transformInsertQuery : (query,item)->
-		if item
-			fields = []
-			values = []
-			for key,value of item 
-				fields.push key
-				if value instanceof Array
-					values.push "ARRAY[#{value.map((v)=>@escape(v.trim())).join(',')}]"
-				else
-					if value.match?
-						if value.match(/^\[(".+"),?\]$/)
-							try 
-								arr = JSON.parse value
-								values.push "ARRAY[#{arr.map((v)=>@escape(v.trim())).join(',')}]"
-							catch e
-								console.log "Error found while parsing insert statement, #{e}"
-								console.log "#{query}".red
-								values.push @escape value.trim()
-						else 
-							values.push @escape value.trim()
-					else values.push @escape value
-			_q = query.replace(/into (\w+) /i,"into \"$1\" ")
-			_q = _q.replace(/insert ignore/gi,"insert")
-			_q = _q.replace(/SET\s+\?/gi,"(#{fields.join(',')})")
-			_q += " VALUES(#{values.join(',')})"
-		else 
-			console.log "need to specify object to insert"
+		try 
+			if item
+				fields = []
+				values = []
+				for key,value of item 
+					fields.push key
+					if value instanceof Array
+						if value.length > 0
+							values.push "ARRAY[#{value.map((v)=>if v.trim then @escape(v.trim()) else @escape(v) ).join(',')}]"
+						else values.push "'{}'"
+					else
+						if value is undefined
+							values.push @escape(null)
+						else
+							if value isnt null and value.match?
+								if value.match(/^\[(".+"),?\]$/)
+									try 
+										arr = JSON.parse value
+										if arr.length > 0
+											values.push "ARRAY[#{arr.map((v)=>if v.trim then @escape(v.trim()) else @escape(v) ).join(',')}]"
+										else values.push "'{}'"
+									catch e
+										console.log "Error found while parsing insert statement, #{e}"
+										console.log "#{query}".red
+										values.push @escape value.trim()
+								else 
+									values.push @escape value.trim()
+							else values.push @escape value
+				_q = query.replace(/into (\w+) /i,"into \"$1\" ")
+				_q = _q.replace(/insert ignore/gi,"insert")
+				_q = _q.replace(/SET\s+\?/gi,"(#{fields.join(',')})")
+				_q += " VALUES(#{values.join(',')})"
+			else 
+				console.log "need to specify object to insert"
+		catch e
+			console.log "transformInsertQuery() called : #{e}"
+			console.log item
+			# process.exit 0
 		return _q
 
 	transformUpdateQuery : (query)->
@@ -151,6 +163,14 @@ class PostgresqlWrapper
 	endConnection : ->
 		return @client.end()
 
+	getQuery : (query,item)->
+		_query =  ""
+		if item
+			_query = @transformQuery query, item
+		else 
+			_query = @transformQuery query
+		return _query
+
 	getQueryMethod : (query,param1,callback) ->
 		_query =  ""
 		# console.log "#{query} asdfasdfsdf"
@@ -159,7 +179,10 @@ class PostgresqlWrapper
 		else 
 			_query = @transformQuery query
 		if @debugEnable then console.log "#{_query} is called inside getQueryMethod()"
+		# console.log @client.query
+		# process.exit 0
 		@client.query _query, (err, results)=>
+			# console.log "inside query called!!!"
 			if err 
 				errorMessage = "#{_query} invalid, #{err.toString()}"
 				if query.search(/^insert ignore/ig) > -1 and err.toString().search(/duplicate key value violates unique constraint/gi)

@@ -81,6 +81,9 @@ Main =
 	nhacso : ->
 		func = new FunctionFactory("nhacso","./lib/",mysqlConfig)
 		func.addMethod {name : "update", info : "Update albums, songs and videos"}
+		func.addMethod {name : "updateSongs", info : "Update songs"}
+		func.addMethod {name : "updateAlbums", info : "Update albums"}
+		func.addMethod {name : "updateVideos", info : "Update videos"}
 		func.addMethod {name : "updateSongsCategory", info : "update songs category"}
 		func.addMethod {name : "updateAlbumsCategory", info : "update albums category"}
 		func.addMethod {name : "updateVideos", info : "update videos"}
@@ -88,8 +91,10 @@ Main =
 	gomusic : ->
 		func = new FunctionFactory("gomusic","./lib/",mysqlConfig)
 		func.addMethod {name : "update", info : "Update albums, songs"}
+		func.addMethod {name : "updateAlbums", info : "Update albums"}
 		func.addMethod {name : "resetTables", info : "reset tables"}
 		func.addMethod {name : "showStats", info : "show statistics"}
+		
 		func.run(rl)
 	nhacvui : ->
 		func = new FunctionFactory("nhacvui","./lib/",mysqlConfig)
@@ -139,15 +144,15 @@ Main =
 		func.run(rl)
 	nhaccuatui : ->
 		func = new FunctionFactory("nhaccuatui","./lib/",mysqlConfig)
-		func.addMethod {name : "update", info : "Update albums, songs and videos"}
+		func.addMethod {name : "update", info : "Update albums, songs and videos"}		
 		# func.addMethod {name : "updateSongsPlays", info : "Update songs' plays"}
 		# func.addMethod {name : "fetchArtist", info : "Fetching artists"}
 		# func.addMethod {name : "getSongs", info : "Getting song"}
 		# func.addMethod {name : "getSongsPlays", info : "Getting songs' plays"}
 		# func.addMethod {name : "getAlbumsPlays", info : "Getting albums' plays"}
-		# func.addMethod {name : "updateAlbumsAndSongs", info : "Update albums and songs"}
-		# func.addMethod {name : "updateSongsByCategory", info : "Update songs by category"}
-		# func.addMethod {name : "updateVideosByCategory", info : "Update videos by category"}
+		func.addMethod {name : "updateAlbumsAndSongs", info : "Update albums and songs"}
+		func.addMethod {name : "updateSongsByCategory", info : "Update songs by category"}
+		func.addMethod {name : "updateVideosByCategory", info : "Update videos by category"}
 		# func.addMethod {name : "fixTheErrorOfLyric", info : "Fix error of lyrics"}
 		func.run(rl)
 	musicvnn: ->
@@ -163,7 +168,7 @@ Main =
 	chiasenhac : ->
 		func = new FunctionFactory("chiasenhac","./lib/",mysqlConfig)
 		func.addMethod {name : "updateSongs", info : "Update songs and albums"}
-		# func.addMethod {name : "updateAlbums", info : "Update albums"}
+		func.addMethod {name : "updateAlbums", info : "Update albums"}
 		# func.addMethod {name : "fetchSongs", info : "Getting songs", rangeEnable : true}
 		# func.addMethod {name : "fetchSongsStats", info : "Getting songs' statistics"}
 		func.addMethod {name : "showStats", info : "Show statistics"}
@@ -208,6 +213,10 @@ Main =
 		func.addMethod {name : "getAlbums", info : "Getting albums"}
 		func.addMethod {name : "getArtists", info : "Getting artists"}
 		func.run(rl)
+	hdviet : ->
+		func = new FunctionFactory("hdviet","./lib/movies/",mysqlConfig)
+		func.addMethod {name : "test", info : "test"}
+		func.run(rl)
 	getstats : ->
 		func = new FunctionFactory("stats","./lib/",mysqlConfig)
 		func.addMethod {name : "fetchTable", info : "Getting tables"}
@@ -236,6 +245,7 @@ registerFuncs.push {name: "echonest", activated : false}
 registerFuncs.push {name: "lyricwiki", activated : true}
 registerFuncs.push {name: "zazoo", activated : false}
 registerFuncs.push {name: "deezer", activated : false}
+registerFuncs.push {name: "hdviet", activated : true}
 registerFuncs.push {name: "getstats", activated : true}
 
 activatedFuncs = [""]
@@ -274,7 +284,11 @@ rl.prompt()
 rl.on("line", (line) ->
 	index = line.trim()
 	if index.match(/[0-9]+/)
-		Main.execute(activatedFuncs[index].name)
+		index = parseInt index,10
+		if index in [1..activatedFuncs.length-1]
+			Main.execute(activatedFuncs[index].name)
+		else 
+			console.log "Your index out of range"
 	else
 		if index in ["q","quit","exit"]
 			rl.close()

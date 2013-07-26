@@ -93,6 +93,9 @@ class Chacha extends Module
 			thumbnail : song.thumb
 			link : song.url
 
+		# console.log _item
+		# process.exit 0
+
 		@connection.query @query._insertIntoCCSongs, _item, (err) ->
 		 	if err then console.log "Cannot insert the song into table. ERROR: " + err	
 		_item
@@ -155,6 +158,7 @@ class Chacha extends Module
 				nsongs : 0
 				thumbnail : ""
 				plays : 0
+				songids : null
 			arr = data.match(/\<meta\sname\=\"title\".+\/\>/g)[0]
 				.replace(/\<meta\sname\=\"title\"\scontent\=\"/,'')
 				.match(/^.+\|/)[0].replace(/\|/,'').trim()
@@ -190,7 +194,7 @@ class Chacha extends Module
 			songs = data.match(/avatar\sinline\splayer\ssong\d+/g)
 			if songs isnt null
 				songs = songs.map (v) -> v.replace(/avatar\sinline\splayer\ssong/g,'')
-			album.songs = songs
+				album.songids = songs.map (v)-> parseInt v,10
 		else 
 			album = null
 
@@ -304,16 +308,14 @@ class Chacha extends Module
 				@stats.passedItemCount +=1
 				@temp.totalFail +=0
 				@log.lastAlbumId = result.albumid
-				songs = result.songs
-				delete result.songs
-				if songs isnt null
+				# songs = result.songs
+				# delete result.songs
+
+				if result.songids isnt null
+					# console.log result
+					# process.exit 0
 					@connection.query @query._insertIntoCCAlbums, result, (err)=>
 						if err then console.log "cannt insert album: #{result.albumid} into table. ERROR #{err}"
-						else 
-							for song in songs
-								do (song)=>
-									@connection.query @query._insertIntoCCSongs_Albums, {albumid : result.albumid, songid : song}, (err)->
-										if err then console.log "cannt insert song #{song} into table. ERROR #{err}"
 				else 
 					@stats.passedItemCount -=1
 					@stats.failedItemCount +=1

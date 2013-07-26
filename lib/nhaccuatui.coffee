@@ -205,20 +205,26 @@ class Nhaccuatui extends Module
 		@stats.currentTable = @table.Albums
 		for album in albums
 			do (album)=>
-				if album.songs 
-					songs = album.songs
+
+				
+
+				album.songids = []
+				if album.songs
+					for song in album.songs
+						album.songids.push song.id
 					delete album.songs
-				else songs = []
+				
+				# console.log album
+				# process.exit 0
+
 				@connection.query @query._insertIntoNCTAlbums, album, (err)=>
 					@stats.totalItemCount +=1
 					@stats.currentId = album.id
-					if err then @stats.failedItemCount +=1
-					else
+					if err 
+						console.log err
+						@stats.failedItemCount +=1
+					else 
 						@stats.passedItemCount +=1
-						for song in songs
-							do (song,album) =>
-								@connection.query @query._insertIntoNCTSongs_Albums, {songid: song.id, albumid : album.id}, (err1)=>
-									if err1 then console.log "cannt insert song: #{song.key} of album: #{album.key}. ERROR: #{err1}"
 
 					@utils.printRunning @stats
 					if @stats.totalItemCount is @stats.totalItems
@@ -253,7 +259,7 @@ class Nhaccuatui extends Module
 		if topic then song.topic = topic.replace(/inpHiddenGenre.+value\=|\"|\s\/\>/g,'')
 
 		artists = data.match(/songname.+[\r\t\n]+.+/g)?[0]
-		if artists then song.artists = JSON.stringify artists.match(/title.+"/)[0].replace(/>.+$/,'').replace(/title=|"/g,'').split(',').map((v)->encoder.htmlDecode(v).trim())
+		if artists then song.artists = artists.match(/title.+"/)[0].replace(/>.+$/,'').replace(/title=|"/g,'').split(',').map((v)->encoder.htmlDecode(v).trim()).unique()
 
 		title = data.match(/songname.+[\r\t\n]+.+/g)?[0]
 		if title then song.title = encoder.htmlDecode title.replace(/\- <a href.+/g,'').replace(/^.+\s+.+>/,'').trim()
@@ -366,7 +372,10 @@ class Nhaccuatui extends Module
 				thumbnail : ""
 				link_key : ""
 				description : ""
-				created : "0000-00-00"
+				created : null
+
+			if album.plays is undefined
+				album.plays = 0
 
 			if data.match(/<div\sclass\=\"category\"\>[\s]+.+Thể\sloại\:.+/g)
 
@@ -386,7 +395,7 @@ class Nhaccuatui extends Module
 				if topic then album.topic = topic.replace(/inpHiddenGenre.+value\=|\"|\s\/\>/g,'')
 
 				artists = data.match(/songname.+\s+.+/g)?[0]
-				if artists then album.artists = JSON.stringify artists.match(/title.+"/)[0].replace(/>.+$/,'').replace(/title=|"/g,'').split(',').map((v)->encoder.htmlDecode(v).trim())
+				if artists then album.artists = artists.match(/title.+"/)[0].replace(/>.+$/,'').replace(/title=|"/g,'').split(',').map((v)->encoder.htmlDecode(v).trim())
 
 				title = data.match(/songname.+\s+.+/g)?[0]
 				if title then album.title = encoder.htmlDecode title.replace(/\- <a href.+/g,'').replace(/^.+\s+.+>/,'').trim()
@@ -473,10 +482,21 @@ class Nhaccuatui extends Module
 				count +=1
 				@printUpdateInfo "Count : #{count}.Filtering......"
 				if err then console.log err
+				# console.log results
 				for result in results
-					_tempArray.push result[options.field]
+					if result[options.field].match and result[options.field].match(/^[0-9]+$/)
+						_tempArray.push parseInt(result[options.field],10)
+					else
+						_tempArray.push result[options.field]
 				# console.log JSON.stringify _tempArray
 				temp = temp.concat(items.filter((v)-> if _tempArray.indexOf(v[options.field]) > -1 then return false else return true))
+
+				# console.log JSON.stringify _tempArray
+				# console.log items.filter((v)-> if _tempArray.indexOf(v[options.field]) > -1 then return false else return true)
+				# console.log temp
+
+				# process.exit 0
+
 				if count is nChunks
 					# console.log temp
 					callback(temp)	
@@ -551,7 +571,7 @@ class Nhaccuatui extends Module
 		@stats.currentTable = @table.Albums
 
 		# init conditions to stop
-		nPages = 34
+		nPages = 34 # default 34
 		@stats.totalPageCount = 0
 		@stats.totalPages = nPages * topics.length
 		# init the album array
@@ -595,11 +615,11 @@ class Nhaccuatui extends Module
 			info = info.replace(/<h1 class="name">/,'').replace(/<\/h1>/,'')
 			info = info.split(' - ')
 			video.title = encoder.htmlDecode info[0].trim()
-			video.artists = JSON.stringify info[1].split(', ').map((v)->encoder.htmlDecode(v).trim())
+			video.artists = info[1].split(', ').map((v)->encoder.htmlDecode(v).trim())
 
 		topic = data.match(/nowPlayingListenCount.+\s+.+\s+.+/g)?[0]
 		if topic
-			video.topic = JSON.stringify topic.split("&nbsp;<img").filter((v,idx)-> if idx > 0 then yes else no)
+			video.topic = topic.split("&nbsp;<img").filter((v,idx)-> if idx > 0 then yes else no)
 						.map (v)-> encoder.htmlDecode(v.replace(/<\/.+/,'').replace(/.+>/,'')).trim()
 		
 		thumbnail = data.match(/image_src.+\"(http.+)\"/)?[1]
@@ -632,8 +652,10 @@ class Nhaccuatui extends Module
 				# console.log song
 				if song isnt null
 					@stats.currentId = song.id
+					
 					@connection.query @query._insertIntoNCTSongs, song, (err)->
 						if err then console.log "Cannt insert song: #{song.key}. ERROR #{err} "
+
 				else
 					@stats.passedItemCount -=1
 					@stats.failedItemCount +=1
@@ -653,6 +675,7 @@ class Nhaccuatui extends Module
 				# @utils.printRunning @stats
 
 				# console.log video
+				# process.exit 0
 				if video isnt null
 					@connection.query @query._insertIntoNCTVideos, video, (err)->
 						if err then console.log "Cannt insert video: #{song.key}. ERROR #{err} "

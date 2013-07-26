@@ -55,7 +55,7 @@ class Nghenhac extends Module
 			artist : ""
 			author : ""
 			albumid : 0
-			topic : ""
+			topic : null
 			plays : 0
 			lyric : ""
 			link : ""
@@ -95,7 +95,7 @@ class Nghenhac extends Module
 		topic = data.match(/href.+Index\.html.+»\sXem\stất\scả/)?[0]
 		if topic isnt undefined
 			topic = topic.replace(/href=\"\//g,'').replace(/\/Index.+$/g,'').split(/\//)
-			song.topic = JSON.stringify topic.map (v)->
+			song.topic = topic.map (v)->
 				if a.indexOf(v) > -1
 					b[a.indexOf(v)]
 				else v
@@ -157,7 +157,7 @@ class Nghenhac extends Module
 			nsongs : 0
 			plays : 0
 			thumbnail : ""
-			songs : []
+			songids : []
 
 		a = ["Nhac-tre","Nhac-hai-ngoai","Nhac-Viet-Nam","Nhac-trinh","Nhac-tien-chien","Nhac-dan-toc","Nhac-do","Nhac-Cach-mang","Nhac-Tru-tinh","Nhac-Vang","Nhac-thieu-nhi","Nhac-que-huong","Tat-ca","Nhac-Au-My","Nhac-phim","Viet-Nam","Han-Quoc","Trung-Quoc","Quoc-te","Quang-cao","Nhac-khong-loi","Hoa-tau","Giao-huong","Rap-Viet","Rock-Viet","Nhac-Han","Nhac-Hoa","Nhac-Nhat","Flash-music","Nhac-Phap","TeenPops","RB","RocknRoll","NewAge"]
 		b = ["Nhạc Trẻ","Nhạc Hải Ngoại","Nhạc Việt Nam","Nhạc Trịnh","Nhạc Tiền Chiến","Nhạc Dân Tộc","Nhạc Đỏ","Nhạc Cách Mạng","Nhạc Trữ Tình","Nhạc Vàng","Nhạc Thiếu Nhi","Nhạc Quê Hương","Tất cả","Nhạc Âu Mỹ","Nhạc Phim","Việt Nam","Hàn Quốc","Trung Quốc","Quốc Tế","Quảng Cáo","Nhạc Không Lời","Hòa Tấu","Giao Hưởng","Rap Việt","Rock Việt","Nhạc Hàn","Nhạc Hoa","Nhạc Nhật","Flash music","Nhạc Pháp","Teen Pop","R&B","Rock & Roll","New Age"]
@@ -178,20 +178,22 @@ class Nghenhac extends Module
 		topic = data.match(/href.+Index\.html.+a_Genreviewall/)?[0]
 		if topic isnt undefined
 			topic = topic.replace(/href=\"\//g,'').replace(/\/Album\/1\/Index.+$/g,'').split(/\//)
-			album.topic = JSON.stringify topic.map (v)->
+			album.topic = topic.map (v)->
 				if a.indexOf(v) > -1
 					b[a.indexOf(v)]
 				else v
 
+
 		songs = data.match(/<a\sclass=\"link-black\"\stitle=\"Nghe.+/g)
 		if songs isnt null
 			album.nsongs = songs.length
-			album.songs = songs.map (v)-> 
+			songs = songs.map (v)-> 
 				t = v.match(/\/\d+\//g)?[0]
 				if t isnt undefined
 					t.replace(/\//g,'')
 				else 
 					0
+			album.songids = songs.map (v)-> parseInt v,10
 
 		if data.match(/Chưa\sbầu\schọn\slần\snào/g) is null
 			plays = data.match(/Bầu\schọn\:.+/g)?[0]
@@ -283,15 +285,10 @@ class Nghenhac extends Module
 			@temp.totalFail = 0
 			@utils.printUpdateRunning album.id, @stats, "Fetching..."
 			# console.log album
-			songs = album.songs
-			delete album.songs
+			# process.exit 0
+
 			@connection.query @query._insertIntoNNAlbums, album, (err)=>
 				if err then console.log "Cannot insert album: #{album.id} into table. ERROR : #{err}"
-				else 
-					for sid in songs
-						do (sid)=>
-							@connection.query @query._insertIntoNNSongs_Albums, {aid : album.id, sid : sid}, (err1)->
-								if err1 then console.log "Cannot insert song: #{sid} - album: #{album.id} into table. ERROR: #{err1}"
 			@_updateAlbum(album.id+1) 
 		@_updateAlbum(@log.lastAlbumId+1)
 
@@ -334,6 +331,9 @@ class Nghenhac extends Module
 			@log.lastSongId = song.id
 			@temp.totalFail = 0
 			@utils.printUpdateRunning song.id, @stats, "Fetching..."
+
+			# console.log song
+			# process.exit 0
 			@connection.query @query._insertIntoNNSongs, song, (err)->
 				if err then console.log "Cannt insert song: #{song.id} into table. ERROR : #{err}"
 			@_updateSong(song.id+1) 

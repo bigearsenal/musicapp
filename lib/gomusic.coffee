@@ -43,27 +43,30 @@ class Gomusic extends Module
 			console.log "Error while creating Record of Column CreateTime and UpdateTime "
 		
 		_item = 
-			SongId : song.Id
-			SongName : song.Name.trim()
-			ArtistId : song.ArtistId
-			ArtistName : song.ArtistName.trim()
-			ArtistDisplayName : song.ArtistDisplayName.trim()
-			TopicId : song.TopicId
-			TopicName : song.TopicName.trim()
-			GenreId : song.GenreId
-			GenreName  : song.GenreName.trim()
-			RegionId : song.RegionId
-			RegionName : song.RegionName.trim()
-			Thumbnail :song.Thumbnail
-			Tags : song.Tags
-			Lyric : encoder.htmlDecode song.Lyric
-			FilePath : song.FilePath
-			Bitrate : song.Bitrate
-			Duration : song.Duration
-			FileSize : song.FileSize
-			PlayCount : song.PlayCount + song.CommentCount*3 + song.LikeCount*3 + song.DownloadCount*2
-			CreateTime : _createTime
-			UpdateTime : _updateTime
+			songid : song.Id
+			song_name : song.Name.trim()
+			artistid : song.ArtistId
+			artist_name : song.ArtistName.trim()
+			artist_display_name : song.ArtistDisplayName.trim()
+			topicid : song.TopicId
+			topic_name : song.TopicName.trim()
+			genreid : song.GenreId
+			genre_name  : song.GenreName.trim()
+			regionid : song.RegionId
+			region_name : song.RegionName.trim()
+			thumbnail :song.Thumbnail
+			tags : song.Tags
+			lyric : encoder.htmlDecode song.Lyric
+			file_path : song.FilePath
+			bitrate : song.Bitrate
+			duration : song.Duration
+			file_size : song.FileSize
+			play_count : song.PlayCount + song.CommentCount*3 + song.LikeCount*3 + song.DownloadCount*2
+			create_time : _createTime
+			update_time : _updateTime
+
+		# console.log _item
+		# process.exit 0
 
 		@connection.query @query._insertIntoGMSongs, _item, (err) ->
 		 	if err then console.log "Cannot insert the song into table. ERROR: " + err
@@ -97,58 +100,56 @@ class Gomusic extends Module
 				else
 					_releaseDate = _tempAl + "-01-01"#only have yyyy
 
+		if album.ReleaseDate is "" then _releaseDate = null
 	
 		_album = 
-			AlbumId: album.Id
-			AlbumName : album.Name.trim()
-			MasterArtistId : album.MasterArtistId
-			MasterArtistName : album.MasterArtistName.trim()
-			TopicId : album.TopicId
-			TopicName : album.TopicName.trim()
-			GenreId : album.GenreId
-			GenreName : album.GenreName.trim()
-			RegionId: album.RegionId
-			RegionName : album.RegionName.trim()
-			Duration : album.Duration
-			ReleaseDate : _releaseDate #check again
-			Tags : album.Tags
-			Thumbnail : album.Thumbnail
-			Description : album.Description
-			SongCount : album.SongCount
-			PlayCount : album.PlayCount
-			CreateTime : _createTime
-			UpdateTime : _updateTime
+			albumid: album.Id
+			album_name : album.Name.trim()
+			master_artistid : album.MasterArtistId
+			master_artist_name : album.MasterArtistName.trim()
+			topicid : album.TopicId
+			topic_name : album.TopicName.trim()
+			genreid : album.GenreId
+			genre_name : album.GenreName.trim()
+			regionid: album.RegionId
+			region_name : album.RegionName.trim()
+			duration : album.Duration
+			release_date : _releaseDate #check again
+			tags : album.Tags
+			thumbnail : album.Thumbnail
+			description : album.Description
+			song_count : album.SongCount
+			play_count : album.PlayCount
+			create_time : _createTime
+			update_time : _updateTime
 
-		@connection.query @query._insertIntoGMAlbums,_album,(err) =>
-		 	if err 
-		 		console.log err
-		 	else
-		 		@stats.passedItemCount+=1
-		 		@_updateSongs_Albums _album.AlbumId
-				@utils.printUpdateRunning _album.AlbumId, @stats, "Fetching..."
+		@_updateSongs_Albums _album.albumid,_album
+		@utils.printUpdateRunning _album.albumid, @stats, "Fetching..."
 
 		_album
-	_storeSongs_Album : (songs) ->
+	_storeSongs_Album : (songs,album) ->
+		songids = []
+		song_positions = []
 		for song in songs
-			_song = 
-				AlbumId : song.AlbumId
-				SongId : song.SongId
-				ArtistId : song.ArtistId
-				Position : song.Position
-				AlbumArtistId : song.AlbumArtistId
-			@connection.query @query._insertIntoGMSongs_Albums,_song,(err) ->
-				 if err then console.log err + "at albumid: " + id + " songid: " +_song.SongId + " is not available"			 	
-	_updateSongs_Albums : (id)->
+			songids.push song.SongId
+			song_positions.push song.Position
+		album.songids = songids
+		album.song_positions = song_positions
+		# console.log album
+		# process.exit 0
+		@connection.query @query._insertIntoGMAlbums,album,(err) ->
+			 if err then console.log err + "at albumid: " + album.albumid		 	
+	_updateSongs_Albums : (id,album)->
 		link = "http://music.go.vn/Ajax/AlbumHandler.ashx?type=getsongbyalbum&album=" + id
-		# console.log link + " " +id
+		# console.log link
 		http.get link, (res) =>
 				data = ''
 				res.on 'data', (chunk) =>
 					data += chunk;
 				res.on 'end', () =>
-					songs = JSON.parse data							
+					songs = JSON.parse data	
 					if songs isnt null
-						@_storeSongs_Album songs						
+						@_storeSongs_Album songs,album						
 			.on 'error', (e) =>
 				console.log  "Got error: " + e.message
 	_updateAlbum : (id) -> 
@@ -228,6 +229,15 @@ class Gomusic extends Module
 		@connect()
 		console.log " |"+"Updating Songs to table: #{@table.GMSongs}".magenta
 		@_updateSong @log.lastSongId + 1
+	
+	updateAlbums : ->
+		@connect()
+		@temp = {}
+		@temp.totalFail = 0
+		console.log " |"+"Updating Albums to table: #{@table.GMAlbums}".magenta
+		@stats.currentTable = @table.GMAlbums
+		@_updateAlbum @log.lastAlbumId+1
+
 	showStats : ->
 		@_printTableStats GM_CONFIG.table
 	resetTables : ->

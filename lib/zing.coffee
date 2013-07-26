@@ -24,7 +24,7 @@ class Zing extends Module
 		@table = @config.table
 		@query = 
 			_insertIntoZISongs : "INSERT IGNORE INTO " + @table.Songs + " SET ?"
-			_insertIntoZIAlbums : "INSERT INTO " + @table.Albums + " SET ?"
+			_insertIntoZIAlbums : "INSERT IGNORE INTO " + @table.Albums + " SET ?"
 			_insertIntoZISongs_Albums : "INSERT IGNORE INTO " + @table.Songs_Albums + " SET ?"
 			_insertIntoZIArtists : "INSERT IGNORE INTO " + @table.Artists + " SET ?"
 			_insertIntoZIVideos : "INSERT IGNORE INTO " + @table.Videos + " SET ?"
@@ -33,6 +33,13 @@ class Zing extends Module
 		@eventEmitter = new events.EventEmitter()
 		super @mysqlConfig
 		@logPath = @config.logPath
+		Array::splitBySeperator = (seperator) ->
+			result = []
+			for val in @
+				_a = val.split(seperator)
+				for item in _a
+					result.push item.trim()
+			return result
 		@log = {}
 		@_readLog()
 	encryptId : (id) ->
@@ -142,6 +149,7 @@ class Zing extends Module
 				else callback(null)
 			.on 'error', (e) =>
 				console.log  "Cannot get file. ERROR: " + e.message
+				callback(null)
 
 	# VIDEO SECTION
 	updatevid : ->
@@ -227,21 +235,21 @@ class Zing extends Module
 			if data.match(/Thể\sloại\:/g)
 					_temp= data.match(/Thể\sloại\:.+/g)[0]				
 					_topics = _temp.split('|')[0].replace(/Thể\sloại\:.|\/span\>|\<\/p\>/g,'').split(',')
-					_video.plays = _temp.split('|')[1].replace(/Lượt\sxem\:|\s|\<\/p\>|\./g,'')
+					_video.plays = parseInt _temp.split('|')[1].replace(/Lượt\sxem\:|\s|\<\/p\>|\./g,''),10
 					arr = []
 					arr.push _topic.replace(/\<a.+\"\>|\<\/a\>/g,'').trim() for _topic in _topics
-					_video.topic = JSON.stringify arr
-			else _video.topic = ''
+					_video.topic = arr.splitBySeperator(' / ').unique()
+			else _video.topic = []
 
 			if data.match(/detail-title.+/g)
 				_temp = data.match(/detail-title.+/g)[0]
 									.replace(/detail-title"/g,'')
 				_temp = _temp.split(/<span>-<\/span>/g)
 
-				_video.title = _temp[0].replace(/<\/h1>|>/g,'')
+				_video.title = _temp[0].replace(/<\/h1>|>/g,'').trim()
 				# console.log _temp[1]
-				_video.artists = JSON.stringify _temp[1].match(/Tìm\sbài\shát\scủa.+"/g)[0].replace(/"$/g,'')
-															.replace(/Tìm\sbài\shát\scủa\s/g,'').split(' ft. ').map((v) -> v.trim())
+				_video.artists = _temp[1].match(/Tìm\sbài\shát\scủa.+"/g)[0].replace(/"$/g,'')
+															.replace(/Tìm\sbài\shát\scủa\s/g,'').split(' ft. ').map((v) -> v.trim()).unique()
 				
 			if data.match(/og:image/g)
 				# console.log data.match(/og:image.+/g)[0]
@@ -294,6 +302,10 @@ class Zing extends Module
 					@stats.passedItemCount += 1
 					@log.lastVideoId = id
 					@temp.totalFail = 0
+
+					# console.log video
+					# process.exit 0
+
 					@connection.query @query._insertIntoZIVideos, video, (err)=>
 						if err then console.log "Cannot insert video #{video.videoid} into table. Error: #{err}"					
 			else 
@@ -324,7 +336,7 @@ class Zing extends Module
 		album = 
 			aid : albumid
 			albumid : @_convertToId albumid
-		album.album_encodedId = data.match(/xmlURL.+\&amp\;/g)[0].replace(/xmlURL\=http\:\/\/mp3\.zing\.vn\/xml\/album\-xml\//g,'').replace(/\&amp\;/,'') 
+		album.album_encoded_id = data.match(/xmlURL.+\&amp\;/g)[0].replace(/xmlURL\=http\:\/\/mp3\.zing\.vn\/xml\/album\-xml\//g,'').replace(/\&amp\;/,'') 
 		
 		if data.match(/Lượt\snghe\:\<\/span\>.+/g)
 			album.plays = data.match(/Lượt\snghe\:\<\/span\>.+/g)[0]
@@ -340,15 +352,15 @@ class Zing extends Module
 		if data.match(/Số\sbài\shát\:/g)
 			album.nsongs = data.match(/Số\sbài\shát\:.+/g)[0]
 								.replace(/Số\sbài\shát\:|\<\/span\>\s|\<\/p\>/g,'')
-		else album.nsongs = ''
+		else album.nsongs = 0
 
 		if data.match(/Thể\sloại\:/g)
 			_topics = data.match(/Thể\sloại\:.+/g)[0]
 								.replace(/Thể\sloại\:.|\/span\>|\<\/p\>/g,'').split(',')
 			arr = []
 			arr.push _topic.replace(/\<a.+\"\>|\<\/a\>/g,'').trim() for _topic in _topics
-			album.topic = JSON.stringify arr
-		else album.topic = ''
+			album.topic =  arr.splitBySeperator(' / ').unique()
+		else album.topic = []
 
 		if data.match(/_albumIntro\"\sclass\=\"rows2.+/g)
 			album.description = encoder.htmlDecode data.match(/_albumIntro\"\sclass\=\"rows2.+/g)[0]
@@ -360,11 +372,11 @@ class Zing extends Module
 			_temp_artist = encoder.htmlDecode _tempArr[_tempArr.length-1]
 
 			if _temp_artist.search(" ft. ") > -1
-				album.album_artist = JSON.stringify _temp_artist.trim().split(' ft. ').map((v) -> v.trim())
-			else album.album_artist = JSON.stringify _temp_artist.trim().split(',').map((v) -> v.trim())
+				album.album_artist = _temp_artist.trim().split(' ft. ').map((v) -> v.trim()).unique()
+			else album.album_artist =  _temp_artist.trim().split(',').map((v) -> v.trim()).unique()
 
 			_tempArr.splice(-1)
-			album.album_name = encoder.htmlDecode _tempArr.join(' - ')
+			album.album_name = encoder.htmlDecode _tempArr.join(' - ').trim()
 		
 		if data.match /album-detail-img/g
 			_temp =  data.match(/album-detail-img.+/g)[0].replace(/album-detail-img|/)
@@ -385,7 +397,7 @@ class Zing extends Module
 			if arr[arr.length-1] is "ZW66BIIA"
 				arr.pop(arr.length-1)
 				
-			songids = arr.map (v)=> @_convertToInt v
+			album.songids = arr.map (v)=> @_convertToInt v
 		else album.description = ""
 		data = ""
 		
@@ -393,15 +405,9 @@ class Zing extends Module
 		# console.log songs_albums
 		# Starting to insert new album
 		
-		@connection.query @query._insertIntoZIAlbums, album, (err)=>
-			if !err 
-				for sid in songids
-					do (sid, albumid)=>
-						_item = 
-							aid : albumid
-							sid : sid
-						@connection.query @query._insertIntoZISongs_Albums, _item, (err)->
-							if err then console.log "Cannot insert new record: #{JSON.stringify(_item)} into Songs_Albums. ERROR: #{err}"
+		if album.nsongs > 0 or not album.album_name.match(/Bảng Xếp Hạng Bài Hát.+/)
+			@temp.albums.push album
+
 		album
 	_updateAlbums : (albumid)->
 		link = "http://mp3.zing.vn/album/joke-link/#{@_convertToId albumid}.html"
@@ -427,24 +433,157 @@ class Zing extends Module
 
 				if @temp.totalFail >= @temp.nStop
 					@utils.printFinalResult @stats
-					@_writeLog @log
-					@eventEmitter.emit "update-album-finish"
+					
+					# going to step 2: finding new songs in new found albums
+					@updateNewSongsOfNewAlbums @temp.albums
+
+					
 				else @_updateAlbums albumid+1
 
 			catch e
 				console.log "CANNOT fetch albumid : #{albumid}. ERROR: #{e}"
 				@stats.failedItemCount +=1
 				@temp.totalFail+=1
+	
+	insertNewAlbum : (newAlbums)->
+		
+		console.log " |" + "STEP 4: Inserting #{newAlbums.length} new albums into DB ".magenta
+		if newAlbums.length is 0
+			console.log "No new albums - step 4 has been skipped"
+			@eventEmitter.emit "update-album-finish"
+		else 
+			@resetStats()
+			@stats.totalItems = newAlbums.length
+			@stats.currentTable = @table.Albums
+
+		for album in newAlbums
+			do (album)=>
+				@connection.query @query._insertIntoZIAlbums, album, (err, result)=>
+					@stats.totalItemCount +=1
+					if err 
+						console.log err
+						@stats.failedItemCount +=1
+					else 
+						@stats.passedItemCount +=1
+					@utils.printRunning @stats
+					if @stats.totalItems is @stats.totalItemCount
+						# Writing new albums to log file
+						if not @temp.debugMode 
+							@_writeLog @log
+							console.log ""
+							console.log "Last album id has been inserted into log file!"
+
+						@utils.printFinalResult @stats
+						# This event will be triggered at the end of the procedure of find new albums
+						# 
+						@eventEmitter.emit "update-album-finish"
+	updateNewSongsOfNewAlbums : (newAlbums)->
+		songids = []
+
+		if newAlbums.length is 0
+			console.log " |" + "Skipped step 2 and 3 (finding and getting new songs)".magenta
+			@insertNewAlbum(newAlbums)
+		else 
+			for album in newAlbums
+				if album.songids
+					for id in album.songids
+						songids.push id
+			songids = songids.unique()
+			console.log " |" + "STEP 2: Finding new songs in #{newAlbums.length} new albums after albums being filtered".magenta
+			console.log " |" + "Found #{songids.length} songs. Querying new songs in DB...."
+			
+
+			_query = "select sid from zisongs where sid in (#{songids.join(',')})"
+
+			@connection.query _query, (err,results)=>
+				existedSongs = []
+				newSongIds = []
+				for song in results
+					existedSongs.push song.sid
+				for id in songids
+					if existedSongs.indexOf(id) is -1
+						newSongIds.push id
+				console.log " |" + "Found #{newSongIds.length} NEW songs. "
+				if newSongIds.length is 0
+					console.log " STEP 3: Getting #{newSongIds.length} new songs - has been skipped!"
+					@insertNewAlbum(newAlbums)
+				else 
+					console.log " |" + "STEP 3: Getting #{newSongIds.length} new songs".magenta
+					@resetStats()
+					@stats.totalItems = newSongIds.length
+					@stats.currentTable = @table.Songs
+					for songid in newSongIds
+						do (songid)=>
+							link = "http://mp3.zing.vn/bai-hat/joke-link/#{@_convertToId songid}.html"
+							# console.log link
+							@_getFileByHTTP link, (data)=>
+								try 	
+									@stats.totalItemCount +=1
+									@stats.currentId = songid
+									if data isnt null
+										@_processSong songid, data
+										data = ""
+										@stats.passedItemCount +=1
+									else 
+										@stats.failedItemCount+=1
+									@utils.printRunning @stats
+									if @stats.totalItems is @stats.totalItemCount
+										@utils.printFinalResult @stats
+										@insertNewAlbum(newAlbums)
+								catch e
+									console.log "Error occur in STEP 3 and 4  while updating new albums: #{e}"
+
+
 	updateAlbums : ->
 		@connect()
+
 		console.log "Running on: #{new Date(Date.now())}"
 		console.log " |"+"Update Albums and Songs_Albums to tables: #{@table.Albums} & #{@table.Songs_Albums}".magenta
 		@temp = {}
 		@temp.totalFail = 0
 		@temp.nStop = 1000
+		@temp.albums = []
+		@temp.debugMode = false # will trigger log writing
 		console.log "The program will stop after #{@temp.nStop} consecutive albums failed"
 		@stats.currentTable = @table.Albums + " & " + @table.Songs_Albums
 		@_updateAlbums @log.lastAlbumId+1
+
+	updateAlbumsFromRange : (albumids)->
+		console.log "Func updateAlbumsFromRange triggered!"
+		@resetStats()
+		@stats.totalItems = albumids.length
+		@temp = {}
+		@temp.albums = []
+		@temp.debugMode  = true # prevent procedure from writing to log file
+		for albumid in albumids
+			do (albumid)=>
+				link = "http://mp3.zing.vn/album/joke-link/#{@_convertToId albumid}.html"
+				@_getFileByHTTP link, (data)=>
+					try 
+						@stats.totalItemCount +=1
+						@stats.currentId = albumid
+						if data isnt null
+							if data.match(/xmlURL.+\&amp\;/g) is null 
+								@stats.failedItemCount += 1
+								# console.log "ERROR : album #{albumid}: does not exist".red
+							else
+								@stats.passedItemCount +=1	
+								@_processAlbum albumid, data	
+						else 
+							@stats.failedItemCount +=1
+
+						@utils.printRunning @stats
+
+						if @stats.totalItemCount is @stats.totalItems
+							@utils.printFinalResult @stats
+							
+							# going to step 2: finding new songs in new found albums
+							@updateNewSongsOfNewAlbums @temp.albums
+
+					catch e
+						console.log "CANNOT fetch albumid at updateAlbumsFromRange : #{albumid}. ERROR: #{e}"
+						@stats.failedItemCount +=1
+
 
 	_updateLyric : (song) ->
 		link = "http://mp3.zing.vn/ajax/lyrics/lyrics?from=0&id=#{@_convertToId song.sid}&callback="
@@ -507,7 +646,7 @@ class Zing extends Module
 								.replace(/Thể\sloại\:|\s\|\sLượt\snghe/g,'').split(',')
 			arr = []
 			arr.push _topic.replace(/\<a.+\"\>|\<\/a\>/g,'').trim() for _topic in _topics
-			_song.topic = JSON.stringify arr
+			_song.topic = arr.splitBySeperator(' / ').unique()
 		else _song.topic = ''
 
 		if data.match(/xmlURL.+/)
@@ -523,7 +662,7 @@ class Zing extends Module
 				try
 					data = JSON.parse data
 					_song.song_name	= encoder.htmlDecode data.data[0].title.trim()
-					_song.song_artist = JSON.stringify encoder.htmlDecode(data.data[0].performer.trim()).split(',').map((v) -> v.trim())
+					_song.song_artist = encoder.htmlDecode(data.data[0].performer.trim()).split(',').map((v) -> v.trim()).unique()
 					_song.song_link = data.data[0].source
 
 					_str =  _song.song_link.replace(/^.+load-song\//g,'').replace(/^.+song-load\//g,'')
@@ -540,6 +679,7 @@ class Zing extends Module
 						sid : _song.sid
 
 					# console.log _song
+					# process.exit 0
 					@connection.query @query._insertIntoZISongs, _song, (err)=>
 						if err then console.log "Cannot insert song: #{_song.songid} into table"
 						else @_updateLyric _tempSong
@@ -599,6 +739,8 @@ class Zing extends Module
 	# ---------------------------------------
 	# Update songs and albums with RANGE
 	fetchRows : (range0, range1, type, onSuccess)->
+		range0 = parseInt range0,10
+		range1 = parseInt range1,10
 		# type 1 is song, 2 is album, 3 is video
 		if type is 1
 			typeId = "sid"
@@ -653,19 +795,22 @@ class Zing extends Module
 		@fetchRows range0, range1, type, (arr)=>
 			console.log "The # of items is: #{arr.length}"
 			@stats.totalItems = arr.length
-			arr.map (id)=>
-				# console.log id
-				if type is 1 then link = "http://mp3.zing.vn/bai-hat/joke-link/#{@_convertToId id}.html"
-				else if type is 2 then link = "http://mp3.zing.vn/album/joke-link/#{@_convertToId id}.html"
-				else if type is 3 then link = "http://mp3.zing.vn/video-clip/oke-link/#{@_convertToId id}.html"
-				@_getFileByHTTP link, (data)=>
+			if type is 2
+				@updateAlbumsFromRange arr
+			else 
+				arr.map (id)=>
+					# console.log id
+					if type is 1 then link = "http://mp3.zing.vn/bai-hat/joke-link/#{@_convertToId id}.html"
+					# else if type is 2 then link = "http://mp3.zing.vn/album/joke-link/#{@_convertToId id}.html"
+					else if type is 3 then link = "http://mp3.zing.vn/video-clip/joke-link/#{@_convertToId id}.html"
+					@_getFileByHTTP link, (data)=>
 						try
 							# console.log link
 							@stats.totalItemCount +=1
 							@stats.currentId = id
 							if data isnt null
 								if type is 1 then @_processSong id, data
-								else if type is 2 then @_processAlbum id, data
+								# else if type is 2 then @_processAlbum id, data
 								else if type is 3  
 									video = @_processVideo id, data
 									if video isnt null 
@@ -682,6 +827,8 @@ class Zing extends Module
 							if @stats.totalItems is @stats.totalItemCount
 								@utils.printFinalResult @stats
 								@eventEmitter.emit "fetch-new-songs-done"
+						catch e
+							console.log "error at _updateSongsOrAlbumsWithRange #{e}"
 
 	updateRecording : (range0,range1, type) ->
 
@@ -714,8 +861,8 @@ class Zing extends Module
 				if err then console.log "cannt getting max item from table. ERROR: #{err}"
 				else 
 					for result in results
-						max = result.max
-						min = result.min
+						max = parseInt(result.max,10)
+						min = parseInt(result.min,10)
 						console.log "Fetching items in range: #{min} - #{max}"
 						@_updateSongsOrAlbumsWithRange min, max, type
 		else

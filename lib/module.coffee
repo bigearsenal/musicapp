@@ -1,4 +1,4 @@
-mysql = require '../node_modules/mysql'
+
 fs = require 'fs'
 moduleKeywords = ['extended', 'included']
 MYSQL_DEFAULT_CONFIG = 
@@ -23,12 +23,30 @@ class Module
 			currentTable : ""
 		@logPath = ""
 		@hasConnection = false
+		@postgresqlEnable = true
+		Array::unique = -> @filter (a, b) => (@.indexOf(a, b + 1) < 0)
+		if @postgresqlEnable
+			PGWrapper = require '../lib/pgwrapper'
+			@wp = new PGWrapper()
+			@connection = 
+				escape : (str)=>
+					return @wp.escape(str)
+				connect : =>
+					@wp.getConnection()
+				getQuery : (query,item)=>
+					@wp.getQuery(query,item)
+				query : (query,param1,callback)=>
+					@wp.getQueryMethod(query,param1,callback)
+				end : =>
+					@wp.endConnection()
+		else 
+			mysql = require '../node_modules/mysql'
+			@connection = mysql.createConnection @serverConfig
+
 	connect : ->
 		if @hasConnection is false
-			@connection = mysql.createConnection @serverConfig
 			@connection.connect()
 			@hasConnection = true
-		@
 
 	resetStats : ->
 		@stats = 

@@ -38,8 +38,8 @@ class Nhacso extends Site
 			islyric : 0
 			mp3link : ""
 			lyric : ""
-			created : "0000-00-00"
-			updated : "0000-00-00"
+			created : null
+			updated : null
 
 		song.name = @getValueXML data,"name",1
 		song.artist = @getValueXML data, "artist", 0
@@ -144,6 +144,10 @@ class Nhacso extends Site
 			@stats.passedItemCount +=1
 			@log.lastSongId = song.songid
 			@temp.totalFail = 0
+
+			# console.log song
+			# process.exit 0
+
 			@connection.query @query._insertIntoSongs, song, (err)->
 				if err then console.log "Cannt insert song: #{song.songid} into database. ERROR: #{err}"
 			@utils.printUpdateRunning song.songid, @stats, "Fetching..."
@@ -202,7 +206,7 @@ class Nhacso extends Site
 			nsongs : 0
 			plays : 0
 			thumbnail : ""
-			songs : []
+			songids : []
 					
 		temp = data.match(/class=\"intro_album_detail.+[^]+.+id=\"divPlayer/g)?[0]
 		if temp
@@ -222,9 +226,9 @@ class Nhacso extends Site
 		if topic then  album.topic = @processStringorArray topic.replace(/\<li\sclass\=\"bg\"\>\<a\shref\s\=\"http\:\/\/nhacso\.net\/.+\"\>/,'')
 										.replace(/\<\/a\>\<\/li\>/,'')
 
-		songs = data.match(/songid_\d+/g)
-		if songs 
-			songs.map (v)-> album.songs.push parseInt(v.replace(/songid_/g,''),10)
+		songids = data.match(/songid_\d+/g)
+		if songids 
+			songids.map (v)-> album.songids.push parseInt(v.replace(/songid_/g,''),10)
 			@_updateAlbum options.id + 1
 			@getTotalSongsInAlbum album
 		else
@@ -268,14 +272,12 @@ class Nhacso extends Site
 			@stats.passedItemCount +=1
 			@log.lastAlbumId = album.albumid
 			@temp.totalFail = 0
-			songs = album.songs
-			delete album.songs
+
+			# console.log album
+			# process.exit 0
+
 			@connection.query @query._insertIntoAlbums, album, (err)=>
 				if err then console.log "Cannt insert album: #{album.albumid} into database. ERROR: #{err}"
-				else 
-					for song in songs
-						@connection.query @query._insertIntoSongs_Albums, {albumid: album.albumid, songid: song}, (err1)->
-							if err then console.log "Cannt insert song-album into table. ERROR: #{err1}"
 			@utils.printUpdateRunning album.albumid, @stats, "Fetching..."
 			
 		@_updateAlbum @log.lastAlbumId+1
@@ -307,7 +309,7 @@ class Nhacso extends Site
 			link : ""
 			sublink : ""
 			thumbnail : ""
-			created : "0000-00-00"
+			created : null
 
 		temp = data.match(/<p class=\"title_video.+[^]+.+Đăng bởi/g)?[0]
 
@@ -319,7 +321,7 @@ class Nhacso extends Site
 			if official then video.official = 1
 
 			artists = temp.match(/<h2>.+<\/h2>/g)
-			if artists then video.artists = @processStringorArray artists.map((v)->v.replace(/<h2>|<\/h2>/g,''))
+			if artists then video.artists = artists.map((v) => @processStringorArray  v.replace(/<h2>|<\/h2>/g,'')).unique()
 
 		video.topic = @processStringorArray data.match(/<li><a href=\"http:\/\/nhacso.net\/the-loai-video.+html\">(.+)<\/a>.+/)?[1]
 
@@ -380,7 +382,10 @@ class Nhacso extends Site
 			@stats.totalItemCount +=1
 			@stats.passedItemCount +=1
 			@log.lastVideoId = video.videoid
-			@temp.totalFail = 0			
+			@temp.totalFail = 0		
+
+			# console.log video
+			# process.exit 0	
 
 			@connection.query @query._insertIntoVideos, video, (err)=>
 				if err then console.log "Cannt insert video: #{video.videoid} into database. ERROR: #{err}"
@@ -435,8 +440,12 @@ class Nhacso extends Site
 
 			for song in songs
 				do (song)=>
-					_u = "update #{@table.Songs} SET category = #{@connection.escape(JSON.stringify(song.cats))} where songid=#{song.id}"
+					# _u = "update #{@table.Songs} SET category = #{@connection.escape(JSON.stringify(song.cats))} where songid=#{song.id}"
 					# console.log _u
+					# # 
+					_u = "update #{@table.Songs} SET category = ARRAY[#{song.cats.map((v)=>if v.trim then @connection.escape(v.trim()) else @escape(v) ).join(',')}] where songid=#{song.id}"
+					# console.log _u
+					# process.exit 0
 					@connection.query _u, (err)->
 						if err then console.log "Song:#{song.id} has an error: #{err}"
 
@@ -475,8 +484,12 @@ class Nhacso extends Site
 			# console.log albums
 			for album in albums
 				do (album)=>
-					_u = "update #{@table.Albums} SET category = #{@connection.escape(JSON.stringify(album.cats))} where albumid=#{album.id}"
+					# _u = "update #{@table.Albums} SET category = #{@connection.escape(JSON.stringify(album.cats))} where albumid=#{album.id}"
 					# console.log _u
+					# 
+					_u = "update #{@table.Albums} SET category = ARRAY[#{album.cats.map((v)=>if v.trim then @connection.escape(v.trim()) else @escape(v) ).join(',')}] where albumid=#{album.id}"
+					# console.log _u
+					# process.exit 0
 					@connection.query _u, (err)->
 						if err then console.log "Album:#{album.id} has an error: #{err}"
 			if @stats.totalItems is @stats.totalItemCount

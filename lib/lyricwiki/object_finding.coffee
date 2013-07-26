@@ -2,6 +2,16 @@ class ObjectFinding
 	constructor : (@table,@connection)->
 		@maxArtistId = 0
 		@maxAlbumId = 0
+		Encoder = require('../../node_modules/node-html-encoder').Encoder
+		@encoder = new Encoder('entity');
+	processStringorArray : (a)->
+		if a instanceof Array
+			JSON.stringify a.map((v)=>@encoder.htmlDecode(v).trim())
+		else 
+			if a isnt undefined
+				return @encoder.htmlDecode(a).trim()
+			else return undefined
+
 	getMaxArtistId : ->
 		return @maxArtistId
 	getMaxAlbumId : ->
@@ -12,14 +22,17 @@ class ObjectFinding
 			if err then	callback "Cannot find max #{field} of #{table}", null
 			else 
 				for item in result
-					callback null, item.max
+					if item.max and item.max.match and item.max.match(/^[0-9]+$/)
+						callback null, parseInt(item.max)
+					else 
+						callback null, item.max
 	getMaxArtistIdinDB : (callback) ->
 		@getMaxId "id", @table.Artists, (err,maxId)=>
-			@maxArtistId = maxId
+			@maxArtistId = parseInt(maxId,10)
 			callback(err,maxId)
 	getMaxAlbumIdinDB : (callback) ->
 		@getMaxId "id", @table.Albums, (err,maxId)=>
-			@maxAlbumId = maxId
+			@maxAlbumId = parseInt(maxId,10)
 			callback(err,maxId)
 	# result is yes/no
 	# callback(error:String,isFound:Boolean)
@@ -96,8 +109,11 @@ class ObjectFinding
 							else callback null,album
 			else callback null, result				
 	addNewSong : (song,callback)->
-		if song.id
-			delete song.id
+		if song.id is undefined then delete song.id
+		if song.year is undefined then song.year = null
+		# console.log "anabianh"
+		# console.log song
+		# process.exit 0
 		@connection.query "INSERT IGNORE INTO #{@table.Songs} SET ?",song, (err)->
 			callback err
 				
@@ -146,7 +162,7 @@ class ObjectFinding
 					for artist, index in newArtists
 						_artist = 
 							name : artist
-							id : @maxArtistId + index + 1
+							id : parseInt(@maxArtistId,10) + parseInt(index,10) + 1
 						_artists.push _artist
 
 					callback(null,_artists)
@@ -161,7 +177,7 @@ class ObjectFinding
 					@filterNewAlbums albums, (newAlbums)=>
 						for album, index in newAlbums
 							_album = 
-								id : @maxAlbumId + index + 1
+								id : parseInt(@maxAlbumId,10) + parseInt(index,10) + 1
 								title : album.title
 								artist_id : album.artist_id
 								artist : album.artist
@@ -202,11 +218,18 @@ class ObjectFinding
 					# console.log "assignNewIdsToAlbums triggered inside insertAlbumsToDB"
 					count = 0
 					hasError = null
+					# console.log JSON.stringify newAlbums
+					# console.log "************************"
+					# console.log newAlbums.length
+					# console.log "************************"
 					if newAlbums.length is 0 then callback null
 					else 
 						for album, index in newAlbums
 							do (album,index)=>
+								# console.log "****************"
+								# console.log album
 								@connection.query "INSERT IGNORE INTO #{@table.Albums} SET ?",album, (err)->
+									# console.log "callbackssdfsdf -- album"
 									count +=1
 									if err 
 										console.log "Cannot insert new album: #{album}. ERROR:#{err}"
@@ -239,7 +262,7 @@ class ObjectFinding
 								else
 									_album = 
 										title : album.title
-										artist_id : result.id
+										artist_id : parseInt(result.id,10)
 										artist : album.artist
 										created_at : album.created_at
 										year : album.year
@@ -257,7 +280,7 @@ class ObjectFinding
 								else
 									_song = 
 										title : song.title
-										artist_id : result.id
+										artist_id : parseInt(result.id,10)
 										artist : song.artist
 										created_at : song.created_at
 									_songs.push _song
@@ -286,5 +309,43 @@ class ObjectFinding
 						if result[0].max
 							callback null,result[0].max
 						else callback "Max value can not be found!",null
+
+
+
+	addArtistidAndAlbumidToANewSong : (song,callback) ->
+		@findArtist song.artist,(err,result)=>
+			if err then console.log err
+			else	
+				song.artist_id =  parseInt(result.id,10)
+				if song.album
+					@findAlbum song.album,song.artist_id, (err,result)=>
+						if err  
+							if err.match and err.match(/Cannt find item on condition/)
+								album = 
+									title : song.album.replace(/\([0-9]+\)/,'').trim()
+									artist_id : parseInt(song.artist_id,10)
+									artist : song.artist
+									# year : song.album.match(/\(([0-9]+)\)/,'')?[1]
+									created_at  : song.created_at
+								if song.album and song.album.match
+									album.year = song.album.toString().match(/\(([0-9]+)\)/,'')?[1]
+								else album.year = null
+								@addNewAlbum album,(err,al)=>
+									if err then console.log err
+									else 
+										song.album_id = parseInt(al.id,10)
+										if song.album
+											song.album = @processStringorArray song.album.replace(/\([0-9]+\)/,'').trim()
+										callback(song)
+							else console.log err
+						else 
+							song.album_id  = parseInt(result.id,10)
+							if song.album
+								song.album = @processStringorArray song.album.replace(/\([0-9]+\)/,'').trim()
+							callback(song)
+				else 
+					if song.album
+						song.album = @processStringorArray song.album.replace(/\([0-9]+\)/,'').trim()
+					callback(song)
 
 module.exports = ObjectFinding

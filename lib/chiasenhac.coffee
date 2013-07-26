@@ -29,13 +29,13 @@ class Nhacso extends Site
             if temp
                   song.file_href = "http://chiasenhac.com/" + temp[1]
                   song.title = @processStringorArray temp[2]
-                  song.artists = @processStringorArray temp[3].split(';').map (v)-> v.trim()
+                  song.artists =  temp[3].split(';').map (v)=> @processStringorArray v.trim()
                   temp = temp[0].replace(/\-&gt; Download.+$/,'')
                   temp = temp.split(/\-&gt;/).map (v)-> v.replace(/<\/a>/,'').replace(/^.+>/,'').replace(/\.\.\./,'').trim()
                   _t = []
                   temp.forEach (v,index)->  if index > 0 then v.split(/,/).forEach (v1)-> _t.push v1.trim() else _t.push v
-                  _t = _t.map (v)-> v.replace(v[0],v[0].toUpperCase())
-                  song.topic = JSON.stringify _t.filter (element, index, array)-> array.indexOf(element) is index
+                  _t = _t.map (v)=>  @processStringorArray v.replace(v[0],v[0].toUpperCase())
+                  song.topic = _t.filter (element, index, array)-> array.indexOf(element) is index
 
             downloads = data.match(/<a href=\"http:\/\/download.+\"([0-9]+) downloads/)
             if downloads then song.downloads = parseInt downloads[1],10
@@ -61,7 +61,7 @@ class Nhacso extends Site
                                       link : _t[1].replace(/(http.+\/).+(\..+$)/,"$1file-name$2")
                                       type : _t[2].toLowerCase()
                                       file_size : parseFloat(_t[4])*1024|0
-                                if song.topic.search('Video Clip') > -1
+                                if song.topic.toString().search('Video Clip') > -1
                                       _format.resolution = _t[3].toLowerCase()
                                 else _format.bitrate = _t[3].toLowerCase()
                                 return _format
@@ -140,21 +140,21 @@ class Nhacso extends Site
 
       # get song stats : album' name, album link, lyric
       processSongStats : (data, options) =>
-            song =
-                  id : options.id 
-                  author : ""
-                  album_title : ""
-                  album_link : ""
-                  album_coverart : ""
-                  producer : ""
-                  plays : 0
-                  date_released : ""
-                  lyric : ""
+            song = options.song
+            song.id  = options.id 
+            song.author = []
+            song.album_title = ""
+            song.album_link = ""
+            song.album_coverart = ""
+            song.producer = ""
+            song.plays = 0
+            song.date_released = ""
+            song.lyric = ""
 
 
             author = data.match(/>Sáng tác:.+/)?[0]
             if author
-                  song.author = @processStringorArray JSON.stringify author.split('>;').map (v)-> v.replace(/<\/a><\/b>.+$/,'').replace(/^.+>/,'').replace(/<\/a.+$|<\/a/,'')
+                  song.author =  author.split('>;').map (v)=> @processStringorArray v.replace(/<\/a><\/b>.+$/,'').replace(/^.+>/,'').replace(/<\/a.+$|<\/a/,'')
 
             album = data.match(/>Album:.+/)?[0]
             if album 
@@ -277,13 +277,13 @@ class Nhacso extends Site
                         @log.lastSongId = song.id
                         @temp.totalFail = 0
                         # console.log song
-                        @connection.query @query._insertIntoSongs, song, (err)=>
-                              if err then console.log "Cannt insert song: #{song.id} into database. ERROR: #{err}"
-                              else
-                                    link = song.file_href 
-                                    _options = 
-                                          id : song.id
-                                    @getFileByHTTP link, @processSongStats, @onUpdateSongStatsFail, _options
+                        # process.exit 0
+                        do (song)=>
+                              link = song.file_href 
+                              _options = 
+                                    id : song.id
+                                    song : song
+                              @getFileByHTTP link, @processSongStats, @onUpdateSongStatsFail, _options
                   else 
                         @stats.passedItemCount -=1
                         @stats.failedItemCount +=1
@@ -305,60 +305,53 @@ class Nhacso extends Site
             # EVENT TRIGGERED when fetch song's stats is done
             @eventEmitter.on "result-song-stats", (song)=>
                   if song isnt null
-                        _u = " update #{@table.Songs} SET "
-                        _u += " author= #{@connection.escape song.author}, "
-                        _u += " album_title=#{@connection.escape song.album_title}, "
-                        _u += " album_link=#{@connection.escape song.album_link}, "
-                        _u += " album_coverart=#{@connection.escape song.album_coverart}, "
-                        _u += " producer=#{@connection.escape song.producer}, "
-                        _u += " plays=#{song.plays}, "
-                        _u += " lyric=#{@connection.escape song.lyric}, "
-                        _u += " date_released=#{@connection.escape song.date_released} "
-                        _u += " WHERE id=#{song.id} "
-                        # console.log _u
-                        @connection.query _u,(err)->
-                              if err then console.log " Cannot update song #{song.id}. ERROR: #{err}"
+                        @connection.query @query._insertIntoSongs,song, (err)->
+                              if err then console.log " Cannot insert song #{song.id}. ERROR: #{err}"
             @_updateSong @log.lastSongId+1
 
       #NOTICE: CANNT RUN WITHOUT  @temp.reservedLastSongId VARIABLE
       updateAlbums : ->
             @connect()
-            @showStartupMessage "Updating new albums  to table", @table.Albums
+
+
+            @showStartupMessage "Updating new albums  to table whose new ids > #{@temp.reservedLastSongId}", @table.Albums
             _q = "select max(id) as max from #{@table.Albums}"
             @connection.query _q, (err,result)=>
                   if err then console.log "cannt get max id from table. ERROR: #{err}"
                   else 
                         max = result[0].max
-                        _selectQuery = "select title,artists,link ,sum(nsongs) as nsongs,coverart, producer,floor(avg(downloads)) as downloads, " +
-                              "floor(avg(plays)) as plays,date_released, group_concat(songids) as songids  from " + 
-                              "(" + 
-                              "select album_title as title,artists,album_link as link, count(*) as nsongs, album_coverart as coverart, "+ 
-                              "producer, floor(avg(downloads)) as downloads, floor(avg(plays)) as plays, date_released, group_concat(id) as songids from #{@table.Songs} where id > #{@temp.reservedLastSongId} " + 
-                              "and album_title <> '' and album_link <> '' group by album_coverart " +
-                              ") as anbinh  " + 
-                              "group by title"
+                        _selectQuery = "select title,array_agg_csn_artist_cat(artists) as artists,array_agg_csn_cat(topic) as topic, min(link) as link ,
+                              sum(nsongs) as nsongs,max(coverart) as coverart, max(producer) as producer,
+                              floor(avg(downloads)) as downloads, floor(avg(plays)) as plays,
+                              max(date_released) as date_released , max(date_created) as date_created, array_agg_cat_unique(songids) as songids  
+                              from 
+                              (
+                              select max(album_title) as title,array_agg_csn_artist_cat(artists) as artists,
+                              array_agg_csn_cat(topic) as topic , min(album_link) as link, 
+                              count(*) as nsongs, album_coverart as coverart, max(producer) as producer, 
+                              floor(avg(downloads)) as downloads, floor(avg(plays)) as plays, 
+                              max(date_released) as date_released,max(date_created) as date_created, array_agg(id) as songids 
+                              from #{@table.Songs} 
+                              where id > #{@temp.reservedLastSongId} 
+                              and album_title <> '' 
+                              and album_link <> '' 
+                              group by album_coverart 
+                              ) as anbinh
+                              group by title".replace(/\s{4}/g,' ').replace(/\s{4}/g,' ').replace(/\s{4}/g,' ')
                         # console.log _selectQuery
                         @connection.query _selectQuery, (err1,albums)=>
                               if err1 then console.log "Cannt query new albums from available songs. ERROR:#{err1}"
                               else
                                     console.log "The total new albums: #{albums.length}" 
                                     for album in albums
-                                          album.id = max+1
-                                          max += 1
-                                          do (album)=>
-                                                songids = album.songids.split(',').map (v)-> parseInt v, 10
-                                                soals = []
-                                                songids.forEach (v) -> soals.push {"album_id" : album.id, "song_id" : v}
-                                                _al = album
-                                                delete _al.songids
-                                                do (_al,soals)=>
-                                                     @connection.query @query._insertIntoAlbums, _al, (err2)=>
-                                                           if err2 then console.log "Cannot insert new album in table . ERROR: #{err2}"
-                                                           else 
-                                                                 for soal in soals
-                                                                      do (soal)=>
-                                                                             @connection.query @query._insertIntoSongs_Albums, soal, (err3)=>
-                                                                                    if err3 then console.log "cannt insert new recording #{soal} into song_album table. Error: #{err3}"
+                                          album.nsongs = parseInt(album.nsongs,10)
+                                          album.downloads = parseInt(album.downloads,10)
+                                          album.plays = parseInt(album.plays,10)
+                                          album.date_created = @formatDate album.date_created
+                                          # console.log album
+                                          # process.exit 0
+                                          @connection.query @query._insertIntoAlbums,album, (err)->
+                                                if err then console.log " Cannot insert album #{album.id}. ERROR: #{err}"
                                     if albums.length > 0 then  console.log "UPDATING ALBUMS DONE!".green
                                     else console.log "ALL ALBUMS UP-TO-DATE!".red
 

@@ -1,4 +1,4 @@
-change table names of
+TABLES CHANGED:
 nct - DONE
 gomusic - NOT tested!!! seems fine
 keeng - not tested!!!
@@ -8,3 +8,5 @@ nhacsho - DONE
 zing - DONE
 lyricwiki - DONE
 chiasenhac - DONE
+nhacvui - DONE
+

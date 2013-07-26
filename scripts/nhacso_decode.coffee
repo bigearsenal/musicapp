@@ -22,7 +22,7 @@ encode = (id) ->
 	parseInt(arr.map((v,i) -> a[6-i].indexOf(v)).join(''), 10)
 
 # console.log songIdEncode(1273487)
-console.log encode "X1pVU0NWbwIFCQ"
+console.log encode "WVtZVUBc"
 console.log decode(16228)
 # console.log decode(1274109)
 # console.log encode decode(1273674)

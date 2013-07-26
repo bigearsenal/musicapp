@@ -71,7 +71,7 @@ class Nhacvui extends Module
 
 
 	formatDate : (dt)->
-		dt.getFullYear() + "-" + (dt.getMonth()+1) + "-" + dt.getDay() + " " + dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds()
+		dt.getFullYear() + "-" + (dt.getMonth()+1) + "-" + dt.getDate() + " " + dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds()
 
 	processSongCallback : (id,data, item)->
 		if !data.match(/Bài\shát\skhông\stồn\stại/)
@@ -86,15 +86,17 @@ class Nhacvui extends Module
 				link : item.link
 				lyric : ""
 			if _t isnt undefined
-				song.plays = _t.match(/Lượt\snghe.+/g)[0].replace(/<\/div>.+/g,'').replace(/Lượt\snghe:|,/g,'').trim()
+				song.plays = _t.match(/Lượt\snghe.+/g)[0].replace(/<\/div>.+/g,'').replace(/Lượt\snghe:|,/g,'').replace(/<\/p>/,'').trim()
 				song.topic = _t.replace(/<\/a>.+$/g,'').replace(/^.+>/g,'').trim()
 				song.author = encoder.htmlDecode _t.replace(/<\/span>.+/g,'').replace(/^.+>/g,'').trim()
 
 			song.lyric = encoder.htmlDecode data.match(/media_title.+/g)?[0].replace(/<\/div><div\s.+$/g,'').replace(/^.+<\/span><\/i><\/div>/g,'').trim()
-
+			# console.log song.lyric + "------"
+			# console.log data
 			if song.lyric 
 				if song.lyric.match(/Hiện\sbài\shát.+chưa\scó\slời/)
 					song.lyric = ""
+			if song.lyric is undefined then song.lyric = ""
 
 			if song.author.match(/Đang\sCập\sNhật/i)
 			 	song.author = ""
@@ -102,16 +104,20 @@ class Nhacvui extends Module
 		song
 	getSongStats : (id,item)->
 		href = "http://hcm.nhac.vui.vn/-m#{id}c2p1a1.html"
+		# console.log href
 		@stats.currentId = id
 		@getFileByHTTP href,(data)=>
+			# console.log data + "   -------"
 			@stats.totalItemCount +=1
 			@utils.printUpdateRunning id, @stats, "Fetching..."
 			if data isnt null
 				@stats.passedItemCount +=1
+				# console.log data
 				result = @processSongCallback(id,data,item)
 				if result isnt null
+
 					@connection.query @query._insertIntoNVSongs, result, (err)->
-						if err then console.log "Can not insert new song"
+						if err then console.log "Can not insert new song #{err}"
 				else 
 						@stats.failedItemCount +=1
 						@stats.passedItemCount -=1
@@ -190,7 +196,7 @@ class Nhacvui extends Module
 							# console.log "WE ARE DONE!"
 							@utils.printFinalResult @stats
 							@_writeLog @log
-						@end()
+						# @end()
 						@resetStats()
 						@updateAlbums()
 
@@ -442,7 +448,7 @@ class Nhacvui extends Module
 				thumbnail = "http://hcm.nhac.vui.vn" + thumbnail
 
 			songids = data.match(/javascript:liked_onclick\(\'\d+\'\)/g)
-			songids = songids?.map (v)-> v.match(/\d+/)[0]
+			songids = songids?.map (v)-> parseInt v.match(/\d+/)[0],10
 			data = ""
 			
 			#split by dash sign (-) EX: "Cpop Chart (15/6 - 22/6 ) - Various Artists"
@@ -458,16 +464,16 @@ class Nhacvui extends Module
 				album_name : encoder.htmlDecode _name.trim()
 				album_artist : encoder.htmlDecode _artist.trim()
 				topic : topic
-				plays : plays
-				nsongs : nsongs
+				plays : parseInt plays,10
+				nsongs : parseInt nsongs,10
 				thumbnail : thumbnail
+				songids : songids
 			
 			if created isnt "" then album.created = @formatDate new Date(parseInt(created,0)*1000)
-			else album.created = ""
+			else album.created = null
 
 			result = 
 				album : album
-				songids : songids
 
 		else return null
 		result
@@ -491,13 +497,12 @@ class Nhacvui extends Module
 		@eventEmitter.on 'result', (result)=>
 			if result isnt null
 				# console.log @log.lastAlbumId
+				
+				# console.log result.album
+				# process.exit 0
+
 				@connection.query @query._insertIntoNVAlbums, result.album, (err)=>
 					if err then console.log "cannt insert album: #{result.album.aid} into table. ERROR: #{err}"
-					else 
-						for sid in result.songids
-							do (sid,result)=>
-								@connection.query @query._insertIntoNVSongs_Albums, {"sid" : sid,"aid" : result.album.aid}, (err)->
-									if err then console.log "cannt insert song: #{sid} - album: #{result.album.aid}"
 
 			else 
 				@stats.failedItemCount +=1

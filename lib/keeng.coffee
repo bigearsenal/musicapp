@@ -127,6 +127,11 @@ class Keeng extends Module
 								song_link : locations[i].replace(/\<location\>/,'').replace(/<\/location\>/,'').trim()
 								artist_name : encoder.htmlDecode album.artist_name
 							if song.song_link.match(/\d{4}\/\d{2}\/\d{2}/) isnt null then song.created = song.song_link.match(/\d{4}\/\d{2}\/\d{2}/)[0].replace(/\//g,'-')
+							
+							# console.log song
+							# console.log album
+							# process.exit 0
+
 							@connection.query @query._insertIntoKESongs, song, (err)->
 								if err then console.log "CANNOT insert songid #{song.songid}. ERROR: #{err}".red
 						@utils.printUpdateRunning album.id, @stats, "Fetching"

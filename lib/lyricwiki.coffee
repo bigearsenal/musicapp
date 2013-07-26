@@ -2,6 +2,7 @@ Site = require "./Site"
 http = require 'http'
 url = require('url')
 zlib = require('zlib')
+
 class LyricWiki extends Site
 	constructor: ->
 		super "lw"
@@ -9,6 +10,7 @@ class LyricWiki extends Site
 		@table.Artists = "lwartists"
 		@log = {}
 		@_readLog()
+		http.globalAgent.maxSockets = 5
 		Array::unique = -> @filter -> arguments[2].indexOf(arguments[0], arguments[1] + 1) < 0
 		Array::uniqueObject = (property)->
 			indexOfObjectInArray  = (arr, searchTerm, property)->
@@ -20,8 +22,8 @@ class LyricWiki extends Site
    			indexOfObjectInArray(array, element[property], property) is index
 	_getFieldFromTable : (params, callback)->
 		_q = "Select #{params.sourceField} from #{params.table}"
-		_q += " WHERE #{params.condition} LIMIT #{params.skip},#{params.limit}" if params.limit
-		# console.log _q
+		_q += " WHERE #{params.condition} LIMIT #{params.limit} OFFSET #{params.skip}" if params.limit
+		console.log _q
 		@connection.query _q, (err, results)=>
 			# console.log err
 			# console.log "ansdasd"
@@ -79,10 +81,10 @@ class LyricWiki extends Site
 			console.log "ERROR : at link #{options.name}. ---> #{error}"
 	insertStatement : (query, options)->
 		@connection.query query, (err)->
-			if err then console.log "Cannot insert song #{options.id} . ERROR: #{err}"
+			if err then console.log "Cannot insert song #{options.id} [called in insertStatement() ] . ERROR: #{err}"
 
 	onSongFail : (error, options)=>
-		# console.log "err --#{options.id}-- has an error: #{error}"
+		console.log "onSongFail() called: Err --#{options.link}-- has an error: #{error}"
 		# console.log options
 		_u = "UPDATE #{@table.Songs} SET "
 		_u += "  download_done = -1 "
@@ -93,7 +95,7 @@ class LyricWiki extends Site
 		@stats.currentId  = options.id
 		@utils.printRunning @stats
 		# console.log _u
-		@insertStatement _u, options
+		# @insertStatement _u, options
 		if @stats.totalItems is @stats.totalItemCount
 			@utils.printFinalResult @stats
 			@count +=1
@@ -282,7 +284,7 @@ class LyricWiki extends Site
 				# _u += "  musicbrainz_link = #{@connection.escape song.musicbrainz_link}, " if song.musicbrainz_link
 				# _u += "  allmusic_link = #{@connection.escape song.allmusic_link}, " if song.allmusic_link
 				# _u += "  youtube_link = #{@connection.escape song.youtube_link}, " if song.youtube_link
-				_u += "  isGracenote=#{@connection.escape song.isGracenote}, " if song.isGracenote
+				_u += "  is_gracenote=#{@connection.escape song.isGracenote}, " if song.isGracenote
 				_u += "  download_done=#{song.download_done}, "
 				_u += "  lyric=#{@connection.escape song.lyric} "
 				_u += " where id=#{song.id}"
@@ -369,10 +371,10 @@ class LyricWiki extends Site
 		@temp = 
 			nItems : 1000
 			nItemsSkipped : 0
-			condition : "  download_gracenote_done is null and isGracenote=1 "
+			condition : "  download_gracenote_done is null and is_gracenote=1 "
 			# condition : " download_done=1 and download_gracenote_done=0 "
 		if datetime 
-			@temp.condition = "  checktime > '#{datetime}' and download_gracenote_done is null and isGracenote=1 "
+			@temp.condition = "  checktime > '#{datetime}' and download_gracenote_done is null and is_gracenote=1 "
 
 		console.log " |The number of items to skip: #{@temp.nItemsSkipped}"
 		@eventEmitter.on "result-song", (song, options)=>
@@ -665,6 +667,7 @@ class LyricWiki extends Site
 		@getFileByHTTPv2 link,@onSucess,@onFail,options
 	updateLyrics : ->
 		@connect()
+		console.log "MAX SOCKET IS : #{http.globalAgent.maxSockets}"
 		@showStartupMessage "Fetching new lyric to table", @table.Songs
 		
 		@newPages = []
@@ -734,8 +737,13 @@ class LyricWiki extends Site
 				artists.push _album.artist
 				if _album.title
 					if _album.title.match(/\([0-9]+\)/)
-						_album.year = _album.title.match(/\(([0-9]+)\)/)?[1]
+						year = _album.title.match(/\(([0-9]+)\)/)?[1]
+						if year 
+							_album.year = year
+						else
+							_album.year = '1000'
 						_album.title = _album.title.replace(/\([0-9]+\)/,'').trim()
+					if _album.year is undefined then _album.year = '1000'
 					albums.push _album
 			for song in temporarySongs
 				temp = song.name.split(':')
@@ -766,6 +774,7 @@ class LyricWiki extends Site
 			console.log "# of legitimate songs #{songs.length}".inverse.green
 
 			# console.log songs
+			# console.log albums
 			itemSearching.insertNewArtistsAnNewAlbumsToDB artists,albums,(err)=>
 				if err then console.log "CANNT BE DONE #{err}"
 				else 
@@ -779,42 +788,20 @@ class LyricWiki extends Site
 			@stats.totalItemCount +=1
 			@stats.passedItemCount +=1
 
-
-			
-			itemSearching.findArtist song.artist,(err,result)=>
-				if err then console.log err
-				else	
-					song.artist_id =  result.id
-					if song.album
-						itemSearching.findAlbum song.album,song.artist_id, (err,result)=>
-							if err  
-								if err.match(/Cannt find item on condition/)
-									album = 
-										title : song.album.replace(/\([0-9]+\)/,'').trim()
-										artist_id : song.artist_id
-										artist : song.artist
-										year : song.album.match(/\(([0-9]+)\)/,'')?[1]
-										created_at  : song.created_at
-									itemSearching.addNewAlbum album,(err,al)=>
-										if err then console.log err
-										else 
-											song.album_id = al.id
-											if song.album
-												song.album = @processStringorArray song.album.replace(/\([0-9]+\)/,'').trim()
-											itemSearching.addNewSong song, (err)->
-												if err then console.log err
-								else console.log err
-							else 
-								song.album_id  = result.id
-								if song.album
-									song.album = @processStringorArray song.album.replace(/\([0-9]+\)/,'').trim()
-								itemSearching.addNewSong song, (err)->
-									if err then console.log err
-					else 
-						if song.album
-							song.album = @processStringorArray song.album.replace(/\([0-9]+\)/,'').trim()
-						itemSearching.addNewSong song, (err)->
-							if err then console.log err
+			# console.log "--------"
+			# console.log song	
+			# 
+			try 
+				itemSearching.addArtistidAndAlbumidToANewSong song, (newSong)=>
+					# console.log newSong
+					# process.exit 0
+					itemSearching.addNewSong newSong, (err)->
+						if err
+							console.log "------------- at #{newSong}"  
+							console.log err
+			catch e
+				console.log "Error occurs in updateLyrics(). #{e}"
+				console.log song
 			
 			@utils.printRunning @stats
 

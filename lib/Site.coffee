@@ -64,7 +64,7 @@ class Site extends Module
 					res.on 'end', () =>
 						
 						onSucess data, options
-				else onFail("The link is temporary moved: #{res.statusCode}",options)
+				else onFail("The link is temporary moved: #{res.statusCode} #{JSON.stringify res.headers}",options)
 			.on 'error', (e) =>
 				onFail  "Cannot get file from server. ERROR: " + e.message, options
 
