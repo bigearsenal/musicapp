@@ -49,13 +49,13 @@ class Nghenhac extends Module
 	processSong : (data,options)=>
 		song =
 			id : options.id
-			encoded_id : ""
-			name : ""
-			artist_id : 0
-			artist : ""
-			author : ""
+			key : ""
+			title : ""
+			artistid : 0
+			artists : ""
+			authors : ""
 			albumid : 0
-			topic : null
+			topics : null
 			plays : 0
 			lyric : ""
 			link : ""
@@ -63,28 +63,28 @@ class Nghenhac extends Module
 		a = ["Nhac-tre","Nhac-hai-ngoai","Nhac-Viet-Nam","Nhac-trinh","Nhac-tien-chien","Nhac-dan-toc","Nhac-do","Nhac-Cach-mang","Nhac-Tru-tinh","Nhac-Vang","Nhac-thieu-nhi","Nhac-que-huong","Tat-ca","Nhac-Au-My","Nhac-phim","Viet-Nam","Han-Quoc","Trung-Quoc","Quoc-te","Quang-cao","Nhac-khong-loi","Hoa-tau","Giao-huong","Rap-Viet","Rock-Viet","Nhac-Han","Nhac-Hoa","Nhac-Nhat","Flash-music","Nhac-Phap","TeenPops","RB","RocknRoll","NewAge"]
 		b = ["Nhạc Trẻ","Nhạc Hải Ngoại","Nhạc Việt Nam","Nhạc Trịnh","Nhạc Tiền Chiến","Nhạc Dân Tộc","Nhạc Đỏ","Nhạc Cách Mạng","Nhạc Trữ Tình","Nhạc Vàng","Nhạc Thiếu Nhi","Nhạc Quê Hương","Tất cả","Nhạc Âu Mỹ","Nhạc Phim","Việt Nam","Hàn Quốc","Trung Quốc","Quốc Tế","Quảng Cáo","Nhạc Không Lời","Hòa Tấu","Giao Hưởng","Rap Việt","Rock Việt","Nhạc Hàn","Nhạc Hoa","Nhạc Nhật","Flash music","Nhạc Pháp","Teen Pop","R&B","Rock & Roll","New Age"]
 
-		encoded_id = data.match(/ashx\?p=[a-zA-Z0-9]+/)?[0]
-		if encoded_id isnt undefined
-			song.encoded_id = encoded_id.replace(/ashx\?p=/g,'')
+		key = data.match(/ashx\?p=[a-zA-Z0-9]+/)?[0]
+		if key isnt undefined
+			song.key = key.replace(/ashx\?p=/g,'')
 
-		name = data.match(/Ca\skhúc:.+/g)?[0]
-		if name isnt undefined
-			song.name = encoder.htmlDecode name.replace(/<\/span>.+$/g,'').replace(/^.+>/g,'')
+		title = data.match(/Ca\skhúc:.+/g)?[0]
+		if title isnt undefined
+			song.title = encoder.htmlDecode title.replace(/<\/span>.+$/g,'').replace(/^.+>/g,'')
 
-		artist = data.match(/Trình\sbày:.+/g)?[0]
-		if artist isnt undefined
-			artist_id = artist.match(/Song\/\d+/g,'')?[0].match(/\d.+/g)?[0]
-			if artist_id isnt undefined
-				song.artist_id = artist_id
-			artist = artist.replace(/<\/a>.+$/g,'').replace(/^.+>/g,'')
-			if artist isnt "Chưa xác định"
-				song.artist = encoder.htmlDecode artist
+		artists = data.match(/Trình\sbày:.+/g)?[0]
+		if artists isnt undefined
+			artistid = artists.match(/Song\/\d+/g,'')?[0].match(/\d.+/g)?[0]
+			if artistid isnt undefined
+				song.artistid = artistid
+			artists = artists.replace(/<\/a>.+$/g,'').replace(/^.+>/g,'')
+			if artists isnt "Chưa xác định"
+				song.artists = encoder.htmlDecode artists
 
-		author = data.match(/Tác\sgiả:.+/g)?[0]
-		if author isnt undefined
-			author = author.replace(/<\/a>.+$/g,'').replace(/^.+>/g,'')
-			if author isnt "Chưa xác định"
-				song.author = encoder.htmlDecode author
+		authors = data.match(/Tác\sgiả:.+/g)?[0]
+		if authors isnt undefined
+			authors = authors.replace(/<\/a>.+$/g,'').replace(/^.+>/g,'')
+			if authors isnt "Chưa xác định"
+				song.authors = encoder.htmlDecode authors
 
 		albumid = data.match(/Album:.+/g)?[0]
 		if albumid isnt undefined
@@ -92,10 +92,10 @@ class Nghenhac extends Module
 			if albumid isnt undefined
 				song.albumid = albumid
 
-		topic = data.match(/href.+Index\.html.+»\sXem\stất\scả/)?[0]
-		if topic isnt undefined
-			topic = topic.replace(/href=\"\//g,'').replace(/\/Index.+$/g,'').split(/\//)
-			song.topic = topic.map (v)->
+		topics = data.match(/href.+Index\.html.+»\sXem\stất\scả/)?[0]
+		if topics isnt undefined
+			topics = topics.replace(/href=\"\//g,'').replace(/\/Index.+$/g,'').split(/\//)
+			song.topics = topics.map (v)->
 				if a.indexOf(v) > -1
 					b[a.indexOf(v)]
 				else v
@@ -150,35 +150,35 @@ class Nghenhac extends Module
 	processAlbum : (data,options)=>
 		album = 
 			id : options.id
-			encoded_id : ""
-			name : ""
-			artist : ""
-			topic : ""
+			key : ""
+			title : ""
+			artists : ""
+			topics : ""
 			nsongs : 0
 			plays : 0
-			thumbnail : ""
+			coverart : ""
 			songids : []
 
 		a = ["Nhac-tre","Nhac-hai-ngoai","Nhac-Viet-Nam","Nhac-trinh","Nhac-tien-chien","Nhac-dan-toc","Nhac-do","Nhac-Cach-mang","Nhac-Tru-tinh","Nhac-Vang","Nhac-thieu-nhi","Nhac-que-huong","Tat-ca","Nhac-Au-My","Nhac-phim","Viet-Nam","Han-Quoc","Trung-Quoc","Quoc-te","Quang-cao","Nhac-khong-loi","Hoa-tau","Giao-huong","Rap-Viet","Rock-Viet","Nhac-Han","Nhac-Hoa","Nhac-Nhat","Flash-music","Nhac-Phap","TeenPops","RB","RocknRoll","NewAge"]
 		b = ["Nhạc Trẻ","Nhạc Hải Ngoại","Nhạc Việt Nam","Nhạc Trịnh","Nhạc Tiền Chiến","Nhạc Dân Tộc","Nhạc Đỏ","Nhạc Cách Mạng","Nhạc Trữ Tình","Nhạc Vàng","Nhạc Thiếu Nhi","Nhạc Quê Hương","Tất cả","Nhạc Âu Mỹ","Nhạc Phim","Việt Nam","Hàn Quốc","Trung Quốc","Quốc Tế","Quảng Cáo","Nhạc Không Lời","Hòa Tấu","Giao Hưởng","Rap Việt","Rock Việt","Nhạc Hàn","Nhạc Hoa","Nhạc Nhật","Flash music","Nhạc Pháp","Teen Pop","R&B","Rock & Roll","New Age"]
 
 
-		encoded_id = data.match(/PlayAlbumJson\.ashx\?p\=[0-9a-zA-Z]+/g)?[0]
-		if encoded_id isnt undefined
-			album.encoded_id = encoded_id.replace(/PlayAlbumJson\.ashx\?p\=/g,'')
+		key = data.match(/PlayAlbumJson\.ashx\?p\=[0-9a-zA-Z]+/g)?[0]
+		if key isnt undefined
+			album.key = key.replace(/PlayAlbumJson\.ashx\?p\=/g,'')
 
-		name =  data.match(/\<span\>Nghe\sAlbum.+\<\/span\>/g)?[0]
-		if name isnt undefined
-			album.name = name.replace(/\<span\>Nghe\sAlbum\s:/g,'').replace(/\<\/span\>/g,'').trim()
+		title =  data.match(/\<span\>Nghe\sAlbum.+\<\/span\>/g)?[0]
+		if title isnt undefined
+			album.title = title.replace(/\<span\>Nghe\sAlbum\s:/g,'').replace(/\<\/span\>/g,'').trim()
 
-		artist = data.match(/Trình\sbày:.+/g)?[0]
-		if artist isnt undefined
-			album.artist = artist.replace(/<a\/>.+$/g,'').replace(/^.+>/g,'')
+		artists = data.match(/Trình\sbày:.+/g)?[0]
+		if artists isnt undefined
+			album.artists = artists.replace(/<a\/>.+$/g,'').replace(/^.+>/g,'')
 
-		topic = data.match(/href.+Index\.html.+a_Genreviewall/)?[0]
-		if topic isnt undefined
-			topic = topic.replace(/href=\"\//g,'').replace(/\/Album\/1\/Index.+$/g,'').split(/\//)
-			album.topic = topic.map (v)->
+		topics = data.match(/href.+Index\.html.+a_Genreviewall/)?[0]
+		if topics isnt undefined
+			topics = topics.replace(/href=\"\//g,'').replace(/\/Album\/1\/Index.+$/g,'').split(/\//)
+			album.topics = topics.map (v)->
 				if a.indexOf(v) > -1
 					b[a.indexOf(v)]
 				else v
@@ -203,9 +203,9 @@ class Nghenhac extends Module
 						.replace(/\sđiểm/g,'').trim()
 						.split(',').reduce((x,y)-> parseInt(x,10)+parseInt(y,10))
 
-		thumbnail = data.match(/AlbumImage.+/g)?[0]
-		if thumbnail isnt undefined
-			album.thumbnail = thumbnail.replace(/\"\s\/><\/div>/g,'').replace(/^.+\"/g,'')
+		coverart = data.match(/AlbumImage.+/g)?[0]
+		if coverart isnt undefined
+			album.coverart = coverart.replace(/\"\s\/><\/div>/g,'').replace(/^.+\"/g,'')
 
 		@eventEmitter.emit 'result-album', album
 		album

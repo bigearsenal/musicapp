@@ -77,18 +77,18 @@ class Nhacvui extends Module
 		if !data.match(/Bài\shát\skhông\stồn\stại/)
 			_t = data.match(/Nhạc\ssĩ:.+/g)?[0]
 			song = 
-				songid : id
-				song_name : item.song_name
-				artist_name : item.artist_name
+				id : id
+				title : item.song_name
+				artists : item.artist_name
 				plays : 0
-				topic : ""
-				author : ""
+				topics : ""
+				authors : ""
 				link : item.link
 				lyric : ""
 			if _t isnt undefined
 				song.plays = _t.match(/Lượt\snghe.+/g)[0].replace(/<\/div>.+/g,'').replace(/Lượt\snghe:|,/g,'').replace(/<\/p>/,'').trim()
-				song.topic = _t.replace(/<\/a>.+$/g,'').replace(/^.+>/g,'').trim()
-				song.author = encoder.htmlDecode _t.replace(/<\/span>.+/g,'').replace(/^.+>/g,'').trim()
+				song.topics = _t.replace(/<\/a>.+$/g,'').replace(/^.+>/g,'').trim()
+				song.authors = encoder.htmlDecode _t.replace(/<\/span>.+/g,'').replace(/^.+>/g,'').trim()
 
 			song.lyric = encoder.htmlDecode data.match(/media_title.+/g)?[0].replace(/<\/div><div\s.+$/g,'').replace(/^.+<\/span><\/i><\/div>/g,'').trim()
 			# console.log song.lyric + "------"
@@ -98,8 +98,8 @@ class Nhacvui extends Module
 					song.lyric = ""
 			if song.lyric is undefined then song.lyric = ""
 
-			if song.author.match(/Đang\sCập\sNhật/i)
-			 	song.author = ""
+			if song.authors.match(/Đang\sCập\sNhật/i)
+			 	song.authors = ""
 		else song = null
 		song
 	getSongStats : (id,item)->
@@ -115,6 +115,8 @@ class Nhacvui extends Module
 				# console.log data
 				result = @processSongCallback(id,data,item)
 				if result isnt null
+					# console.log result
+					# process.exit 0
 
 					@connection.query @query._insertIntoNVSongs, result, (err)->
 						if err then console.log "Can not insert new song #{err}"
@@ -148,23 +150,23 @@ class Nhacvui extends Module
 	_storeAlbum : (id,album) ->
 		for song in album
 			_item = 
-				albumid : id
-				song_name : encoder.htmlDecode song.title[0].trim()
-				artist_name : encoder.htmlDecode song.description[0].replace("Thể hiện: ","").trim()
+				id : id
+				title : encoder.htmlDecode song.title[0].trim()
+				artists : encoder.htmlDecode song.description[0].replace("Thể hiện: ","").trim()
 				link : song['jwplayer:file'][0]
 			@connection.query @query._insertIntoNVAlbums,_item,(err) =>
-				if err then console.log "Cannot get albumid: #{_item.albumid}. ERROR: ".red + err
-				else @_updateAlbumName _item.albumid 
+				if err then console.log "Cannot get id: #{_item.id}. ERROR: ".red + err
+				else @_updateAlbumName _item.id 
 	_storeAlbumName : (id, album)->
 		_query = "UPDATE #{@table.Albums} SET " +
-				" album_name   = #{@connection.escape(album.album_name)},"+
-				" album_artist = #{@connection.escape(album.album_artist)}," +
-				" topic = #{@connection.escape(album.topic)}," +
+				" title   = #{@connection.escape(album.album_name)},"+
+				" artists = #{@connection.escape(album.album_artist)}," +
+				" topics = #{@connection.escape(album.topic)}," +
 				" plays = #{album.plays}" +
-				" where albumid = #{id};"
+				" where id = #{id};"
 		
 		@connection.query _query, (err)->
-			if err then console.log "Cant not update albumid: #{id}. ERROR: " + err
+			if err then console.log "Cant not update id: #{id}. ERROR: " + err
 
 	_updateSong : (id) ->
 		# console.log id
@@ -439,10 +441,10 @@ class Nhacvui extends Module
 			thumbnail = data.match(/albumInfo-img.+[\n\t\r]+.+/g)?[0]
 											.replace(/\"\salt.+$/g,'').replace(/^.+\s.+\"/g,'')
 
-			created = ""
+			date_created = ""
 
 			if thumbnail?.match(/\d+_/g)
-				created = thumbnail.match(/\d{10,14}_/g)?[0]?.replace(/_/g,'')
+				date_created = thumbnail.match(/\d{10,14}_/g)?[0]?.replace(/_/g,'')
 
 			if !thumbnail?.match(/http/)
 				thumbnail = "http://hcm.nhac.vui.vn" + thumbnail
@@ -460,17 +462,17 @@ class Nhacvui extends Module
 			_arr = ""
 
 			album = 
-				aid : id
-				album_name : encoder.htmlDecode _name.trim()
-				album_artist : encoder.htmlDecode _artist.trim()
-				topic : topic
+				id : id
+				title : encoder.htmlDecode _name.trim()
+				artists : encoder.htmlDecode _artist.trim()
+				topics : topic
 				plays : parseInt plays,10
 				nsongs : parseInt nsongs,10
-				thumbnail : thumbnail
+				coverart : thumbnail
 				songids : songids
 			
-			if created isnt "" then album.created = @formatDate new Date(parseInt(created,0)*1000)
-			else album.created = null
+			if date_created isnt "" then album.date_created = @formatDate new Date(parseInt(date_created,0)*1000)
+			else album.date_created = null
 
 			result = 
 				album : album

@@ -51,7 +51,7 @@ class ObjectFinding
 					callback null, yes
 	# callback(error:String,isFound:Boolean)
 	isNewAlbum : (albumTitle,artistId,callback)->
-		_s = "Select id,title, artist_id from #{@table.Albums} where title=#{@connection.escape albumTitle} and artist_id = #{artistId} "
+		_s = "Select id,title, artistid from #{@table.Albums} where title=#{@connection.escape albumTitle} and artistid = #{artistId} "
 		# console.log _s
 		@connection.query _s, (err, result)->
 			# console.log result
@@ -85,13 +85,13 @@ class ObjectFinding
 	#callback(err:String,result:Object)
 	findAlbum : (albumTitle,albumArtistId, callback)->
 		# console.log "ANBINH"
-		@findItem "id,title,artist_id",@table.Albums, "title=#{@connection.escape albumTitle} and artist_id = #{albumArtistId}", (err,result)->
+		@findItem "id,title,artistid",@table.Albums, "title=#{@connection.escape albumTitle} and artistid = #{albumArtistId}", (err,result)->
 			if err then callback err,null
 			else 
 				callback null, result
 
 	addNewAlbum : (album,callback)->
-		@findAlbum album.title, album.artist_id, (err, result)=>
+		@findAlbum album.title, album.artistid, (err, result)=>
 			if err 
 				@getMaxAlbumIdinDB (err,maxId)=>
 					if err then callback "#{err}", null
@@ -100,10 +100,10 @@ class ObjectFinding
 						album = 
 							id : @maxAlbumId + 1
 							title : album.title
-							artist_id : album.artist_id
-							artist : album.artist
+							artistid : album.artistid
+							artists : album.artist
 							year : album.year
-							created_at : album.created_at
+							date_created : album.date_created
 						@connection.query "INSERT IGNORE INTO #{@table.Albums} SET ?",album, (err)->
 							if err then callback err
 							else callback null,album
@@ -140,7 +140,7 @@ class ObjectFinding
 		count = 0
 		for album in albums 
 			do (album)=>
-				@isNewAlbum album.title,album.artist_id, (err,isFound)->
+				@isNewAlbum album.title,album.artistid, (err,isFound)->
 					count +=1
 					if err then console.log "#{err}"
 					else 
@@ -179,9 +179,9 @@ class ObjectFinding
 							_album = 
 								id : parseInt(@maxAlbumId,10) + parseInt(index,10) + 1
 								title : album.title
-								artist_id : album.artist_id
-								artist : album.artist
-								created_at  : album.created_at
+								artistid : album.artistid
+								artists : album.artist
+								date_created  : album.date_created
 								year : album.year
 							_albums.push _album
 
@@ -228,6 +228,7 @@ class ObjectFinding
 							do (album,index)=>
 								# console.log "****************"
 								# console.log album
+								# process.exit 0
 								@connection.query "INSERT IGNORE INTO #{@table.Albums} SET ?",album, (err)->
 									# console.log "callbackssdfsdf -- album"
 									count +=1
@@ -262,9 +263,9 @@ class ObjectFinding
 								else
 									_album = 
 										title : album.title
-										artist_id : parseInt(result.id,10)
+										artistid : parseInt(result.id,10)
 										artist : album.artist
-										created_at : album.created_at
+										date_created : album.date_created
 										year : album.year
 									_albums.push _album
 								if count is items.length
@@ -280,9 +281,9 @@ class ObjectFinding
 								else
 									_song = 
 										title : song.title
-										artist_id : parseInt(result.id,10)
+										artistid : parseInt(result.id,10)
 										artist : song.artist
-										created_at : song.created_at
+										date_created : song.date_created
 									_songs.push _song
 								if count is items.length
 									callback _songs
@@ -300,7 +301,7 @@ class ObjectFinding
 				callback null,yes
 	#callback(err:String,result:object)
 	findLastCreatedDate : (callback)->
-		@connection.query "select max(created_at) as max from #{@table.Songs}", (err, result)->
+		@connection.query "select max(date_created) as max from #{@table.Songs}", (err, result)->
 			if err then callback err, null
 			else 
 				if result.length > 1 or result.length is 0 then callback "The returned value is invalid"
@@ -316,30 +317,30 @@ class ObjectFinding
 		@findArtist song.artist,(err,result)=>
 			if err then console.log err
 			else	
-				song.artist_id =  parseInt(result.id,10)
+				song.artistid =  parseInt(result.id,10)
 				if song.album
-					@findAlbum song.album,song.artist_id, (err,result)=>
+					@findAlbum song.album,song.artistid, (err,result)=>
 						if err  
 							if err.match and err.match(/Cannt find item on condition/)
 								album = 
 									title : song.album.replace(/\([0-9]+\)/,'').trim()
-									artist_id : parseInt(song.artist_id,10)
+									artistid : parseInt(song.artistid,10)
 									artist : song.artist
 									# year : song.album.match(/\(([0-9]+)\)/,'')?[1]
-									created_at  : song.created_at
+									date_created  : song.date_created
 								if song.album and song.album.match
 									album.year = song.album.toString().match(/\(([0-9]+)\)/,'')?[1]
 								else album.year = null
 								@addNewAlbum album,(err,al)=>
 									if err then console.log err
 									else 
-										song.album_id = parseInt(al.id,10)
+										song.albumid = parseInt(al.id,10)
 										if song.album
 											song.album = @processStringorArray song.album.replace(/\([0-9]+\)/,'').trim()
 										callback(song)
 							else console.log err
 						else 
-							song.album_id  = parseInt(result.id,10)
+							song.albumid  = parseInt(result.id,10)
 							if song.album
 								song.album = @processStringorArray song.album.replace(/\([0-9]+\)/,'').trim()
 							callback(song)

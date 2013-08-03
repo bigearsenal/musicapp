@@ -25,6 +25,7 @@ class Module
 		@hasConnection = false
 		@postgresqlEnable = true
 		Array::unique = -> @filter (a, b) => (@.indexOf(a, b + 1) < 0)
+		
 		if @postgresqlEnable
 			PGWrapper = require '../lib/pgwrapper'
 			@wp = new PGWrapper()

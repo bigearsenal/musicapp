@@ -43,10 +43,10 @@ class Gomusic extends Module
 			console.log "Error while creating Record of Column CreateTime and UpdateTime "
 		
 		_item = 
-			songid : song.Id
-			song_name : song.Name.trim()
+			id : song.Id
+			title : song.Name.trim()
 			artistid : song.ArtistId
-			artist_name : song.ArtistName.trim()
+			artists : song.ArtistName.trim()
 			artist_display_name : song.ArtistDisplayName.trim()
 			topicid : song.TopicId
 			topic_name : song.TopicName.trim()
@@ -54,16 +54,16 @@ class Gomusic extends Module
 			genre_name  : song.GenreName.trim()
 			regionid : song.RegionId
 			region_name : song.RegionName.trim()
-			thumbnail :song.Thumbnail
+			coverart :song.Thumbnail
 			tags : song.Tags
 			lyric : encoder.htmlDecode song.Lyric
-			file_path : song.FilePath
+			link : song.FilePath
 			bitrate : song.Bitrate
 			duration : song.Duration
-			file_size : song.FileSize
-			play_count : song.PlayCount + song.CommentCount*3 + song.LikeCount*3 + song.DownloadCount*2
-			create_time : _createTime
-			update_time : _updateTime
+			size : song.FileSize
+			plays : song.PlayCount + song.CommentCount*3 + song.LikeCount*3 + song.DownloadCount*2
+			date_created : _createTime
+			date_updated : _updateTime
 
 		# console.log _item
 		# process.exit 0
@@ -103,10 +103,10 @@ class Gomusic extends Module
 		if album.ReleaseDate is "" then _releaseDate = null
 	
 		_album = 
-			albumid: album.Id
-			album_name : album.Name.trim()
+			id: album.Id
+			title : album.Name.trim()
 			master_artistid : album.MasterArtistId
-			master_artist_name : album.MasterArtistName.trim()
+			master_artists : album.MasterArtistName.trim()
 			topicid : album.TopicId
 			topic_name : album.TopicName.trim()
 			genreid : album.GenreId
@@ -114,17 +114,17 @@ class Gomusic extends Module
 			regionid: album.RegionId
 			region_name : album.RegionName.trim()
 			duration : album.Duration
-			release_date : _releaseDate #check again
+			date_released : _releaseDate #check again
 			tags : album.Tags
-			thumbnail : album.Thumbnail
-			description : album.Description
-			song_count : album.SongCount
-			play_count : album.PlayCount
-			create_time : _createTime
-			update_time : _updateTime
+			coverart : album.Thumbnail
+			description : encoder.htmlDecode album.Description
+			nsongs : album.SongCount
+			plays : album.PlayCount
+			date_created : _createTime
+			date_uploaded : _updateTime
 
-		@_updateSongs_Albums _album.albumid,_album
-		@utils.printUpdateRunning _album.albumid, @stats, "Fetching..."
+		@_updateSongs_Albums _album.id,_album
+		@utils.printUpdateRunning _album.id, @stats, "Fetching..."
 
 		_album
 	_storeSongs_Album : (songs,album) ->
@@ -138,7 +138,7 @@ class Gomusic extends Module
 		# console.log album
 		# process.exit 0
 		@connection.query @query._insertIntoGMAlbums,album,(err) ->
-			 if err then console.log err + "at albumid: " + album.albumid		 	
+			 if err then console.log err + "at id: " + album.id		 	
 	_updateSongs_Albums : (id,album)->
 		link = "http://music.go.vn/Ajax/AlbumHandler.ashx?type=getsongbyalbum&album=" + id
 		# console.log link

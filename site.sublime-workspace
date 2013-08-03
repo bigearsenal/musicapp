@@ -4,16 +4,252 @@
 		"selected_items":
 		[
 			[
+				"to",
+				"toString"
+			],
+			[
+				"va",
+				"value"
+			],
+			[
+				"eror",
+				"errorMessage"
+			],
+			[
+				"_q",
+				"_query"
+			],
+			[
+				"re",
+				"results"
+			],
+			[
+				"config",
+				"configPath"
+			],
+			[
+				"active",
+				"activatedFuncs"
+			],
+			[
+				"teh",
+				"then"
+			],
+			[
+				"tran",
+				"transformResults"
+			],
+			[
+				"dis",
+				"disableFuncs"
+			],
+			[
+				"ac",
+				"activatedFuncs"
+			],
+			[
+				"stt",
+				"statistics"
+			],
+			[
+				"stat",
+				"statistics"
+			],
+			[
+				"sta",
+				"statistics"
+			],
+			[
+				"class",
+				"className"
+			],
+			[
+				"s",
+				"seperator"
+			],
+			[
+				"lyr",
+				"lyricwiki"
+			],
+			[
+				"co",
+				"connection"
+			],
+			[
+				"conne",
+				"connect"
+			],
+			[
+				"con",
+				"config"
+			],
+			[
+				"ste",
+				"stepEachRound"
+			],
+			[
+				"Ar",
+				"Artists"
+			],
+			[
+				"err",
+				"errMessage"
+			],
+			[
+				"max",
+				"maxValue"
+			],
+			[
+				"conn",
+				"connection"
+			],
+			[
+				"albu",
+				"albumid"
+			],
+			[
+				"trac",
+				"track"
+			],
+			[
+				"art",
+				"artist"
+			],
+			[
+				"req",
+				"requestItemLink"
+			],
+			[
+				"data",
+				"dataString"
+			],
+			[
+				"form",
+				"formData"
+			],
+			[
+				"songsi",
+				"songids"
+			],
+			[
+				"statm",
+				"statements"
+			],
+			[
+				"vido",
+				"videos"
+			],
+			[
+				"getsta",
+				"getStartParams"
+			],
+			[
+				"reu",
+				"result"
+			],
+			[
+				"image",
+				"images"
+			],
+			[
+				"is",
+				"isSuccessful"
+			],
+			[
+				"totali",
+				"totalItemCount"
+			],
+			[
+				"artis",
+				"artistIDs"
+			],
+			[
+				"arti",
+				"artistIDs"
+			],
+			[
+				"item",
+				"itemIds"
+			],
+			[
+				"att",
+				"attributeName"
+			],
+			[
+				"sid",
+				"sids"
+			],
+			[
+				"tot",
+				"totalCount"
+			],
+			[
+				"un",
+				"unique"
+			],
+			[
+				"on",
+				"onSucess"
+			],
+			[
+				"get",
+				"getLink"
+			],
+			[
+				"new",
+				"newAlbs"
+			],
+			[
+				"last",
+				"lastUpdatedDate"
+			],
+			[
+				"date",
+				"datetime"
+			],
+			[
+				"las",
+				"lastUpdatedDate"
+			],
+			[
+				"arit",
+				"artist_id"
+			],
+			[
+				"artist",
+				"artist_id"
+			],
+			[
+				"album",
+				"album_id"
+			],
+			[
+				"totl",
+				"totalItems"
+			],
+			[
+				"create",
+				"created_at"
+			],
+			[
+				"fin",
+				"findAlbum"
+			],
+			[
+				"getM",
+				"getMaxAlbumIdinDB"
+			],
+			[
+				"OBje",
+				"ObjectFinding"
+			],
+			[
 				"cae",
 				"created_at"
 			],
 			[
 				"_al",
 				"_albums"
-			],
-			[
-				"art",
-				"artistName"
 			],
 			[
 				"occur",
@@ -40,32 +276,12 @@
 				"newArtists"
 			],
 			[
-				"max",
-				"maxArtistId"
-			],
-			[
 				"filter",
 				"filterNewArtists"
 			],
 			[
-				"arti",
-				"artists"
-			],
-			[
-				"artis",
-				"artists"
-			],
-			[
-				"artist",
-				"artists"
-			],
-			[
 				"isn",
 				"isNewArtist"
-			],
-			[
-				"err",
-				"err"
 			],
 			[
 				"alb",
@@ -82,18 +298,6 @@
 			[
 				"crea",
 				"created_at"
-			],
-			[
-				"new",
-				"newPages"
-			],
-			[
-				"get",
-				"getNextPage"
-			],
-			[
-				"last",
-				"lastUpdatedTimestamp"
 			],
 			[
 				"resul",
@@ -124,10 +328,6 @@
 				"tracks"
 			],
 			[
-				"re",
-				"foreign_release_ids"
-			],
-			[
 				"getS",
 				"getInsertStatement"
 			],
@@ -140,20 +340,12 @@
 				"ArtistTransformation"
 			],
 			[
-				"Ar",
-				"ArtistTransformation"
-			],
-			[
 				"Song",
 				"SongTransformation"
 			],
 			[
 				"Son",
 				"SongTransformation"
-			],
-			[
-				"OBje",
-				"ObjectTransformation"
 			],
 			[
 				"getin",
@@ -220,10 +412,6 @@
 				"log	log"
 			],
 			[
-				"image",
-				"image_url"
-			],
-			[
 				"_blo",
 				"_blogs"
 			],
@@ -264,24 +452,12 @@
 				"news"
 			],
 			[
-				"sta",
-				"statements"
-			],
-			[
 				"objec",
 				"objects"
 			],
 			[
-				"va",
-				"values"
-			],
-			[
 				"val",
 				"value"
-			],
-			[
-				"un",
-				"undefined"
 			],
 			[
 				"l",
@@ -332,233 +508,17 @@
 				"DatabaseInsertion"
 			],
 			[
-				"con",
-				"connection"
-			],
-			[
 				"apike",
 				"apikey"
 			],
 			[
 				"vid",
 				"videos"
-			],
-			[
-				"dis",
-				"distribution"
-			],
-			[
-				"ap",
-				"apiKeys"
-			],
-			[
-				"ran",
-				"ranges"
-			],
-			[
-				"apik",
-				"apiKeys"
-			],
-			[
-				"api",
-				"apiKey"
-			],
-			[
-				"total",
-				"totalWeights"
-			],
-			[
-				"apiKey",
-				"apiKey"
-			],
-			[
-				"te",
-				"testApiKeys"
-			],
-			[
-				"apikey",
-				"apiKeys"
-			],
-			[
-				"conn",
-				"connection"
-			],
-			[
-				"set",
-				"setTemplateLink"
-			],
-			[
-				"download",
-				"download_done"
-			],
-			[
-				"nar",
-				"nAritsts"
-			],
-			[
-				"nart",
-				"nArtistsSkipped"
-			],
-			[
-				"downloa",
-				"downloadEchoNest"
-			],
-			[
-				"down",
-				"downloadEchoNest"
-			],
-			[
-				"inc",
-				"indices"
-			],
-			[
-				"na",
-				"nArtistsSkipped"
-			],
-			[
-				"tota",
-				"totalSongs"
-			],
-			[
-				"path",
-				"path"
-			],
-			[
-				"ind",
-				"indices"
-			],
-			[
-				"cu",
-				"currentCursor"
-			],
-			[
-				"compose",
-				"composedIndices"
-			],
-			[
-				"temp",
-				"templateLink"
-			],
-			[
-				"totalItem",
-				"totalItemCount"
-			],
-			[
-				"albu",
-				"album"
-			],
-			[
-				"allmusic_",
-				"allmusic_link"
-			],
-			[
-				"music",
-				"musicbrainz_link"
-			],
-			[
-				"musc",
-				"musicbrainz_link"
-			],
-			[
-				"all",
-				"allmusic_link"
-			],
-			[
-				"stat",
-				"statement"
-			],
-			[
-				"nex",
-				"nextlink"
-			],
-			[
-				"rea",
-				"replace"
-			],
-			[
-				"se",
-				"search"
-			],
-			[
-				"coo",
-				"connection"
-			],
-			[
-				"pr",
-				"processStringorArray"
-			],
-			[
-				"song",
-				"songwriters"
-			],
-			[
-				"lyric",
-				"lyricwiki"
-			],
-			[
-				"lyri",
-				"lyricwiki"
-			],
-			[
-				"range",
-				"range0"
-			],
-			[
-				"type",
-				"typeId"
-			],
-			[
-				"nIte",
-				"nItemsSkipped"
-			],
-			[
-				"mui",
-				"musicbrainz_link"
 			]
 		]
 	},
 	"buffers":
 	[
-		{
-			"file": "main.coffee",
-			"settings":
-			{
-				"buffer_size": 15994,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "lib/lyricwiki.coffee",
-			"settings":
-			{
-				"buffer_size": 32839,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "lib/Site.coffee",
-			"settings":
-			{
-				"buffer_size": 2176,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "lib/echonest/api_key.coffee",
-			"settings":
-			{
-				"buffer_size": 2414,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "lib/nhaccuatui.coffee",
-			"settings":
-			{
-				"buffer_size": 47376,
-				"line_ending": "Unix"
-			}
-		}
 	],
 	"build_system": "",
 	"command_palette":
@@ -791,35 +751,54 @@
 	},
 	"file_history":
 	[
+		"/Users/daonguyenanbinh/nginx_forward_proxy.conf",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/spec/test_pgwrapper.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/pgwrapper.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/module.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/main.coffee",
+		"/Users/daonguyenanbinh/Downloads/640.m3u8",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/zing.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/gomusic.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/spec/test.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/Site.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/nhacvui.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/chiasenhac.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/lyricwiki.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/nhacso.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/nghenhac.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/chacha.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/keeng.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/nhaccuatui.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/pgwapper.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/deezer.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/Zazoo.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/echonest.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/songfreaks.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/musicvnn.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/stats.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/utils.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/scripts/zing-cipher.coffee",
+		"/Users/daonguyenanbinh/Desktop/test.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/lyricwiki/object_finding.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/echonest/object_transformation.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/index.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/Deezer/album_transformation.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/echonest/artist_transformation.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/Dezzer.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/echonest/update_artist.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/echonest/update_song.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/echonest/api_key.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/echonest/song_transformation.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/zing-cipher.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/echonest/download_echonest.coffee",
 		"/Users/daonguyenanbinh/Library/Application Support/Sublime Text 3/Packages/User/Default (OSX).sublime-keymap",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/lyricwiki_v3.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/lyricwiki.coffee",
 		"/Users/daonguyenanbinh/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/lyricwiki_v2.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/echonest/database_insertion.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/echonest/download_echonest.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/echonest.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/spec/test.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/nhaccuatui.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/echonest/artist_transformation.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/echonest/api_key.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/lib/echonest/object_transformation.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/utils.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/module.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/nhaccuatui.js",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/zing.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/main.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/zing-cipher.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/index.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/nhacso.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/Site.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/echonest.js",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/gomusic.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/chiasenhac.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/songfreaks.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/stats.coffee",
 		"/Users/daonguyenanbinh/Library/Application Support/Sublime Text 2/Packages/User/Default (OSX).sublime-keymap",
 		"/Users/daonguyenanbinh/Library/Application Support/Sublime Text 2/Packages/User/Preferences.sublime-settings",
 		"/Users/daonguyenanbinh/Downloads/zing store swf.as",
@@ -827,10 +806,6 @@
 		"/Users/daonguyenanbinh/Library/Application Support/Sublime Text 2/Packages/Default/Default (OSX).sublime-keymap",
 		"/Users/daonguyenanbinh/Library/Application Support/Sublime Text 2/Packages/Default/Preferences.sublime-settings",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/nhaccuatui2.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/keeng.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/nghenhac.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/chacha.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/nhacvui.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/nhacso copy.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/misc/table.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/vietgiaitri.coffee",
@@ -839,7 +814,6 @@
 		"/Users/daonguyenanbinh/Box Documents/Sites/xxx.js",
 		"/Users/daonguyenanbinh/Box Documents/Sites/xxx.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/spec/site.spec.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/musicvnn.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/junk.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/musicvnn",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/Site.coffee",
@@ -904,21 +878,7 @@
 		"/Users/daonguyenanbinh/Box Documents/Sites/NSVideoLyrics/6730.srt",
 		"/Users/daonguyenanbinh/Box Documents/Sites/NSVideoLyrics/8338.srt",
 		"/Users/daonguyenanbinh/Box Documents/Sites/NSVideoLyrics/3059.srt",
-		"/Users/daonguyenanbinh/Box Documents/Sites/NSVideoLyrics/440.srt",
-		"/Users/daonguyenanbinh/Box Documents/Sites/NSVideoLyrics/8692.srt",
-		"/Users/daonguyenanbinh/Box Documents/Sites/NS_Lyrics/8692.srt",
-		"/Users/daonguyenanbinh/Box Documents/Sites/lyrics_NS.srt",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/cNhacso.js",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/resources/NS.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/fetchdatafromNS.js",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/fetchdatafromNS.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/library/ns_decodeid.js",
-		"/Users/daonguyenanbinh/Box Documents/Sites/test.js",
-		"/Users/daonguyenanbinh/Box Documents/Sites/jquery.js",
-		"/Users/daonguyenanbinh/Downloads/play.google.com.text",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/createAlbumTable.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/createAlbumTable.js",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/createALbumlTable.coffee"
+		"/Users/daonguyenanbinh/Box Documents/Sites/NSVideoLyrics/440.srt"
 	],
 	"find":
 	{
@@ -936,134 +896,134 @@
 		"case_sensitive": false,
 		"find_history":
 		[
-			"newAlbums",
-			"album",
-			"_albums",
-			"_album",
-			"newSongs",
-			"newAlbums",
-			"_",
-			"math",
-			"=",
-			"_song",
-			"uri",
-			"URI",
-			"uri",
-			"URI",
-			"uri",
-			"URI",
-			"uri",
-			"URL",
-			"url",
-			"getNextPage",
-			"      ",
-			"nvideos",
-			"totalVideos",
-			"is_video_being_processed",
-			"nvideos",
-			"downloadVideos",
+			"_updateSong",
+			"updateAlbums",
+			"csn",
+			".query",
+			"lw",
+			"language",
+			"NS",
+			"ns",
+			"LW",
+			"update",
+			"GMSongs",
+			"NCT",
+			"Videos_Albums",
+			"CSN",
+			"table.Songs",
+			"insertIntoAl",
+			"eventEmitter.on",
+			"@debug",
+			"artists",
+			"update",
+			"update ",
+			"results",
+			"values",
+			"updately",
+			"update",
+			"err",
+			"errorMessage",
+			"statment",
+			"index",
+			"select",
+			"video",
+			"parser",
+			"atob",
+			"parse",
+			"parser",
+			"xml2js",
+			"strikethrough",
+			"colors",
+			"grey",
+			"activatedFuncs",
+			"registerFuncs",
+			"alias",
+			"name",
 			"\"",
-			"song",
-			"Songs",
-			"songs",
-			"Songs",
-			"nsongs",
-			"totalSongs",
-			"Cannot insert new song into table",
-			"artist",
-			"Artist",
-			"artist",
-			"Artist",
-			"artist",
-			"Artist",
-			"artist",
-			"transformer.",
-			"foreignId",
-			"DownloadEchoNest",
-			"artist",
-			"groupBy",
-			"@artist",
-			"(artist) -",
-			") ",
-			"()",
-			" : ->",
+			"insertStatement",
+			"Cannot insert song",
+			"E33I4MQG",
+			"/",
+			"runStats",
+			"= ->",
 			":",
-			"getInsertStatement",
-			"fileName",
-			"table",
-			" \"",
-			"=",
-			"transformer.",
-			"EN",
-			"en",
-			"EN",
-			"category",
-			"name",
-			"Id",
+			"album",
+			"Album",
+			"enableTransaction",
+			"Song",
+			"song",
+			":",
+			"album",
+			",",
+			":",
+			"artist",
+			"artist ",
+			"artist",
+			"ArtistTransformation",
+			"albums",
+			"Zazoo",
+			"zazoo",
+			"Zazoo",
+			"getNewSongAndArtistIds",
+			"artist",
 			"id",
-			"blog",
-			"term",
-			"url",
-			"summary",
-			"blog",
-			"date",
-			"length",
-			"audio",
-			"audios",
-			"audio",
-			"date_posted",
-			"summary",
-			"name",
-			"blog",
-			"image_url",
-			"date_found",
-			"date_posted",
-			"blog",
-			"posted",
-			"blog",
-			"name",
-			"artist",
-			"artist.",
-			"artist",
-			"fetchSongs",
-			"updateAlbumsPlays",
-			"onDone",
-			"album-plays-result",
-			":",
-			"totalSongsInFile",
-			"totalItemCount",
-			"totalItemCountInFile",
-			"totalArtists",
-			"TotalArtists",
-			"totalArtists",
-			"artist",
-			"Artist",
-			"artist",
-			"totalSongInFile",
-			"totalArtistsInFile",
-			"Artists",
-			"Songs",
-			"_insertIntoArtists",
-			"is temporary moved",
-			"song",
+			"OwnedByKeywords",
+			"\"",
+			"echoNest",
+			"EchoNest",
+			"anbinh_xxxx",
 			"'",
-			"song",
-			"Song",
-			"song",
-			"Song",
-			"song",
-			"updateSongsPlays",
-			"updateItemsPlays",
-			"_fetchItemsPlays",
-			"getItemsKeysAndIds",
-			"ENApiKeys",
-			"dbInsertion.",
-			"artistHavingSongsGTZero",
-			"artistHavingSongsCount",
-			"path",
+			"statements",
+			"artist",
+			"us.",
+			"statments",
+			"have",
+			"has",
+			"@stats.totalItems",
+			"images",
+			"id",
+			"transformer",
+			"image",
+			"Images",
+			"images",
 			"=",
-			"= ",
-			"apiKey"
+			"statements",
+			" statements",
+			"getLink",
+			"UpdateSongs",
+			"song",
+			"sids",
+			"songids",
+			"newAlIds",
+			"albumids",
+			"newIIDS",
+			"songids",
+			"itemIds",
+			"songids",
+			"requestNewSongsLink",
+			"songIds",
+			"legitimate",
+			"timestamp",
+			"checktime",
+			"ANBINH",
+			"INSERT DONE.......",
+			"_album.title.match",
+			"options.link",
+			"options.link ",
+			"where id=",
+			"where id",
+			"_u",
+			"getFileByHTTPv2",
+			" where id=\" + options.id",
+			"_u += \" where id=\" + options.id",
+			"_newPages",
+			"artist",
+			"newArtists",
+			"artist",
+			"newArtists",
+			"artist",
+			"maxArtistId",
+			"newAlbums"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1093,419 +1053,14 @@
 	"groups":
 	[
 		{
-			"selected": 1,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "main.coffee",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 15994,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								11749,
-								11749
-							]
-						],
-						"settings":
-						{
-							"annotations":
-							[
-								"TODO",
-								"README",
-								"FIXME"
-							],
-							"csslint_options":
-							{
-								"adjoining-classes": "warning",
-								"box-model": true,
-								"box-sizing": "warning",
-								"compatible-vendor-prefixes": "warning",
-								"display-property-grouping": true,
-								"duplicate-background-images": "warning",
-								"duplicate-properties": true,
-								"empty-rules": true,
-								"errors": true,
-								"fallback-colors": "warning",
-								"floats": "warning",
-								"font-faces": "warning",
-								"font-sizes": "warning",
-								"gradients": "warning",
-								"ids": "warning",
-								"import": "warning",
-								"important": "warning",
-								"known-properties": true,
-								"outline-none": "warning",
-								"overqualified-elements": "warning",
-								"qualified-headings": "warning",
-								"regex-selectors": "warning",
-								"rules-count": "warning",
-								"shorthand": "warning",
-								"star-property-hack": "warning",
-								"text-indent": "warning",
-								"underscore-property-hack": "warning",
-								"unique-headings": "warning",
-								"universal-selector": "warning",
-								"vendor-prefix": true,
-								"zero-units": "warning"
-							},
-							"gjslint_ignore":
-							[
-								110.0
-							],
-							"gjslint_options":
-							[
-							],
-							"javascript_linter": "jshint",
-							"jshint_options":
-							{
-								"browser": true,
-								"evil": true,
-								"regexdash": true,
-								"sub": true,
-								"trailing": true,
-								"wsh": true
-							},
-							"pep8": true,
-							"pep8_ignore":
-							[
-								"E501"
-							],
-							"perl_linter": "perlcritic",
-							"pyflakes_ignore":
-							[
-							],
-							"pyflakes_ignore_import_*": true,
-							"sublimelinter": true,
-							"sublimelinter_delay": 2.0,
-							"sublimelinter_disable":
-							[
-							],
-							"sublimelinter_executable_map":
-							{
-							},
-							"sublimelinter_fill_outlines": false,
-							"sublimelinter_gutter_marks": false,
-							"sublimelinter_mark_style": "outline",
-							"sublimelinter_notes": false,
-							"sublimelinter_objj_check_ascii": false,
-							"sublimelinter_popup_errors_on_save": false,
-							"sublimelinter_syntax_map":
-							{
-								"C++": "c",
-								"Python Django": "python",
-								"Ruby on Rails": "ruby"
-							},
-							"sublimelinter_wrap_find": true,
-							"syntax": "Packages/CoffeeScript/CoffeeScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 318.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "lib/lyricwiki.coffee",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 32839,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								30613,
-								30613
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/CoffeeScript/CoffeeScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 2364.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "lib/Site.coffee",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2176,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								533,
-								486
-							]
-						],
-						"settings":
-						{
-							"annotations":
-							[
-								"TODO",
-								"README",
-								"FIXME"
-							],
-							"csslint_options":
-							{
-								"adjoining-classes": "warning",
-								"box-model": true,
-								"box-sizing": "warning",
-								"compatible-vendor-prefixes": "warning",
-								"display-property-grouping": true,
-								"duplicate-background-images": "warning",
-								"duplicate-properties": true,
-								"empty-rules": true,
-								"errors": true,
-								"fallback-colors": "warning",
-								"floats": "warning",
-								"font-faces": "warning",
-								"font-sizes": "warning",
-								"gradients": "warning",
-								"ids": "warning",
-								"import": "warning",
-								"important": "warning",
-								"known-properties": true,
-								"outline-none": "warning",
-								"overqualified-elements": "warning",
-								"qualified-headings": "warning",
-								"regex-selectors": "warning",
-								"rules-count": "warning",
-								"shorthand": "warning",
-								"star-property-hack": "warning",
-								"text-indent": "warning",
-								"underscore-property-hack": "warning",
-								"unique-headings": "warning",
-								"universal-selector": "warning",
-								"vendor-prefix": true,
-								"zero-units": "warning"
-							},
-							"gjslint_ignore":
-							[
-								110.0
-							],
-							"gjslint_options":
-							[
-							],
-							"javascript_linter": "jshint",
-							"jshint_options":
-							{
-								"browser": true,
-								"evil": true,
-								"regexdash": true,
-								"sub": true,
-								"trailing": true,
-								"wsh": true
-							},
-							"pep8": true,
-							"pep8_ignore":
-							[
-								"E501"
-							],
-							"perl_linter": "perlcritic",
-							"pyflakes_ignore":
-							[
-							],
-							"pyflakes_ignore_import_*": true,
-							"sublimelinter": true,
-							"sublimelinter_delay": 2.0,
-							"sublimelinter_disable":
-							[
-							],
-							"sublimelinter_executable_map":
-							{
-							},
-							"sublimelinter_fill_outlines": false,
-							"sublimelinter_gutter_marks": false,
-							"sublimelinter_mark_style": "outline",
-							"sublimelinter_notes": false,
-							"sublimelinter_objj_check_ascii": false,
-							"sublimelinter_popup_errors_on_save": false,
-							"sublimelinter_syntax_map":
-							{
-								"C++": "c",
-								"Python Django": "python",
-								"Ruby on Rails": "ruby"
-							},
-							"sublimelinter_wrap_find": true,
-							"syntax": "Packages/CoffeeScript/CoffeeScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 268.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "lib/echonest/api_key.coffee",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2414,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								45,
-								62
-							]
-						],
-						"settings":
-						{
-							"annotations":
-							[
-								"TODO",
-								"README",
-								"FIXME"
-							],
-							"csslint_options":
-							{
-								"adjoining-classes": "warning",
-								"box-model": true,
-								"box-sizing": "warning",
-								"compatible-vendor-prefixes": "warning",
-								"display-property-grouping": true,
-								"duplicate-background-images": "warning",
-								"duplicate-properties": true,
-								"empty-rules": true,
-								"errors": true,
-								"fallback-colors": "warning",
-								"floats": "warning",
-								"font-faces": "warning",
-								"font-sizes": "warning",
-								"gradients": "warning",
-								"ids": "warning",
-								"import": "warning",
-								"important": "warning",
-								"known-properties": true,
-								"outline-none": "warning",
-								"overqualified-elements": "warning",
-								"qualified-headings": "warning",
-								"regex-selectors": "warning",
-								"rules-count": "warning",
-								"shorthand": "warning",
-								"star-property-hack": "warning",
-								"text-indent": "warning",
-								"underscore-property-hack": "warning",
-								"unique-headings": "warning",
-								"universal-selector": "warning",
-								"vendor-prefix": true,
-								"zero-units": "warning"
-							},
-							"gjslint_ignore":
-							[
-								110.0
-							],
-							"gjslint_options":
-							[
-							],
-							"javascript_linter": "jshint",
-							"jshint_options":
-							{
-								"browser": true,
-								"evil": true,
-								"regexdash": true,
-								"sub": true,
-								"trailing": true,
-								"wsh": true
-							},
-							"pep8": true,
-							"pep8_ignore":
-							[
-								"E501"
-							],
-							"perl_linter": "perlcritic",
-							"pyflakes_ignore":
-							[
-							],
-							"pyflakes_ignore_import_*": true,
-							"sublimelinter": true,
-							"sublimelinter_delay": 2.0,
-							"sublimelinter_disable":
-							[
-							],
-							"sublimelinter_executable_map":
-							{
-							},
-							"sublimelinter_fill_outlines": false,
-							"sublimelinter_gutter_marks": false,
-							"sublimelinter_mark_style": "outline",
-							"sublimelinter_notes": false,
-							"sublimelinter_objj_check_ascii": false,
-							"sublimelinter_popup_errors_on_save": false,
-							"sublimelinter_syntax_map":
-							{
-								"C++": "c",
-								"Python Django": "python",
-								"Ruby on Rails": "ruby"
-							},
-							"sublimelinter_wrap_find": true,
-							"syntax": "Packages/CoffeeScript/CoffeeScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "lib/nhaccuatui.coffee",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 47376,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1859,
-								1866
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/CoffeeScript/CoffeeScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				}
 			]
 		}
 	],
 	"incremental_find":
 	{
-		"height": 35.0
+		"height": 45.0
 	},
 	"input":
 	{
@@ -1550,8 +1105,232 @@
 		"selected_items":
 		[
 			[
+				"zing",
+				"nodejs/lib/zing.coffee"
+			],
+			[
+				"gomusic",
+				"nodejs/lib/gomusic.coffee"
+			],
+			[
+				"nhacvui",
+				"nodejs/lib/nhacvui.coffee"
+			],
+			[
+				"chia",
+				"nodejs/lib/chiasenhac.coffee"
+			],
+			[
+				"lyrc",
+				"nodejs/lib/lyricwiki.coffee"
+			],
+			[
+				"nahcso",
+				"nodejs/lib/nhacso.coffee"
+			],
+			[
+				"nghenhac",
+				"nodejs/lib/nghenhac.coffee"
+			],
+			[
+				"chacha",
+				"nodejs/lib/chacha.coffee"
+			],
+			[
+				"keeng",
+				"nodejs/lib/keeng.coffee"
+			],
+			[
+				"gomusi",
+				"nodejs/lib/gomusic.coffee"
+			],
+			[
 				"nhacc",
 				"nodejs/lib/nhaccuatui.coffee"
+			],
+			[
+				"chiase",
+				"nodejs/lib/chiasenhac.coffee"
+			],
+			[
+				"spec",
+				"nodejs/spec/test.coffee"
+			],
+			[
+				"test",
+				"nodejs/spec/test.coffee"
+			],
+			[
+				"nhacso",
+				"nodejs/lib/nhacso.coffee"
+			],
+			[
+				"pg",
+				"nodejs/lib/pgwrapper.coffee"
+			],
+			[
+				"site",
+				"nodejs/lib/Site.coffee"
+			],
+			[
+				"module",
+				"nodejs/lib/module.coffee"
+			],
+			[
+				"nahc",
+				"nodejs/lib/nhaccuatui.coffee"
+			],
+			[
+				"nahcvu",
+				"nodejs/lib/nhacvui.coffee"
+			],
+			[
+				"dee",
+				"nodejs/lib/deezer.coffee"
+			],
+			[
+				"za",
+				"nodejs/lib/Zazoo.coffee"
+			],
+			[
+				"echon",
+				"nodejs/lib/echonest.coffee"
+			],
+			[
+				"song",
+				"nodejs/lib/songfreaks.coffee"
+			],
+			[
+				"music",
+				"nodejs/lib/musicvnn.coffee"
+			],
+			[
+				"stat",
+				"nodejs/lib/stats.coffee"
+			],
+			[
+				"lyri",
+				"nodejs/lib/lyricwiki.coffee"
+			],
+			[
+				"nahcc",
+				"nodejs/lib/nhaccuatui.coffee"
+			],
+			[
+				"chias",
+				"nodejs/lib/chiasenhac.coffee"
+			],
+			[
+				"nghenh",
+				"nodejs/lib/nghenhac.coffee"
+			],
+			[
+				"keen",
+				"nodejs/lib/keeng.coffee"
+			],
+			[
+				"gomu",
+				"nodejs/lib/gomusic.coffee"
+			],
+			[
+				"chiasenhac",
+				"nodejs/lib/chiasenhac.coffee"
+			],
+			[
+				"lyric",
+				"nodejs/lib/lyricwiki.coffee"
+			],
+			[
+				"utils",
+				"nodejs/lib/utils.coffee"
+			],
+			[
+				"uti",
+				"nodejs/lib/utils.coffee"
+			],
+			[
+				"zingci",
+				"nodejs/scripts/zing-cipher.coffee"
+			],
+			[
+				"nha",
+				"nodejs/lib/nhaccuatui.coffee"
+			],
+			[
+				"lyricwiki",
+				"nodejs/lib/lyricwiki/object_finding.coffee"
+			],
+			[
+				"lyricwi",
+				"nodejs/lib/lyricwiki.coffee"
+			],
+			[
+				"nhac",
+				"nodejs/lib/nhaccuatui.coffee"
+			],
+			[
+				"inde",
+				"index.coffee"
+			],
+			[
+				"objec",
+				"nodejs/lib/echonest/object_transformation.coffee"
+			],
+			[
+				"artist",
+				"nodejs/lib/echonest/artist_transformation.coffee"
+			],
+			[
+				"zz",
+				"nodejs/lib/Zazoo.coffee"
+			],
+			[
+				"up",
+				"nodejs/lib/echonest/update_song.coffee"
+			],
+			[
+				"upda",
+				"nodejs/lib/echonest/update_artist.coffee"
+			],
+			[
+				"zaz",
+				"nodejs/lib/Zazoo.coffee"
+			],
+			[
+				"update",
+				"nodejs/lib/echonest/update_artist.coffee"
+			],
+			[
+				"echo",
+				"nodejs/lib/echonest.coffee"
+			],
+			[
+				"songtr",
+				"nodejs/lib/echonest/song_transformation.coffee"
+			],
+			[
+				"obje",
+				"nodejs/lib/echonest/object_transformation.coffee"
+			],
+			[
+				"art",
+				"nodejs/lib/echonest/artist_transformation.coffee"
+			],
+			[
+				"down",
+				"nodejs/lib/echonest/download_echonest.coffee"
+			],
+			[
+				"modul",
+				"nodejs/lib/module.coffee"
+			],
+			[
+				"downlo",
+				"nodejs/lib/echonest/download_echonest.coffee"
+			],
+			[
+				"enapi",
+				"nodejs/lib/echonest/api_key.coffee"
 			],
 			[
 				"obejc",
@@ -1564,10 +1343,6 @@
 			[
 				"wik",
 				"nodejs/lib/lyricwiki.coffee"
-			],
-			[
-				"lyri",
-				"nodejs/lib/lyricwiki_v2.coffee"
 			],
 			[
 				"l",
@@ -1586,36 +1361,8 @@
 				"nodejs/lib/echonest/database_insertion.coffee"
 			],
 			[
-				"nhac",
-				"nodejs/lib/nhaccuatui.coffee"
-			],
-			[
-				"enapi",
-				"nodejs/lib/echonest/api_key.coffee"
-			],
-			[
-				"down",
-				"nodejs/lib/echonest/download_echonest.coffee"
-			],
-			[
 				"artist_",
 				"nodejs/lib/echonest/artist_transformation.coffee"
-			],
-			[
-				"objec",
-				"nodejs/lib/echonest/object_transformation.coffee"
-			],
-			[
-				"utils",
-				"nodejs/lib/utils.coffee"
-			],
-			[
-				"site",
-				"nodejs/lib/Site.coffee"
-			],
-			[
-				"modul",
-				"nodejs/lib/module.coffee"
 			],
 			[
 				"nhaccu",
@@ -1642,20 +1389,8 @@
 				"nodejs/main.coffee"
 			],
 			[
-				"echo",
-				"nodejs/lib/echonest.js"
-			],
-			[
-				"zing",
-				"nodejs/lib/zing.coffee"
-			],
-			[
 				"gomus",
 				"nodejs/lib/gomusic.coffee"
-			],
-			[
-				"module",
-				"nodejs/lib/module.coffee"
 			],
 			[
 				"echoe",
@@ -1666,44 +1401,12 @@
 				"nodejs/lib/module.coffee"
 			],
 			[
-				"echon",
-				"nodejs/lib/echonest.coffee"
-			],
-			[
-				"lyric",
-				"nodejs/lib/lyricwiki.coffee"
-			],
-			[
 				"lr",
 				"nodejs/lib/lyricwiki.coffee"
 			],
 			[
-				"lyricwi",
-				"nodejs/lib/lyricwiki.coffee"
-			],
-			[
-				"chias",
-				"nodejs/lib/chiasenhac.coffee"
-			],
-			[
 				"stats",
 				"nodejs/lib/stats.coffee"
-			],
-			[
-				"keen",
-				"nodejs/lib/keeng.coffee"
-			],
-			[
-				"nghenh",
-				"nodejs/lib/nghenhac.coffee"
-			],
-			[
-				"nhacvui",
-				"nodejs/lib/nhacvui.coffee"
-			],
-			[
-				"gomu",
-				"nodejs/lib/gomusic.coffee"
 			],
 			[
 				"chac",
@@ -1724,10 +1427,6 @@
 			[
 				"nhacsoco",
 				"nodejs/lib/nhacso.coffee copy"
-			],
-			[
-				"nhacso",
-				"nodejs/lib/nhacso.coffee"
 			],
 			[
 				"nhaccuatui2",
@@ -1754,10 +1453,6 @@
 				"nodejs/lib/musicvnn.coffee"
 			],
 			[
-				"music",
-				"nodejs/musicvnn"
-			],
-			[
 				"mainco",
 				"nodejs/main.coffee"
 			],
@@ -1776,10 +1471,6 @@
 			[
 				"testz",
 				"nodejs/testZINGLyric.coffee"
-			],
-			[
-				"inde",
-				"index.js"
 			],
 			[
 				"nhacv",
@@ -1838,10 +1529,6 @@
 				"nodejs/lib/gomusic.coffee"
 			],
 			[
-				"nahcso",
-				"meteor/.meteor/local/build/server/node_modules/http-proxy/examples/http/custom-proxy-error.js"
-			],
-			[
 				"table",
 				"nodejs/misc/table.coffee"
 			],
@@ -1879,10 +1566,6 @@
 			],
 			[
 				"testj",
-				"test.js"
-			],
-			[
-				"test",
 				"test.js"
 			],
 			[

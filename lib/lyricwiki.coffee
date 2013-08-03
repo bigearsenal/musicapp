@@ -194,8 +194,8 @@ class LyricWiki extends Site
 			youtubeLink = data.match(/http:\/\/youtube\.com.+/)?[0]
 			if youtubeLink then song.youtube_link = youtubeLink.replace(/".+$/,'')
 
-			isGracenote = data.match(/View the Gracenote/)?[0]
-			if isGracenote then song.isGracenote = 1
+			is_gracenote = data.match(/View the Gracenote/)?[0]
+			if is_gracenote then song.is_gracenote = 1
 
 			language = data.match(/category normal" data-name="Language\/(.+)" data-namespace/)?[1]
 			if language then song.language = language
@@ -203,7 +203,7 @@ class LyricWiki extends Site
 			album = data.match(/appears on the album.+">(.+)<\/a><\/i>/)?[1]
 			if album then song.album = album
 
-			if options.created_at then song.created_at = options.created_at
+			if options.date_created then song.date_created = options.date_created
 
 			if song.lyric is "" then song.download_done = -1
 
@@ -284,7 +284,7 @@ class LyricWiki extends Site
 				# _u += "  musicbrainz_link = #{@connection.escape song.musicbrainz_link}, " if song.musicbrainz_link
 				# _u += "  allmusic_link = #{@connection.escape song.allmusic_link}, " if song.allmusic_link
 				# _u += "  youtube_link = #{@connection.escape song.youtube_link}, " if song.youtube_link
-				_u += "  is_gracenote=#{@connection.escape song.isGracenote}, " if song.isGracenote
+				_u += "  is_gracenote=#{@connection.escape song.is_gracenote}, " if song.is_gracenote
 				_u += "  download_done=#{song.download_done}, "
 				_u += "  lyric=#{@connection.escape song.lyric} "
 				_u += " where id=#{song.id}"
@@ -437,7 +437,7 @@ class LyricWiki extends Site
 				year : options.year
 				genre : ""
 				duration : 0
-				thumbnail : ""
+				coverart : ""
 				allmusic_link : ""
 				discogs_link : ""
 				musicbrainz_link : ""
@@ -456,8 +456,8 @@ class LyricWiki extends Site
 			genre = data.match(/Genre:.+<\/a><\/td><\/tr>.+/)?[0]
 			if genre then album.genre = @processStringorArray genre.replace(/<\/a><\/td><\/tr>.+/,'').replace(/^.+>/,'')
 
-			thumbnail = data.match(/<\/div><\/div><\/div><td>.+/)?[0]
-			if thumbnail then album.thumbnail = thumbnail.replace(/" class.+/,'').replace(/^.+"/,'')
+			coverart = data.match(/<\/div><\/div><\/div><td>.+/)?[0]
+			if coverart then album.coverart = coverart.replace(/" class.+/,'').replace(/^.+"/,'')
 
 			musicbrainz_link = data.match(/MusicBrainz:.+/)?[0]
 			if musicbrainz_link then album.musicbrainz_link = musicbrainz_link.replace(/">.+/,'').replace(/^.+"/,'')
@@ -468,7 +468,7 @@ class LyricWiki extends Site
 			allmusic_link = data.match(/allmusic:.+/)?[0]
 			if allmusic_link then album.allmusic_link = allmusic_link.replace(/">.+/,'').replace(/^.+"/,'')
 
-			if  album.thumbnail is "" and album.musicbrainz_link is "" and album.discogs_link is "" and album.allmusic_link is "" and album.genre is "" and album.duration is 0
+			if  album.coverart is "" and album.musicbrainz_link is "" and album.discogs_link is "" and album.allmusic_link is "" and album.genre is "" and album.duration is 0
 				album.download_done = 0
 
 			@eventEmitter.emit "result-album", album, options
@@ -521,7 +521,7 @@ class LyricWiki extends Site
 			    _u = "UPDATE #{@table.Albums} SET "
 			    _u += "  genre = #{@connection.escape album.genre}, " 
 			    _u += "  duration = #{album.duration}, "
-			    _u += "  thumbnail = #{@connection.escape album.thumbnail}, "
+			    _u += "  coverart = #{@connection.escape album.coverart}, "
 			    _u += "  allmusic_link = #{@connection.escape album.allmusic_link}, "
 			    _u += "  discogs_link = #{@connection.escape album.discogs_link}, "
 			    _u += "  musicbrainz_link = #{@connection.escape album.musicbrainz_link}, "
@@ -653,7 +653,7 @@ class LyricWiki extends Site
 			options = 
 				title : song.title
 				artist : song.artist
-				created_at : song.created_at
+				date_created : song.date_created
 				link : link
 			# console.log link
 			@getFileByHTTPv2 link, @processSongLyric, @onSongFail, options 
@@ -733,7 +733,7 @@ class LyricWiki extends Site
 				_album = 
 					title : @processStringorArray temp[1]
 					artist : @processStringorArray temp[0]
-					created_at : @formatDate(new Date(album.created_at))
+					date_created : @formatDate(new Date(album.date_created))
 				artists.push _album.artist
 				if _album.title
 					if _album.title.match(/\([0-9]+\)/)
@@ -750,7 +750,7 @@ class LyricWiki extends Site
 				_song = 
 					title : @processStringorArray temp[1]
 					artist : @processStringorArray temp[0]
-					created_at : @formatDate(new Date(song.created_at))
+					date_created : @formatDate(new Date(song.date_created))
 				artists.push _song.artist
 				songs.push _song
 
@@ -795,6 +795,14 @@ class LyricWiki extends Site
 				itemSearching.addArtistidAndAlbumidToANewSong song, (newSong)=>
 					# console.log newSong
 					# process.exit 0
+					# change the name of property
+					if newSong.album
+						newSong.album_title= newSong.album
+						delete newSong.album
+					if newSong.artist
+						newSong.artists= newSong.artist
+						delete newSong.artist
+
 					itemSearching.addNewSong newSong, (err)->
 						if err
 							console.log "------------- at #{newSong}"  
@@ -816,7 +824,7 @@ class LyricWiki extends Site
 			pages = []
 			items.map (item,index)=>
 				_page = {}
-				_page.created_at = @helpers.getTimestamp item.match(/mw-newpages-time.+/)?[0].replace(/<.+$/,'').replace(/^.+>/,'')
+				_page.date_created = @helpers.getTimestamp item.match(/mw-newpages-time.+/)?[0].replace(/<.+$/,'').replace(/^.+>/,'')
 				_page.name = @processStringorArray item.match(/mw-newpages-pagename.+/)?[0].replace(/<.+$/,'').replace(/^.+>/,'')
 				if item.match(/Created page with/)
 					_page.type = "song"
@@ -835,9 +843,9 @@ class LyricWiki extends Site
 			# console.log "# of new songs : #{pages.length}, total songs: #{@newPages.length}"
 			# console.log pages
 			isNextpage = true
-			pages.forEach (v)=> if v.created_at <  @config.lastUpdatedTimestamp then isNextpage = false
+			pages.forEach (v)=> if v.date_created <  @config.lastUpdatedTimestamp then isNextpage = false
 
-			pages = pages.filter (v)=> if v.created_at >  @config.lastUpdatedTimestamp then return yes else return no
+			pages = pages.filter (v)=> if v.date_created >  @config.lastUpdatedTimestamp then return yes else return no
 
 			pages.forEach (v)=> @newPages.push v
 

@@ -39,6 +39,10 @@ class Nhaccuatui extends Module
 		@logPath = @config.logPath
 		@log = {}
 		@_readLog()
+		String::stripHtmlTags = (tag)->
+			if not tag then tag = ""
+			@.replace(RegExp("</?" + tag + "[^<>]*>", "gi"), "")
+
 		Array::unique = (property)->
 			indexOfObjectInArray  = (arr, searchTerm, property)->
 				for i in [0..arr.length-1]
@@ -236,7 +240,7 @@ class Nhaccuatui extends Module
 			key : options.key
 			title : ""
 			artists : ""
-			topic : ""
+			topics : ""
 			plays : 0
 			bitrate : 0
 			type : ""
@@ -255,8 +259,8 @@ class Nhaccuatui extends Module
 			if id isnt song.id
 				song.id = id
 
-		topic =  data.match(/inpHiddenGenre.+/g)?[0]
-		if topic then song.topic = topic.replace(/inpHiddenGenre.+value\=|\"|\s\/\>/g,'')
+		topics =  data.match(/inpHiddenGenre.+/g)?[0]
+		if topics then song.topics = topics.replace(/inpHiddenGenre.+value\=|\"|\s\/\>/g,'')
 
 		artists = data.match(/songname.+[\r\t\n]+.+/g)?[0]
 		if artists then song.artists = artists.match(/title.+"/)[0].replace(/>.+$/,'').replace(/title=|"/g,'').split(',').map((v)->encoder.htmlDecode(v).trim()).unique()
@@ -288,15 +292,15 @@ class Nhaccuatui extends Module
 		if song.type is "mv"
 			title = data.match(/songname.+/g)?[0]
 			if title then song.title = encoder.htmlDecode title.replace(/<\/h1>.+/g,'').replace(/^.+>/,'')
-			thumbnail = data.match(/image_src.+\"(http.+)\"/)?[1]
-			if thumbnail
-				song.thumbnail = thumbnail
-				if song.thumbnail
-					if song.thumbnail.match(/\d{4}\/\d{2}\/\d{2}/g)
-						song.created = song.thumbnail.match(/\d{4}\/\d{2}\/\d{2}/g)[0].replace(/\//g,'-')
-					else if song.thumbnail.match(/\d{4}_\d{2}\//g)
-						song.created = song.thumbnail.match(/\d{4}_\d{2}\//g)[0].replace(/_/g,':').replace(/\//g,'')
-						song.created += ":01"
+			coverart = data.match(/image_src.+\"(http.+)\"/)?[1]
+			if coverart
+				song.coverart = coverart
+				if song.coverart
+					if song.coverart.match(/\d{4}\/\d{2}\/\d{2}/g)
+						song.date_created = song.coverart.match(/\d{4}\/\d{2}\/\d{2}/g)[0].replace(/\//g,'-')
+					else if song.coverart.match(/\d{4}_\d{2}\//g)
+						song.date_created = song.coverart.match(/\d{4}_\d{2}\//g)[0].replace(/_/g,':').replace(/\//g,'')
+						song.date_created += ":01"
 			delete song.bitrate
 			if options.duration
 				song.duration = options.duration
@@ -366,13 +370,13 @@ class Nhaccuatui extends Module
 				key : options.key
 				title : ""
 				artists : ""
-				topic : ""
+				topics : ""
 				plays : options.plays
 				nsongs : 0
-				thumbnail : ""
+				coverart : ""
 				link_key : ""
 				description : ""
-				created : null
+				date_created : null
 
 			if album.plays is undefined
 				album.plays = 0
@@ -391,8 +395,8 @@ class Nhaccuatui extends Module
 				link_key = data.match(/flashPlayer\"\,\s\"playlist.+/g)?[0]
 				if link_key then album.link_key = link_key.replace(/flashPlayer.+playlist|0\..+|\s|\"|\,/g,'')
 
-				topic =  data.match(/inpHiddenGenre.+/g)?[0]
-				if topic then album.topic = topic.replace(/inpHiddenGenre.+value\=|\"|\s\/\>/g,'')
+				topics =  data.match(/inpHiddenGenre.+/g)?[0]
+				if topics then album.topics = topics.replace(/inpHiddenGenre.+value\=|\"|\s\/\>/g,'')
 
 				artists = data.match(/songname.+\s+.+/g)?[0]
 				if artists then album.artists = artists.match(/title.+"/)[0].replace(/>.+$/,'').replace(/title=|"/g,'').split(',').map((v)->encoder.htmlDecode(v).trim())
@@ -400,14 +404,14 @@ class Nhaccuatui extends Module
 				title = data.match(/songname.+\s+.+/g)?[0]
 				if title then album.title = encoder.htmlDecode title.replace(/\- <a href.+/g,'').replace(/^.+\s+.+>/,'').trim()
 
-				thumbnail = data.match(/.+img152/g)?[0]
-				if thumbnail then album.thumbnail = thumbnail.match(/src=\"http.+\"\swidth/g)?[0].replace(/src=\"|\"\swidth/g,'')
+				coverart = data.match(/.+img152/g)?[0]
+				if coverart then album.coverart = coverart.match(/src=\"http.+\"\swidth/g)?[0].replace(/src=\"|\"\swidth/g,'')
 
-				if album.thumbnail.match(/\d{4}\/\d{2}\/\d{2}/g)
-					album.created = album.thumbnail.match(/\d{4}\/\d{2}\/\d{2}/g)[0].replace(/\//g,'-')
-				if album.thumbnail.match(/\/\d+\.jpg$/g)
-					_t = new Date(parseInt(album.thumbnail.match(/\/\d+\.jpg/g)[0].replace(/\/|\.jpg/g,'')))
-					album.created += " " + _t.getHours() + ":" + _t.getMinutes() + ":" + _t.getSeconds()
+				if album.coverart.match(/\d{4}\/\d{2}\/\d{2}/g)
+					album.date_created = album.coverart.match(/\d{4}\/\d{2}\/\d{2}/g)[0].replace(/\//g,'-')
+				if album.coverart.match(/\/\d+\.jpg$/g)
+					_t = new Date(parseInt(album.coverart.match(/\/\d+\.jpg/g)[0].replace(/\/|\.jpg/g,'')))
+					album.date_created += " " + _t.getHours() + ":" + _t.getMinutes() + ":" + _t.getSeconds()
 
 
 				songs = data.match(/btnDownload.+rel.+key.+relTitle.+/g)
@@ -591,7 +595,7 @@ class Nhaccuatui extends Module
 			key : options.key
 			title : ""
 			artists : ""
-			topic : ""
+			topics : ""
 			plays : 0
 			thumbnail : ""
 			type : ""
@@ -612,14 +616,14 @@ class Nhaccuatui extends Module
 
 		info = data.match(/<h1 class="name">.+/g)?[0]
 		if info
-			info = info.replace(/<h1 class="name">/,'').replace(/<\/h1>/,'')
+			info = info.stripHtmlTags()
 			info = info.split(' - ')
 			video.title = encoder.htmlDecode info[0].trim()
 			video.artists = info[1].split(', ').map((v)->encoder.htmlDecode(v).trim())
 
-		topic = data.match(/nowPlayingListenCount.+\s+.+\s+.+/g)?[0]
-		if topic
-			video.topic = topic.split("&nbsp;<img").filter((v,idx)-> if idx > 0 then yes else no)
+		topics = data.match(/nowPlayingListenCount.+\s+.+\s+.+/g)?[0]
+		if topics
+			video.topics = topics.split("&nbsp;<img").filter((v,idx)-> if idx > 0 then yes else no)
 						.map (v)-> encoder.htmlDecode(v.replace(/<\/.+/,'').replace(/.+>/,'')).trim()
 		
 		thumbnail = data.match(/image_src.+\"(http.+)\"/)?[1]
@@ -627,10 +631,10 @@ class Nhaccuatui extends Module
 			video.thumbnail = thumbnail
 			if video.thumbnail
 					if video.thumbnail.match(/\d{4}\/\d{2}\/\d{2}/g)
-						video.created = video.thumbnail.match(/\d{4}\/\d{2}\/\d{2}/g)[0].replace(/\//g,'-')
+						video.date_created = video.thumbnail.match(/\d{4}\/\d{2}\/\d{2}/g)[0].replace(/\//g,'-')
 					else if video.thumbnail.match(/\d{4}_\d{2}\//g)
-						video.created = video.thumbnail.match(/\d{4}_\d{2}\//g)[0].replace(/_/g,':').replace(/\//g,'')
-						video.created += ":01"
+						video.date_created = video.thumbnail.match(/\d{4}_\d{2}\//g)[0].replace(/_/g,':').replace(/\//g,'')
+						video.date_created += ":01"
 			
 		link_key = data.match(/flashPlayer\"\,\s\".+/g)?[0]
 		if link_key then video.link_key = link_key.replace(/0\..+/g,'').replace(/\s\"/g,'').replace(/\"\,$/g,'').replace(/flashPlayer.+\,/g,'')
@@ -678,7 +682,7 @@ class Nhaccuatui extends Module
 				# process.exit 0
 				if video isnt null
 					@connection.query @query._insertIntoNCTVideos, video, (err)->
-						if err then console.log "Cannt insert video: #{song.key}. ERROR #{err} "
+						if err then console.log "Cannt insert video: #{video.key}. ERROR #{err} "
 				else
 					@stats.passedItemCount -=1
 					@stats.failedItemCount +=1
@@ -1184,7 +1188,7 @@ class Nhaccuatui extends Module
 			_u += " topic=#{@connection.escape video.topic},"
 			_u += " type=#{@connection.escape video.type},"
 			_u += " link_key=#{@connection.escape video.link_key},"
-			_u += " thumbnail=#{@connection.escape video.thumbnail},"
+			_u += " coverart=#{@connection.escape video.coverart},"
 			_u += " created=#{@connection.escape video.created}," if video.created
 			_u += " lyric=#{@connection.escape video.lyric}"
 			_u += " WHERE #{@table.Videos}.key=#{@connection.escape video.key}"

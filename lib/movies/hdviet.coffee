@@ -7,6 +7,18 @@ class HDViet extends Site
 		RC4 = require './RC4'
 		@rc4 = new RC4()
 		@fs = require 'fs'
+
+	updateStatsInfo : (isSuccess,currentId) ->
+			if currentId
+				@stats.currentId = currentId
+			@stats.totalItemCount +=1
+			if isSuccess
+				@stats.passedItemCount +=1
+			else 
+				@stats.failedItemCount +=1
+			@utils.printRunning @stats
+			if @stats.totalItems is @stats.totalItemCount
+				@utils.printFinalResult @stats
 	getLink : (link,options,callback)->
 		onSuccess = (data,_options)->
 			callback(null,data,_options)
@@ -80,12 +92,18 @@ class HDViet extends Site
 			type : file.type
 			episodes : []	
 		totalCount = 	file.elinks.length			
-		for elink in file.elinks
-			do (elink)=>
+		console.log "totalCount #{totalCount}"
+		@resetStats()
+		@stats.totalItems = totalCount
+
+		for elink,index in file.elinks
+			do (elink,index)=>
 				@getFileMetadata elink, false, (err,file)=>
 					if err 
 						callback err,null
+						@updateStatsInfo false, index
 					else 
+						@updateStatsInfo true, index
 						if file.type is "movie"
 							count +=1
 							_file.episodes.push file.link
@@ -176,7 +194,7 @@ class HDViet extends Site
 		# @getPlaylist 4267, (err,playlist)=>
 		# 	console.log playlist
 
-		@getPlaylist 3970, (err,playlist)=>
+		@getPlaylist 2124, (err,playlist)=>
 			# console.log JSON.stringify playlist
 			episodes = playlist.episodes
 			# console.log episodes

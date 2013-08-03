@@ -52,7 +52,6 @@ class Site extends Module
 		req.write(dataString)
 		req.end()
 
-
 	getFileByHTTP : (link, onSucess, onFail, options) ->
 		http.get link, (res) =>
 				res.setEncoding 'utf8'

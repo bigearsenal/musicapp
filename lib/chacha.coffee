@@ -27,6 +27,18 @@ class Chacha extends Module
 			_insertIntoCCSongs_Albums : "INSERT INTO " + @table.Songs_Albums + " SET ?"
 		@utils = new Utils()
 		# @parser = new xml2js.Parser();
+		Array::splitBySeperator = (seperator) ->
+			result = []
+			for val in @
+				_a = val.split(seperator)
+				for item in _a
+					result.push item.trim()
+			return result
+		Array::replaceElement = (source,value)->
+			for val,index in @
+				if val is source
+					@[index] = value
+			return @
 		@eventEmitter = new events.EventEmitter()
 		super @mysqlConfig
 		@logPath = @config.logPath
@@ -83,14 +95,21 @@ class Chacha extends Module
 			_artistid = parseInt song.thumb.match(/artists\/\/s5\/\d+/)[0].replace(/artists\/\/s5\//,'')
 		else _artistid = 0
 		_duration = parseInt(song.duration.split(':')[0])*60+parseInt(song.duration.split(':')[1])
+		if song.artist.trim()
+			artists = song.artist.trim().split().splitBySeperator(' - ').splitBySeperator('- ')
+										.splitBySeperator(' ft. ').splitBySeperator(' ft ')
+										.splitBySeperator(' _ ').splitBySeperator('-')
+										.splitBySeperator(',').replaceElement('V.A',"Various Artists")
+										.replaceElement('Nhiều ca sĩ',"Various Artists").replaceElement('Nhiều Ca Sĩ',"Various Artists")
+		else artists = []
 		_item = 
-			songid : song.id
-			song_name : song.name.trim()
+			id : song.id
+			title : song.name.trim()
 			artistid : _artistid
-			artist_name : song.artist.trim()
+			artists : artists
 			duration : _duration
 			bitrate : parseInt song.bitrate
-			thumbnail : song.thumb
+			coverart : song.thumb
 			link : song.url
 
 		# console.log _item
@@ -152,11 +171,11 @@ class Chacha extends Module
 	processAlbum : (data,options)=>
 		if data isnt null
 			album =
-				albumid : options.id
-				album_name : ""
-				album_artist : ""
+				id : options.id
+				title : ""
+				artists : []
 				nsongs : 0
-				thumbnail : ""
+				coverart : ""
 				plays : 0
 				songids : null
 			arr = data.match(/\<meta\sname\=\"title\".+\/\>/g)[0]
@@ -164,13 +183,20 @@ class Chacha extends Module
 				.match(/^.+\|/)[0].replace(/\|/,'').trim()
 				.split('-')
 			
-			album.album_name = arr[0]?.trim()
-			album.album_artist = arr[1]?.trim()
+			album.title = arr[0]?.trim()
+			if arr[1]
+				artists = arr[1]?.trim().split().splitBySeperator(' - ').splitBySeperator('- ')
+										.splitBySeperator(' ft. ').splitBySeperator(' ft ')
+										.splitBySeperator(' _ ').splitBySeperator('-')
+										.splitBySeperator(',').replaceElement('V.A',"Various Artists")
+										.replaceElement('Nhiều ca sĩ',"Various Artists").replaceElement('Nhiều Ca Sĩ',"Various Artists")
+			else artists = []
+			album.artists = artists
 
-			album.thumbnail = data.match(/album-image.+[\r\n\t]+.+/g)?[0]
-			if album.thumbnail isnt undefined
-				album.thumbnail = album.thumbnail.replace(/\?.+/g,'').replace(/album-image.+[\r\n\t]+.+\"/g,'')
-			else album.thumbnail = ""
+			album.coverart = data.match(/album-image.+[\r\n\t]+.+/g)?[0]
+			if album.coverart isnt undefined
+				album.coverart = album.coverart.replace(/\?.+/g,'').replace(/album-image.+[\r\n\t]+.+\"/g,'')
+			else album.coverart = ""
 
 			album.description = data.match(/full-desc.+/)?[0]
 			if album.description isnt undefined
@@ -307,7 +333,7 @@ class Chacha extends Module
 			if result isnt null
 				@stats.passedItemCount +=1
 				@temp.totalFail +=0
-				@log.lastAlbumId = result.albumid
+				@log.lastid = result.albumid
 				# songs = result.songs
 				# delete result.songs
 
@@ -329,70 +355,7 @@ class Chacha extends Module
 			
 
 		@_updateAlbum @log.lastAlbumId+1
-
-
-
-	# processItem : (id)->
-	# 	try
-	# 		if id < 100 then _id = "0#{id}"
-	# 		else _id = id
-	# 		url = "./chacha/quocte-#{_id}.html"
-	# 		topic = '["Nhạc Quốc Tế Remix"]'
-	# 		fs.readFile url,"utf8", (err,data)=>
-	# 			@stats.totalItemCount +=1
-	# 			@stats.currentId = id
-	# 			if data isnt undefined
-					
-	# 				songs = []
-	# 				song = {}
-	# 				plays  = data.match(/total-played.+/g)
-	# 				if plays isnt null
-	# 					plays = plays.map (v)-> 
-	# 						_t = v.replace(/<\/span>/g,'').replace(/total-played\">|lượt/g,'').trim()
-	# 						if _t is ''
-	# 							_t = 0
-	# 						_t
-		
-	# 				items = data.match(/song-title.+[\n\t\r]+.+/g)
-	# 				if items isnt null
-	# 					items = items.map (v)-> v.replace(/\.html\"/g,'').replace(/song-title.+[\n\t\r]+.+,/g,'')
-					
-	# 				if items isnt null and plays isnt null 
-	# 					if items.length is plays.length
-	# 						for i in [0..items.length-1]
-	# 							@stats.passedItemCount +=1
-	# 							# console.log song
-	# 							_u = "update #{@table.Songs} SET topic=#{@connection.escape topic}, plays=#{plays[i]} where songid=#{items[i]}"
-	# 							@connection.query _u, (err)=>
-	# 								if err then console.log "Error while inserting table. ERROR: #{err}"
-						
-
-	# 			else @stats.failedItemCount +=1
-
-	# 			if @temp <= 24
-	# 				@processItem (id+1)
-	# 				@temp += 1
-		
-	# 			@utils.printRunning @stats
-	# 			if @stats.totalItems is @stats.totalItemCount
-	# 				@utils.printFinalResult @stats
-	# 	catch e
-	# 		console.log e
-	# getSongsTopic : ->
-	# 	@connect()
-	# 	console.log "update songs plays and topic"
-	# 	@eventEmitter.on 'result', (result)=>
-	# 		console.log result
-
-	# 	@temp = 0
-
-	# 	range = [1..24]
-		
-	# 	@stats.totalItems = range.length
-		
-	# 	@processItem 1
-
-				
+			
 
 	showStats : ->
 		@_printTableStats CC_CONFIG.table

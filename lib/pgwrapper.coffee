@@ -182,10 +182,12 @@ class PostgresqlWrapper
 		# console.log @client.query
 		# process.exit 0
 		@client.query _query, (err, results)=>
+			# console.log err
 			# console.log "inside query called!!!"
 			if err 
 				errorMessage = "#{_query} invalid, #{err.toString()}"
-				if query.search(/^insert ignore/ig) > -1 and err.toString().search(/duplicate key value violates unique constraint/gi)
+				# console.log err.toString() duplicate key value violates unique constraint
+				if query.search(/^insert ignore/ig) > -1 and err.toString().search(/duplicate key value violates unique constraint/gi) > -1
 					errorMessage = null
 					# console.log "triggered...#{err}"
 					# console.log _query

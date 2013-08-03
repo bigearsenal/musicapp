@@ -1,6 +1,8 @@
 class UpdateNewSongsAndArtists
 	constructor : (@table,@connection,@getFileByHttp) ->
-		keys = [ {"id":"SQSOWEREIRXGF03CJ","rateLimit":240},{"id":"V3WFT6DHG0RJX4UD2","rateLimit":120},{"id":"EHY4JJEGIOFA1RCJP","rateLimit":500},{"id":"027ER5TKTSQ81BANR","rateLimit":500},{"id":"EGXKLPXBW3VLDDC6Y","rateLimit":120},{"id":"LCSBHWUZA2IHUVLCF","rateLimit":480},{"id":"DIRRTDZGPELXNOKKF","rateLimit":120}]
+		# keys = [ {"id":"SQSOWEREIRXGF03CJ","rateLimit":240},{"id":"V3WFT6DHG0RJX4UD2","rateLimit":120},{"id":"EHY4JJEGIOFA1RCJP","rateLimit":500},{"id":"027ER5TKTSQ81BANR","rateLimit":500},{"id":"EGXKLPXBW3VLDDC6Y","rateLimit":120},{"id":"LCSBHWUZA2IHUVLCF","rateLimit":480},{"id":"DIRRTDZGPELXNOKKF","rateLimit":120}]
+		keys = [ {"id":"EHY4JJEGIOFA1RCJP","rateLimit":500}]
+		
 		APIKeys = require './api_key'
 		@keys = new APIKeys()
 		@keys.setApiKeys(keys)
@@ -23,9 +25,9 @@ class UpdateNewSongsAndArtists
 		Utils = require '../utils'
 		@utils = new Utils()
 		table = 
-			song : "ENSongs"
-			foreign_ids :  "ENSongs_foreign_ids"
-			tracks : "ENSongs_tracks"
+			song : "ensongs"
+			foreign_ids :  "ensongs_foreign_ids"
+			tracks : "ensongs_tracks"
 		SongTransformation = require './song_transformation'
 		@transformer = new SongTransformation table, @connection
 	_getTime : (mms) ->
@@ -74,16 +76,20 @@ class UpdateNewSongsAndArtists
 		totalCount = @defaultTotalItems/@itemsPerRequest
 		count = 0
 		onSucess = (data,options)->
-			count +=1
-			if count is totalCount
-				options.isDone = true
-			songs = JSON.parse(data).response.songs
-			_songIds = []
-			_artistIds = []
-			for song in songs
-				_songIds.push song.id
-				_artistIds.push song.artist_id
-			callback null, _songIds.unique(), _artistIds.unique() ,options
+			try 
+				count +=1
+				if count is totalCount
+					options.isDone = true
+				songs = JSON.parse(data).response.songs
+				_songIds = []
+				_artistIds = []
+				for song in songs
+					_songIds.push song.id
+					_artistIds.push song.artist_id
+				callback null, _songIds.unique(), _artistIds.unique() ,options
+			catch e
+				console.log "requestSongsLinks() called! #{e}"
+				console.log data
 		onFail = (err,options)->
 			count +=1
 			if count is totalCount
@@ -147,7 +153,7 @@ class UpdateNewSongsAndArtists
 	updateNewArtists : (artistids,callback) ->
 		UNA = require './update_artist'
 		# console.log UNA
-		artistTable ={artist : "ENArtists",blogs : "ENBlogs",news : "ENNews",reviews : "ENReviews",audios : "ENAudios",biographies : "ENBiographies",terms : "ENTerms",urls : "ENUrls",foreign_ids : "ENForeign_ids",images : "ENImages",videos : "ENVideos",songs : "ENSongs"}
+		artistTable ={artist : "enartists",blogs : "enblogs",news : "ennews",reviews : "enreviews",audios : "enaudios",biographies : "enbiographies",terms : "enterms",urls : "enurls",foreign_ids : "enforeign_ids",images : "enimages",videos : "envideos",songs : "ensongs"}
 		una = new UNA(artistTable,@connection,@getFileByHttp)
 		una.setArtistIDs(artistids)
 		una.getArtistItems (statements)->

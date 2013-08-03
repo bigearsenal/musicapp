@@ -222,15 +222,15 @@ class Zing extends Module
 			# _video = 
 			# 	video_encodedId : data.match(/xmlURL.+\&amp\;/g)[0].replace(/xmlURL\=http\:\/\/mp3\.zing\.vn\/xml\/video\-xml\//g,'').replace(/\&amp\;/,'')
 			_video = 
-				vid : vid
+				id : vid
 				title : ""
 				artists : ""
-				topic : ""
+				topics : ""
 				plays : 0
 				thumbnail : ""
 				link : ""
 				lyric : ""
-				created : "0000-00-00"
+				date_created : null
 
 			if data.match(/Thể\sloại\:/g)
 					_temp= data.match(/Thể\sloại\:.+/g)[0]				
@@ -238,8 +238,8 @@ class Zing extends Module
 					_video.plays = parseInt _temp.split('|')[1].replace(/Lượt\sxem\:|\s|\<\/p\>|\./g,''),10
 					arr = []
 					arr.push _topic.replace(/\<a.+\"\>|\<\/a\>/g,'').trim() for _topic in _topics
-					_video.topic = arr.splitBySeperator(' / ').unique()
-			else _video.topic = []
+					_video.topics = arr.splitBySeperator(' / ').unique()
+			else _video.topics = []
 
 			if data.match(/detail-title.+/g)
 				_temp = data.match(/detail-title.+/g)[0]
@@ -261,19 +261,19 @@ class Zing extends Module
 			if link.match /\d{10}\.jpg/g
 				_timestamp = link.match(/\d{10}\.jpg/g)[0].replace(/\.jpg/g,'')
 				_date = new Date(parseInt(_timestamp,10)*1000)
-				_video.created = _date.getFullYear() + "-" + (_date.getMonth()+1) + "-"+ _date.getDate()
+				_video.date_created = _date.getFullYear() + "-" + (_date.getMonth()+1) + "-"+ _date.getDate()
 			if link.match /\d{4}\/\d{1}/g
-				_video.created = link.match(/\d{4}\/\d{1}/g)[0]
+				_video.date_created = link.match(/\d{4}\/\d{1}/g)[0]
 			if link.match /\d{4}\/\d{2}/g
-				_video.created = link.match(/\d{4}\/\d{2}/g)[0]
+				_video.date_created = link.match(/\d{4}\/\d{2}/g)[0]
 			if link.match /\d{4}\/\d{1}\/\d{1}/g
-				_video.created = link.match(/\d{4}\/\d{1}\/\d{1}/g)[0]
+				_video.date_created = link.match(/\d{4}\/\d{1}\/\d{1}/g)[0]
 			if link.match /\d{4}\/\d{1}\/\d{2}/g
-				_video.created = link.match(/\d{4}\/\d{1}\/\d{2}/g)[0]
+				_video.date_created = link.match(/\d{4}\/\d{1}\/\d{2}/g)[0]
 			if link.match /\d{4}\/\d{2}\/\d{2}/g
-				_video.created = link.match(/\d{4}\/\d{2}\/\d{2}/g)[0]
+				_video.date_created = link.match(/\d{4}\/\d{2}\/\d{2}/g)[0]
 			if link.match /\d{4}\/\d{2}_\d{2}/g
-				_video.created = link.match(/\d{4}\/\d{2}\_\d{2}/g)[0].replace(/\//,'-').replace(/_/,'-')
+				_video.date_created = link.match(/\d{4}\/\d{2}\_\d{2}/g)[0].replace(/\//,'-').replace(/_/,'-')
 
 			_video.link = "http://mp3.zing.vn/html5/video/" + @encryptId(vid)
 
@@ -334,24 +334,26 @@ class Zing extends Module
 	# Updating songs, albums and songs_albums
 	_processAlbum : (albumid, data) ->
 		album = 
-			aid : albumid
-			albumid : @_convertToId albumid
-		album.album_encoded_id = data.match(/xmlURL.+\&amp\;/g)[0].replace(/xmlURL\=http\:\/\/mp3\.zing\.vn\/xml\/album\-xml\//g,'').replace(/\&amp\;/,'') 
+			id : albumid
+			key : @_convertToId albumid
+		album.encoded_key = data.match(/xmlURL.+\&amp\;/g)[0].replace(/xmlURL\=http\:\/\/mp3\.zing\.vn\/xml\/album\-xml\//g,'').replace(/\&amp\;/,'') 
 		
 		if data.match(/Lượt\snghe\:\<\/span\>.+/g)
 			album.plays = data.match(/Lượt\snghe\:\<\/span\>.+/g)[0]
 							.replace(/Lượt\snghe\:\<\/span\>\s|\<\/p\>|\./g,'').trim()
+			album.plays = parseInt album.plays,10
 		else album.plays = 0
 		
 		if data.match(/Năm\sphát\shành\:.+/g)
-			album.released_year = data.match(/Năm\sphát\shành\:.+/g)[0]
+			album.year_released = data.match(/Năm\sphát\shành\:.+/g)[0]
 									.replace(/Năm\sphát\shành\:/g,'')
 									.replace(/\<\/p\>|\<\/span\>/g,'').trim()
-		else album.released_year = ''
+		else album.year_released = ''
 
 		if data.match(/Số\sbài\shát\:/g)
 			album.nsongs = data.match(/Số\sbài\shát\:.+/g)[0]
 								.replace(/Số\sbài\shát\:|\<\/span\>\s|\<\/p\>/g,'')
+			album.nsongs = parseInt album.nsongs,10
 		else album.nsongs = 0
 
 		if data.match(/Thể\sloại\:/g)
@@ -359,8 +361,8 @@ class Zing extends Module
 								.replace(/Thể\sloại\:.|\/span\>|\<\/p\>/g,'').split(',')
 			arr = []
 			arr.push _topic.replace(/\<a.+\"\>|\<\/a\>/g,'').trim() for _topic in _topics
-			album.topic =  arr.splitBySeperator(' / ').unique()
-		else album.topic = []
+			album.topics =  arr.splitBySeperator(' / ').unique()
+		else album.topics = []
 
 		if data.match(/_albumIntro\"\sclass\=\"rows2.+/g)
 			album.description = encoder.htmlDecode data.match(/_albumIntro\"\sclass\=\"rows2.+/g)[0]
@@ -372,21 +374,21 @@ class Zing extends Module
 			_temp_artist = encoder.htmlDecode _tempArr[_tempArr.length-1]
 
 			if _temp_artist.search(" ft. ") > -1
-				album.album_artist = _temp_artist.trim().split(' ft. ').map((v) -> v.trim()).unique()
-			else album.album_artist =  _temp_artist.trim().split(',').map((v) -> v.trim()).unique()
+				album.artists = _temp_artist.trim().split(' ft. ').map((v) -> v.trim()).unique()
+			else album.artists =  _temp_artist.trim().split(',').map((v) -> v.trim()).unique()
 
 			_tempArr.splice(-1)
-			album.album_name = encoder.htmlDecode _tempArr.join(' - ').trim()
+			album.title = encoder.htmlDecode _tempArr.join(' - ').trim()
 		
 		if data.match /album-detail-img/g
 			_temp =  data.match(/album-detail-img.+/g)[0].replace(/album-detail-img|/)
-			album.album_thumbnail = _temp.match(/src\=\".+/g)[0].replace(/album-detail-img.+src\=/g,'')
+			album.coverart = _temp.match(/src\=\".+/g)[0].replace(/album-detail-img.+src\=/g,'')
 											.replace(/alt.+|\"|src\=/g,'').trim()
-			if album.album_thumbnail.match(/_\d+\..+$/)
-				_t = album.album_thumbnail.match(/_\d+\..+$/)[0].replace(/_|\..+$/,'')
+			if album.coverart.match(/_\d+\..+$/)
+				_t = album.coverart.match(/_\d+\..+$/)[0].replace(/_|\..+$/,'')
 				_t = new Date(parseInt(_t,10)*1000)
 				_created = _t.getFullYear() + "-" + (_t.getMonth()+1) + "-" + _t.getDate() + " " + _t.getHours() + ":" + _t.getMinutes() + ":" + _t.getSeconds()
-				album.created = _created
+				album.date_created = _created
 
 		if data.match(/_divPlsLite.+\"\sclass/g)
 			arr = []
@@ -405,8 +407,10 @@ class Zing extends Module
 		# console.log songs_albums
 		# Starting to insert new album
 		
-		if album.nsongs > 0 or not album.album_name.match(/Bảng Xếp Hạng Bài Hát.+/)
+		if album.nsongs > 0 or not album.title.match(/Bảng Xếp Hạng Bài Hát.+/)
 			@temp.albums.push album
+			# console.log album
+			# process.exit 0
 
 		album
 	_updateAlbums : (albumid)->
@@ -458,7 +462,10 @@ class Zing extends Module
 
 		for album in newAlbums
 			do (album)=>
+				# console.log album
+				# process.exit 0
 				@connection.query @query._insertIntoZIAlbums, album, (err, result)=>
+					@stats.currentId = album.id
 					@stats.totalItemCount +=1
 					if err 
 						console.log err
@@ -493,13 +500,13 @@ class Zing extends Module
 			console.log " |" + "Found #{songids.length} songs. Querying new songs in DB...."
 			
 
-			_query = "select sid from zisongs where sid in (#{songids.join(',')})"
+			_query = "select id from zisongs where id in (#{songids.join(',')})"
 
 			@connection.query _query, (err,results)=>
 				existedSongs = []
 				newSongIds = []
 				for song in results
-					existedSongs.push song.sid
+					existedSongs.push song.id
 				for id in songids
 					if existedSongs.indexOf(id) is -1
 						newSongIds.push id
@@ -586,7 +593,7 @@ class Zing extends Module
 
 
 	_updateLyric : (song) ->
-		link = "http://mp3.zing.vn/ajax/lyrics/lyrics?from=0&id=#{@_convertToId song.sid}&callback="
+		link = "http://mp3.zing.vn/ajax/lyrics/lyrics?from=0&id=#{@_convertToId song.id}&callback="
 		# console.log link
 		@_getFileByHTTP link, (data)=>
 			try 
@@ -617,10 +624,10 @@ class Zing extends Module
 					if t.search("Hiện chưa có lời bài hát") > -1
 						t = ""
 					t = encoder.htmlDecode t
-					_u = "UPDATE #{@table.Songs} SET lyric=#{@connection.escape(t)} where sid=#{song.sid}"
+					_u = "UPDATE #{@table.Songs} SET lyric=#{@connection.escape(t)} where id=#{song.id}"
 					# console.log _u
 					@connection.query _u, (err)->
-						if err then console.log "Cannt update lyric #{song.sid}"
+						if err then console.log "Cannt update lyric #{song.id}"
 					
 				else 
 					console.log "FAILED WHILE UPDATING LYRICS"
@@ -628,26 +635,27 @@ class Zing extends Module
 				console.log "FAILED WHILE UPDATING LYRICS 2"
 	_processSong : (songid, data)->
 		_song = 
-			sid : songid
-			songid : @_convertToId songid
+			id : songid
+			key : @_convertToId songid
 
 		if data.match(/Lượt\snghe\:.+<\/p>/g)
 			_song.plays = data.match(/Lượt\snghe\:.+<\/p>/g)[0]
 						.replace(/Lượt\snghe\:|<\/p>|\./g,'').trim()
+			_song.plays = parseInt _song.plays,10
 		else _song.plays = 0
 
 		if data.match(/Sáng\stác\:.+<\/a><\/a>/g)
-			_song.author = encoder.htmlDecode data.match(/Sáng\stác\:.+<\/a><\/a>/g)[0]
+			_song.authors = encoder.htmlDecode data.match(/Sáng\stác\:.+<\/a><\/a>/g)[0]
 						.replace(/^.+\">|<.+$/g,'').trim()
-		else _song.author = ''
+		else _song.authors = null
 
 		if data.match(/Thể\sloại\:.+\|\sLượt\snghe/g)
 			_topics = data.match(/Thể\sloại\:.+\|\sLượt\snghe/g)[0]
 								.replace(/Thể\sloại\:|\s\|\sLượt\snghe/g,'').split(',')
 			arr = []
 			arr.push _topic.replace(/\<a.+\"\>|\<\/a\>/g,'').trim() for _topic in _topics
-			_song.topic = arr.splitBySeperator(' / ').unique()
-		else _song.topic = ''
+			_song.topics = arr.splitBySeperator(' / ').unique()
+		else _song.topics = null
 
 		if data.match(/xmlURL.+/)
 
@@ -661,27 +669,27 @@ class Zing extends Module
 			@_getFileByHTTP _link, (data)=>
 				try
 					data = JSON.parse data
-					_song.song_name	= encoder.htmlDecode data.data[0].title.trim()
-					_song.song_artist = encoder.htmlDecode(data.data[0].performer.trim()).split(',').map((v) -> v.trim()).unique()
-					_song.song_link = data.data[0].source
+					_song.title	= encoder.htmlDecode data.data[0].title.trim()
+					_song.artists = encoder.htmlDecode(data.data[0].performer.trim()).split(',').map((v) -> v.trim()).unique()
+					_song.link = data.data[0].source
 
-					_str =  _song.song_link.replace(/^.+load-song\//g,'').replace(/^.+song-load\//g,'')
+					_str =  _song.link.replace(/^.+load-song\//g,'').replace(/^.+song-load\//g,'')
 					testArr = []
 					testArr.push @_decodeString _str.slice(i, i+4) for i in [0.._str.length-1] by 4
 					path =  decodeURIComponent testArr.join('').match(/.+mp3/g)
 
-					created = path.match(/^\d{4}\/\d{2}\/\d{2}/)?[0].replace(/\//g,"-")
+					date_created = path.match(/^\d{4}\/\d{2}\/\d{2}/)?[0].replace(/\//g,"-")
 
 					_song.path = path
-					_song.created = created
+					_song.date_created = date_created
 
 					_tempSong = 
-						sid : _song.sid
+						id : _song.id
 
 					# console.log _song
 					# process.exit 0
 					@connection.query @query._insertIntoZISongs, _song, (err)=>
-						if err then console.log "Cannot insert song: #{_song.songid} into table"
+						if err then console.log "Cannot insert song: #{_song.id} into table #{err}"
 						else @_updateLyric _tempSong
 		_song
 	_updateSongs : (songid) ->
@@ -743,10 +751,10 @@ class Zing extends Module
 		range1 = parseInt range1,10
 		# type 1 is song, 2 is album, 3 is video
 		if type is 1
-			typeId = "sid"
+			typeId = "id"
 			table = @table.Songs
 		else if type is 2
-			typeId = "aid"
+			typeId = "id"
 			table = @table.Albums
 		else if type is 3
 			typeId = "vid"
@@ -834,10 +842,10 @@ class Zing extends Module
 
 		@connect()
 		if type is 1
-			typeId = "sid"
+			typeId = "id"
 			table = @table.Songs
 		else if type is 2
-			typeId = "aid"
+			typeId = "id"
 			table = @table.Albums
 		else if type is 3
 			typeId = "vid"

@@ -275,27 +275,29 @@ class ArtistTransformation extends ObjectTransformation
 	
 	getImagesStatements : (images,artistid)->
 		_images = []
-		for image in images
-			_image = 
-				artist_id : artistid
-				url : image.url
-				license_url : image.license.url
-				license_type : image.license.type
-				license_attribution : image.license.attribution
-			_images.push _image
+		if images 
+			for image in images
+				_image = 
+					artist_id : artistid
+					url : image.url
+					license_url : image.license.url
+					license_type : image.license.type
+					license_attribution : image.license.attribution
+				_images.push _image
 		return @getInsertStatement(_images,@table.images) + "\n"
 	getVideosStatements : (videos,artistid)->
 		_videos = []
-		for video in videos
-			_video = 
-				video_id : video.id
-				title : video.title
-				artist_id : artistid
-				site : video.site
-				url : video.url
-				image_url : video.image_url
-				date_found : video.date_found
-			_videos.push _video
+		if videos
+			for video in videos
+				_video = 
+					video_id : video.id
+					title : video.title
+					artist_id : artistid
+					site : video.site
+					url : video.url
+					image_url : video.image_url
+					date_found : video.date_found
+				_videos.push _video
 		return @getInsertStatement(_videos,@table.videos) + "\n"
 
 	appendArtistToFile : (artist, callbackOnDone) ->

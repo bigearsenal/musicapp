@@ -160,24 +160,30 @@ class UpdateNewArtist
 		# console.log links
 		# if type is "song" then console.log links
 		onSucess = (data,options)=>
-			item = JSON.parse(data).response
-			if type is "image"
-				images = item.images
-				@statements += @transformer.getImagesStatements images, @getArtistIdFromHref(options.link)
-			if type is "song"
-				songs = item.songs
-				# console.log songs
-				if songs
-					for song in songs
-						# @songs.push song.id 
-						@statements += @songTransformer.getAllStatements(song)
-						# console.log @songTransformer.getAllStatements(song)
-			if type is "video"
-				videos = item.video
-				@statements += @transformer.getVideosStatements videos, @getArtistIdFromHref(options.link)
+			try 
+				item = JSON.parse(data).response
+				if type is "image"
+					images = item.images
+					@statements += @transformer.getImagesStatements images, @getArtistIdFromHref(options.link)
+				if type is "song"
+					songs = item.songs
+					# console.log songs
+					if songs
+						for song in songs
+							# @songs.push song.id 
+							@statements += @songTransformer.getAllStatements(song)
+							# console.log @songTransformer.getAllStatements(song)
+				if type is "video"
+					videos = item.video
+					@statements += @transformer.getVideosStatements videos, @getArtistIdFromHref(options.link)
 
-			if @updateStats(true)
-				callback()
+				if @updateStats(true)
+					callback()
+			catch e
+				console.log e + "requestItemLinks() on update_artist.coffee"
+				if @updateStats(false)
+					callback()	 
+
 		onFail = (err,options)=>
 			if @updateStats(false)
 				callback()

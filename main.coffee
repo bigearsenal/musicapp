@@ -84,9 +84,10 @@ Main =
 		func.addMethod {name : "updateSongs", info : "Update songs"}
 		func.addMethod {name : "updateAlbums", info : "Update albums"}
 		func.addMethod {name : "updateVideos", info : "Update videos"}
+		func.addMethod {name : "updateSongWithRange", info : "Update songs with range", rangeEnable : true}
 		func.addMethod {name : "updateSongsCategory", info : "update songs category"}
 		func.addMethod {name : "updateAlbumsCategory", info : "update albums category"}
-		func.addMethod {name : "updateVideos", info : "update videos"}
+		func.addMethod {name : "updateVideos", info : "update videos"}		
 		func.run(rl)
 	gomusic : ->
 		func = new FunctionFactory("gomusic","./lib/",mysqlConfig)
@@ -110,9 +111,11 @@ Main =
 		func = new FunctionFactory("keeng","./lib/",mysqlConfig)
 		func.addMethod {name : "update", info : "Update albums & songs"}
 		func.addMethod {name : "updateVideos", info : "Update songs"}
+		func.addMethod {name : "updateAlbumStats", info : "Update album plays, add lyrics, artists to songs"}
 		func.addMethod {name : "fetchAlbums", info : "Getting albums", rangeEnable : true}
 		func.addMethod {name : "fetchVideos", info : "Getting videos", rangeEnable : true}
 		func.addMethod {name : "showStats", info : "Show statistics"}
+		
 		func.run(rl)
 	chacha : ->
 		func = new FunctionFactory("chacha","./lib/",mysqlConfig)
@@ -192,6 +195,7 @@ Main =
 	echonest : ->
 		func = new FunctionFactory("echonest","./lib/",mysqlConfig)
 		func.addMethod {name : "updateSongs", info : "Update songs"}
+		func.addMethod {name : "testWithProxy", info : "http get with proxy"}
 		# func.addMethod {name : "fetchArtists", info : "xxxxxx"}
 		# func.addMethod {name : "fetchSongsFromArtists", info : "xxxxxx"}
 		# func.addMethod {name : "fetchABunchOfArtistsInDB_first", info : "xxxxxx"}
@@ -241,7 +245,7 @@ registerFuncs.push {name: "chiasenhac", activated : true}
 registerFuncs.push {name: "vietgiaitri", activated : false}
 registerFuncs.push {name: "musicvnn", activated : false}
 registerFuncs.push {name: "songfreaks", activated : false}
-registerFuncs.push {name: "echonest", activated : false}
+registerFuncs.push {name: "echonest", activated : true}
 registerFuncs.push {name: "lyricwiki", activated : true}
 registerFuncs.push {name: "zazoo", activated : false}
 registerFuncs.push {name: "deezer", activated : false}
