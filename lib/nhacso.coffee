@@ -27,13 +27,13 @@ class Nhacso extends Site
 		song = 
 			id : parseInt options.id,10		
 			title : ""	
-			artists : ""
+			artists : null
 			artistid : 0
-			authors : ""
+			authors : null
 			authorid : 0
 			duration : 0
 			plays : 0
-			topics : ""
+			topics : null
 			bitrate : 0
 			official : 0
 			islyric : 0
@@ -198,10 +198,10 @@ class Nhacso extends Site
 		album = 
 			id : options.id
 			title : ""
-			artists : ""
+			artists : null
 			artistid : 0
-			topics : ""
-			genre : ""
+			topics : null
+			genres : null
 			description : ""
 			date_released : ""
 			nsongs : 0

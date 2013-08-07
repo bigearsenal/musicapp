@@ -31,6 +31,18 @@ class Nghenhac extends Module
 		@logPath = @config.logPath
 		@log = {}
 		@_readLog()	
+		Array::splitBySeperator = (seperator) ->
+			result = []
+			for val in @
+				_a = val.split(seperator)
+				for item in _a
+					result.push item.trim()
+			return result
+		Array::replaceElement = (source,value)->
+			for val,index in @
+				if val is source
+					@[index] = value
+			return @
 	getFileByHTTP : (link, onSucess, onFail, options) ->
 		http.get link, (res) =>
 				res.setEncoding 'utf8'
@@ -52,7 +64,7 @@ class Nghenhac extends Module
 			key : ""
 			title : ""
 			artistid : 0
-			artists : ""
+			artists : null
 			authors : ""
 			albumid : 0
 			topics : null
@@ -78,7 +90,9 @@ class Nghenhac extends Module
 				song.artistid = artistid
 			artists = artists.replace(/<\/a>.+$/g,'').replace(/^.+>/g,'')
 			if artists isnt "Chưa xác định"
-				song.artists = encoder.htmlDecode artists
+				song.artists = encoder.htmlDecode(artists).split().splitBySeperator(" - ")
+									.splitBySeperator(" vs. ").splitBySeperator(", ")
+									.splitBySeperator(" & ").splitBySeperator(" feat. ").unique()
 
 		authors = data.match(/Tác\sgiả:.+/g)?[0]
 		if authors isnt undefined
@@ -173,7 +187,11 @@ class Nghenhac extends Module
 
 		artists = data.match(/Trình\sbày:.+/g)?[0]
 		if artists isnt undefined
-			album.artists = artists.replace(/<a\/>.+$/g,'').replace(/^.+>/g,'')
+			album.artists = encoder.htmlDecode(artists.replace(/<a\/>.+$/g,'').replace(/^.+>/g,'')).split()
+									.splitBySeperator(" - ").splitBySeperator("-")
+									.splitBySeperator(" vs. ").splitBySeperator(", ")
+									.splitBySeperator(" & ").splitBySeperator(" feat. ")
+									.replaceElement('V.A','Various Artists').replaceElement('Chưa Xác Định','').unique()
 
 		topics = data.match(/href.+Index\.html.+a_Genreviewall/)?[0]
 		if topics isnt undefined

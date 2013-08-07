@@ -15,8 +15,9 @@ NV_CONFIG =
 		Songs : "nvsongs"
 		Albums : "nvalbums"
 		Songs_Albums : "nvsongs_albums"
+		Videos : "nvvideos"
 	logPath : "./log/NVLog.txt"
-
+http.globalAgent.maxSockets = 10
 class Nhacvui extends Module
 	constructor : (@mysqlConfig, @config = NV_CONFIG) ->
 		@table = @config.table
@@ -24,6 +25,7 @@ class Nhacvui extends Module
 			_insertIntoNVSongs : "INSERT INTO " + @table.Songs + " SET ?"
 			_insertIntoNVAlbums : "INSERT INTO " + @table.Albums + " SET ?"
 			_insertIntoNVSongs_Albums : "INSERT INTO " + @table.Songs_Albums + " SET ?"
+			_insertIntoNVVideos : "INSERT INTO " + @table.Videos + " SET ?"
 		@utils = new Utils()
 		@parser = new xml2js.Parser()
 		@eventEmitter = new events.EventEmitter()
@@ -31,7 +33,21 @@ class Nhacvui extends Module
 		@logPath = @config.logPath
 		@log = {}
 		@_readLog()
-
+		String::stripHtmlTags = (tag)->
+			if not tag then tag = ""
+			@.replace(RegExp("</?" + tag + "[^<>]*>", "gi"), "")
+		Array::splitBySeperator = (seperator) ->
+			result = []
+			for val in @
+				_a = val.split(seperator)
+				for item in _a
+					result.push item.trim()
+			return result
+		Array::replaceElement = (source,value)->
+			for val,index in @
+				if val is source
+					@[index] = value
+			return @
 	getFileByHTTP : (link, onSucess, onFail, options) ->
 		http.get link, (res) =>
 				res.setEncoding 'utf8'
@@ -72,23 +88,53 @@ class Nhacvui extends Module
 
 	formatDate : (dt)->
 		dt.getFullYear() + "-" + (dt.getMonth()+1) + "-" + dt.getDate() + " " + dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds()
-
+	refineAuthorOrArtist : (str)->
+		return encoder.htmlDecode(str).split().splitBySeperator(' / ').splitBySeperator(' - ')
+			.splitBySeperator(' – ').splitBySeperator(', ').splitBySeperator(' ft ')
+			.splitBySeperator(' feat ').splitBySeperator(' ft. ').splitBySeperator(' feat. ')
+			.splitBySeperator(' Feat. ').splitBySeperator(' Ft. ').splitBySeperator(' & ')
+			.splitBySeperator(' vs. ').splitBySeperator('- ').splitBySeperator(' & ')
+			.replaceElement('Đang Cập Nhật...','').replaceElement('Đang Cập Nhật (QT)','')
+			.replaceElement('Đang Cập Nhật (VN)','').replaceElement('Nhạc Phim QT','Nhạc Phim Quốc Tế')
+			.replaceElement('Nhiều Ca Sỹ','Various Artists')
 	processSongCallback : (id,data, item)->
 		if !data.match(/Bài\shát\skhông\stồn\stại/)
-			_t = data.match(/Nhạc\ssĩ:.+/g)?[0]
+			# console.log data
+			_t = data.match(/<div class="nghenhac-info">.+/g)?[0]
+			artists = data.match(/<div class="nghenhac-baihat">.+/g)?[0]
+			if artists
+				temp = artists.stripHtmlTags().split(' - ')
+				artists = temp[temp.length-1]
+				temp.length = temp.length-1
+				title = encoder.htmlDecode temp.join(' - ')
+
+				if artists.match(/Đang Cập Nhật/gi)
+					artists = ""
+				
+				artists  = @refineAuthorOrArtist(artists)
+			else 
+				artists = null
 			song = 
 				id : id
-				title : item.song_name
-				artists : item.artist_name
+				title : title
+				artists : artists
 				plays : 0
-				topics : ""
-				authors : ""
+				topics : null
+				authors : null
 				link : item.link
 				lyric : ""
+				type : item.type
 			if _t isnt undefined
-				song.plays = _t.match(/Lượt\snghe.+/g)[0].replace(/<\/div>.+/g,'').replace(/Lượt\snghe:|,/g,'').replace(/<\/p>/,'').trim()
-				song.topics = _t.replace(/<\/a>.+$/g,'').replace(/^.+>/g,'').trim()
-				song.authors = encoder.htmlDecode _t.replace(/<\/span>.+/g,'').replace(/^.+>/g,'').trim()
+				_t = _t.stripHtmlTags()
+				# console.log _t
+				if _t.match(/Lượt nghe:\s+([0-9]+)/)?[1]
+					song.plays = parseInt(_t.match(/Lượt nghe:\s+([0-9,]+)/)?[1].trim().replace(/,/g,''),10)
+				song.topics = encoder.htmlDecode _t.match(/Thể loại:(.+?)\|/)?[1].trim()
+				if song.topics
+					song.topics = song.topics.split().splitBySeperator(' / ').splitBySeperator('/')
+						.splitBySeperator(' & ')
+				song.authors = encoder.htmlDecode _t.match(/Nhạc sĩ:(.+?)\|/)?[1].trim()
+
 
 			song.lyric = encoder.htmlDecode data.match(/media_title.+/g)?[0].replace(/<\/div><div\s.+$/g,'').replace(/^.+<\/span><\/i><\/div>/g,'').trim()
 			# console.log song.lyric + "------"
@@ -98,12 +144,26 @@ class Nhacvui extends Module
 					song.lyric = ""
 			if song.lyric is undefined then song.lyric = ""
 
-			if song.authors.match(/Đang\sCập\sNhật/i)
-			 	song.authors = ""
+			
+
+			if song.authors is undefined then song.authors = null
+			if song.authors and song.authors.match(/Đang\sCập\sNhật/i)
+				song.authors = null
+
+			if song.authors isnt null and song.authors isnt undefined
+				song.authors = @refineAuthorOrArtist(song.authors)
+
 		else song = null
+
 		song
 	getSongStats : (id,item)->
-		href = "http://hcm.nhac.vui.vn/-m#{id}c2p1a1.html"
+		if item.link.match(/mp3/)
+			item.type = "song"
+			href = "http://hcm.nhac.vui.vn/-m#{id}c2p1a1.html"
+		else 
+			item.type = "video"
+			href = "http://hcm.nhac.vui.vn/-clip#{id}c2.html"
+		
 		# console.log href
 		@stats.currentId = id
 		@getFileByHTTP href,(data)=>
@@ -117,9 +177,12 @@ class Nhacvui extends Module
 				if result isnt null
 					# console.log result
 					# process.exit 0
-
-					@connection.query @query._insertIntoNVSongs, result, (err)->
-						if err then console.log "Can not insert new song #{err}"
+					if result.type is 'song'
+						@connection.query @query._insertIntoNVSongs, result, (err)->
+							if err then console.log "Can not insert new song #{result.id} : #{err}"
+					else 
+						@connection.query @query._insertIntoNVVideos, result, (err)->
+							if err then console.log "Can not insert new video: #{result.id} #{err}"
 				else 
 						@stats.failedItemCount +=1
 						@stats.passedItemCount -=1
@@ -227,7 +290,7 @@ class Nhacvui extends Module
 			if data isnt null
 				@stats.passedItemCount +=1
 				result = @processAlbumData(id,data)
-				@log.lastAlbumId = id
+				
 				# insertIntoDBCallback(result)
 				@eventEmitter.emit 'result', result
 			else @stats.failedItemCount +=1
@@ -244,8 +307,11 @@ class Nhacvui extends Module
 					@utils.printFinalResult @stats
 					@_writeLog @log
 
-		), (err) ->
+		), (err) =>
 			console.log "We have an error while fetching files"
+			@stats.totalItemCount +=1
+			@stats.failedItemCount +=1
+			@utils.printUpdateRunning id, @stats, "Fetching..."
 
 		
 		
@@ -420,6 +486,7 @@ class Nhacvui extends Module
 	
 	processAlbumData : (id,data)=>
 		if data.search('Album không tồn tại.') is -1
+			@log.lastAlbumId = id
 			title_artist = data.match(/nghenhac-baihat.+/g)[0]
 				.replace(/\<\/h\d\>\<\/div\>/g,'')
 				.replace(/^.+>/g,'')
@@ -464,8 +531,9 @@ class Nhacvui extends Module
 			album = 
 				id : id
 				title : encoder.htmlDecode _name.trim()
-				artists : encoder.htmlDecode _artist.trim()
-				topics : topic
+				artists : @refineAuthorOrArtist _artist.trim()
+				topics : topic.split().splitBySeperator(' / ').splitBySeperator('/')
+						.splitBySeperator(' & ')
 				plays : parseInt plays,10
 				nsongs : parseInt nsongs,10
 				coverart : thumbnail
@@ -488,6 +556,7 @@ class Nhacvui extends Module
 		console.log "Running on: #{new Date(Date.now())}"
 		console.log " |"+"Updating Songs to table: #{@table.Songs}".magenta 
 		@_updateSong @log.lastSongId+1
+		# @_updateSong 341077
 
 	updateAlbums : ->
 		@connect()
@@ -569,6 +638,7 @@ class Nhacvui extends Module
 
 	showStats : ->
 		@_printTableStats NV_CONFIG.table
+
 
 
 module.exports = Nhacvui

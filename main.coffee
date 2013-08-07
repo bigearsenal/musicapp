@@ -106,6 +106,8 @@ Main =
 		func.addMethod {name : "fetchAlbumName", info : "Getting albums name", rangeEnable : true}
 		func.addMethod {name : "updateSongsStats", info : "Update songs' statistics"}
 		func.addMethod {name : "showStats", info : "Show statistics"}
+		func.addMethod {name : "updateArtistsDONW1", info : "asdfja sdlkfj ab asdfasd"}
+		
 		func.run(rl)
 	keeng : ->
 		func = new FunctionFactory("keeng","./lib/",mysqlConfig)
