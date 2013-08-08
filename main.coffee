@@ -87,7 +87,9 @@ Main =
 		func.addMethod {name : "updateSongWithRange", info : "Update songs with range", rangeEnable : true}
 		func.addMethod {name : "updateSongsCategory", info : "update songs category"}
 		func.addMethod {name : "updateAlbumsCategory", info : "update albums category"}
-		func.addMethod {name : "updateVideos", info : "update videos"}		
+		func.addMethod {name : "updateVideos", info : "update videos"}	
+		func.addMethod {name : "updateGenreAndLabel", info : "update genres and labels of new albums added today"}	
+			
 		func.run(rl)
 	gomusic : ->
 		func = new FunctionFactory("gomusic","./lib/",mysqlConfig)

@@ -7,6 +7,13 @@ class Nhacso extends Site
 		@logPath = "./log/NSLog.txt"
 		@log = {}
 		@_readLog()
+		Array::splitBySeperator = (seperator) ->
+			result = []
+			for val in @
+				_a = val.split(seperator)
+				for item in _a
+					result.push item.trim()
+			return result
 
 	_decodeId  : (id) ->
 		# console.log id + "......"
@@ -41,8 +48,11 @@ class Nhacso extends Site
 			lyric : ""
 			date_created : null
 			date_updated : null
+			same_artist : 0
 
 		song.title = @getValueXML data,"name",1
+
+		# convert artists and authors to ARRAY will be processed later on processSong()
 		song.artists = @getValueXML data, "artist", 0
 		song.artistid = parseInt @getValueXML(data,"artistlink",0).replace(/\.html/g,'').replace(/^.+-/g,''),10
 		if song.artistid.toString() is "NaN" then song.artistid = 0
@@ -86,7 +96,10 @@ class Nhacso extends Site
 		if plays then song.plays = parseInt plays.replace(/<\/span>.+$/g,'').replace(/^.+>/g,'').replace(/\./g,''),10
 
 		topics = data.match(/<li><a\shref\=\"http\:\/\/nhacso\.net\/the-loai.+/g)?[0]
-		if topics then song.topics = @processStringorArray topics.replace(/^.+\">|<\/a><\/li>/g,'')
+		if topics  
+			song.topics = @processStringorArray topics.replace(/^.+\">|<\/a><\/li>/g,'')
+			if song.topics.match(/Nhạc Hoa/i)? and song.artists.match(" / ")?
+				song.same_artist = 1
 
 		lyric = data.match(/txtlyric.+[^]+.+Bạn chưa nhập nội bài hát/g)?[0]
 		if lyric 
@@ -95,6 +108,11 @@ class Nhacso extends Site
 			if song.lyric.match(/Hãy đóng góp lời bài hát chính xác cho Nhacso nhé/g)
 				song.lyric = ""
 				song.islyric = 0
+
+		song.topics = song.topics.split().splitBySeperator(' - ').splitBySeperator('/')
+		song.artists = song.artists.split().splitBySeperator('||').splitBySeperator(' / ').splitBySeperator(' - ')
+		if song.authors is '' then song.authors = null
+		else song.authors = song.authors.split().splitBySeperator('||').splitBySeperator(' / ').splitBySeperator(' - ')
 
 		@eventEmitter.emit "result-song", song
 		
@@ -227,6 +245,10 @@ class Nhacso extends Site
 		if topics then  album.topics = @processStringorArray topics.replace(/\<li\sclass\=\"bg\"\>\<a\shref\s\=\"http\:\/\/nhacso\.net\/.+\"\>/,'')
 										.replace(/\<\/a\>\<\/li\>/,'')
 
+		# convert fields to ARRAY
+		album.topics = album.topics.split().splitBySeperator(' - ').splitBySeperator('/')
+		album.artists = album.artists.split().splitBySeperator('||').splitBySeperator(' / ').splitBySeperator(' - ')
+
 		songids = data.match(/songid_\d+/g)
 		if songids 
 			songids.map (v)-> album.songids.push parseInt(v.replace(/songid_/g,''),10)
@@ -325,6 +347,7 @@ class Nhacso extends Site
 			if artists then video.artists = artists.map((v) => @processStringorArray  v.replace(/<h2>|<\/h2>/g,'')).unique()
 
 		video.topics = @processStringorArray data.match(/<li><a href=\"http:\/\/nhacso.net\/the-loai-video.+html\">(.+)<\/a>.+/)?[1]
+		video.topics = video.topics.split().splitBySeperator(' - ').splitBySeperator('/')
 
 		plays = data.match(/<span>(.+)<\/span><ins>&nbsp;lượt xem<\/ins>/)?[1]
 		video.plays = parseInt(plays.replace(/\./g,''),10)
@@ -408,8 +431,21 @@ class Nhacso extends Site
 		@eventEmitter.on "update-songs-category-done", =>
 			@resetStats()
 			@updateAlbumsCategory()
+		@eventEmitter.on "update-albums-category-done", =>
+			@updateGenreAndLabel()
 		@updateSongs()
 
+	# NEW part on August 7, 2013
+	updateGenreAndLabel : ->
+		@connect()
+		dt = new Date()
+		today = dt.getFullYear() + "-" + (dt.getMonth()+1) + "-" + dt.getDate()
+		_query = "update nsalbums set genres = plc_ns_get_genre(description), label= plc_ns_get_label(description) where checktime > '#{today}'"
+		@connection.query  _query, (err)->
+			if err then console.log err
+			else 
+				console.log " ---------------------------- "
+				console.log " |Update genres and labels of new albums added today COMPLETED!!!"
 	# THIS UPDATE IS FOR CATEGORY ONLY
 	# The format is ["Nhạc Việt Nam","Nhạc Trẻ","Pop","Ballad"]
 	updateSongsCategory : ->
@@ -590,7 +626,7 @@ class Nhacso extends Site
 						for album in results
 							if album.cats is null
 									albums.push {id : album.id, cats : []}
-							else albums.push {id : album.id, cats : album.cats.split("/ÆØÅ#%€#€#!")}
+							else albums.push {id : album.id, cats : album.cats}
 						
 						for album in albums
 							album.cats.push options.genre.name

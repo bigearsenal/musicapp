@@ -96,7 +96,7 @@ class Nhacvui extends Module
 			.splitBySeperator(' vs. ').splitBySeperator('- ').splitBySeperator(' & ')
 			.replaceElement('Đang Cập Nhật...','').replaceElement('Đang Cập Nhật (QT)','')
 			.replaceElement('Đang Cập Nhật (VN)','').replaceElement('Nhạc Phim QT','Nhạc Phim Quốc Tế')
-			.replaceElement('Nhiều Ca Sỹ','Various Artists')
+			.replaceElement('Đang cập nhật','').replaceElement('Nhiều Ca Sỹ','Various Artists')
 	processSongCallback : (id,data, item)->
 		if !data.match(/Bài\shát\skhông\stồn\stại/)
 			# console.log data

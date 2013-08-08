@@ -27,7 +27,26 @@ class Gomusic extends Module
 		@logPath = @config.logPath
 		@log = {}
 		@_readLog()
+		Array::splitBySeperator = (seperator) ->
+			result = []
+			for val in @
+				_a = val.split(seperator)
+				for item in _a
+					result.push item.trim()
+			return result
+		Array::replaceElement = (source,value)->
+			for val,index in @
+				if val is source
+					@[index] = value
+			return @
 
+
+	refineArtist : (str)->
+		return str.trim().splitBySeperator(' ft ').splitBySeperator(' ft. ')
+				.splitBySeperator(', ').splitBySeperator(' feat ').splitBySeperator(' feat. ')
+				.splitBySeperator(' duet with ').splitBySeperator(' & ').splitBySeperator(' Ft ')
+				.splitBySeperator(' Ft. ').splitBySeperator(' Ft, ').splitBySeperator(' _ ')
+				.splitBySeperator(' - ').replaceElement('Various Artists (VN)','')
 	_storeSong : (song) ->
 		try
 			_createTime = song.CreateTime.match(/\/[0-9]+$/g)[0].replace(/\//g,'') + "-" 
@@ -42,20 +61,21 @@ class Gomusic extends Module
 			console.log ""
 			console.log "Error while creating Record of Column CreateTime and UpdateTime "
 		
+
 		_item = 
 			id : song.Id
 			title : song.Name.trim()
-			artistid : song.ArtistId
-			artists : song.ArtistName.trim()
-			artist_display_name : song.ArtistDisplayName.trim()
+			artistid :  song.ArtistId
+			artist_display : @refineArtist song.ArtistName
+			artists : @refineArtist song.ArtistDisplayName
 			topicid : song.TopicId
-			topic_name : song.TopicName.trim()
+			topics : song.TopicName.trim().split().splitBySeperator(' / ')
 			genreid : song.GenreId
-			genre_name  : song.GenreName.trim()
+			genres  : song.GenreName.trim().split().splitBySeperator(' / ')
 			regionid : song.RegionId
-			region_name : song.RegionName.trim()
+			regions : song.RegionName.trim().split().splitBySeperator(' / ')
 			coverart :song.Thumbnail
-			tags : song.Tags
+			tags : song.Tags.trim().split().splitBySeperator(', ').splitBySeperator(',').unique()
 			lyric : encoder.htmlDecode song.Lyric
 			link : song.FilePath
 			bitrate : song.Bitrate
@@ -105,17 +125,17 @@ class Gomusic extends Module
 		_album = 
 			id: album.Id
 			title : album.Name.trim()
-			master_artistid : album.MasterArtistId
-			master_artists : album.MasterArtistName.trim()
+			artistid : album.MasterArtistId
+			artists : @refineArtist album.MasterArtistName
 			topicid : album.TopicId
-			topic_name : album.TopicName.trim()
+			topics : album.TopicName.trim().split().splitBySeperator(' / ')
 			genreid : album.GenreId
-			genre_name : album.GenreName.trim()
+			genres : album.GenreName.trim().split().splitBySeperator(' / ')
 			regionid: album.RegionId
-			region_name : album.RegionName.trim()
+			regions : album.RegionName.trim().split().splitBySeperator(' / ')
 			duration : album.Duration
 			date_released : _releaseDate #check again
-			tags : album.Tags
+			tags : album.Tags.split().splitBySeperator(', ').splitBySeperator(',').unique()
 			coverart : album.Thumbnail
 			description : encoder.htmlDecode album.Description
 			nsongs : album.SongCount
@@ -220,7 +240,7 @@ class Gomusic extends Module
 							@_updateSong(id+1)
 							
 	
-			.on 'error', (e) ->
+			.on 'error', (e) =>
 				console.log  "Got error: " + e.message
 				@stats.failedItemCount+=1
 	update : ->

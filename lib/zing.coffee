@@ -40,6 +40,11 @@ class Zing extends Module
 				for item in _a
 					result.push item.trim()
 			return result
+		Array::replaceElement = (source,value)->
+			for val,index in @
+				if val is source
+					@[index] = value
+			return @
 		@log = {}
 		@_readLog()
 	encryptId : (id) ->
@@ -645,8 +650,9 @@ class Zing extends Module
 		else _song.plays = 0
 
 		if data.match(/Sáng\stác\:.+<\/a><\/a>/g)
-			_song.authors = encoder.htmlDecode data.match(/Sáng\stác\:.+<\/a><\/a>/g)[0]
-						.replace(/^.+\">|<.+$/g,'').trim()
+			_song.authors = encoder.htmlDecode(data.match(/Sáng\stác\:.+<\/a><\/a>/g)[0]
+						.replace(/^.+\">|<.+$/g,'').trim()).split().splitBySeperator(' / ').splitBySeperator(' & ')
+						.replaceElement('Đang Cập Nhật','').replaceElement('Đang cập nhật','')
 		else _song.authors = null
 
 		if data.match(/Thể\sloại\:.+\|\sLượt\snghe/g)

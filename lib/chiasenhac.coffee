@@ -23,7 +23,7 @@ class Nhacso extends Site
                   formats : []
                   file_href : ""
                   is_lyric : ""
-                  date_created : "0000-00-00"
+                  date_created : "0001-01-01"
                   # lyric : ""  // it is omitted 
             temp = data.match(/plt-text.+Download: <a href=\"(.+html)\">(.+) - (.+)<\/a><\/div>/)
             if temp

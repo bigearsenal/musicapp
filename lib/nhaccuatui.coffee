@@ -239,8 +239,8 @@ class Nhaccuatui extends Module
 			id : options.id
 			key : options.key
 			title : ""
-			artists : ""
-			topics : ""
+			artists : null
+			topics : null
 			plays : 0
 			bitrate : 0
 			type : ""
@@ -260,7 +260,7 @@ class Nhaccuatui extends Module
 				song.id = id
 
 		topics =  data.match(/inpHiddenGenre.+/g)?[0]
-		if topics then song.topics = topics.replace(/inpHiddenGenre.+value\=|\"|\s\/\>/g,'')
+		if topics then song.topics = topics.replace(/inpHiddenGenre.+value\=|\"|\s\/\>/g,'').split()
 
 		artists = data.match(/songname.+[\r\t\n]+.+/g)?[0]
 		if artists then song.artists = artists.match(/title.+"/)[0].replace(/>.+$/,'').replace(/title=|"/g,'').split(',').map((v)->encoder.htmlDecode(v).trim()).unique()
@@ -369,8 +369,8 @@ class Nhaccuatui extends Module
 				id : options.id
 				key : options.key
 				title : ""
-				artists : ""
-				topics : ""
+				artists : null
+				topics : null
 				plays : options.plays
 				nsongs : 0
 				coverart : ""
@@ -396,7 +396,7 @@ class Nhaccuatui extends Module
 				if link_key then album.link_key = link_key.replace(/flashPlayer.+playlist|0\..+|\s|\"|\,/g,'')
 
 				topics =  data.match(/inpHiddenGenre.+/g)?[0]
-				if topics then album.topics = topics.replace(/inpHiddenGenre.+value\=|\"|\s\/\>/g,'')
+				if topics then album.topics = topics.replace(/inpHiddenGenre.+value\=|\"|\s\/\>/g,'').split()
 
 				artists = data.match(/songname.+\s+.+/g)?[0]
 				if artists then album.artists = artists.match(/title.+"/)[0].replace(/>.+$/,'').replace(/title=|"/g,'').split(',').map((v)->encoder.htmlDecode(v).trim())
@@ -594,8 +594,8 @@ class Nhaccuatui extends Module
 			id : options.id
 			key : options.key
 			title : ""
-			artists : ""
-			topics : ""
+			artists : null
+			topics : null
 			plays : 0
 			thumbnail : ""
 			type : ""

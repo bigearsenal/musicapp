@@ -65,7 +65,7 @@ class Nghenhac extends Module
 			title : ""
 			artistid : 0
 			artists : null
-			authors : ""
+			authors : null
 			albumid : 0
 			topics : null
 			plays : 0
@@ -98,7 +98,8 @@ class Nghenhac extends Module
 		if authors isnt undefined
 			authors = authors.replace(/<\/a>.+$/g,'').replace(/^.+>/g,'')
 			if authors isnt "Chưa xác định"
-				song.authors = encoder.htmlDecode authors
+				song.authors = encoder.htmlDecode(authors).split().splitBySeperator(' / ').splitBySeperator(' & ')
+						.replaceElement('Đang Cập Nhật','').replaceElement('Đang cập nhật','')
 
 		albumid = data.match(/Album:.+/g)?[0]
 		if albumid isnt undefined
