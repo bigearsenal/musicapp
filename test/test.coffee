@@ -9,5 +9,7 @@ require './gomusic'
 require './chacha'
 require './nghenhac'
 require './keeng'
+require './chiasenhac'
+require './lyricwiki'
 
 
