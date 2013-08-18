@@ -153,6 +153,8 @@ class PostgresqlWrapper
 					if @isDeleteStatement(query)
 						# console.log "DELETE TRIGGER"
 						_q = @transformDeleteQuery query
+					else
+						_q = query
 		return _q
 	transformResults : (results) ->
 		if results then return results.rows

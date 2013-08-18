@@ -215,7 +215,7 @@ class LyricWiki extends Site
 		    console.log "ERROR : at link #{options.name}. ---> #{error}"
 	_getSongsLyrics : (source = "lyricwiki")=>
 		params =
-			sourceField : "id, #{@table.Songs}.title,#{@table.Songs}.artist"
+			sourceField : "id, #{@table.Songs}.title,#{@table.Songs}.artists"
 			table : @table.Songs
 			limit : @temp.nItems
 			skip : @temp.nItemsSkipped
@@ -227,10 +227,11 @@ class LyricWiki extends Site
 			# songs = [{id : 640472, artist : "David Coverdale", title : "Coverdale/Page:Don't Leave Me This Way"}]
 			# test = {id : 123, artist : "Justin bieber", title : "never say never"}
 			# songs.push test
-			@stats.totalItems = songs.length
-			@stats.currentTable = @table.Songs
-			console.log " |# of items : #{@stats.totalItems}"
-			if songs.length > 0
+			
+			if songs and songs.length > 0
+				@stats.totalItems = songs.length
+				@stats.currentTable = @table.Songs
+				console.log " |# of items : #{@stats.totalItems}"
 				console.log " |Getting from range: #{songs[0].id} ---> #{songs[songs.length-1].id}"
 				
 				for song in songs

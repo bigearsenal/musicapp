@@ -87,7 +87,7 @@ class Nghenhac extends Module
 		if artists isnt undefined
 			artistid = artists.match(/Song\/\d+/g,'')?[0].match(/\d.+/g)?[0]
 			if artistid isnt undefined
-				song.artistid = artistid
+				song.artistid = parseInt(artistid,10)
 			artists = artists.replace(/<\/a>.+$/g,'').replace(/^.+>/g,'')
 			if artists isnt "Chưa xác định"
 				song.artists = encoder.htmlDecode(artists).split().splitBySeperator(" - ")

@@ -160,7 +160,7 @@ Main =
 		func.addMethod {name : "updateAlbumsAndSongs", info : "Update albums and songs"}
 		func.addMethod {name : "updateSongsByCategory", info : "Update songs by category"}
 		func.addMethod {name : "updateVideosByCategory", info : "Update videos by category"}
-		# func.addMethod {name : "fixTheErrorOfLyric", info : "Fix error of lyrics"}
+		func.addMethod {name : "fetchSongWhereTitleIsNull", info : "fetchSongWhereTitleIsNull"}
 		func.run(rl)
 	musicvnn: ->
 		func = new FunctionFactory("musicvnn","./lib/",mysqlConfig)
@@ -230,6 +230,10 @@ Main =
 		func.addMethod {name : "fetchTable", info : "Getting tables"}
 		func.addMethod {name : "showStats", info : "Show statistics"}
 		func.run(rl)
+	song : ->
+		func = new FunctionFactory("song","./lib/",mysqlConfig)
+		func.addMethod {name : "createSongTable", info : "create grand song table"}
+		func.run(rl)
 Main.execute = (site)->
 	Main[site.toLowerCase()]()
 
@@ -249,13 +253,13 @@ registerFuncs.push {name: "chiasenhac", activated : true}
 registerFuncs.push {name: "vietgiaitri", activated : false}
 registerFuncs.push {name: "musicvnn", activated : false}
 registerFuncs.push {name: "songfreaks", activated : false}
-registerFuncs.push {name: "echonest", activated : true}
+registerFuncs.push {name: "echonest", activated : false}
 registerFuncs.push {name: "lyricwiki", activated : true}
 registerFuncs.push {name: "zazoo", activated : false}
 registerFuncs.push {name: "deezer", activated : false}
 registerFuncs.push {name: "hdviet", activated : true}
 registerFuncs.push {name: "getstats", activated : true}
-
+registerFuncs.push {name: "song", activated : true}
 activatedFuncs = [""]
 disableFuncs = [""]
 

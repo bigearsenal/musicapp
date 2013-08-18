@@ -42,11 +42,15 @@ class Gomusic extends Module
 
 
 	refineArtist : (str)->
-		return str.trim().splitBySeperator(' ft ').splitBySeperator(' ft. ')
+		return str.trim().split().splitBySeperator(' ft ').splitBySeperator(' ft. ')
 				.splitBySeperator(', ').splitBySeperator(' feat ').splitBySeperator(' feat. ')
 				.splitBySeperator(' duet with ').splitBySeperator(' & ').splitBySeperator(' Ft ')
 				.splitBySeperator(' Ft. ').splitBySeperator(' Ft, ').splitBySeperator(' _ ')
-				.splitBySeperator(' - ').replaceElement('Various Artists (VN)','')
+				.splitBySeperator('; ').splitBySeperator(' ft.Feat. ').splitBySeperator('ft.')
+				.splitBySeperator(' - ').splitBySeperator(' + ').splitBySeperator(' feat.')
+				.splitBySeperator(' Feat.').splitBySeperator(' vs ').splitBySeperator(' .ft ')
+				.splitBySeperator('_Ft.').splitBySeperator(' Duet ').splitBySeperator(' featuring ')
+				.replaceElement('Various Artists (VN)','').replaceElement('Đang cập nhật','')
 	_storeSong : (song) ->
 		try
 			_createTime = song.CreateTime.match(/\/[0-9]+$/g)[0].replace(/\//g,'') + "-" 
@@ -141,7 +145,7 @@ class Gomusic extends Module
 			nsongs : album.SongCount
 			plays : album.PlayCount
 			date_created : _createTime
-			date_uploaded : _updateTime
+			date_updated : _updateTime
 
 		@_updateSongs_Albums _album.id,_album
 		@utils.printUpdateRunning _album.id, @stats, "Fetching..."

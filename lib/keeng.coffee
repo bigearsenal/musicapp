@@ -12,6 +12,7 @@ encoder = new Encoder('entity');
 KE_CONFIG = 
 	table : 
 		Songs : "kesongs"
+		Albums : "kealbums"
 		Videos : "kevideos"
 http.globalAgent.maxSockets = 5
 class Keeng extends Module
@@ -19,10 +20,12 @@ class Keeng extends Module
 		@table = @config.table
 		@query = 
 			_insertIntoKESongs : "INSERT IGNORE INTO " + @table.Songs + " SET ?"
+			_insertIntoKEAlbums : "INSERT IGNORE INTO " + @table.Albums + " SET ?"
 			_insertIntoKEVideos : "INSERT IGNORE INTO " + @table.Videos + " SET ?"
 		@utils = new Utils()
 		@parser = new xml2js.Parser();
 		super @mysqlConfig
+		require('./helpers/string')
 		Array::splitBySeperator = (seperator) ->
 			result = []
 			for val in @
@@ -51,29 +54,8 @@ class Keeng extends Module
 			.on 'error', (e) =>
 				callback  "Cannot get file. ERROR: " + e.message,null
 
-
-	createTables : ->
-		@connect()
-		songsQuery = "CREATE TABLE IF NOT EXISTS " + @table.Songs + " (
-					id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-					albumid varchar(20),
-					album_name varchar(255),
-					songid varchar(20),
-					song_name varchar(255),
-					artist_name varchar(255),
-					album_plays int,
-					album_link varchar(255),
-					song_link varchar(255)
-					);"
-		@connection.query songsQuery, (err, result)=>
-			if err then console.log "Cannot create table" else console.log "Tables: #{@table.Songs} have been created!"
-			@end()
-	resetTables : ->
-		@connect()
-		songsQuery = "truncate table #{@table.Songs} ;"
-		@connection.query songsQuery, (err, result)=>
-			if err then console.log "Cannot truncate tables" else console.log "Tables: #{@table.Songs} have been truncated!"
-			@end()
+	formatDate : (dt)->
+		dt.getFullYear() + "-" + (dt.getMonth()+1) + "-" + dt.getDate() + " " + dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds()
 
 	_updateAlbum : (pageId) ->
 		link = "http://www.keeng.vn/album/album-moi.html?page=" + pageId
@@ -130,6 +112,7 @@ class Keeng extends Module
 													@temp.isNewPage = false
 													if @temp.check is false 
 														@temp.check = true
+														@stats.totalItems = @temp.albumList.length
 														@_updateSongs album for album in @temp.albumList
 												else console.log "invalid vars : new albums found greater than total albums"
 												
@@ -161,11 +144,11 @@ class Keeng extends Module
 						for i in [0..locations.length-1]
 							song = 
 								album_key : album.id
-								album_title : encoder.htmlDecode album.title
+								# album_title : encoder.htmlDecode album.title
 								key: ids[i+1].replace(/\<info\>/,'').replace(/<\/info\>/,'').trim()
 								title : encoder.htmlDecode titles[i+1].replace(/\<title\>/,'').replace(/<\/title\>/,'').trim()
 								link : locations[i].replace(/\<location\>/,'').replace(/<\/location\>/,'').trim()
-								artists : encoder.htmlDecode(album.artist_name).split().splitBySeperator(' - ').replaceElement('Nhiều Ca Sỹ','Various Artists')
+								# album_artists : encoder.htmlDecode(album.artist_name).split().splitBySeperator(' - ').replaceElement('Nhiều Ca Sỹ','Various Artists')
 							if song.link.match(/\d{4}\/\d{2}\/\d{2}/) isnt null then song.date_created = song.link.match(/\d{4}\/\d{2}\/\d{2}/)[0].replace(/\//g,'-')
 							
 							# console.log song
@@ -174,87 +157,22 @@ class Keeng extends Module
 
 							@connection.query @query._insertIntoKESongs, song, (err)->
 								if err then console.log "CANNOT insert songid #{song.songid}. ERROR: #{err}".red
-						@utils.printUpdateRunning album.id, @stats, "Fetching"
+						@stats.currentId = album.id
+						@utils.printRunning @stats
 					else
 						@stats.failedItemCount+=1
 					if @stats.totalItemCount is @temp.albumList.length
 						@utils.printFinalResult @stats
+						@updateAlbumStats()
 
 			.on 'error', (e) =>
 				console.log  "Got error: " + e.message
+				@stats.totalItemCount+=1
 				@stats.failedItemCount+=1
+				if @stats.totalItemCount is @temp.albumList.length
+					@utils.printFinalResult @stats
+					@updateAlbumStats()
 	
-	_fetchAlbum : (pageId) ->
-		link = "http://www.keeng.vn/album/album-moi.html?page=" + pageId
-		http.get link, (res) =>
-				res.setEncoding 'utf8'
-				data = ''
-				res.on 'data', (chunk) =>
-					data += chunk;
-				res.on 'end', () =>
-					items = data.match(/class\=\"link\sname-song\sunder\".+/g)
-					data  = ""
-					for item, i in items
-						album = 
-							title : item.match(/^class.+name-single/g)[0]
-									.match(/^class.+\<\/a\>/g)[0]
-									.replace(/^class.+\"\>/,'')
-									.replace(/\<\/a\>/,'').trim()
-							artist_name : item.replace(/^class.+\"\>/g,'').replace(/\<\/a\>\<\/p\>/,'').trim()
-							id :  item.match(/^.+name-single/g)[0]
-									.match(/^.+ title/)[0]
-									.replace(/^.+\/.+\/.+\//,'')
-									.replace(/\.html.+/,'')
-						@_fetchSongs album	
-			
-			.on 'error', (e) =>
-				console.log  "Got error: " + e.message
-				@stats.failedItemCount+=1	
-	_fetchSongs : (album) ->
-		link = "http://www.keeng.vn/album/get-album-xml?album_identify=#{album.id}"
-		http.get link, (res) =>
-				res.setEncoding 'utf8'
-				data = ''
-				res.on 'data', (chunk) =>
-					data += chunk;
-				res.on 'end', () =>
-					data = data.replace(/\r/g,'')
-					titles = data.match(/\<title\>.+\<\/title\>/g)
-					locations = data.match(/\<location\>.+\<\/location\>/g)
-					ids = data.match(/\<info\>.+\<\/info\>/g)
-					@stats.totalItemCount+=1
-					if locations isnt null
-						@stats.passedItemCount +=1
-						for i in [0..locations.length-1]
-							song = 
-								albumid : album.id
-								album_name : album.title
-								songid : ids[i+1].replace(/\<info\>/,'').replace(/<\/info\>/,'').trim()
-								song_name : titles[i+1].replace(/\<title\>/,'').replace(/<\/title\>/,'').trim()
-								song_link : locations[i].replace(/\<location\>/,'').replace(/<\/location\>/,'').trim()
-								artist_name : album.artist_name
-							if song.song_link.match(/\d{4}\/\d{2}\/\d{2}/) isnt null then song.created = song.song_link.match(/\d{4}\/\d{2}\/\d{2}/)[0].replace(/\//g,'-')
-							@connection.query @query._insertIntoKESongs, song, (err)->
-								if err then console.log "CANNOT insert songid #{song.songid}".red
-						@utils.printRunning @stats
-							
-					else
-						@stats.failedItemCount+=1
-					if @stats.totalItemCount is @stats.totalItems
-							@utils.printFinalResult @stats
-			.on 'error', (e) =>
-				console.log  "Got error: " + e.message
-				@stats.failedItemCount+=1
-	
-	fetchAlbums : (range0 = 0, range1 = 0) =>
-		@connect()
-		console.log " |"+"Fetching songid: #{range0}..#{range1} to table: #{@table.Songs}".magenta
-		@stats.totalItems = (range1 - range0 + 1)*25
-		[@stats.range0, @stats.range1] = [range0, range1]
-		@stats.currentTable = @table.Albums
-		@_fetchAlbum id for id in [range0..range1]
-		null
-
 	_fetchVideos : (pageId) ->		
 		link = "http://www.keeng.vn/video/video-moi.html?page=" + pageId
 		http.get link, (res) =>
@@ -365,33 +283,64 @@ class Keeng extends Module
 			check : false #used to check the last new album
 			isNewPage : true #to check if a page contains old albums. If not, fetch new page
 		console.log " |"+"Updating Albums + Songs to table: #{@table.Songs}".magenta
-		@_updateAlbum(1)
+		@lastMaxSongId = 0
+		@connection.query "select max(id) as id from #{@table.Songs}",(err,result)=>
+			if err then console.log err
+			else 
+				@lastMaxSongId = result[0].id
+				# console.log @lastMaxSongId
+				@_updateAlbum(1)
 
-
-
-	proccessAlbumPage : (albumid,data)->
+	proccessAlbumPage : (al,data)->
 		album = 
-			id : albumid
+			key : al.key
+			title : ""
+			artists : null
 			plays : 0
 			description : ""
-			artist_description : null
-			album_description : null
+			# artist_description : null
+			description : null
+			coverart : null
+			songids : al.songids
+			nsongs : parseInt(al.nsongs,10)
+			date_created : null
 			songs : []
 		
+		if al.date_created then album.date_created = @formatDate al.date_created 
 
-		plays = data.match(/([0-9])+.+Lượt nghe/)?[1]
+		plays = data.match(/([0-9]+) Lượt nghe/i)?[1]
 		if plays 
 			album.plays = parseInt plays,10
+
+		title = data.match(/<h2 itemprop="name"[^]+?<\/h2>/g)?[0]
+		if title
+			title = encoder.htmlDecode title.stripHtmlTags().trim()
+			title = title.replace(/\[Nghe Thử\]/gi,'').trim()
+			album.title = title
+
+		artists = data.match(/<p class="name-single">[^]+?<\/p>/)?[0]
+		if artists
+			artists = artists.split('</a>').map((v) ->encoder.htmlDecode v.stripHtmlTags().trim())
+			artists = artists.filter (v)-> v isnt ""
+			artists = artists.map (v)-> v.replace(/\sf(ea)?t\.?\s/i,'').replace(/\s[-_]\s/,'').trim()
+			album.artists = artists
 
 		albumProfile = data.match(/_profileContent[^]+box\-search/)?[0]
 		if albumProfile
 			albumProfile = albumProfile.replace(/<div class="clear"[^]+$/,'').replace(/_profileContent _content _info-content">/,'').trim()
-			album.album_description = albumProfile
+			albumProfile = albumProfile.replace(/^<p>/,'').replace(/<\/p>$/,'').trim()
+			album.description = encoder.htmlDecode albumProfile
 
-		artistProfile = data.match(/THÔNG TIN CA SĨ[^]+_profileContent[^]+box\-search/)?[0]
-		if artistProfile
-			artistProfile = artistProfile.replace(/<div class="clear"[^]+$/,'').replace(/THÔNG TIN CA SĨ[^]+_profileContent _content _info-content">/,'').trim()
-			album.artist_description =  artistProfile
+		# artistProfile = data.match(/THÔNG TIN CA SĨ[^]+_profileContent[^]+box\-search/)?[0]
+		# if artistProfile
+		# 	artistProfile = artistProfile.replace(/<div class="clear"[^]+$/,'').replace(/THÔNG TIN CA SĨ[^]+_profileContent _content _info-content">/,'').trim()
+		# 	artistProfile = artistProfile.replace(/^<p>/,'').replace(/<\/p>$/,'').trim()
+		# 	album.artist_description =  encoder.htmlDecode artistProfile
+
+		thumbnail = data.match(/<span class="wrap highslide-gallery">[^]+?<\/span>/)?[0]
+		if thumbnail
+			thumbnail = thumbnail.match(/(http.+?)">/)?[1]
+			album.coverart = thumbnail
 
 		songKeys = data.match(/javascript:playSong.+/g)
 		if songKeys
@@ -421,33 +370,51 @@ class Keeng extends Module
 								.trim().replace(/<\/div>$/,'').trim().replace(/<\/p>/,'').replace(/<p>/,'').trim()
 				else 
 					lyric = lyric.split()
+				# lyric = [ 'Mong Manh</td></tr></tbody></table><p>Mùa thu làm rơi chiếc lá Sáng nay lá rụng quanh nhà Người yêu giờ xa xôi quá Có hay mơ về với ta Mong manh như chiếc lá Lá rơi khắp sân nhà Mong manh ôi nỗi nhớ Tháng năm có phai mờ Tình yêu nào như cơn gió Thoáng qua cho đời bất ngờ Giờ đây mình ta nhung nhớ Mắt em ôi lệ hoen mờ Mong manh như nắng sớm Nắng không thích đêm về Mong manh như khói thuốc Có đôi lúc ê chề ĐK: Này em cùng ta vui sống Này em cùng ta đắm say Nhớ mãi phút giây này Dù cho đời thêm gian dối Đừng cho tình thêm đắng cay Cho nhau niềm vui mới Giọt sương nào mong manh quá Sáng nay đóa hồng nõn nà Tìm em tìm đâu cho thấy Nắng lên thôi tàn kiếp hoa Mong manh như kiếp sống Chớ gian dối trong lòng Mong manh như tiếng hát Hát cho kiếp phiêu bồng Tình yêu nào như giông tố Sóng nhô cao dạt đôi bờ Giờ đây mình ta trông ngóng Vắng tanh cõi lòng trống không Mong manh như lớp sóng Sóng tan lúc xô bờ Mong manh như thế đấy Cớ sao cứ hững hờ (trở lại ĐK)' ] 
+				lyric = lyric.map (v)->
+					v.replace(/^<table border="0" cellpadding="0" cellspacing="0"[^]+?<strong>/g,'')
+					.replace(/<\/strong>[^]+?<\/table>/,'')
+					.replace(/\r/g,'').replace(/\n/g,'').replace(/\t/g,'').replace(/<\/td><\/tr><\/tbody><\/table>/g,'').trim()
+					.replace(/<p style="margin-left:.25in;">/,'')
+					.replace(/<strong>(.+)<\/strong>/,"$1").stripHtmlTags('div').replace(/^<p>/,'').replace(/<\/p>$/,'').trim()
+					# .replace(/<br\/>/g,"\\n").replace(/<br \/>/g,"\\n").stripHtmlTags().trim()
+				# console.log lyric
+				# process.exit 0
 				album.songs[index].lyrics = lyric
 
 		return album
-	updateSongsStatsFromAlbumPage : (albumid) ->
-		link = "http://www.keeng.vn/album/joke-link/#{albumid}.html"
+	updateSongsStatsFromAlbumPage : (album) ->
+		key = album.key
+		link = "http://www.keeng.vn/album/joke-link/#{key}.html"
 		@_getFileByHTTP link, (err,data)=>
 			if err 
 				console.log "#{link} has error. ERROR: #{err}"
 				@updateStatsInfo(false)
 			else 
-				@updateStatsInfo(true,albumid)
-				album = @proccessAlbumPage albumid,data
-				# console.log album
+				@updateStatsInfo(true,key)
+				newAlbum = @proccessAlbumPage album,data
+
 				try 
-					for song in album.songs
+					songs = newAlbum.songs
+					delete newAlbum.songs
+					# console.log newAlbum
+					# console.log songs
+					# process.exit 0
+					for song in songs
 						_u = "UPDATE #{@table.Songs} SET"
-						_u += " plays=#{album.plays}"
-						_u += " , album_description=#{@connection.escape album.album_description}"
-						_u += " , artist_description=#{@connection.escape album.artist_description}"
+						_u += " plays=#{newAlbum.plays}"
 						_u += " , artists='#{@updateArrayQuery song.artists}'"
 						_u += " , lyrics='#{@updateArrayQuery song.lyrics}'"
 						_u += " WHERE key=#{@connection.escape song.key}"
+						# console.log _u
 						@connection.query _u, (err0)->
 							if err0 then console.log err0
+					@connection.query @query._insertIntoKEAlbums, newAlbum, (err1)->
+						if err1 then console.log err1
+					# console.log newAlbum
 				catch e
 					console.log e
-					console.log JSON.stringify album
+					console.log JSON.stringify newAlbum
 					console.log "-------------------------------"
 
 			
@@ -466,25 +433,27 @@ class Keeng extends Module
 			@utils.printRunning @stats
 			if @stats.totalItems is @stats.totalItemCount
 				@utils.printFinalResult @stats
-
-		select = "
-select album_key from kesongs where album_key in 
- ('0RIZGVMJ','3CCC5D3','63824BF3','7B99685F','7FD3753D')
- GROUP BY album_key
-		"
-		@connection.query select, (err,results)=>
+		console.log "Getting album stats where songid > #{@lastMaxSongId} "
+		_s = "select album_key as key,array_agg(id) as songids,count(album_key) as nsongs,max(date_created) as date_created from kesongs where id > #{@lastMaxSongId} group by album_key"
+		# _s = "select album_key as key,array_agg(id) as songids,count(album_key) as nsongs,max(date_created) as date_created from kesongs group by album_key "
+		@connection.query _s,(err,albums)=>
 			if err then console.log err
 			else 
-				albumids = []
-				for result,index in results
-					albumids.push result.album_key
-				# albumids = []
-				# albumids.push "46CC6843"
-				# albumids.push "PLGGW8C0"
+				# albums = []
 				
-				@stats.totalItems = albumids.length
-				for id in albumids
-					@updateSongsStatsFromAlbumPage id
+				# test =  
+				# 	key: 'F6LCGMEU',
+				# 	songids: [ 284465, 284464 ],
+				# 	nsongs: '2',
+				# 	date_created: new Date('Thu Jun 06 2013 07:00:00 GMT+0700 (ICT)')
+				# albums.push test
+
+				# albums.push "PLGGW8C0"		
+				@resetStats()		
+				@stats.totalItems = albums.length
+				@stats.currentTable = @table.Albums
+				for album in albums
+					@updateSongsStatsFromAlbumPage album
 
 
 	showStats : ->

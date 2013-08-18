@@ -366,6 +366,7 @@ class Zing extends Module
 								.replace(/Thể\sloại\:.|\/span\>|\<\/p\>/g,'').split(',')
 			arr = []
 			arr.push _topic.replace(/\<a.+\"\>|\<\/a\>/g,'').trim() for _topic in _topics
+			# console.log  arr
 			album.topics =  arr.splitBySeperator(' / ').unique()
 		else album.topics = []
 
@@ -737,18 +738,19 @@ class Zing extends Module
 		@_updateSongs @log.lastSongId+1
 
 	update : ->
-		@eventEmitter.on "fetch-new-songs-done", =>
-			@resetStats()
-			@updateSongs()
+		# when @updateSongsWithRange() disable, call updateSongs() first
+		# @eventEmitter.on "fetch-new-songs-done", =>
+		# 	@resetStats()
+		# 	@updateSongs()
 		@eventEmitter.on "update-song-finish", =>
 			@resetStats()
 			@updateAlbums()
 		@eventEmitter.on "update-album-finish",=>
 			@resetStats()
 			@updateVideos()
-
+		@updateSongs()
 		# update the songs which is not available when downloaded then
-		@updateSongsWithRange 1,1
+		# @updateSongsWithRange 1,1 #disable
 
 	# ---------------------------------------
 	# Update songs and albums with RANGE

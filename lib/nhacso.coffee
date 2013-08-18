@@ -65,6 +65,10 @@ class Nhacso extends Site
 		
 		song.link = @getValueXML data, "mp3link", 0
 
+		song.artists = song.artists.split().splitBySeperator('||').splitBySeperator(' / ').splitBySeperator(' - ')
+		if song.authors is '' then song.authors = null
+		else song.authors = song.authors.split().splitBySeperator('||').splitBySeperator(' / ').splitBySeperator(' - ')
+
 		if song.title isnt '' and song.link isnt '/'
 			ts = song.link.match(/\/[0-9]+_/g)[0].replace(/\//, "").replace(/_/, "")
 			ts = parseInt(ts)*Math.pow(10,13-ts.length)
@@ -110,9 +114,7 @@ class Nhacso extends Site
 				song.islyric = 0
 
 		song.topics = song.topics.split().splitBySeperator(' - ').splitBySeperator('/')
-		song.artists = song.artists.split().splitBySeperator('||').splitBySeperator(' / ').splitBySeperator(' - ')
-		if song.authors is '' then song.authors = null
-		else song.authors = song.authors.split().splitBySeperator('||').splitBySeperator(' / ').splitBySeperator(' - ')
+		
 
 		@eventEmitter.emit "result-song", song
 		
@@ -139,9 +141,20 @@ class Nhacso extends Site
 			@stats.totalItemCount +=1
 			@stats.passedItemCount +=1
 			@utils.printUpdateRunning options.song.id, @stats, "Fetching..."
+			song = options.song
+			if song.topics
+				song.topics = song.topics.split().splitBySeperator(' - ').splitBySeperator('/')
+			if song.artists is "" then song.artists = null
+			else 
+				if song.artists
+					song.artists = song.artists.split().splitBySeperator('||').splitBySeperator(' / ').splitBySeperator(' - ')
+			if song.authors is '' then song.authors = null
+			else 
+				if song.authors
+					song.authors = song.authors.split().splitBySeperator('||').splitBySeperator(' / ').splitBySeperator(' - ')
 			@log.lastSongId = options.song.id
-			@connection.query @query._insertIntoSongs, options.song, (err)->
-				if err then console.log "Cannot insert song: #{options.song.id} into database. ERROR: #{err}"
+			@connection.query @query._insertIntoSongs, song, (err)->
+				if err then console.log "Cannot insert song: #{song.id} into database. ERROR: #{err}"
 	_updateSong : (song)=>
 		id = song.id
 		link = "http://nhacso.net/nghe-nhac/link-joke.#{@_decodeId(id)}==.html"

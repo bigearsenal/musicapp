@@ -17,25 +17,25 @@ class Nhacso extends Site
             song = 
                   id : options.id
                   title : ""
-                  artists : ""
-                  topic : ""
+                  artists : null
+                  topics : null
                   downloads : 0
                   formats : []
-                  file_href : ""
+                  href : ""
                   is_lyric : ""
                   date_created : "0001-01-01"
                   # lyric : ""  // it is omitted 
             temp = data.match(/plt-text.+Download: <a href=\"(.+html)\">(.+) - (.+)<\/a><\/div>/)
             if temp
-                  song.file_href = "http://chiasenhac.com/" + temp[1]
+                  song.href = "http://chiasenhac.com/" + temp[1]
                   song.title = @processStringorArray temp[2]
-                  song.artists =  temp[3].split(';').map (v)=> @processStringorArray v.trim()
+                  song.artists =  @processStringorArray(temp[3]).split(';').map (v)=> @processStringorArray v.trim()
                   temp = temp[0].replace(/\-&gt; Download.+$/,'')
                   temp = temp.split(/\-&gt;/).map (v)-> v.replace(/<\/a>/,'').replace(/^.+>/,'').replace(/\.\.\./,'').trim()
                   _t = []
                   temp.forEach (v,index)->  if index > 0 then v.split(/,/).forEach (v1)-> _t.push v1.trim() else _t.push v
                   _t = _t.map (v)=>  @processStringorArray v.replace(v[0],v[0].toUpperCase())
-                  song.topic = _t.filter (element, index, array)-> array.indexOf(element) is index
+                  song.topics = _t.filter (element, index, array)-> array.indexOf(element) is index
 
             downloads = data.match(/<a href=\"http:\/\/download.+\"([0-9]+) downloads/)
             if downloads then song.downloads = parseInt downloads[1],10
@@ -61,7 +61,7 @@ class Nhacso extends Site
                                       link : _t[1].replace(/(http.+\/).+(\..+$)/,"$1file-name$2")
                                       type : _t[2].toLowerCase()
                                       file_size : parseFloat(_t[4])*1024|0
-                                if song.topic.toString().search('Video Clip') > -1
+                                if song.topics.toString().search('Video Clip') > -1
                                       _format.resolution = _t[3].toLowerCase()
                                 else _format.bitrate = _t[3].toLowerCase()
                                 return _format
@@ -97,9 +97,10 @@ class Nhacso extends Site
                   else if dateCreated[0].search(/Hôm nay/) > -1 then song.date_created = @formatDate(new Date())
                   else song.date_created = dateCreated[1].replace(/(\d+)\/(\d+)\/(\d+) (\d+):(\d+)/,'$3-$2-$1 $4:$5')
 
-            if song.title is "" and song.artists is "" and song.formats.length is 0
+            if song.title is "" and song.artists is null and song.formats.length is 0
                   song = null
             
+            # console.log song
             @eventEmitter.emit "result-song", song, options
             
             song
@@ -142,9 +143,9 @@ class Nhacso extends Site
       processSongStats : (data, options) =>
             song = options.song
             song.id  = options.id 
-            song.author = []
+            song.authors = null
             song.album_title = ""
-            song.album_link = ""
+            song.album_href = ""
             song.album_coverart = ""
             song.producer = ""
             song.plays = 0
@@ -152,14 +153,14 @@ class Nhacso extends Site
             song.lyric = ""
 
 
-            author = data.match(/>Sáng tác:.+/)?[0]
-            if author
-                  song.author =  author.split('>;').map (v)=> @processStringorArray v.replace(/<\/a><\/b>.+$/,'').replace(/^.+>/,'').replace(/<\/a.+$|<\/a/,'')
+            authors = data.match(/>Sáng tác:.+/)?[0]
+            if authors
+                  song.authors =  authors.split('>;').map (v)=> @processStringorArray v.replace(/<\/a><\/b>.+$/,'').replace(/^.+>/,'').replace(/<\/a.+$|<\/a/,'')
 
             album = data.match(/>Album:.+/)?[0]
             if album 
                   song.album_title = @processStringorArray album.replace(/<\/a>.+$/,'').replace(/^.+>/,'')
-                  song.album_link = album.replace(/^.+<a href=\"/,'').replace(/html.+$/,'html')
+                  song.album_href = album.replace(/^.+<a href=\"/,'').replace(/html.+$/,'html')
 
             coverart  = data.match(/id=\"fulllyric\".+\s+.+<img src=\"(http.+)\" width/)?[1]
             if coverart then song.album_coverart = coverart
@@ -184,16 +185,16 @@ class Nhacso extends Site
             song
       _getSongStat : ->
             params = 
-                  sourceField : "id, file_href"
+                  sourceField : "id, href"
                   table : @table.Songs
                   limit : 10000
                   condition : " date_released is null ORDER BY id DESC "
             @stats.totalItems = params.limit
             @stats.currentTable = @table.Songs
             @_getFieldFromTable params, (songs)=>
-                  # songs = [{id : 2, file_href : 'http://chiasenhac.com/mp3/vietnam/v-pop/ngay-xua-anh-hoi~minh-tuyet~2.html'}]
+                  # songs = [{id : 2, href : 'http://chiasenhac.com/mp3/vietnam/v-pop/ngay-xua-anh-hoi~minh-tuyet~2.html'}]
                   for song in songs
-                        link = song.file_href
+                        link = song.href
                         options = 
                               id : song.id
                         @getFileByHTTP link, @processSongStats, @onSongFail, options
@@ -210,7 +211,7 @@ class Nhacso extends Site
                         _u = " update #{@table.Songs} SET "
                         # _u += " author= #{@connection.escape song.author}, "
                         # _u += " album_title=#{@connection.escape song.album_title}, "
-                        # _u += " album_link=#{@connection.escape song.album_link}, "
+                        # _u += " album_href=#{@connection.escape song.album_href}, "
                         # _u += " album_coverart=#{@connection.escape song.album_coverart}, "
                         # _u += " producer=#{@connection.escape song.producer}, "
                         _u += " plays=#{song.plays}, "
@@ -255,6 +256,7 @@ class Nhacso extends Site
             else @_updateSong (options.id+1)
       _updateSong : (id)=>
             link = "http://download.chiasenhac.com/download.php?m=#{id}"
+            # console.log link
             options = 
               id : id
             @getFileByHTTP link, @processSong, @onUpdateSongFail, options
@@ -279,7 +281,7 @@ class Nhacso extends Site
                         # console.log song
                         # process.exit 0
                         do (song)=>
-                              link = song.file_href 
+                              link = song.href 
                               _options = 
                                     id : song.id
                                     song : song
@@ -304,6 +306,9 @@ class Nhacso extends Site
 
             # EVENT TRIGGERED when fetch song's stats is done
             @eventEmitter.on "result-song-stats", (song)=>
+
+                  # console.log song
+                  # process.exit 0
                   if song isnt null
                         @connection.query @query._insertIntoSongs,song, (err)->
                               if err then console.log " Cannot insert song #{song.id}. ERROR: #{err}"
@@ -313,28 +318,29 @@ class Nhacso extends Site
       updateAlbums : ->
             @connect()
 
-
+            # @temp = 
+            #     reservedLastSongId : 1122448
             @showStartupMessage "Updating new albums  to table whose new ids > #{@temp.reservedLastSongId}", @table.Albums
             _q = "select max(id) as max from #{@table.Albums}"
             @connection.query _q, (err,result)=>
                   if err then console.log "cannt get max id from table. ERROR: #{err}"
                   else 
                         max = result[0].max
-                        _selectQuery = "select title,array_agg_csn_artist_cat(artists) as artists,array_agg_csn_cat(topic) as topic, min(link) as link ,
+                        _selectQuery = "select title,array_agg_csn_artist_cat(artists) as artists,array_agg_csn_cat(topics) as topics, min(link) as href ,
                               sum(nsongs) as nsongs,max(coverart) as coverart, max(producer) as producer,
                               floor(avg(downloads)) as downloads, floor(avg(plays)) as plays,
                               max(date_released) as date_released , max(date_created) as date_created, array_agg_cat_unique(songids) as songids  
                               from 
                               (
                               select max(album_title) as title,array_agg_csn_artist_cat(artists) as artists,
-                              array_agg_csn_cat(topic) as topic , min(album_link) as link, 
+                              array_agg_csn_cat(topics) as topics , min(album_href) as link, 
                               count(*) as nsongs, album_coverart as coverart, max(producer) as producer, 
                               floor(avg(downloads)) as downloads, floor(avg(plays)) as plays, 
                               max(date_released) as date_released,max(date_created) as date_created, array_agg(id) as songids 
                               from #{@table.Songs} 
                               where id > #{@temp.reservedLastSongId} 
                               and album_title <> '' 
-                              and album_link <> '' 
+                              and album_href <> '' 
                               group by album_coverart 
                               ) as anbinh
                               group by title".replace(/\s{4}/g,' ').replace(/\s{4}/g,' ').replace(/\s{4}/g,' ')

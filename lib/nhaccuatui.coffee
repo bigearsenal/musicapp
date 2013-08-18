@@ -43,14 +43,14 @@ class Nhaccuatui extends Module
 			if not tag then tag = ""
 			@.replace(RegExp("</?" + tag + "[^<>]*>", "gi"), "")
 
-		Array::unique = (property)->
+		Array::uniqueObjectByKey = (property)->
 			indexOfObjectInArray  = (arr, searchTerm, property)->
 				for i in [0..arr.length-1]
 					if arr[i][property] is searchTerm
 						return i
 				return -1
 			@.filter (element, index, array)->
-   			indexOfObjectInArray(array, element[property], property) is index
+   				indexOfObjectInArray(array, element[property], property) is index
 
 	printUpdateInfo : (info) ->
 			tempDuration = Date.now() - @stats.markedTimer
@@ -262,14 +262,27 @@ class Nhaccuatui extends Module
 		topics =  data.match(/inpHiddenGenre.+/g)?[0]
 		if topics then song.topics = topics.replace(/inpHiddenGenre.+value\=|\"|\s\/\>/g,'').split()
 
-		artists = data.match(/songname.+[\r\t\n]+.+/g)?[0]
-		if artists then song.artists = artists.match(/title.+"/)[0].replace(/>.+$/,'').replace(/title=|"/g,'').split(',').map((v)->encoder.htmlDecode(v).trim()).unique()
 
-		title = data.match(/songname.+[\r\t\n]+.+/g)?[0]
-		if title then song.title = encoder.htmlDecode title.replace(/\- <a href.+/g,'').replace(/^.+\s+.+>/,'').trim()
+		temp = data.match(/<div class="songname">[^]+?<\/div>/)?[0]
+		if temp
+			temp =  encoder.htmlDecode(temp.trim()).split('</a> -')
+			temp = temp.map (v) -> v.stripHtmlTags().trim()
+			# console.log temp[1]
+			if temp.length is 2
+				song.title =  temp[0]
+				song.artists = temp[1].split(", ").map((v)-> v.trim())
+			else 
+				throw Error("Cannot process song while finding artists and title of the song")
+		else
+			throw Error("Cannot process song: unknow artists & title")
+		# artists = data.match(/songname.+[\r\t\n]+.+/g)?[0]
+		# if artists then song.artists = artists.match(/title.+"/)[0].replace(/>.+$/,'').replace(/title=|"/g,'').split(', ').map((v)->encoder.htmlDecode(v).trim()).uniqueObjectByKey()
+
+		# title = data.match(/songname.+[\r\t\n]+.+/g)?[0]
+		# if title then song.title = encoder.htmlDecode title.replace(/\- <a href.+/g,'').replace(/^.+\s+.+>/,'').trim()
 
 		link_key = data.match(/flashPlayer\"\,\s\".+/g)?[0]
-		if link_key then song.link_key = link_key.replace(/0\..+/g,'').replace(/\s\"/g,'').replace(/\"\,$/g,'').replace(/flashPlayer.+\,/g,'')
+		if link_key then song.link_key = link_key.match(/"([0-9a-f]+)"/)?[1]
 
 		type =  data.match(/.+inpHiddenType/g)?[0]
 		if type then song.type = type.replace(/\"\sid.+$/g,'').replace(/^.+\"/g,'')
@@ -393,16 +406,28 @@ class Nhaccuatui extends Module
 					if id then album.id = parseInt(id,10)
 
 				link_key = data.match(/flashPlayer\"\,\s\"playlist.+/g)?[0]
-				if link_key then album.link_key = link_key.replace(/flashPlayer.+playlist|0\..+|\s|\"|\,/g,'')
+				if link_key then album.link_key = link_key.match(/"([0-9a-f]+)"/)?[1]
 
 				topics =  data.match(/inpHiddenGenre.+/g)?[0]
 				if topics then album.topics = topics.replace(/inpHiddenGenre.+value\=|\"|\s\/\>/g,'').split()
 
-				artists = data.match(/songname.+\s+.+/g)?[0]
-				if artists then album.artists = artists.match(/title.+"/)[0].replace(/>.+$/,'').replace(/title=|"/g,'').split(',').map((v)->encoder.htmlDecode(v).trim())
+				temp = data.match(/<div class="songname">[^]+?<\/div>/)?[0]
+				if temp
+					temp =  encoder.htmlDecode(temp.trim()).split('</a> -')
+					temp = temp.map (v) -> v.stripHtmlTags().trim()
+					# console.log temp[1]
+					if temp.length is 2
+						album.title =  temp[0]
+						album.artists = temp[1].split(", ").map((v)-> v.trim())
+					else 
+						throw Error("Cannot process album while finding artists and title of the album")
+				else
+					throw Error("Cannot process album: unknow artists & title")
+				# artists = data.match(/songname.+\s+.+/g)?[0]
+				# if artists then album.artists = artists.match(/title.+"/)[0].replace(/>.+$/,'').replace(/title=|"/g,'').split(',').map((v)->encoder.htmlDecode(v).trim())
 
-				title = data.match(/songname.+\s+.+/g)?[0]
-				if title then album.title = encoder.htmlDecode title.replace(/\- <a href.+/g,'').replace(/^.+\s+.+>/,'').trim()
+				# title = data.match(/songname.+\s+.+/g)?[0]
+				# if title then album.title = encoder.htmlDecode title.replace(/\- <a href.+/g,'').replace(/^.+\s+.+>/,'').trim()
 
 				coverart = data.match(/.+img152/g)?[0]
 				if coverart then album.coverart = coverart.match(/src=\"http.+\"\swidth/g)?[0].replace(/src=\"|\"\swidth/g,'')
@@ -543,9 +568,9 @@ class Nhaccuatui extends Module
 					@albums.push _album
 			# fetchAlbums func will be invoked when done
 			if @stats.totalPageCount is @stats.totalPages
-				@albums = @albums.unique("id")
+				@albums = @albums.uniqueObjectByKey("id")
 				console.log ""
-				console.log " |The # of albums UNIQUE BEFORE being filtered :" + @albums.length
+				console.log " |The # of albums UNIQUEObjectByKey BEFORE being filtered :" + @albums.length
 				# console.log " |Filtering.............."
 				options =
 					field : "id"
@@ -614,12 +639,15 @@ class Nhaccuatui extends Module
 		type =  data.match(/.+inpHiddenType/g)?[0]
 		if type then video.type = type.replace(/\"\sid.+$/g,'').replace(/^.+\"/g,'')
 
-		info = data.match(/<h1 class="name">.+/g)?[0]
+		info = data.match(/<h1 class="name">[^]+?<\/h1>/g)?[0]
 		if info
-			info = info.stripHtmlTags()
-			info = info.split(' - ')
-			video.title = encoder.htmlDecode info[0].trim()
-			video.artists = info[1].split(', ').map((v)->encoder.htmlDecode(v).trim())
+			info =  encoder.htmlDecode(info.trim()).split('</a> -')
+			info = info.map (v) -> v.stripHtmlTags().trim()
+			if info.length is 2
+				video.title = encoder.htmlDecode info[0].trim()
+				video.artists = info[1].split(', ').map((v)->encoder.htmlDecode(v).trim())
+			else
+				throw Error("error while getting artists and title of video")
 
 		topics = data.match(/nowPlayingListenCount.+\s+.+\s+.+/g)?[0]
 		if topics
@@ -637,7 +665,7 @@ class Nhaccuatui extends Module
 						video.date_created += ":01"
 			
 		link_key = data.match(/flashPlayer\"\,\s\".+/g)?[0]
-		if link_key then video.link_key = link_key.replace(/0\..+/g,'').replace(/\s\"/g,'').replace(/\"\,$/g,'').replace(/flashPlayer.+\,/g,'')
+		if link_key then video.link_key = link_key.match(/"([0-9a-f]+)"/)?[1]
 
 		@eventEmitter.emit "video-result", video
 		return video
@@ -788,11 +816,11 @@ class Nhaccuatui extends Module
 			# fetchsongs func will be invoked when done
 			if @stats.totalPageCount is @stats.totalPages
 				if options.config.type is "song"
-					@items = @items.unique("id")
+					@items = @items.uniqueObjectByKey("id")
 				else if  options.config.type is "video"
-					@items = @items.unique("key")
+					@items = @items.uniqueObjectByKey("key")
 				console.log ""
-				console.log " |The # of items UNIQUE BEFORE being filtered :" + @items.length
+				console.log " |The # of items UNIQUEObjectByKey BEFORE being filtered :" + @items.length
 				# console.log @items
 				# console.log " |Filtering.............."
 				if options.config.type is "song"
@@ -1248,6 +1276,110 @@ class Nhaccuatui extends Module
 		@getField()
 		# @getFieldBitrate()
 
+
+
+	# nEW PART on August 17, 2013, ONCE!!!!
+	getFileByHTTPXXX : (link, onSucess, onFail, options) ->
+		http.get link, (res) =>
+				res.setEncoding 'utf8'
+				data = ''
+				# onSucess res.headers.location
+				if res.statusCode isnt 302
+					res.on 'data', (chunk) =>
+						data += chunk;
+					res.on 'end', () =>
+
+						onSucess data, options
+				else onFail("The link: #{link} is temporary moved",options)
+			.on 'error', (e) =>
+				onFail  "Cannot get file: #{link} from server. ERROR: " + e.message, options
+				@stats.totalItemCount +=1
+				@stats.failedItemCount +=1
+	fetchSongWhereTitleIsNull : ->
+		@connect()
+
+		# @eventEmitter.on "video-result", (video,options)=>
+		# 	@stats.totalItemCount +=1
+		# 	@stats.passedItemCount +=1
+
+		# 	@utils.printRunning @stats
+		# 	if @stats.totalItems is @stats.totalItemCount
+		# 		@utils.printFinalResult @stats
+		# 	upd = "update nctvideos set title=#{@connection.escape video.title},"
+		# 	upd += " artists = '#{@connection.escape(JSON.stringify video.artists).replace(/^'\[/g,"{").replace(/\]'$/g,"}")}'"
+		# 	upd +=  " where key = #{@connection.escape video.key}"
+		# 	# console.log upd
+		# 	# process.exit 0
+		# 	@connection.query upd, (err)->
+		# 			if err 
+		# 				console.log err
+		# 				console.log 
+			# process.exit 0
+		# link = "http://www.nhaccuatui.com/bai-hat/beautiful-day-jamie-grace.FWnas8E9l6Pl.html"
+		# options = 
+		# 	key : "FWnas8E9l6Pl"
+		# @getFileByHTTP link, @processSong, @_onFail, options
+		
+		
+		processVideo = (data,options)=>
+			try 
+				@stats.totalItemCount +=1
+				@stats.passedItemCount +=1
+
+				@utils.printRunning @stats
+				if @stats.totalItems is @stats.totalItemCount
+					@utils.printFinalResult @stats
+				video = 
+					key : options.key
+				data = data.replace(/<recommend>[^]+<\/recommend>/,'')
+				title = data.match(/<title>[^]+\[CDATA\[(.+)\]\]>[^]+<\/title>/)?[1]
+				artists = data.match(/<creator>[^]+\[CDATA\[(.+)\]\]>[^]+<\/creator>/)?[1]
+				video.title = encoder.htmlDecode title
+				video.artists = artists.split(", ").map (v)-> encoder.htmlDecode v.trim()
+
+				upd = "update nctvideos set title=#{@connection.escape video.title},"
+				upd += " artists = '#{@connection.escape(JSON.stringify video.artists).replace(/^'\[/g,"{").replace(/\]'$/g,"}")}'"
+				upd +=  " where key = #{@connection.escape video.key}"
+
+				# console.log upd
+				@connection.query upd, (err)->
+					if err 
+						console.log err
+						console.log ""
+			catch e
+
+				@stats.passedItemCount -=1
+				@stats.failedItemCount +=1
+				# console.log "err at adfasdfsd".red
+				# console.log options
+				# console.log data
+				# console.log ""
+				# console.log ""
+				# console.log ""
+
+		onFail = (err,options)=>
+			console.log err + " at key #{options.key}"
+			console.log ""
+			@stats.totalItemCount +=1
+			@stats.failedItemCount +=1
+
+			@utils.printRunning @stats
+			if @stats.totalItems is @stats.totalItemCount
+				@utils.printFinalResult @stats
+
+			# process.exit 0
+		@connection.query "select key, link_key from nctvideos", (err, videos)=>
+			if err then console.log err
+			else 
+				@stats.totalItems = videos.length
+				for video in videos
+					link = "http://www.nhaccuatui.com/video/-nam.#{video.key}.html"
+					link  = "http://www.nhaccuatui.com/flash/xml?key3=#{video.link_key}"
+					# link  = "http://www.nhaccuatui.com/flash/xml?key3=61c1d84bb4882988e865c0a6af169363"
+					
+					options = 
+						key : video.key
+					@getFileByHTTPXXX link, processVideo, onFail, options
 
 	showStats : -> @_printTableStats NCT_CONFIG.table
 
