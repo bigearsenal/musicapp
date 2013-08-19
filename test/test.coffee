@@ -1,6 +1,7 @@
 #!/usr/local/bin/mocha
 
 require './connection'
+require './log'
 require './zing'
 require './nhaccuatui'
 require './nhacso'

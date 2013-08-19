@@ -28,13 +28,13 @@ class Song extends Module
 			console.log "+#{Array(size-2).join('-')}+"
 	updateStats : (err,currentId,type)->
 		@stats.currentId = currentId
+		@stats.totalItemCount +=1
 		unless err
 			switch type
 				when "update" then @stats.totalUpdatedItemCount += 1
 				when "insert" then @stats.totalInsertedItemCount += 1
 				else 
 					console.log "Invalid type"
-			@stats.totalItemCount +=1
 			@stats.passedItemCount +=1
 		else 
 			console.log ""
@@ -88,18 +88,12 @@ class Song extends Module
 		# Item = new ItemConstruction("gm","songs",@connection)
 		@Item  = require './construction/item'
 		@queueDestinationTable = "ns gm nv ke cc nn zi nct csn".split(" ")
-		@queueDestinationTable = "gm nv ke cc nn csn mv vg".split(" ")
+		# @queueDestinationTable = "ns zi nct gm nv ke cc nn csn mv vg".split(" ")
+		@queueDestinationTable = "csn mv vg".split(" ")
 		@queueCursor = -1
 		@sourceTable = "songs"
 		@destinationTableType = "songs"
 		@runNextTable()
-
-
-
-					
-					
-			
-			
 
 
 module.exports = Song

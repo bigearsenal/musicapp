@@ -20,7 +20,7 @@ describe 'THE WEBSITE CHIASENHAC', ->
                         expect(song.downloads).to.be.at.least(11)
                         expect(song.href).to.equal("http://chiasenhac.com/mp3/vietnam/v-dance-remix/noi-dau-ngu-tri-extended-mix~le-quyen-dj-trieu-lador~1125631.html")
                         expect(song.is_lyric).to.equal(1)
-                        expect(song.date_created).to.match(/2013-8-17/)
+                        expect(song.date_created).to.match(/2013-0?8-17/)
                         
                         done()
       describe 'Song ID: 1125317', ->

@@ -68,7 +68,7 @@ class ItemConstruction extends events.EventEmitter
 		# replace default values and remove some
 		artists = artists.map (v)=>@encoder.htmlDecode v
 		artists = artists.map (v)=>
-			if @removeDiacritics(v).search(/Dang cap nhat.*/gi) > -1
+			if @removeDiacritics(v).search(/Dang cap nhat.*/gi) > -1 or @removeDiacritics(v).search(/Chua xac dinh.*/gi) > -1
 				return ""
 			else return  v
 		
@@ -92,7 +92,7 @@ class ItemConstruction extends events.EventEmitter
 	transformItem : (item)->
 		_item = item
 		_item.title = @encoder.htmlDecode(_item.title).trim()
-		_item.artists = @transformArtists(_item.artists)
+		_item.artists = @transformArtists(_item.artists) if _item.artists isnt null
 		return _item
 	saveNewItem : (item,callback)->
 		@connection.query "INSERT INTO #{@sourceTable} SET ?", item, (err)->
