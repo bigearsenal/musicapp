@@ -1,0 +1,2 @@
+get_meta_comment
+get_meta_genre

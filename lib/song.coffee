@@ -39,7 +39,8 @@ class Song extends Module
 		else 
 			console.log ""
 			console.log err
-			console.log ""
+			console.log "----"
+			console.log "----"
 			@stats.failedItemCount +=1
 		# @utils.printRunning @stats
 		extraInfo = "(#{@stats.totalUpdatedItemCount}⬆ + #{@stats.totalInsertedItemCount}⬅ + #{@stats.failedItemCount}✘)"
@@ -72,7 +73,7 @@ class Song extends Module
 		items.on "end", =>
 			@runNextTable()
 			# @migrateItems()
-	runNextTable : ->
+	runNextTable :  ->
 		if @queueCursor < @queueDestinationTable.length-1
 			@queueCursor = @queueCursor + 1 
 			@destinationTable = 
@@ -94,6 +95,82 @@ class Song extends Module
 		@sourceTable = "songs"
 		@destinationTableType = "songs"
 		@runNextTable()
+	createAlbumsTable : ->
+		@connect()
+		@Item  = require './construction/item'
+		@queueDestinationTable = "ns gm nv ke cc nn zi nct csn".split(" ")
+		@queueCursor = -1
+		@sourceTable = "albums"
+		@destinationTableType = "albums"
+		@runNextTable()
+	createVideosTable : ->
+		@connect()
+		@Item  = require './construction/item'
+		@queueDestinationTable = "ns zi nct ke nv".split(" ")
+		@queueDestinationTable = "ke nv".split(" ")
+		@queueCursor = -1
+		@sourceTable = "videos"
+		@destinationTableType = "videos"
+		@runNextTable()
+
+	makeSitesJSON : ->
+		@connect()
+		Source = require('./helpers/source')
+		Source.insertLastDatesToFile @connection, (message)->
+			console.log message
+			sites = Source.getLastDate()
+			for key,value of sites
+				console.log "#{key}=>#{value}"
+
+	updateSongTable : ->
+		@connect()
+		@Item  = require './construction/item'
+		@sites = "ns gm nv cc ke nn zi nct csn".split(" ")
+		@sourceTable = "songs_test"
+		@destinationTableType = "songs"
+		Source = require('./helpers/source')
+
+		runSite = (site)=>
+			checktime = Source.getLastDate(site)
+			condition = " checktime > '#{checktime}' "
+			@destinationTable = 
+				prefix : site
+				type : @destinationTableType
+			@resetStats()
+			@stats.totalUpdatedItemCount = 0
+			@stats.totalInsertedItemCount = 0
+			@stats.currentTable = @sourceTable
+			console.log "Migrating from [#{@destinationTable.prefix + @destinationTable.type}  ❯❯❯❯  #{@sourceTable}]".inverse.yellow
+			items = new @Item(@sourceTable, @destinationTable,@connection)
+			items.setMaxConcurrentJobs(1)
+			items.setLimit(-1)
+			items.runJob(condition)
+			isPaceInitailized = false
+			items.on "item",  (err,data,cursor)=>
+				if err  
+					@updateStats(err,cursor)				
+				else 
+					if isPaceInitailized is false
+						Pace = require 'pace'
+						@progressBar = new Pace(items.getLimit())
+						isPaceInitailized = true
+						@stats.totalItems = items.getLimit()
+					items.saveItem data, (err,type)=>
+						if @updateStats(err,cursor,type) then items.emit("end")
+							
+			items.on "end", =>
+				if items.getLimit() is 0
+					console.log "No items found!" 
+				if @currentCursor < @sites.length-1
+					@currentCursor +=1
+					runSite(@sites[@currentCursor])
+				else 
+					console.log "ALL SITES COMPLETED".inverse.green
+		@currentCursor = 0
+		runSite(@sites[@currentCursor])
+
+
+			
 
 
 module.exports = Song

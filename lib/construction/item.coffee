@@ -91,7 +91,8 @@ class ItemConstruction extends events.EventEmitter
 		return artists
 	transformItem : (item)->
 		_item = item
-		_item.title = @encoder.htmlDecode(_item.title).trim()
+		_item.title = @encoder.htmlDecode(_item.title)
+		if _item.title then _item.title = _item.title.trim()
 		_item.artists = @transformArtists(_item.artists) if _item.artists isnt null
 		return _item
 	saveNewItem : (item,callback)->
@@ -112,10 +113,14 @@ class ItemConstruction extends events.EventEmitter
 				console.log data
 	processNewIem : (item,callback) ->
 		newItem = 
-			title : item.title.trim()
+			title : item.title
 			artists : item.artists
 			sources : []
-		newSource = {site : @destinationTable.prefix, id : item.id}
+		if newItem.title then newItem.title = newItem.title.trim()
+		if item.id.toString().match(/^[0-9]+$/)
+			siteid = parseInt(item.id,10)
+		else throw Error("Id has to be an integer number")
+		newSource = {site : @destinationTable.prefix, id : siteid}
 		newItem.sources.push(newSource)
 		newItem.sources = JSON.stringify newItem.sources
 		# @saveNewItem(newItem,callback)
@@ -129,7 +134,10 @@ class ItemConstruction extends events.EventEmitter
 		# console.log "FOUND INDEX #{foundIndex}"
 		if foundIndex > -1
 			existingItem = existingItems[foundIndex]
-			existingItem.sources.push {site : @destinationTable.prefix, id : item.id}
+			if item.id.toString().match(/^[0-9]+$/)
+				siteid = parseInt(item.id,10)
+			else throw Error("Id has to be an integer number")
+			existingItem.sources.push {site : @destinationTable.prefix, id : siteid}
 			existingItem.sources = existingItem.sources.uniqueObject()
 			# @saveUpdatedItem(existingItem,callback)
 			data = 
@@ -184,24 +192,37 @@ class ItemConstruction extends events.EventEmitter
 	# 	item : Object,
 	# 	type : "update" or "insert"
 	# }
-	runJob :  ->
-		_query = "select id from #{@destinationTable.fullName} ORDER BY id ASC "
+	runJob : (condition) ->
+		if condition
+			_query = "select id from #{@destinationTable.fullName} WHERE #{condition} ORDER BY id ASC "
+		else 
+			_query = "select id from #{@destinationTable.fullName} ORDER BY id ASC "
+		# console.log _query
+		# process.exit 0
 		if @limit > -1  
 			_query += " LIMIT #{@limit}"
 			if @offset > -1 then _query += " OFFSET #{@offset}"
 		if @debug 
 			if @limit > -1
-				console.log "Querying #{@limit} records..."
-			else console.log "Querying all records..."
+				mes = "Querying #{@limit} records"
+
+			else mes = "Querying all records"
+			if condition 
+				mes += " with condition: #{condition}"
+			console.log mes
 		@connection.query _query, (err,results)=>
 			if err then console.log err
 			else 
 				@records = results.map (v) -> parseInt(v.id,10)
-				console.log "# of records got: #{@records.length}"
 				@limit = @records.length
 				# console.log @records
-				for i in [0..@maxConcurrentJobs-1]
-					@runNext()
+				if @records.length > 0
+					console.log "# of records got: #{@records.length}"
+					for i in [0..@maxConcurrentJobs-1]
+						@runNext()
+				else
+					# console.log "No items found!" 
+					@emit("end")
 
 module.exports =  ItemConstruction
 

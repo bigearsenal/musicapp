@@ -232,7 +232,13 @@ Main =
 		func.run(rl)
 	song : ->
 		func = new FunctionFactory("song","./lib/",mysqlConfig)
-		func.addMethod {name : "createSongTable", info : "create grand song table"}
+		func.addMethod {name : "createSongTablexxx", info : "create grand song table"}
+		func.addMethod {name : "makeSitesJSON", info : "make sites JSON data"}
+		func.addMethod {name : "updateSongTable", info : "update table songs"}
+		func.addMethod {name : "createAlbumsTable", info : "create grand albums table"}
+		func.addMethod {name : "createVideosTable", info : "create grand videos table"}
+
+
 		func.run(rl)
 Main.execute = (site)->
 	Main[site.toLowerCase()]()
