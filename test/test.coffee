@@ -1,16 +1,16 @@
 #!/usr/local/bin/mocha
 
-# require './connection'
-# require './log'
+require './connection'
+require './log'
 require './zing'
-# require './nhaccuatui'
-# require './nhacso'
-# require './nhacvui'
-# require './gomusic'
-# require './chacha'
-# require './nghenhac'
-# require './keeng'
-# require './chiasenhac'
-# require './lyricwiki'
+require './nhaccuatui'
+require './nhacso'
+require './nhacvui'
+require './gomusic'
+require './chacha'
+require './nghenhac'
+require './keeng'
+require './chiasenhac'
+require './lyricwiki'
 
 

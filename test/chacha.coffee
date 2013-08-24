@@ -24,7 +24,7 @@ describe "THE WEBSITE CHACHA.VN",->
                         expect(song.link).to.equal('http://audio.chacha.vn/songs/output/74/614150/2/s/ - .mp3?s=1')
                         done()
       describe "Album ID: 9456",->
-            it 'should be called "Xin Còn Gọi Tên Nhau" by "Tình Khúc Trường Sa" and has certain properties ',(done)->
+            it 'should be called "Xin Còn Gọi Tên Nhau - Tình Khúc Trường Sa" by "Nhiều Ca Sĩ" and has certain properties ',(done)->
                   id = 9456
                   link = "http://www.chacha.vn/album/fake-link,#{id}.html"
                   getFileByHTTP link, (data)->
@@ -33,11 +33,11 @@ describe "THE WEBSITE CHACHA.VN",->
                         album = chacha.processAlbum data, options
                         # console.log album
                         expect(album.id).to.equal(9456)
-                        expect(album.title).to.equal('Xin Còn Gọi Tên Nhau')
-                        expect(album.artists).to.eql(['Tình Khúc Trường Sa'])
+                        expect(album.title).to.equal('Xin Còn Gọi Tên Nhau - Tình Khúc Trường Sa')
+                        expect(album.artists).to.eql(['Various Artists'])
                         expect(album.nsongs).to.equal(11)
                         expect(album.coverart).to.equal('http://s2.chacha.vn/albums//s2/1/9456/9456.jpg')
                         expect(album.plays).to.be.at.least(93)
                         expect(album.description).to.equal("")
-                        expect(album.songids).to.eql([ 535549, 611624, 611630, 611634, 443173, 611636, 611638, 611642, 611644, 611650, 611652 ])
+                        expect(album.songids).to.eql([535549, 611624, 611630, 611634, 443173, 611636, 611638, 611642, 611644, 611650, 611652 ])
                         done()

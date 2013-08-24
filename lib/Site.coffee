@@ -11,6 +11,15 @@ encoder = new Encoder('entity');
 
 http.globalAgent.maxSockets = 100
 
+# command = "curl \"#{link}\" --compressed -v"
+# 		exec command, (err,stdout,stderr)->
+# 			if err then callback null
+# 			else 
+# 				if stderr.search("HTTP/1.0 302 Moved Temporarily") > -1
+# 					callback null
+# 				else 
+# 					callback stdout
+
 class Site extends Module
 	constructor : (PREFIX) ->
 		if PREFIX?

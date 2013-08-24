@@ -23,7 +23,7 @@ encode = (id) ->
 
 # console.log songIdEncode(1273487)
 console.log encode "WVtZVUBc"
-console.log decode(637226)
+console.log decode(752821)
 # console.log decode(1274109)
 # console.log encode decode(1273674)
 

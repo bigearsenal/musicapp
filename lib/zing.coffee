@@ -7,7 +7,6 @@ fs = require 'fs'
 
 zlib = require 'zlib'
 url = require 'url'
-
 Encoder = require('../node_modules/node-html-encoder').Encoder
 encoder = new Encoder('entity');
 
@@ -21,6 +20,8 @@ ZI_CONFIG =
 		Artists : "ziartists"
 		Videos : "zivideos"
 	logPath : "./log/ZILog.txt"
+
+http.globalAgent.maxSockets = 50
 
 class Zing extends Module
 	constructor : (@mysqlConfig, @config = ZI_CONFIG) ->
@@ -143,20 +144,29 @@ class Zing extends Module
 
 	_getFileByHTTP : (link, callback) ->
 		headers =
-			'Accept-Encoding': 'gzip'
+			'Accept-Encoding': 'gzip,deflate'
 		params = 
 			'host' : url.parse(link).host
 			'path' : url.parse(link).path
 			'method' : "GET"
 			'headers': headers
 		req = http.get params, (res) ->
-			data = ""
-			gunzip = zlib.createGunzip()
-			res.pipe gunzip
-			gunzip.on "data", (chunk) -> data += chunk.toString()
-			gunzip.on "end", -> callback data			
-			gunzip.on "error", (e) -> callback  null
-		req.on "error", (e) -> callback  null
+			chunks = []
+			if res.statusCode isnt 302 and res.statusCode isnt 403
+				res.on "data", (chunk)->
+					chunks.push chunk
+				res.on "end", ->
+					buffer = Buffer.concat(chunks)
+					encoding = res.headers['content-encoding']
+					if encoding is "gzip" then zlib.gunzip(buffer, (err, result)-> if err then console.log err  else callback result.toString())
+					else 
+						if encoding is "deflate" then zlib.inflate(buffer, (err, result)-> if err then console.log err  else  callback result.toString())
+						else callback(buffer.toString())  # no encoding
+			else callback(null)
+		req.on "error", (err) ->
+			console.log err + " while requesting http link"
+			console.log ""
+			callback(null)
 		
 
 	# VIDEO SECTION
@@ -739,6 +749,7 @@ class Zing extends Module
 		@stats.currentTable = @table.Songs
 
 		@_updateSongs @log.lastSongId+1
+		# @_updateSongs 1382536623
 
 	update : ->
 		# when @updateSongsWithRange() disable, call updateSongs() first
@@ -768,7 +779,7 @@ class Zing extends Module
 			typeId = "id"
 			table = @table.Albums
 		else if type is 3
-			typeId = "vid"
+			typeId = "id"
 			table = @table.Videos
 		# console.log "TPYE is #{typeId} #### #{table}"
 		nSteps = (range1 - range0 + 1)/1000 | 0 + 1
@@ -859,7 +870,7 @@ class Zing extends Module
 			typeId = "id"
 			table = @table.Albums
 		else if type is 3
-			typeId = "vid"
+			typeId = "id"
 			table = @table.Videos
 		# if both range0 and range1 equal 1. Then we trigger the special case. 
 		# Fetching the max and min id in the last 100 pages 
