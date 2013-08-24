@@ -27,6 +27,9 @@ class Chacha extends Module
 			_insertIntoCCSongs_Albums : "INSERT INTO " + @table.Songs_Albums + " SET ?"
 		@utils = new Utils()
 		# @parser = new xml2js.Parser();
+		String::stripHtmlTags = (tag)->
+			if not tag then tag = ""
+			@.replace(RegExp("</?" + tag + "[^<>]*>", "gi"), "")
 		Array::splitBySeperator = (seperator) ->
 			result = []
 			for val in @
@@ -98,7 +101,7 @@ class Chacha extends Module
 		if song.artist.trim()
 			artists = song.artist.trim().split().splitBySeperator(' - ').splitBySeperator('- ')
 										.splitBySeperator(' ft. ').splitBySeperator(' ft ')
-										.splitBySeperator(' _ ').splitBySeperator('-')
+										.splitBySeperator(' _ ')
 										.splitBySeperator(',').replaceElement('V.A',"Various Artists")
 										.replaceElement('Nhiều ca sĩ',"Various Artists").replaceElement('Nhiều Ca Sĩ',"Various Artists")
 		else artists = []
@@ -178,19 +181,29 @@ class Chacha extends Module
 				coverart : ""
 				plays : 0
 				songids : null
-			arr = data.match(/\<meta\sname\=\"title\".+\/\>/g)[0]
-				.replace(/\<meta\sname\=\"title\"\scontent\=\"/,'')
-				.match(/^.+\|/)[0].replace(/\|/,'').trim()
-				.split('-')
 			
-			album.title = arr[0]?.trim()
-			if arr[1]
-				artists = arr[1]?.trim().split().splitBySeperator(' - ').splitBySeperator('- ')
+			title = data.match(/<meta name="title" content="(.+)"/)?[0]
+			title = title.replace(/\|.+$/g,'').replace(/<meta name="title" content="/,'').replace(/-[\s]+$/,'').trim() if title 
+			artists = data.match(/artist-name[^]+?<\/a>/)?[0]
+
+			if artists
+				artists = artists.replace(/^.+>/,'').replace(/<\/a>/,'').trim()
+				# to prevent artist name from appearing on title
+				try
+					pattern = new RegExp(artists.trim(),"g")
+					title = title.replace(pattern,'')
+					album.title = title.replace(/[-\s]+$/,'').replace(/^[\s-]+/,'').trim()
+				catch e
+					album.title = title.replace(/[-\s]+$/,'').replace(/^[\s-]+/,'').trim()
+				
+				artists = artists.trim().split().splitBySeperator(' - ').splitBySeperator('- ')
 										.splitBySeperator(' ft. ').splitBySeperator(' ft ')
-										.splitBySeperator(' _ ').splitBySeperator('-')
+										.splitBySeperator(' _ ')
 										.splitBySeperator(',').replaceElement('V.A',"Various Artists")
 										.replaceElement('Nhiều ca sĩ',"Various Artists").replaceElement('Nhiều Ca Sĩ',"Various Artists")
-			else artists = []
+			else 
+				artists = []
+				album.title = title.replace(/[-\s]+$/,'').replace(/^[\s-]+/,'').trim()
 			album.artists = artists
 
 			album.coverart = data.match(/album-image.+[\r\n\t]+.+/g)?[0]
@@ -224,6 +237,9 @@ class Chacha extends Module
 		else 
 			album = null
 
+
+		# console.log album
+		# process.exit 0
 		@eventEmitter.emit 'result', album
 		album
 	_updateAlbum : (id) ->
@@ -235,7 +251,6 @@ class Chacha extends Module
 		onFail = (err, options)=>
 			@stats.failedItemCount += 1
 			@temp.totalFail +=1
-			
 			if @temp.totalFail < 100
 				@_updateAlbum options.id+1
 			else
@@ -316,7 +331,7 @@ class Chacha extends Module
 		@temp.totalFail = 0
 		@stats.currentTable = @table.Songs
 		console.log "Running on: #{new Date(Date.now())}"
-		console.log " |"+"Updating Songs to table: #{@table.Songs}".magenta 
+		console.log " |"+"Updating Songs to table: #{@table.Songs}, Last ID: #{@log.lastSongId}".magenta 
 		@_updateSong @log.lastSongId+1
 
 	updateAlbums : ->
@@ -326,22 +341,25 @@ class Chacha extends Module
 		@temp.totalFail = 0
 		@stats.currentTable = @table.Albums
 		console.log "Running on: #{new Date(Date.now())}"
-		console.log " |"+"Updating Albums to table: #{@table.Albums}".magenta 
+		console.log " |"+"Updating Albums to table: #{@table.Albums}, Last ID: #{@log.lastAlbumId}".magenta 
 		@temp = 
 			totalFail : 0
 		@eventEmitter.on 'result', (result)=>
 			if result isnt null
 				@stats.passedItemCount +=1
 				@temp.totalFail +=0
-				@log.lastid = result.albumid
+				@log.lastAlbumId = result.id
 				# songs = result.songs
 				# delete result.songs
 
 				if result.songids isnt null
 					# console.log result
 					# process.exit 0
+					# console.log "#{@query._insertIntoCCAlbums}"
 					@connection.query @query._insertIntoCCAlbums, result, (err)=>
-						if err then console.log "cannt insert album: #{result.albumid} into table. ERROR #{err}"
+						if err then console.log "cannt insert album: #{result.id} into table. ERROR #{err}"
+						# console.log "dsfsfsdafsdf"
+						# process.exit 0
 				else 
 					@stats.passedItemCount -=1
 					@stats.failedItemCount +=1
@@ -351,11 +369,12 @@ class Chacha extends Module
 				@temp.totalFail +=1
 			# console.log result
 			
-			@_updateAlbum result.albumid+1
+			@_updateAlbum result.id+1
 			
 
 		@_updateAlbum @log.lastAlbumId+1
-			
+		
+		# @_updateAlbum 4047	
 
 	showStats : ->
 		@_printTableStats CC_CONFIG.table

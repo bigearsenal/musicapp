@@ -16,9 +16,15 @@ HTTP.get = (link,callback) ->
 			else callback("The link is temporary moved: #{res.statusCode} #{JSON.stringify res.headers}",nul)
 		.on 'error', (e) =>
 			callback  "Cannot get file from server. ERROR: " + e.message,null
-
+HTTP.getHeaders = (link,callback) ->
+	req = http.get link, (res) =>
+		callback null, res.statusCode,res.headers
+		req.abort()
+		return 0
+	req.on 'error', (e) =>
+		callback  "Cannot get file from server. ERROR: " + e.message,null
+	
 NCT = {}
-NCT.getLink = (key,type,callback)->
 NCT.getLink = (key,type,callback)->
 	url = "http://www.nhaccuatui.com/flash/xml?key1=#{key}"
 	HTTP.get url,(err,data)->
@@ -64,6 +70,18 @@ class MediaLink
 		return @items
 	setItems : (items)->
 		@items = items
+	checkItemLink : (item,callback)->
+		HTTP.getHeaders item.link, (err,statusCode,headers)->
+			if err then callback(err)
+			else 
+				errMsg = null
+				if headers["content-type"].search("text/html") > -1
+					errMsg = "Content type is html"
+				if statusCode is 200
+					errMsg = null
+				if statusCode is 302 and headers["location"]
+					errMsg = null
+				callback(errMsg)
 	getSource : (source,type,callback)->
 		table = source.site + type
 		@wp.getQueryMethod "select * from #{table} where id=#{source.id}",(err,results)=>
@@ -72,12 +90,15 @@ class MediaLink
 				item = results[0]
 				link = item.link
 				if source.site isnt "csn" and source.site isnt "nct"
-					if source.site is "gm" then link = "http://farm11.gox.vn:8080/streams/" + link
-					if source.site is "ke" 
-						switch type
-							when "songs" then link = link.replace(/\/medias\//,'/medias_7/')
-							when "videos" then link = link.replace(/\/media\./,'/media2.')
-					link = link.replace(/\s/g,'%20')
+					switch source.site
+						when "gm" then link = "http://farm11.gox.vn:8080/streams/" + link
+						when "ns" then link = link.replace(/st01\.freesocialmusic/,"st02.freesocialmusic")
+						when "ke" 
+							switch type
+								when "songs" then link = link.replace(/\/medias\//,'/medias_7/')
+								when "videos" then link = link.replace(/\/media\./,'/media2.')
+								else console.log "invalid type input xxx"
+					link = link.replace(/\s/g,'%20').replace(/\?.+$/,'')
 					@addItem(source.site,source.id,link)
 					callback()
 				else 
@@ -117,20 +138,6 @@ class MediaLink
 
 
 playlist = []
-# items = new MediaLink()
-# items.getMediaItems 987, "songs", (songs)->
-	
-# 	console.log "Get links from`#{items.getTitle()}`, artists : #{items.getArtists().join(" - ")}, id:#{items.getId()}, nItems: #{songs.length}"
-# 	playlist =  playlist.concat songs
-# 	items.setItems([])
-# 	items.getMediaItems 2816, "videos", (elements)->
-		
-# 		console.log "Get links from`#{items.getTitle()}`, artists : #{items.getArtists().join(" - ")}, id:#{items.getId()}, nItems: #{elements.length}"
-# 		playlist =  playlist.concat elements
-# 		console.log "Fetching done".inverse.green
-# 		items.endDBConnection()
-# getLinks(987,"songs")
-# getLinks(5401,"videos")
 
 
 
@@ -153,8 +160,26 @@ playRecordingList = (id,type)->
 	_items = new MediaLink()
 	_items.getMediaItems id, type, (recordings)->
 		console.log "❯❯❯❯ Playing playlist [#{recordings.length} items]"
-		media = new Media(recordings)
-		media.play()
+		validRecordings = []
+		invalidRecordings = []
+		count = 0
+		for rcd in recordings
+			do (rcd)->
+				_items.checkItemLink rcd, (err)->
+					count +=1
+					if err then invalidRecordings.push rcd
+					else 
+						validRecordings.push rcd
+					if count is recordings.length
+						console.log "DONE".inverse.green
+						for piece in invalidRecordings
+							console.log "#{piece.site}:#{piece.id} - #{piece.link}".red
+
+
+
+						media = new Media(validRecordings)
+						media.play()
+
 
 rl.on "line", (line) ->
 	command = line.trim()

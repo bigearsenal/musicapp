@@ -84,7 +84,7 @@ class ItemConstruction extends events.EventEmitter
 		# add combine pattern like "selena gomez & the scene"
 		# join again if the `Selena Gomez & The Scene` is accidentally separated by `ampersand(&)`
 		artists = artists.joinTwoElementByPattern("selena gomez","the scene","&")
-
+		artists = artists.joinTwoElementByPattern("T","ARA","-")
 		artists = artists.unique()
 		# set null if  array is empty
 		if artists.length is 0 then artists = null

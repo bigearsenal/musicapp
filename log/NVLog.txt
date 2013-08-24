@@ -1,1 +1,1 @@
-{"serverType":"nhac.vui.vn","lastSongId":352060,"updated_at":1376819187649,"totalPassedSongs":0,"lastAlbumId":33081}
+{"serverType":"nhac.vui.vn","lastSongId":384264,"updated_at":1377280498243,"totalPassedSongs":0,"lastAlbumId":35605}

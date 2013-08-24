@@ -5,6 +5,9 @@ Utils = require './utils'
 colors = require '../node_modules/colors'
 fs = require 'fs'
 
+zlib = require 'zlib'
+url = require 'url'
+
 Encoder = require('../node_modules/node-html-encoder').Encoder
 encoder = new Encoder('entity');
 
@@ -139,22 +142,22 @@ class Zing extends Module
 					callback result[@params.sourceField]
 
 	_getFileByHTTP : (link, callback) ->
-		http.get link, (res) =>
-				res.setEncoding 'utf8'
-				data = ''
-				# console.log "ANBINH + #{new Date().getTime()}"
-				# callback res.headers.location
-				# console.log "#{JSON.stringify res.headers} -- #{res.statusCode} -- should be callbacked"
-				if res.statusCode isnt 302 and res.statusCode isnt 403
-					res.on 'data', (chunk) =>
-						data += chunk;
-					res.on 'end', () =>
-						
-						callback data
-				else callback(null)
-			.on 'error', (e) =>
-				console.log  "Cannot get file. ERROR: " + e.message
-				callback(null)
+		headers =
+			'Accept-Encoding': 'gzip'
+		params = 
+			'host' : url.parse(link).host
+			'path' : url.parse(link).path
+			'method' : "GET"
+			'headers': headers
+		req = http.get params, (res) ->
+			data = ""
+			gunzip = zlib.createGunzip()
+			res.pipe gunzip
+			gunzip.on "data", (chunk) -> data += chunk.toString()
+			gunzip.on "end", -> callback data			
+			gunzip.on "error", (e) -> callback  null
+		req.on "error", (e) -> callback  null
+		
 
 	# VIDEO SECTION
 	updatevid : ->

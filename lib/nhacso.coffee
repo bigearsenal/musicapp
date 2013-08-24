@@ -64,8 +64,10 @@ class Nhacso extends Site
 		if duration then song.duration = parseInt duration.replace(/^.+>|<.+$/g,''),10
 		
 		song.link = @getValueXML data, "mp3link", 0
+		
+		if song.artists
+			song.artists = song.artists.split().splitBySeperator('||').splitBySeperator(' / ').splitBySeperator(' - ')
 
-		song.artists = song.artists.split().splitBySeperator('||').splitBySeperator(' / ').splitBySeperator(' - ')
 		if song.authors is '' then song.authors = null
 		else song.authors = song.authors.split().splitBySeperator('||').splitBySeperator(' / ').splitBySeperator(' - ')
 
@@ -145,13 +147,7 @@ class Nhacso extends Site
 			if song.topics
 				song.topics = song.topics.split().splitBySeperator(' - ').splitBySeperator('/')
 			if song.artists is "" then song.artists = null
-			else 
-				if song.artists
-					song.artists = song.artists.split().splitBySeperator('||').splitBySeperator(' / ').splitBySeperator(' - ')
 			if song.authors is '' then song.authors = null
-			else 
-				if song.authors
-					song.authors = song.authors.split().splitBySeperator('||').splitBySeperator(' / ').splitBySeperator(' - ')
 			@log.lastSongId = options.song.id
 			@connection.query @query._insertIntoSongs, song, (err)->
 				if err then console.log "Cannot insert song: #{song.id} into database. ERROR: #{err}"

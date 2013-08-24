@@ -1,4 +1,6 @@
 http = require 'http'
+zlib = require 'zlib'
+url = require 'url'
 getFileByHTTP = (link, callback) ->
       http.get link, (res) =>
           res.setEncoding 'utf8'
@@ -13,7 +15,28 @@ getFileByHTTP = (link, callback) ->
           else callback(null)
         .on 'error', (e) =>
           console.log  "Cannot get file. ERROR: " + e.message
-
+getGzipped = (link, callback, options) ->
+      headers =
+        'Accept-Encoding': 'gzip'
+      params = 
+        'host' : url.parse(link).host
+        'path' : url.parse(link).path
+        'method' : "GET"
+        'headers': headers
+      # console.log params
+      buffer = []
+      http.get(params, (res) ->
+        gunzip = zlib.createGunzip()
+        res.pipe gunzip
+        gunzip.on("data", (data) ->
+          buffer.push data.toString()
+        ).on("end", ->
+          # console.log buffer.join("")
+          callback buffer.join("")
+        ).on "error", (e) ->
+          console.log  e
+      ).on "error", (e) ->
+       console.log  e
 getRedirectFileByHTTP = (link, onSucess, onFail, options) ->
     http.get link, (res) =>
         res.setEncoding 'utf8'
@@ -37,3 +60,4 @@ getRedirectFileByHTTP = (link, onSucess, onFail, options) ->
 
 module.exports.getFileByHTTP = getFileByHTTP
 module.exports.getRedirectFileByHTTP = getRedirectFileByHTTP
+module.exports.getGzipped = getGzipped

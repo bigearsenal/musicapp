@@ -1,4 +1,5 @@
 getFileByHTTP = require('./utils').getFileByHTTP
+getGzipped = require('./utils').getGzipped
 chai = require "chai"
 expect = chai.expect
 describe 'THE WEBSITE MP3.ZING.VN', ->
@@ -10,8 +11,9 @@ describe 'THE WEBSITE MP3.ZING.VN', ->
                   zing.connect()
                   songid = 1382528957
                   link = "http://mp3.zing.vn/bai-hat/joke-link/#{zing._convertToId songid}.html"
-                  getFileByHTTP link, (data)->
-                        #console.log "anbinh"
+                  getGzipped link, (data)->
+                        # console.log "anvubg"
+                        # console.log data
                         zing._getFileByHTTP = ->
                         song = zing._processSong songid, data
                         expect(song.id).to.equal(1382528957)
@@ -22,7 +24,7 @@ describe 'THE WEBSITE MP3.ZING.VN', ->
             it 'should be called Meditation, composed by Olivia Ong, created on 2013-04-07, has link and path',(done)->
                   zing.connect()
                   link = "http://m.mp3.zing.vn/xml/song/LnJGtLnNAQQxJQQyLDcyDHLG"
-                  getFileByHTTP link, (data)->
+                  getGzipped link, (data)->
                         data = JSON.parse data
                         song.song_name = data.data[0].title.trim()
                         song.song_artist = JSON.stringify data.data[0].performer.trim().split(',')
@@ -49,7 +51,7 @@ describe 'THE WEBSITE MP3.ZING.VN', ->
                   link = "http://mp3.zing.vn/album/joke-link/#{zing._convertToId albumid}.html"
                   zing.temp = 
                     albums : []
-                  getFileByHTTP link, (data)->
+                  getGzipped link, (data)->
                         # console.log data
                         result = zing._processAlbum albumid, data
                         # console.log result
@@ -71,7 +73,7 @@ describe 'THE WEBSITE MP3.ZING.VN', ->
                   zing.connect()
                   vid = 1381585668
                   link = "http://mp3.zing.vn/video-clip/joke-link/#{zing._convertToId vid}.html"
-                  getFileByHTTP link, (data)->
+                  getGzipped link, (data)->
                         video = zing._processVideo vid, data
                         # console.log video
                         expect(video.id).to.equal(1381585668)

@@ -26,7 +26,7 @@ class Media
 			@isPlaylist = true
 			options = ["-slave","-quiet","-cache","8192","-cache-min","4"]
 			for source in @source
-				options.push source.link
+				options.push "#{source.link}"
 			@player    = spawn("mplayer",options)
 		else 
 			@player    = spawn("mplayer",["-slave","-quiet","-cache","8192","-cache-min","4","#{@source.link}"])
@@ -66,7 +66,8 @@ class Media
 		@player.properties.percent = 100
 		@drawStatusBar("done")
 		process.stdin.removeListener 'keypress', @setKeyCommands
-		@charm.left(100).erase("line").write("Song: #{@currentIndex} has been stopped with code #{code}\n")
+		link = if @isPlaylist then  @source[@currentIndex].link else source.link
+		@charm.left(100).erase("line").write("Song: #{@currentIndex} has been stopped with code #{code} : link : #{link}\n")
 		# play.stdin.pause()
 		if @player and @player.stdin and @player.stdin.write
 			@player.stdin.write = ->
@@ -91,8 +92,8 @@ class Media
 							@charm.write("You have reached to the end of the playlist")
 
 			if playNext				
-				source = @source[@currentIndex]
-				@charm.left(100).erase("line").write(" Playing next song - #{@currentIndex}: #{source.title} by #{source.artists.join("-")}")
+				src = @source[@currentIndex]
+				@charm.left(100).erase("line").write(" Playing next song - #{@currentIndex}: #{src.title} by #{src.artists.join("-")} | #{src.site}.#{src.id}")
 				@charm.left(200)
 				@sendCommandToMPlayer("pt_step #{step}")
 
