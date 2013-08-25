@@ -146,6 +146,7 @@ playlist = []
 console.log "SELECT YOUR COMMAND: "
 console.log "s[NUMBER]: select song\t v[NUMBER]: select video"
 console.log "ds: default song\t dv: default video"
+console.log "fs: search song\t fv: search video"
 
 readline = require 'readline'
 rl = readline.createInterface
@@ -180,6 +181,23 @@ playRecordingList = (id,type)->
 						media = new Media(validRecordings)
 						media.play()
 
+findingID = (table,title)->
+	console.log "Finding `#{title}` on table: #{table}"
+	PGWrapper = require '../pgwrapper'
+	wp = new PGWrapper()
+	wp.getConnection()
+	wp.getQueryMethod "select * from #{table} where lower(trim(title))=lower(trim('#{title}')) ",(err,results)->
+		if err then console.log err
+		else 
+			if results.length is 0
+				console.log "NO RESULTS".inverse.red
+			else 
+				console.log "List of items".inverse.green
+				for result in results
+					idText = result.id + new Array(8-result.id.toString().length).join(" ")
+					artists = if result.artists then result.artists.join(",") else ""
+					console.log "#{idText} - #{result.title} - #{artists}"
+			wp.endConnection()
 
 rl.on "line", (line) ->
 	command = line.trim()
@@ -198,9 +216,15 @@ rl.on "line", (line) ->
 		id = parseInt(id,10)
 		playRecordingList(id,"videos")
 		matched = true
-	if command.match(/^f.+)$/)
-		title = command.match(/^f(.+)/)[1]
-		console.log "Finding... #{title}"
+	if command.match(/^f[sva].+$/)
+		command = command.match(/^f(.)\s?(.+)/)
+		type = command[1]
+		title  = command[2]
+		switch type.trim()
+			when "s" then table = "songs"
+			when "v" then table = "videos"
+			else table = "songs"
+		findingID(table,title)
 		matched = true
 	if command is "ds"
 		# play default songs
