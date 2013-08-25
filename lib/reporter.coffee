@@ -59,7 +59,6 @@ class Stats extends Site
 			else 
 				if results.length is 0 then callback null,0
 				else callback null,parseInt(results[0].count,10)
-
 	fetchTable : ->
 		_q = "SELECT * FROM pg_catalog.pg_tables where schemaname='public'"
 		@connection.query _q, (err, results)=>
@@ -81,7 +80,6 @@ class Stats extends Site
 				@recordCount albumTables, "total albums is "
 				@recordCount songTables, "total songs is "
 				@recordCount videosTables, "total videos is "
-
 	formatNumber : (number, decimals, dec_point, thousands_sep) ->
 		number = (number + "").replace(/[^0-9+\-Ee.]/g, "")
 		n = (if not isFinite(+number) then 0 else +number)
@@ -162,7 +160,6 @@ class Stats extends Site
 		getTableType reporter, "videos", ->
 			count += 1
 			if count is 3 then onDone()
-
 	getMainReporter : (onEnd)->
 		nsongs = 0
 		nalbums = 0
@@ -192,8 +189,6 @@ class Stats extends Site
 			if err then console.log err
 			else  nvideos = totalItem
 			if count is 3 then onDone()
-
-
 	getLyricReporter :  (onEnd)->
 		lwsongs = 0
 		sfsongs = 0
@@ -217,7 +212,6 @@ class Stats extends Site
 			if err then console.log err
 			else  sfsongs = totalItem
 			if count is 2 then onDone()
-
 	getTablesByPattern : (pattern,onEnd)->
 		_q = "SELECT * FROM pg_catalog.pg_tables where schemaname='public'"
 		finalResults = []
@@ -278,21 +272,21 @@ class Stats extends Site
 								finalResults.push {table : table, count : n}
 							if tableCount is tables.length
 								onDone()
-
-
-	saveReporter : ->
+	saveReporter : (name)->
 		fs = require 'fs'
 		dt = new Date()
 		date = dt.getFullYear()  + "" +  (dt.getMonth()+1) +  dt.getDate()
-		fileName = "reporter_#{date}.md"
+		fileName = "#{name}_#{date}.md"
 		path = "./reporters/#{fileName}"
 		fs.exists path, (exists)=>
 			unless exists 
 				fs.appendFile path, @finalReporterText, (err,result)->
 					if err then console.log err
-					else console.log "Status : Done, Message: The  reporter has been saved on disk".inverse.green
+					else console.log "Status : Done, Message: The  reporter has been saved on disk. Path: #{path}".inverse.green
 			else 
-				console.log "Status : Abort, Message: The  reporter exits".inverse.red
+				console.log "Status : Abort, Message: The  reporter exits. Path: #{path}".inverse.red
+
+		@end()
 	getSitesReporter : ->
 		
 		@finalReporterText += "\n" + "## SITES REPORT\n"
@@ -302,8 +296,47 @@ class Stats extends Site
 				@getLyricReporter =>
 					@getTablesByPattern "^en+", =>
 						@getTablesByPattern "^dz+", =>
-							@saveReporter()
-
+							@saveReporter("reporter")
+	getTablesSchema : ->
+		_q = "SELECT * FROM pg_catalog.pg_tables where schemaname='public'"
+		@finalReporterText += "\n" + "## SCHEMA REPORT\n"
+		@finalReporterText += "\n######on #{new Date()}"
+		@connection.query _q, (err, results)=>
+			if err then console.log "error babay"
+			else 
+				tables = []
+				for item in results
+					table = item.tablename
+					tables.push table 
+				totalCount = tables.length
+				count = 0
+				tables = tables.sort (a,b)-> return a.localeCompare(b)
+				# console.log tables
+				for table in tables by 1
+					do (table)=>
+						displayQuery = """
+						SELECT * FROM information_schema.columns
+						WHERE table_schema = 'public'
+						  AND table_name   = '#{table}'
+						"""
+						tableText = "\n"
+						tableText += "\n####{table}"
+						tableText += "\n" + "|position|column | type | max | null | default|"
+						tableText += "\n" + "|:------|:------|:--------|:-------:|:-------:|:-------:|"
+						@connection.query displayQuery, (err,schema)=>
+							count +=1
+							if err then console.log err
+							else 
+								for column in schema
+									defaultValue = if column.column_default is null then "*[NULL]*" else column.column_default
+									max = if column.character_maximum_length is null then "*[NULL]*" else column.character_maximum_length
+									hasNull = if column.is_nullable is "NO" then "✘" else "✔"
+									tableText += "\n|#{column.ordinal_position}|#{column.column_name}|#{column.udt_name}| #{max} | #{hasNull} |#{defaultValue} |"
+								tableText += "\n"
+								@finalReporterText += tableText
+							if count is totalCount
+								console.log "DONE".inverse.green
+								@saveReporter("schema")
 
 
 

@@ -227,8 +227,8 @@ Main =
 		func.run(rl)
 	reporter : ->
 		func = new FunctionFactory("reporter","./lib/",mysqlConfig)
-		func.addMethod {name : "getSitesReporter", info : "Show sites reporter"}
-		func.addMethod {name : "showStats", info : "Show statistics"}
+		func.addMethod {name : "getSitesReporter", info : "Save updated sites reporter"}
+		func.addMethod {name : "getTablesSchema", info : "Save tables schema"}
 		func.run(rl)
 	song : ->
 		func = new FunctionFactory("song","./lib/",mysqlConfig)
