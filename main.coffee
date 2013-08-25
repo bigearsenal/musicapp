@@ -225,9 +225,9 @@ Main =
 		func = new FunctionFactory("hdviet","./lib/movies/",mysqlConfig)
 		func.addMethod {name : "test", info : "test"}
 		func.run(rl)
-	getstats : ->
-		func = new FunctionFactory("stats","./lib/",mysqlConfig)
-		func.addMethod {name : "fetchTable", info : "Getting tables"}
+	reporter : ->
+		func = new FunctionFactory("reporter","./lib/",mysqlConfig)
+		func.addMethod {name : "getSitesReporter", info : "Show sites reporter"}
 		func.addMethod {name : "showStats", info : "Show statistics"}
 		func.run(rl)
 	song : ->
@@ -264,7 +264,7 @@ registerFuncs.push {name: "lyricwiki", activated : true}
 registerFuncs.push {name: "zazoo", activated : false}
 registerFuncs.push {name: "deezer", activated : false}
 registerFuncs.push {name: "hdviet", activated : true}
-registerFuncs.push {name: "getstats", activated : true}
+registerFuncs.push {name: "reporter", activated : true}
 registerFuncs.push {name: "song", activated : true}
 activatedFuncs = [""]
 disableFuncs = [""]

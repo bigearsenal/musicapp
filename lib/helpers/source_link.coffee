@@ -198,6 +198,10 @@ rl.on "line", (line) ->
 		id = parseInt(id,10)
 		playRecordingList(id,"videos")
 		matched = true
+	if command.match(/^f.+)$/)
+		title = command.match(/^f(.+)/)[1]
+		console.log "Finding... #{title}"
+		matched = true
 	if command is "ds"
 		# play default songs
 		playRecordingList(987,"songs")

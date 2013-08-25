@@ -1,0 +1,51 @@
+
+## SITES REPORT
+
+######on Sun Aug 25 2013 10:50:28 GMT+0700 (ICT)
+
+###Statistics of source sites
+| table | songs | albums | videos |
+|------|------:|--------:|-------:|
+| chiasenhac | 427,753 | 8,147 |  0 | 
+| chacha | 441,216 | 5,927 |  0 | 
+| nhacso | 1,018,311 | 75,058 |  16,407 | 
+| gomusic | 170,113 | 15,329 |  0 | 
+| keeng | 154,254 | 20,184 |  13,019 | 
+| nhaccuatui | 1,883,377 | 40,492 |  151,560 | 
+| musicvnn | 7,962 | 0 |  126 | 
+| nghenhac | 265,603 | 16,543 |  0 | 
+| vietgiaitri | 75,875 | 0 |  0 | 
+| zing | 837,138 | 90,617 |  47,536 | 
+|**total** | **5,281,602** |**272,297** | **228,648** |
+
+
+###Aggregated results from source sites
+|songs | albums | videos |
+|:------:|:--------:|:-------:|
+|2,744,345|259,181|169,616|
+
+
+###Total number of lyrics
+|lyricwiki | songfreaks | total |
+|:------:|:--------:|:-------:|
+|1,744,948|423,673|2,168,621|
+
+######Note: Gracenote included on lyricwiki
+
+
+###Special report on table echonest
+|table | items |table | items |table | items |
+|:------:|:--------:|:------:|:--------:|:------:|:--------:|
+|enbiographies|652,603|enaudios|124,298|enforeign_ids|999,801|
+|enimages|2,104,030|enblogs|1,759,573|ennews|544,059|
+|enreviews|220,930|ensongs_tracks|32,387,606|ensongs_foreign_ids|3,753,886|
+|ensongs|8,094,247|enurls|2,152,248|envideos|3,884,963|
+|enartists_stats|544,960|enartists_latlong|13,850|enartists|546,964|
+|enyears|982,744|enterms|1,356,720|
+
+
+###Special report on table deezer
+|table | artists |tracks |albums|
+|:------:|:--------:|:------:|:--------:|
+|deezer|2,825,185|27,635,692|2,859,889
+
