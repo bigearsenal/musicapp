@@ -104,7 +104,9 @@ class Nhacso extends Site
 		topics = data.match(/<li><a\shref\=\"http\:\/\/nhacso\.net\/the-loai.+/g)?[0]
 		if topics  
 			song.topics = @processStringorArray topics.replace(/^.+\">|<\/a><\/li>/g,'')
-			if song.topics.match(/Nhạc Hoa/i)? and song.artists.match(" / ")?
+			# to check where aritst is same one when topic is "nhac hoa"
+			singer = data.match(/<a class="casi".+>(.+?)<\/a>/)?[1]
+			if song.topics.match(/Nhạc Hoa/i)? and singer and singer.match(" / ")
 				song.same_artist = 1
 
 		lyric = data.match(/txtlyric.+[^]+.+Bạn chưa nhập nội bài hát/g)?[0]
@@ -181,7 +183,7 @@ class Nhacso extends Site
 			@utils.printUpdateRunning song.id, @stats, "Fetching..."
 			
 		@updateSongLink @log.lastSongId+1
-		# @updateSongLink 1283890
+		# @updateSongLink 1301930
 
 	# ALBUM PART
 	getAlbumTotalPlays : (album)->

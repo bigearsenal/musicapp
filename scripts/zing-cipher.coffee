@@ -73,6 +73,31 @@ getEncryptedID = (id,bitrate='128')->
 	[1,0,8,0,10].concat((parseInt(id.split('').map((v)->b[a.indexOf(v)]).join(''),16)-307843200+'').split(''),A).map((i)-> 
 		c[i][Math.random()*c[i].length|0]).join('')
 
+# decode video of ZW67D7I0
+#  http://mp3.zing.vn/html5/video/LHcHTZHNSgRBNahtybmkH 480p
+#  LGJHtLGNzXEdasCtLbJtDHLG 3gp
+#  kmJHyZGNSCEBNNhtzxmTDnZG #mobile site
+#  LHcHT Z 	H 	N 	S 	g 	R 	B 	N 	a 	h 	t 	ybmkH (10,2,0,1,0) #480p
+#  LGJHt   L 	G 	N 	z 	X 	E 	d 	a 	s 	C 	t 	LbJtDHLG #3gp
+#  kmJHy  Z 	G 	N 	S 	C 	E 	B 	N 	N 	h 	t 	zxmTDnZG (4,8,0,10,2,0,1,0) # mobile site
+#  LHcHT 	ZHNSgRBNah 	t 	ybmkH
+#  ZmJnt 	ZmszgEdsaC 	t 	vGZG
+#  
+encryptZingVideoID = (id)->
+	a = "0IWOUZ6789ABCDEF".split('')
+	b = "0123456789ABCDEF"
+	c = "GHmn|LZk|DFbv|BVd|ASlz|QWp|ghXC|Nas|Jcx|ERui|Tty".split("|")
+	[1,0,8,0,10].concat((parseInt(id.split('').map((v)->b[a.indexOf(v)]).join(''),16)-307843200+'').split(''),[10,10,2,0,1,0]).map((i)-> 
+		c[i][Math.random()*c[i].length|0]).join('')
+
+encryptZingIDVideoWithType= (id,type)->
+	a = "0IWOUZ6789ABCDEF".split('')
+	b = "0123456789ABCDEF"
+	c = "GHmn|LZk|DFbv|BVd|ASlz|QWp|ghXC|Nas|Jcx|ERui|Tty".split("|")
+	# type is 360,480,720,1080
+	tail = [10].concat(type.toString().split('').map((v)->parseInt(v,10)),[10,2,0,1,0])
+	[1,0,8,0,10].concat((parseInt(id.split('').map((v)->b[a.indexOf(v)]).join(''),16)-307843200+'').split(''),tail).map((i)-> 
+		c[i][Math.random()*c[i].length|0]).join('')
 
 # 320kbps
 # "ZmcGy.....TBFGyvGkm" - 10,3,2,0,10,2,0,1,0
@@ -91,13 +116,31 @@ getEncryptedID = (id,bitrate='128')->
 #  We have: 'rIU' => 'L' , 'POwq' =>'O' , 'efK' => 'S', 'Mjo' => 'E'
 #  We index the letters L, O, S ,E.  'L' => 11, 'O'=>12 , 'S' => 13 , 'E' => 14
 #  Therefore: L O S S L E S S means 11,12,13,13,11,14,13,13
+
+encryptZingTVID720Test = (id)->
+	a = "0IWOUZ6789ABCDEF".split('')
+	b = "0123456789ABCDEF"
+	c = "GHmn|LZk|DFbv|BVd|ASlz|QWp|ghXC|Nas|Jcx|ERui|Tty".split("|")
+	[1,0,8,0,10].concat((parseInt(id.split('').map((v)->b[a.indexOf(v)]).join(''),16)-307843200+'').split(''),[10,7,2,0,10,2,0,1,0]).map((i)-> 
+		c[i][Math.random()*c[i].length|0]).join('')
+
 console.log "http://mp3.zing.vn/html5/video/" + encryptId 1382441101
 console.log _decodeIntegerToId_ZING 1382539793
 console.log _encodeIdToInteger_ZING("IW79780D")-307843200+307843200
-console.log "Video: 				http://mp3.zing.vn/html5/video/" + encryptZingID "ZW6OII9O"
-console.log "Song 320kbps: 	http://mp3.zing.vn/download/song/joke-link/" + getEncryptedID "ZW6UAFD0",'320'
-console.log "Song Lossless: 		http://mp3.zing.vn/download/song/joke-link/" + getEncryptedID "ZW6UAFD0",'lossless'
+console.log "Video (lowest): 		http://mp3.zing.vn/html5/video/" + encryptZingID "ZW67B7CD"
+console.log "Video high(480): 	http://mp3.zing.vn/html5/video/" + encryptZingVideoID "ZW67B7CD"
+console.log "Video with 240: 			http://mp3.zing.vn/html5/video/" + encryptZingIDVideoWithType "ZW67B7CD",240
+console.log "Video with 360: 			http://mp3.zing.vn/html5/video/" + encryptZingIDVideoWithType "ZW67B7CD",360
+console.log "Video with 480: 			http://mp3.zing.vn/html5/video/" + encryptZingIDVideoWithType "ZW67B7CD",480
+console.log "Video with 720: 			http://mp3.zing.vn/html5/video/" + encryptZingIDVideoWithType "ZW67B7CD",720
+console.log "Video with 1080: 			http://mp3.zing.vn/html5/video/" + encryptZingIDVideoWithType "ZW67CFC9",1080
+console.log "Song 128kbps: 	http://mp3.zing.vn/download/song/joke-link/" + getEncryptedID "ZW66WEOF",'128'
+console.log "Song 320kbps: 	http://mp3.zing.vn/download/song/joke-link/" + getEncryptedID "ZW66WEOF",'320'
+console.log "Song Lossless: 		http://mp3.zing.vn/download/song/joke-link/" + getEncryptedID "ZW66WEOF",'lossless'
 
-console.log "TV: 				http://tv.zing.vn/html5/video/" + encryptZingTVID720 "IWZ9CEO7"
+console.log "TV: 				http://tv.zing.vn/html5/video/" + encryptZingTVID720 "IWZ9FCW9"
+console.log "TV test: 			http://tv.zing.vn/html5/video/" + encryptZingTVID720Test "IWZ9FCW9"
 console.log "TV - XML : 			http://tv.zing.vn/tv/xml/media/" + encryptZingTVXMLID720  "IWZ99AUU"
+
+
 

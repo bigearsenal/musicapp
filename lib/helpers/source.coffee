@@ -19,8 +19,11 @@ class Source
 		file[site] = dateString
 		content = JSON.stringify(file)
 		content = content.replace(/,/g,',\n')
+		# console.log site
+		# console.log content
 		fs.writeFileSync path, content
 	@insertLastDatesToFileFromLogs : (sites)->
+		# console.log sites
 		for site in sites
 			prefix = site.toUpperCase()
 			fileName = prefix + "Log.txt"
@@ -33,7 +36,6 @@ class Source
 			lastDate = new Date(lastTimestamp)
 			lastDateString = Source.formatDate lastDate
 			Source.setLastDate site,lastDateString
-			return "done"
 	@insertLastDatesToFileFromDB : (sites,type,connection,callback)->
 		count = 0
 		for site in sites
@@ -50,9 +52,20 @@ class Source
 					if count is sites.length
 						callback("Completed!")
 	@insertLastDatesToFile: (connection,callback)->
-		sites = ["zi","ns","cc","gm","nn","nv","csn"]
-		Source.insertLastDatesToFileFromLogs(sites)
-		Source.insertLastDatesToFileFromDB ["nct","ke","lw","vg"],"songs",connection,callback
+		fs = require 'fs'
+		# fs.createReadStream('./lib/data/sites.json').pipe(fs.createWriteStream('./lib/data/sites_bk.json'))
+		fs.readFile './lib/data/sites.json', (err,data)->
+			if err then throw err
+			else 
+				fs.writeFile './lib/data/sites_bk.json',data,(err1)->
+					if err1 then throw err1
+					else 
+						console.log "Backing up file sites.json complete!"
+
+						# do main stuff
+						sites = ["zi","ns","cc","gm","nn","nv","csn"]
+						Source.insertLastDatesToFileFromLogs(sites)
+						Source.insertLastDatesToFileFromDB ["nct","ke","lw","vg"],"songs",connection,callback
 
 
 module.exports = Source

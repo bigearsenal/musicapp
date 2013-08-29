@@ -400,6 +400,8 @@ NOTE: THE LINK
 
 URL: `http://media.keeng.vn` was changed into `http://media2.keeng.vn`  
 
+`http://media3.keeng.vn:[8082|6060]`  
+
 *STATS:* get ~17721 albums, ~132052 songs on Feb 7
 
 

@@ -72,11 +72,14 @@ class Utils
 		# message += " | t_left:" + @_getTimeRemain(stats.totalItemCount/tempDuration*1000,stats) + "|\r"
 		# printResutls message
 		if stats.totalItemCount is 1
-			Pace = require 'pace'
-			@progressBar = new Pace(stats.totalItems)
+			ProgressBar = require './helpers/progress_bar'
+			options = 
+				maxBurden : 0.1
+				total : stats.totalItems
+			@progressBar = new ProgressBar(options)
 		extraInfo = "(#{stats.passedItemCount}✔ + #{stats.failedItemCount}✘)"
 		extraInfo += "     Speed: #{Math.round(stats.totalItemCount/tempDuration*1000)}items/s"
-		@progressBar.op(stats.totalItemCount,extraInfo)
+		@progressBar.show(stats.totalItemCount,extraInfo)
 
 	printMessage : (message)->
 		printResutls message + "\r"

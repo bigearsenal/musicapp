@@ -26,7 +26,11 @@ HTTP.getHeaders = (link,callback) ->
 	
 NCT = {}
 NCT.getLink = (key,type,callback)->
-	url = "http://www.nhaccuatui.com/flash/xml?key1=#{key}"
+	switch type
+		when "songs" then query = "key1"
+		when "albums" then query = "key2"
+		when "videos" then query = "key3"
+	url = "http://www.nhaccuatui.com/flash/xml?#{query}=#{key}"
 	HTTP.get url,(err,data)->
 		errInfo = null
 		if err then errInfo = err
@@ -114,7 +118,7 @@ class MediaLink
 						
 						NCT.getLink item.link_key,type, (err,data)=>
 							if err 
-								console.log "#{source.site}\t#{source.id}\t#{NOT FOUND}"
+								console.log "#{source.site}\t#{source.id}\tNOT FOUND"
 							else 
 								link = data.match(/<location>[^]+<!\[CDATA\[(.+)\]\]>[^]+<\/location>/)?[1]
 								@addItem(source.site,source.id,link)

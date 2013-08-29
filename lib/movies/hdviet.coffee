@@ -21,6 +21,7 @@ class HDViet extends Site
 				@utils.printFinalResult @stats
 	getLink : (link,options,callback)->
 		onSuccess = (data,_options)->
+			# console.log data
 			callback(null,data,_options)
 		onFail = (err,_options)->
 			callback(err,null,_options)
@@ -31,17 +32,20 @@ class HDViet extends Site
 			# when user does not put options value
 			callback = options
 			_options = null
-		# console.log "#{link} ..............."
+		console.log "#{link} ..............."
 		@getFileByHTTP link,onSuccess,onFail,_options
 	
 	getFileMetadata : (link,findEpisode,callback)->
 		
-		# console.log link + " getFileMetadata() called"
+		console.log link + " getFileMetadata() called"
 		@getLink link, (err,data,options)=>
 			if err 
 				callback(err,null)
 			else
 				decryptedData =  @rc4.decrypt(data,"HDVN@T@oanL@c")
+
+				console.log "DONE"
+				# console.log decryptedData
 
 				title = link.match(/([0-9]+)\.xml/)?[1]
 				# @fs.writeFileSync './hdviet_m3u8/2839.xml',decryptedData
@@ -113,6 +117,7 @@ class HDViet extends Site
 
 	getPlaylist : (movieid,callback)->
 		link = "http://movies.hdviet.com/#{movieid}.xml"
+		console.log link
 		@getFileMetadata link, true, (err,playlist)=>
 			if err  
 				callback err + " at ------- ",null
@@ -194,7 +199,7 @@ class HDViet extends Site
 		# @getPlaylist 4267, (err,playlist)=>
 		# 	console.log playlist
 
-		@getPlaylist 4304, (err,playlist)=>
+		@getPlaylist 305, (err,playlist)=>
 			# console.log JSON.stringify playlist
 			episodes = playlist.episodes
 			# console.log episodes

@@ -1,8 +1,7 @@
 # This class is an abtraction of item (song,album,video) that can be created into tables
 # It will provide the basic concurrent jobs, type
 # The real class whose function customJob will be overidden
-events = require('events')
-class ItemConstruction extends events.EventEmitter
+class ItemConstruction extends require('events').EventEmitter
 	constructor : (@sourceTable, @destinationTable, @connection)->
 		@maxConcurrentJobs = 10
 		@currentCursor = -1
@@ -17,6 +16,8 @@ class ItemConstruction extends events.EventEmitter
 		Encoder = require('../../node_modules/node-html-encoder').Encoder
 		@encoder = new Encoder('entity')
 		@artistsSeparationPatterns = [" f(ea)?t\\.? "," duet ", " featuring "," [-_+] "," vs ","[,;] "," fs "]
+		super()
+
 
 	setMaxConcurrentJobs : (max)->
 		@maxConcurrentJobs = max
@@ -218,6 +219,11 @@ class ItemConstruction extends events.EventEmitter
 				# console.log @records
 				if @records.length > 0
 					console.log "# of records got: #{@records.length}"
+					# if @destinationTable.fullName is "kealbums"
+					# 	console.log "check if sohtn"
+					# 	process.exit(0)
+					# console.log ""
+					# console.log ""
 					for i in [0..@maxConcurrentJobs-1]
 						@runNext()
 				else

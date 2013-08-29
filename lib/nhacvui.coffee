@@ -22,10 +22,10 @@ class Nhacvui extends Module
 	constructor : (@mysqlConfig, @config = NV_CONFIG) ->
 		@table = @config.table
 		@query = 
-			_insertIntoNVSongs : "INSERT INTO " + @table.Songs + " SET ?"
-			_insertIntoNVAlbums : "INSERT INTO " + @table.Albums + " SET ?"
-			_insertIntoNVSongs_Albums : "INSERT INTO " + @table.Songs_Albums + " SET ?"
-			_insertIntoNVVideos : "INSERT INTO " + @table.Videos + " SET ?"
+			_insertIntoNVSongs : "INSERT IGNORE INTO " + @table.Songs + " SET ?"
+			_insertIntoNVAlbums : "INSERT IGNORE INTO " + @table.Albums + " SET ?"
+			_insertIntoNVSongs_Albums : "INSERT IGNORE INTO " + @table.Songs_Albums + " SET ?"
+			_insertIntoNVVideos : "INSERT IGNORE INTO " + @table.Videos + " SET ?"
 		@utils = new Utils()
 		@parser = new xml2js.Parser()
 		@eventEmitter = new events.EventEmitter()

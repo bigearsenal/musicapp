@@ -230,11 +230,11 @@ Main =
 		func.addMethod {name : "getSitesReporter", info : "Save updated sites reporter"}
 		func.addMethod {name : "getTablesSchema", info : "Save tables schema"}
 		func.run(rl)
-	song : ->
-		func = new FunctionFactory("song","./lib/",mysqlConfig)
+	moving_site : ->
+		func = new FunctionFactory("movingSite","./lib/",mysqlConfig)
+		func.addMethod {name : "update", info : "UPDATE ALL (SONGS,ALBUMS,VIDEOS)"}
 		func.addMethod {name : "createSongTablexxx", info : "create grand song table"}
 		func.addMethod {name : "makeSitesJSON", info : "make sites JSON data"}
-		func.addMethod {name : "updateSongTable", info : "update table songs"}
 		func.addMethod {name : "createAlbumsTable", info : "create grand albums table"}
 		func.addMethod {name : "createVideosTable", info : "create grand videos table"}
 
@@ -265,7 +265,7 @@ registerFuncs.push {name: "zazoo", activated : false}
 registerFuncs.push {name: "deezer", activated : false}
 registerFuncs.push {name: "hdviet", activated : true}
 registerFuncs.push {name: "reporter", activated : true}
-registerFuncs.push {name: "song", activated : true}
+registerFuncs.push {name: "moving_site", activated : true}
 activatedFuncs = [""]
 disableFuncs = [""]
 

@@ -78,19 +78,5 @@ class Module
 				@connection.query _query, (err,result)->
 					console.log "Total records of #{value}: #{result[0].count}"
 
-	@extend: (obj) ->
-    	for key, value of obj when key not in moduleKeywords
-      		@[key] = value
-
-   		obj.extended?.apply(@)
-    	this
-
-  	@include: (obj) ->
-   		for key, value of obj when key not in moduleKeywords
-      # Assign properties to the prototype
-      	@::[key] = value
-
-    	obj.included?.apply(@)
-    	this
 
 module.exports = Module

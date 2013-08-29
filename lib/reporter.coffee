@@ -97,7 +97,7 @@ class Stats extends Site
 			s[1] = s[1] or ""
 			s[1] += new Array(prec - s[1].length + 1).join("0")
 		s.join dec
-	getSourceSite : (onEnd)->
+	getSourceSite : (mode,onEnd)->
 		sites = "csn cc ns gm ke nct mv nv nn vg zi".split(" ")
 		sites = 
 			csn : "chiasenhac"
@@ -105,6 +105,7 @@ class Stats extends Site
 			ns : "nhacso"
 			gm : "gomusic"
 			ke : "keeng"
+			nv : "nhacvui"
 			nct : "nhaccuatui"
 			mv : "musicvnn"
 			nn : "nghenhac"
@@ -124,7 +125,7 @@ class Stats extends Site
 			for site of reporter
 				totalCount +=1
 				do (site)=>
-					@getTableCount site+type,"precise", (err,count)->
+					@getTableCount site+type,mode, (err,count)->
 						itemCount +=1
 						if err then console.log err
 						else 
@@ -141,8 +142,13 @@ class Stats extends Site
 			totalSongs = 0
 			totalAlbums = 0
 			totalVideos = 0
-			for site of reporter
-				tbl = reporter[site]
+			# convert an object to array
+			arrayRpt = []
+			for site,value of reporter
+				arrayRpt.push value
+			arrayRpt = arrayRpt.sort (a,b)-> a.nsongs - b.nsongs
+			for tbl in arrayRpt
+				# tbl = reporter[site]
 				@finalReporterText += "\n" + "| #{tbl.name} | #{@formatNumber tbl.nsongs} | #{@formatNumber tbl.nalbums} |  #{@formatNumber tbl.nvideos} | "			
 				totalSongs += tbl.nsongs
 				totalAlbums += tbl.nalbums
@@ -160,7 +166,7 @@ class Stats extends Site
 		getTableType reporter, "videos", ->
 			count += 1
 			if count is 3 then onDone()
-	getMainReporter : (onEnd)->
+	getMainReporter : (mode,onEnd)->
 		nsongs = 0
 		nalbums = 0
 		nvideos = 0
@@ -174,22 +180,22 @@ class Stats extends Site
 			@finalReporterText += "\n"
 			# @finalReporterText += "\n---"
 			onEnd()
-		@getTableCount "songs","precise", (err,totalItem)->
+		@getTableCount "songs",mode, (err,totalItem)->
 			count +=1
 			if err then console.log err
 			else  nsongs = totalItem
 			if count is 3 then onDone()
-		@getTableCount "albums", "precise",(err,totalItem)->
+		@getTableCount "albums", mode,(err,totalItem)->
 			count +=1
 			if err then console.log err
 			else  nalbums = totalItem
 			if count is 3 then onDone()
-		@getTableCount "videos","precise", (err,totalItem)->
+		@getTableCount "videos",mode, (err,totalItem)->
 			count +=1
 			if err then console.log err
 			else  nvideos = totalItem
 			if count is 3 then onDone()
-	getLyricReporter :  (onEnd)->
+	getLyricReporter :  (mode,onEnd)->
 		lwsongs = 0
 		sfsongs = 0
 		count = 0
@@ -202,17 +208,17 @@ class Stats extends Site
 			@finalReporterText += "\n\n######Note: Gracenote included on lyricwiki\n"
 			# @finalReporterText += "\n---"
 			onEnd()
-		@getTableCount "lwsongs","fast", (err,totalItem)->
+		@getTableCount "lwsongs",mode, (err,totalItem)->
 			count +=1
 			if err then console.log err
 			else  lwsongs = totalItem
 			if count is 2 then onDone()
-		@getTableCount "sfsongs","fast", (err,totalItem)->
+		@getTableCount "sfsongs",mode, (err,totalItem)->
 			count +=1
 			if err then console.log err
 			else  sfsongs = totalItem
 			if count is 2 then onDone()
-	getTablesByPattern : (pattern,onEnd)->
+	getTablesByPattern : (pattern,mode,onEnd)->
 		_q = "SELECT * FROM pg_catalog.pg_tables where schemaname='public'"
 		finalResults = []
 		onDone = =>
@@ -265,7 +271,7 @@ class Stats extends Site
 						tables.push table 
 				for table in tables
 					do (table)=>
-						@getTableCount table,"fast",(err,n)=>
+						@getTableCount table,mode,(err,n)=>
 							tableCount +=1
 							if err then console.log err
 							else 
@@ -291,11 +297,11 @@ class Stats extends Site
 		
 		@finalReporterText += "\n" + "## SITES REPORT\n"
 		@finalReporterText += "\n######on #{new Date()}"
-		@getSourceSite =>
-			@getMainReporter =>
-				@getLyricReporter =>
-					@getTablesByPattern "^en+", =>
-						@getTablesByPattern "^dz+", =>
+		@getSourceSite "precise", =>
+			@getMainReporter "precise",=>
+				@getLyricReporter "fast",=>
+					@getTablesByPattern "^en+","fast", =>
+						@getTablesByPattern "^dz+","fast", =>
 							@saveReporter("reporter")
 	getTablesSchema : ->
 		_q = "SELECT * FROM pg_catalog.pg_tables where schemaname='public'"
