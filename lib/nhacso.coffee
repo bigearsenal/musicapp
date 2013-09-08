@@ -118,6 +118,7 @@ class Nhacso extends Site
 				song.islyric = 0
 
 		song.topics = song.topics.split().splitBySeperator(' - ').splitBySeperator('/')
+		if song.topics.length is 0 then song.topics = null
 		
 
 		@eventEmitter.emit "result-song", song
@@ -179,7 +180,7 @@ class Nhacso extends Site
 			# process.exit 0
 
 			@connection.query @query._insertIntoSongs, song, (err)->
-				if err then console.log "Cannt insert song: #{song.id} into database. ERROR: #{err}"
+				if err then console.log "Cannt insert song: #{song.id} into database (called at @updateSongs() ). ERROR: #{err}"
 			@utils.printUpdateRunning song.id, @stats, "Fetching..."
 			
 		@updateSongLink @log.lastSongId+1
@@ -772,7 +773,7 @@ class Nhacso extends Site
 			@stats.passedItemCount +=1
 			@log.lastSongId = song.id
 			@connection.query @query._insertIntoSongs, song, (err)->
-				if err then console.log "Cannt insert song: #{song.id} into database. ERROR: #{err}"
+				if err then console.log "Cannt insert song: #{song.id} into database (called at @updateSongWithRange() ) . ERROR: #{err}"
 			@utils.printRunning  @stats
 			if @stats.totalItemCount is @stats.totalItems 
 				@utils.printFinalResult @stats
