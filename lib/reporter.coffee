@@ -280,8 +280,15 @@ class Stats extends Site
 								onDone()
 	saveReporter : (name)->
 		fs = require 'fs'
+
+		# format date into form : YYYYMMDD
 		dt = new Date()
-		date = dt.getFullYear()  + "" +  (dt.getMonth()+1) +  dt.getDate()
+		month = dt.getMonth()+1
+		month = if month.toString().length is 1 then "0" + month else month
+		day = dt.getDate()
+		day = if day.toString().length is 1 then "0" + day else day
+		date = dt.getFullYear()  + month +  day
+		# end of format
 		fileName = "#{name}_#{date}.md"
 		path = "./reporters/#{fileName}"
 		fs.exists path, (exists)=>

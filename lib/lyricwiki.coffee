@@ -234,16 +234,16 @@ class LyricWiki extends Site
 				console.log " |# of items : #{@stats.totalItems}"
 				console.log " |Getting from range: #{songs[0].id} ---> #{songs[songs.length-1].id}"
 				
+				# console.log songs
 				for song in songs
-					# console.log song
 					options = 
-					     id : song.id
+					     id : parseInt(song.id,10)
 					     title : song.title
-					     artist : song.artist
+					     artist : song.artists
 					     source : source
 
 					if song.title.search(':') > -1 then uri = song.title.replace(/\s+/g,'_')
-					else  uri = song.artist.replace(/\s+/g,'_') + ':' + song.title.replace(/\s+/g,'_')
+					else  uri = song.artists.replace(/\s+/g,'_') + ':' + song.title.replace(/\s+/g,'_')
 
 					if source is "lyricwiki" 
 						# console.log uri
@@ -365,6 +365,8 @@ class LyricWiki extends Site
 			@resetStats()
 			@_getSongsLyrics("gracenote")
 	updateGraceNoteSongsLyrics : (datetime)->
+		# for testing 
+		# datetime = "2013-06-10 03:35:21"
 		@connect()
 		@showStartupMessage "Fetching GRACENOTE songs lyric to table", @table.Songs
 		@count = 0
@@ -376,7 +378,6 @@ class LyricWiki extends Site
 			# condition : " download_done=1 and download_gracenote_done=0 "
 		if datetime 
 			@temp.condition = "  checktime > '#{datetime}' and download_gracenote_done is null and is_gracenote=1 "
-
 		console.log " |The number of items to skip: #{@temp.nItemsSkipped}"
 		@eventEmitter.on "result-song", (song, options)=>
 			@stats.totalItemCount +=1
@@ -405,7 +406,6 @@ class LyricWiki extends Site
 				console.log " |GET NEXT STEP :#{@count}".inverse.red
 				@resetStats()
 				@_getSongsLyrics("gracenote")
-
 
 		@_getSongsLyrics("gracenote")
 	# THIS PART FOR UPDATING METRO LYRIC

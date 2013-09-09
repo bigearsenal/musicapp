@@ -3,7 +3,7 @@
 class PostgresqlWrapper
 	constructor : (configPath,mysql)->
 		@pg = require '../node_modules/pg'
-		fs = require 'fs'
+		# fs = require 'fs'
 		config =  require './pgwrapper/config'
 		@client = new @pg.Client config
 		@debugEnable  = false

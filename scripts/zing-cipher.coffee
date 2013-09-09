@@ -125,15 +125,19 @@ encryptZingTVID720Test = (id)->
 		c[i][Math.random()*c[i].length|0]).join('')
 
 console.log "http://mp3.zing.vn/html5/video/" + encryptId 1382441101
-console.log _decodeIntegerToId_ZING 1382539793
-console.log _encodeIdToInteger_ZING("IW79780D")-307843200+307843200
-console.log "Video (lowest): 		http://mp3.zing.vn/html5/video/" + encryptZingID "ZW67B7CD"
-console.log "Video high(480): 	http://mp3.zing.vn/html5/video/" + encryptZingVideoID "ZW67B7CD"
-console.log "Video with 240: 			http://mp3.zing.vn/html5/video/" + encryptZingIDVideoWithType "ZW67B7CD",240
-console.log "Video with 360: 			http://mp3.zing.vn/html5/video/" + encryptZingIDVideoWithType "ZW67B7CD",360
-console.log "Video with 480: 			http://mp3.zing.vn/html5/video/" + encryptZingIDVideoWithType "ZW67B7CD",480
-console.log "Video with 720: 			http://mp3.zing.vn/html5/video/" + encryptZingIDVideoWithType "ZW67B7CD",720
-console.log "Video with 1080: 			http://mp3.zing.vn/html5/video/" + encryptZingIDVideoWithType "ZW67CFC9",1080
+console.log _decodeIntegerToId_ZING 308934409
+console.log _encodeIdToInteger_ZING("IW69F706")-307843200+307843200
+
+console.log "VIDEO --------------------------------------"
+console.log "Video (lowest): 		http://mp3.zing.vn/html5/video/" + encryptZingID "ZW67BW9E"
+console.log "Video high(480): 	http://mp3.zing.vn/html5/video/" + encryptZingVideoID "ZW67BW9E"
+console.log "Video with 240: 	http://mp3.zing.vn/html5/video/" + encryptZingIDVideoWithType "ZW67BW9E",240
+console.log "Video with 360: 	http://mp3.zing.vn/html5/video/" + encryptZingIDVideoWithType "ZW67BW9E",360
+console.log "Video with 480: 	http://mp3.zing.vn/html5/video/" + encryptZingIDVideoWithType "ZW67BW9E",480
+console.log "Video with 720: 	http://mp3.zing.vn/html5/video/" + encryptZingIDVideoWithType "ZW67BW9E",720
+console.log "Video with 1080: 	http://mp3.zing.vn/html5/video/" + encryptZingIDVideoWithType "ZW67BW9E",1080
+console.log "END OF VIDEO --------------------------------------"
+
 console.log "Song 128kbps: 	http://mp3.zing.vn/download/song/joke-link/" + getEncryptedID "ZW66WEOF",'128'
 console.log "Song 320kbps: 	http://mp3.zing.vn/download/song/joke-link/" + getEncryptedID "ZW66WEOF",'320'
 console.log "Song Lossless: 		http://mp3.zing.vn/download/song/joke-link/" + getEncryptedID "ZW66WEOF",'lossless'
