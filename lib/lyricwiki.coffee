@@ -370,6 +370,7 @@ class LyricWiki extends Site
 		@connect()
 		@showStartupMessage "Fetching GRACENOTE songs lyric to table", @table.Songs
 		@count = 0
+		@resetStats()
 		
 		@temp = 
 			nItems : 1000

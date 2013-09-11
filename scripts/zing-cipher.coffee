@@ -126,7 +126,7 @@ encryptZingTVID720Test = (id)->
 
 console.log "http://mp3.zing.vn/html5/video/" + encryptId 1382441101
 console.log _decodeIntegerToId_ZING 308934409
-console.log _encodeIdToInteger_ZING("IW69F706")-307843200+307843200
+console.log _encodeIdToInteger_ZING("ZW67F76U")-307843200+307843200
 
 console.log "VIDEO --------------------------------------"
 console.log "Video (lowest): 		http://mp3.zing.vn/html5/video/" + encryptZingID "ZW67BW9E"

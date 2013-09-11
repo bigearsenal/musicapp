@@ -278,7 +278,7 @@ class Stats extends Site
 								finalResults.push {table : table, count : n}
 							if tableCount is tables.length
 								onDone()
-	saveReporter : (name)->
+	saveReporter : (dir,name)->
 		fs = require 'fs'
 
 		# format date into form : YYYYMMDD
@@ -290,7 +290,7 @@ class Stats extends Site
 		date = dt.getFullYear()  + month +  day
 		# end of format
 		fileName = "#{name}_#{date}.md"
-		path = "./reporters/#{fileName}"
+		path = "./reporters/#{dir}/#{fileName}"
 		fs.exists path, (exists)=>
 			unless exists 
 				fs.appendFile path, @finalReporterText, (err,result)->
@@ -309,7 +309,7 @@ class Stats extends Site
 				@getLyricReporter "fast",=>
 					@getTablesByPattern "^en+","fast", =>
 						@getTablesByPattern "^dz+","fast", =>
-							@saveReporter("reporter")
+							@saveReporter("stats","reporter")
 	getTablesSchema : ->
 		_q = "SELECT * FROM pg_catalog.pg_tables where schemaname='public'"
 		@finalReporterText += "\n" + "## SCHEMA REPORT\n"
@@ -349,7 +349,7 @@ class Stats extends Site
 								@finalReporterText += tableText
 							if count is totalCount
 								console.log "DONE".inverse.green
-								@saveReporter("schema")
+								@saveReporter("schemas","schema")
 
 
 

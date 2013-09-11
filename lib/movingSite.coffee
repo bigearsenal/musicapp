@@ -232,7 +232,7 @@ class MovingSite extends Module
 		date = dt.getFullYear()  + month +  day
 		# end of format
 		fileName = "updates_#{date}.md"
-		path = "./reporters/#{fileName}"
+		path = "./reporters/updates/#{fileName}"
 		fs.writeFileSync path, rpt
 		console.log "Status : Done, Message: The  reporter has been saved on disk. Path: #{path}".inverse.blue
 	showReporter : ->

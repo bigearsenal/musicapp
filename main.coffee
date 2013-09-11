@@ -33,6 +33,11 @@ class FunctionFactory
 				callback range0, range1
 			else console.log "Wrong type".red
 
+	runWithInput : (callback)->
+		console.log "STEP 3:".inverse.blue + " " + "Enter input:".underline.blue
+		rl.question " => ", (input) ->
+			callback input
+
 	logStartupInfo : ->
 		console.log "Running with "+"#{@className}".inverse.green
 		console.log ""
@@ -67,7 +72,9 @@ class FunctionFactory
 						if @methods[index].rangeEnable and @methods[index].rangeEnable is true
 							@runWithRange @classInstance[@methods[index].name]
 						else
-							@classInstance[@methods[index].name]()
+							if @methods[index].inputEnable and @methods[index].inputEnable is true
+								@runWithInput @classInstance[@methods[index].name]
+							else @classInstance[@methods[index].name]()
 					else @logErrorMessage "Index out out method range"
 				else  @logErrorMessage "Zero index invalid"
 			else @logErrorMessage "Index has to be number"
@@ -237,8 +244,10 @@ Main =
 		func.addMethod {name : "makeSitesJSON", info : "make sites JSON data"}
 		func.addMethod {name : "createAlbumsTable", info : "create grand albums table"}
 		func.addMethod {name : "createVideosTable", info : "create grand videos table"}
-
-
+		func.run(rl)
+	assisstant_funcs : ->
+		func = new FunctionFactory("assisstantFuncs","./lib/misc/",mysqlConfig)
+		func.addMethod {name : "getID", info : "get ID which is one of ns,zi,nct",inputEnable : true}
 		func.run(rl)
 Main.execute = (site)->
 	Main[site.toLowerCase()]()
@@ -263,7 +272,8 @@ registerFuncs.push {name: "echonest", activated : false}
 registerFuncs.push {name: "lyricwiki", activated : true}
 registerFuncs.push {name: "zazoo", activated : false}
 registerFuncs.push {name: "deezer", activated : false}
-registerFuncs.push {name: "hdviet", activated : true}
+registerFuncs.push {name: "assisstant_funcs", activated : true}
+registerFuncs.push {name: "hdviet", activated : false}
 registerFuncs.push {name: "reporter", activated : true}
 registerFuncs.push {name: "moving_site", activated : true}
 activatedFuncs = [""]

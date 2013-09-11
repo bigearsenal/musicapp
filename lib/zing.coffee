@@ -302,8 +302,7 @@ class Zing extends Module
 
 				# 
 
-			return _video
-			
+			return _video			
 	_updateVideo : (id)->
 		link = "http://mp3.zing.vn/video-clip/joke-link/#{@_convertToId id}.html"
 		# console.log link
@@ -344,7 +343,7 @@ class Zing extends Module
 		console.log " |"+"Update video to table  : #{@table.Videos}".magenta
 		@temp =
 			totalFail : 0
-			nStop : 3000 # the number of consecutive items fail
+			nStop : 5000 # the number of consecutive items fail
 		console.log "The program will stop after #{@temp.nStop} consecutive videos failed"
 		@_updateVideo @log.lastVideoId+1
 
@@ -466,8 +465,7 @@ class Zing extends Module
 			catch e
 				console.log "CANNOT fetch albumid : #{albumid}. ERROR: #{e}"
 				@stats.failedItemCount +=1
-				@temp.totalFail+=1
-	
+				@temp.totalFail+=1	
 	insertNewAlbum : (newAlbums)->
 		
 		console.log " |" + "STEP 4: Inserting #{newAlbums.length} new albums into DB ".magenta
@@ -558,8 +556,6 @@ class Zing extends Module
 										@insertNewAlbum(newAlbums)
 								catch e
 									console.log "Error occur in STEP 3 and 4  while updating new albums: #{e}"
-
-
 	updateAlbums : ->
 		@connect()
 
@@ -573,7 +569,6 @@ class Zing extends Module
 		console.log "The program will stop after #{@temp.nStop} consecutive albums failed"
 		@stats.currentTable = @table.Albums + " & " + @table.Songs_Albums
 		@_updateAlbums @log.lastAlbumId+1
-
 	updateAlbumsFromRange : (albumids)->
 		console.log "Func updateAlbumsFromRange triggered!"
 		@resetStats()
@@ -609,7 +604,6 @@ class Zing extends Module
 					catch e
 						console.log "CANNOT fetch albumid at updateAlbumsFromRange : #{albumid}. ERROR: #{e}"
 						@stats.failedItemCount +=1
-
 
 	_updateLyric : (song) ->
 		link = "http://mp3.zing.vn/ajax/lyrics/lyrics?from=0&id=#{@_convertToId song.id}&callback="
