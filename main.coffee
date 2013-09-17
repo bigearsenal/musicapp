@@ -248,6 +248,7 @@ Main =
 	assisstant_funcs : ->
 		func = new FunctionFactory("assisstantFuncs","./lib/misc/",mysqlConfig)
 		func.addMethod {name : "getID", info : "get ID which is one of ns,zi,nct",inputEnable : true}
+		func.addMethod {name : "getAll", info : "get al ids of songs to test memory"}
 		func.run(rl)
 Main.execute = (site)->
 	Main[site.toLowerCase()]()
@@ -267,7 +268,7 @@ registerFuncs.push {name: "nhaccuatui", activated : true}
 registerFuncs.push {name: "chiasenhac", activated : true}
 registerFuncs.push {name: "vietgiaitri", activated : false}
 registerFuncs.push {name: "musicvnn", activated : false}
-registerFuncs.push {name: "songfreaks", activated : false}
+registerFuncs.push {name: "songfreaks", activated : true}
 registerFuncs.push {name: "echonest", activated : false}
 registerFuncs.push {name: "lyricwiki", activated : true}
 registerFuncs.push {name: "zazoo", activated : false}

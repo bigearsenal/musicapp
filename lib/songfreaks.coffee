@@ -1,9 +1,9 @@
 Site = require "./Site"
-
-
+http = require 'http'
+http.globalAgent.maxSockets = 100
 class SongFreaks extends Site
       constructor: ->
-        super "SF"
+        super "sf"
         @logPath = "./log/SFLog.txt"
         @log = {}
         @_readLog()
@@ -14,6 +14,23 @@ class SongFreaks extends Site
             @connection.query _q, (err, results)=>
                   callback results
 
+      getFileByHTTPForward : (link, onSucess, onFail, options) ->
+            # console.log link
+            http.get link, (res) =>
+                        res.setEncoding 'utf8'
+                        data = ''
+                        # onSucess res.headers.location
+                        if res.headers.location
+                              @getFileByHTTPForward res.headers.location,onSucess,onFail,options
+                        else 
+                              if res.statusCode isnt 404
+                                    res.on 'data', (chunk) =>
+                                          data += chunk;
+                                    res.on 'end', () =>
+                                          onSucess data, options
+                              else onFail("The link is temporary moved: #{res.statusCode} #{JSON.stringify res.headers}",options)
+                  .on 'error', (e) =>
+                        onFail  "Cannot get file from server. ERROR: " + e.message, options
       # Turn "AN BINH" into "An Binh"
       formatProperName : (str)->
             return str.split(' ').map((v)-> v.split('').map((v,i)-> if i>0 then v.toLowerCase() else v).join('')).join(' ')          
@@ -21,9 +38,9 @@ class SongFreaks extends Site
             song = 
                   id : options.id
                   title : ""
-                  artist_ids : ""
-                  artists : ""
-                  album_id : 0
+                  artistids : []
+                  artists : null
+                  albumid : 0
                   album : ""
                   lyric : ""
                   writers : ""
@@ -31,19 +48,19 @@ class SongFreaks extends Site
                   
 
             title  = data.match(/<meta property=\"og:title\".+content=\"(.+)\" /)?[1]
-            if title then song.title = title
+            if title then song.title = @processStringorArray title
 
             artists = data.match(/By:[^]+From the album/)?[0]
             if artists  
-                  song.artists = @processStringorArray artists.split(',').map (v)-> v.replace(/<\/a>[^]+$/,'').replace(/^[^]+>/,'').trim()
-                  artist_ids = artists.split(',').map (v)-> v.match(/<a href=\".+\/([0-9]+)\"/)?[1]
-                  if artist_ids then song.artist_ids = JSON.stringify  artist_ids.map (v)-> parseInt v,10
+                  song.artists = artists.split(',').map (v)=> @processStringorArray v.replace(/<\/a>[^]+$/,'').replace(/^[^]+>/,'').trim()
+                  # artistids = artists.split(',').map (v)-> v.match(/<a href=\".+\/([0-9]+)\"/)?[1]
+                  # if artistids then song.artistids = artistids.map (v)-> parseInt v,10
 
             album = data.match(/From the album:[^]+content-info/)?[0]
             if album
                   song.album = @processStringorArray album.replace(/<\/a>[^]+$/,'').replace(/^[^]+>/,'').trim()
-                  album_id = album.match(/<a href=\".+\/([0-9]+)\"/)?[1]
-                  if album_id then song.album_id = parseInt album_id,10
+                  # albumid = album.match(/<a href=\".+\/([0-9]+)\"/)?[1]
+                  # if albumid then song.albumid = parseInt albumid,10
             
             lyric = data.match(/lyrics SCREENONLY\">\s+[^]+<p class=\"lyrics PRINTONLY\">/)?[0]
             if lyric then song.lyric = @processStringorArray lyric.replace(/lyrics SCREENONLY\">/,'')
@@ -125,19 +142,19 @@ class SongFreaks extends Site
             @temp.currentStep = step
             @stats.currentTable = @table.Songs
             @stats.totalItems = (last-first+1)/1
-            console.log "CURRENT STEP #{@temp.currentStep} (#{first}->#{last}) by factor 10".inverse.red
+            console.log "CURRENT STEP #{@temp.currentStep} (#{first}->#{last})".inverse.red
             for id in [first..last] by 1
                   do (id)=>
                         options = 
                               id : id
-                        if (Math.random()*2|0) is 0
-                              # console.log "run with song freaks"
-                              link = "http://www.songfreaks.com/joke-link/lyrics/joke-link/#{id}"
-                              @getFileByHTTP link, @processSongAtSongFreaksSite, @onSongFail, options
-                        else 
-                              # console.log "run with lyric over load"
-                              link = "http://www.lyricsoverload.com/lyrics/joke-link/#{id}"
-                              @getFileByHTTP link, @processSongAtLyricsOverLoadSite, @onSongFail, options      
+                        # if (Math.random()*2|0) is 0
+                        # console.log "run with song freaks"
+                        link = "http://www.songfreaks.com/joke-link/lyrics/joke-link/#{id}"
+                        @getFileByHTTPForward link, @processSongAtSongFreaksSite, @onSongFail, options
+                        # else 
+                        #       # console.log "run with lyric over load"
+                        #       link = "http://www.lyricsoverload.com/lyrics/joke-link/#{id}"
+                        #       @getFileByHTTP link, @processSongAtLyricsOverLoadSite, @onSongFail, options      
       fetchSongs : (range0, range1) =>
             @connect()
             @showStartupMessage "Updating songs to table", @table.Songs
@@ -164,10 +181,15 @@ class SongFreaks extends Site
                   @stats.currentId  = options.id
                   # @log.lastSongId = song.songid
                   # @temp.totalFail = 0
+                  # console.log song
+                  # process.exit 0
                   if song isnt null
                         # console.log song
                         @connection.query @query._insertIntoSongs, song, (err)->
-                              if err  then console.log "Cannt insert song: #{song.id}. SITE: #{options.site} into database. ERROR: #{err}"
+                              if err   
+                                    console.log "Cannt insert song: #{song.id}. SITE: #{options.site} into database. ERROR: #{err}"
+                                    console.log ""
+                                    console.log ""
                   else 
                         @stats.passedItemCount -=1
                         @stats.failedItemCount +=1
