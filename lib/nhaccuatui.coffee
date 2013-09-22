@@ -628,9 +628,7 @@ class Nhaccuatui extends Module
 			lyric : ""
 
 		#new version in June 2013 does not support lyric of videos
-
 		id = data.match(/hidden.+\"(\d+)\".+inpHiddenId/)?[1]
-
 		if id
 			id = parseInt(id,10)
 			if id isnt video.id
@@ -639,9 +637,9 @@ class Nhaccuatui extends Module
 		type =  data.match(/.+inpHiddenType/g)?[0]
 		if type then video.type = type.replace(/\"\sid.+$/g,'').replace(/^.+\"/g,'')
 
-		info = data.match(/<h1 class="name">[^]+?<\/h1>/g)?[0]
+		info = data.match(/<div class="songname">[^]+?<\/h1>/g)?[0]
 		if info
-			info =  encoder.htmlDecode(info.trim()).split('</a> -')
+			info =  encoder.htmlDecode(info.trim()).split('<span>-</span>')
 			info = info.map (v) -> v.stripHtmlTags().trim()
 			if info.length is 2
 				video.title = encoder.htmlDecode info[0].trim()
@@ -649,11 +647,13 @@ class Nhaccuatui extends Module
 			else
 				throw Error("error while getting artists and title of video")
 
-		topics = data.match(/nowPlayingListenCount.+\s+.+\s+.+/g)?[0]
+		topics = data.match(/<p class="category">.+/g)?[0]
 		if topics
-			video.topics = topics.split("&nbsp;<img").filter((v,idx)-> if idx > 0 then yes else no)
-						.map (v)-> encoder.htmlDecode(v.replace(/<\/.+/,'').replace(/.+>/,'')).trim()
-		
+
+			topics = topics.stripHtmlTags().replace(/Thể loại:/,'').replace(/Âm Nhạc,/,'').replace(/&nbsp;/g,' ').trim()
+			# console.log topics
+			video.topics = topics.split(", ").map (v)-> encoder.htmlDecode v
+			# console.log video.topics		
 		thumbnail = data.match(/image_src.+\"(http.+)\"/)?[1]
 		if thumbnail
 			video.thumbnail = thumbnail
