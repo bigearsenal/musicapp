@@ -21,7 +21,7 @@ ZI_CONFIG =
 		Videos : "zivideos"
 	logPath : "./log/ZILog.txt"
 
-http.globalAgent.maxSockets = 50
+http.globalAgent.maxSockets = 10
 
 class Zing extends Module
 	constructor : (@mysqlConfig, @config = ZI_CONFIG) ->
