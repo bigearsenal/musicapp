@@ -1,5 +1,3 @@
-**Table of Contents**  *generated with [DocToc](http://doctoc.herokuapp.com/)*
-
 - [SITES REPORT](#sites-report)
 				- [on Sun Oct 06 2013 21:02:10 GMT+0700 (ICT)](#on-sun-oct-06-2013-210210-gmt+0700-ict)
 	- [Statistics of source sites](#statistics-of-source-sites)

@@ -1,4 +1,4 @@
-**Table of Contents**  *generated with [DocToc](http://doctoc.herokuapp.com/)*
+**Table of Contents** 
 
 - [Analysis](#analysis)
 	- [Part 1: Finding the relationship of the first 2 characters in groupA and groupB](#part-1-finding-the-relationship-of-the-first-2-characters-in-groupa-and-groupb)
