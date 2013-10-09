@@ -1,3 +1,9 @@
+**Table of Contents**  *generated with [DocToc](http://doctoc.herokuapp.com/)*
+
+- [Analysis](#analysis)
+	- [Part 1: Finding the relationship of the first 2 characters in groupA and groupB](#part-1-finding-the-relationship-of-the-first-2-characters-in-groupa-and-groupb)
+	- [Part 2: Find the relationship between the 2 last characters in groupA and  the last character of groupB](#part-2-find-the-relationship-between-the-2-last-characters-in-groupa-and--the-last-character-of-groupb)
+	- [Part 3: Return to part 1 and find the categories](#part-3-return-to-part-1-and-find-the-categories)
 
 ### Analysis
 Given the following link:
