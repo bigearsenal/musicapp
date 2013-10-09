@@ -1,4 +1,12 @@
+
+
 #DOCUMENTATION#
+
+
+# TABLE OF CONTENTS
+
+
+[TOC]
 
 
 # CLI Installation #
