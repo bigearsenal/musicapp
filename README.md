@@ -12,32 +12,20 @@
 		- [d.Album](#dalbum)
 		- [e.Misc](#emisc)
 	- [2.Music.go.vn](#2musicgovn)
-	- [](#)
 	- [3.Hcm.nhac.vui.vn](#3hcmnhacvuivn)
-	- [](#-1)
 	- [4.Chacha.vn](#4chachavn)
-	- [](#-2)
 	- [5.Nghenhac.info](#5nghenhacinfo)
 	- [6.Vietgiaitri.com - JUNK](#6vietgiaitricom---junk)
 	- [7.Nhac.hay365.com - JUNK](#7nhachay365com---junk)
-	- [](#-3)
 	- [8.Music.vnn.vn - JUNK](#8musicvnnvn---junk)
-	- [](#-4)
 	- [9.Nghenhacmoi.net - JUNK](#9nghenhacmoinet---junk)
-	- [](#-5)
 	- [10.Nhacvang.net - JUNK](#10nhacvangnet---junk)
-	- [](#-6)
 	- [11.Chiasenhac.com](#11chiasenhaccom)
 	- [12.Music.yeucahat.com](#12musicyeucahatcom)
-	- [](#-7)
-	- [](#-8)
 	- [13.Keeng.vn](#13keengvn)
-	- [](#-9)
 	- [14.Mp3.zing.vn](#14mp3zingvn)
 		- [Decode id](#decode-id)
 		- [Analyzing encrypted id](#analyzing-encrypted-id)
-	- [](#-10)
-	- [](#-11)
 		- [Brutal Search](#brutal-search)
 		- [Album encrypted links](#album-encrypted-links)
 		- [Get resources](#get-resources)
@@ -50,18 +38,12 @@
 			- [NOTICE: Lyrics for google chrome extension](#notice-lyrics-for-google-chrome-extension)
 			- [NOTICE: Lyrics for METRO LYRICS](#notice-lyrics-for-metro-lyrics)
 	- [19.iCine.vn](#19icinevn)
-	- [](#-12)
 	- [20.Movies.hdviet.com](#20movieshdvietcom)
 	- [21.iphone.uphim.vn](#21iphoneuphimvn)
-	- [](#-13)
 - [FETCH ALL ALBUMS FROM NHASO.NET WITH NODE.JS](#fetch-all-albums-from-nhasonet-with-nodejs)
 - [ELASTICSEARCH](#elasticsearch)
 	- [Couchbase](#couchbase)
 	- [MySQL](#mysql)
-	- [](#-14)
-	- [](#-15)
-	- [](#-16)
-	- [](#-17)
 
 #DOCUMENTATION#
 
@@ -300,8 +282,6 @@ On Jan 11, scan 977721 songs; ~14016 videos ~500000 abums
 *STATS:* Total songs: 173733. Total albums: 17556 .  
 Updated on December 12, 2012
 
----
-
 ## 3.Hcm.nhac.vui.vn ##
 
 * Get Song  
@@ -321,8 +301,6 @@ Updated on December 12, 2012
 	`hn.nhac.vui.vn` <=> `hcm.nhac.vui.vn`
 
 *STATS:* ~279772 songs, ~24100 albums on Feb 02
-
----
 
 ## 4.Chacha.vn##
 * Get Song  
@@ -364,8 +342,6 @@ http://audio.chacha.vn/songs/output/53/2/s/va-em-da-biet-minh-yeu - Ho-Ngoc-Ha.m
 
 *STATS:* ~313875 songs, ~ 4396 albums on Jan 31
 
---- 
-
 ## 5.Nghenhac.info ##
 * Get Album  
 <http://nghenhac.info/Album/joke-link/20697/.html>  
@@ -376,8 +352,6 @@ not complete
 
 *STATS:* ~193285 songs, ~16084 albums on Feb 04
 
----
-
 ##6.Vietgiaitri.com - JUNK##
 * Get Album  
 <http://nhac.vietgiaitri.com/album-nhac/-4471.vgt>  
@@ -385,8 +359,6 @@ not complete
 	`aid=` <= insert number, temporary link
 
 *STATUS:* circa 8000 songs. This site will be ignored.
-
----
 
 ## 7.Nhac.hay365.com - JUNK##
 * Get Song  
@@ -398,8 +370,6 @@ not complete
 
 *STATUS:* circa 50000 songs. This site will be ignored.
 
----
-
 ## 8.Music.vnn.vn - JUNK##
 * Get Album  
 <http://music.vnn.vn/vdco/albums/p/48.htm>  
@@ -409,16 +379,12 @@ not complete
 
 *STATUS:* greater than 10^3 albums and about 800 songs. This site will be ignored.
 
----
-
 ## 9.Nghenhacmoi.net - JUNK ##
 * Get Album  
 	<http://nghenhacmoi.net/music/xml/3/701.xml>  
 	Note: just thousands of songs, ~700 albums 
 
 *STATUS:* greater than 700 albums. This site will be ignored.
-
----
 
 ## 10.Nhacvang.net - JUNK ##
 * Get Album  
@@ -427,8 +393,6 @@ not complete
 
 	<http://nghenhacvang.net/play/3111.mp3>  
 	<http://sv.nghenhacvang.net/data/1euuluxqhtfyitrv/2013/03/PH047%20-%20Chon%20Xua%20Em%20Ve/04.%20Moi%20Em%20Ve%20-%20Ngoc%20Lan.mp3>
-
----
 
 ## 11.Chiasenhac.com##
 **Get song**
@@ -458,8 +422,6 @@ NOTE: THE LINK
 
 `0` => `Sunday`,`1` => `Monday` ..... `5` => `Friday`, `6` => `Saturday`  
 
----
-
 ## 13.Keeng.vn ##
 * Get album
 	<http://www.keeng.vn/album/album-moi.html?page=160>  
@@ -474,9 +436,6 @@ URL: `http://media.keeng.vn` was changed into `http://media2.keeng.vn`
 `http://media3.keeng.vn:[8082|6060]`  
 
 *STATS:* get ~17721 albums, ~132052 songs on Feb 7
-
-
----
 
 ## 14.Mp3.zing.vn ##
 
@@ -734,8 +693,6 @@ Changing resolution of an image: add _640 before the file extension
 
 **Notice: the pair (songid,albumid) gonna be duplicated while updating new albums. Be careful when use it**
 
----
-
 ## 17. ZAZOO.IT ##
 
 * Content link: <http://www.zazoo-music.com/HomepagePanel3.aspx>  
@@ -797,8 +754,6 @@ Get lyric from file
 METRO API: `http://api.metrolyrics.com/v1/`  
 `deviceid : 'chrome_extension'`  
 
----
-
 ## 19.iCine.vn ##
 
 * Get mp4 movie
@@ -832,8 +787,6 @@ loadVideo function in `http://icine.vn/js/pls.js`
 
 `SECRET_KEY:String = "secrete123!@#";    MD5.hash((_local3 + this.SECRET_KEY));`
 for example `217secrete123!@#`
-
----
 
 ## 20.Movies.hdviet.com ##
 
@@ -891,8 +844,6 @@ http://ncs06.vn-hd.com/02022013/Deadwood_S02/E001/1280/Deadwood_S02_E001_1280_0.
 7.Play `m3u8` file   
 8.Decode VNese subtiltes using the pass `6e28cec025af4ff790c8337d5190184e`   
 
----
-
 ## 21.iphone.uphim.vn ##
 
 * Get files
@@ -908,9 +859,6 @@ curl "http://iphone.uphim.vn/xem-phim-joke-link-m-311-p-1.html" --user-agent "Mo
 
 2. get `eval(function(p,a,c,k,e,d){...}` in the script and decode the `dean edwards packer`  
 3. get `m3u8` file
-
----
-
 
 # FETCH ALL ALBUMS FROM NHASO.NET WITH NODE.JS
 
@@ -951,5 +899,3 @@ curl -XPUT 'localhost:9200/_river/ns_song/_meta' -d '{
 ```
 
 Notice: `ns_song`, choose `localhost:8889`, database `anbinh` , username `root`, password `root`, select all from table `ns_song`, choose index `jdbc` and type `jdbci`
-
-
