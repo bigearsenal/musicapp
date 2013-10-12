@@ -265,13 +265,19 @@ class Nhaccuatui extends Module
 
 		temp = data.match(/<div class="songname">[^]+?<\/div>/)?[0]
 		if temp
-			temp =  encoder.htmlDecode(temp.trim()).split('</a> -')
-			temp = temp.map (v) -> v.stripHtmlTags().trim()
-			# console.log temp[1]
-			if temp.length is 2
-				song.title =  temp[0]
-				song.artists = temp[1].split(", ").map((v)-> v.trim())
+			temp = temp.stripHtmlTags()
+			temp =  encoder.htmlDecode(temp.trim()).split(' - ')
+			temp = temp.map (v) -> v.trim()
+			# console.log temp
+			if temp.length >= 2
+				song.artists = temp[temp.length-1].split(", ").map((v)-> v.trim())
+				temp.pop()
+				song.title =  temp.join(" - ")
 			else 
+				# console.log "------------"
+				# console.log temp
+				# console.log song.key
+				# console.log "----------"
 				throw Error("Cannot process song while finding artists and title of the song")
 		else
 			throw Error("Cannot process song: unknow artists & title")
@@ -413,12 +419,15 @@ class Nhaccuatui extends Module
 
 				temp = data.match(/<div class="songname">[^]+?<\/div>/)?[0]
 				if temp
-					temp =  encoder.htmlDecode(temp.trim()).split('</a> -')
-					temp = temp.map (v) -> v.stripHtmlTags().trim()
+					temp = temp.stripHtmlTags()
+					temp =  encoder.htmlDecode(temp.trim()).split(' - ')
+					temp = temp.map (v) -> v.trim()
 					# console.log temp[1]
-					if temp.length is 2
-						album.title =  temp[0]
-						album.artists = temp[1].split(", ").map((v)-> v.trim())
+					if temp.length >= 2
+						album.artists = temp[temp.length-1].split(", ").map((v)-> v.trim())
+						temp.pop()
+						album.title =  temp.join(" - ")
+
 					else 
 						throw Error("Cannot process album while finding artists and title of the album")
 				else
@@ -637,13 +646,15 @@ class Nhaccuatui extends Module
 		type =  data.match(/.+inpHiddenType/g)?[0]
 		if type then video.type = type.replace(/\"\sid.+$/g,'').replace(/^.+\"/g,'')
 
-		info = data.match(/<div class="songname">[^]+?<\/h1>/g)?[0]
+		info = data.match(/<div class="songname">[^]+?<\/h2>/g)?[0]
 		if info
-			info =  encoder.htmlDecode(info.trim()).split('<span>-</span>')
+			info = info.stripHtmlTags().trim()
+			info =  encoder.htmlDecode(info.trim()).split(' - ')
 			info = info.map (v) -> v.stripHtmlTags().trim()
-			if info.length is 2
-				video.title = encoder.htmlDecode info[0].trim()
-				video.artists = info[1].split(', ').map((v)->encoder.htmlDecode(v).trim())
+			if info.length >= 2
+				video.artists = info[info.length-1].split(', ').map((v)->encoder.htmlDecode(v).trim())
+				info.pop()
+				video.title = encoder.htmlDecode info.join(" - ").trim()
 			else
 				throw Error("error while getting artists and title of video")
 

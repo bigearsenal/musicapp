@@ -208,12 +208,12 @@ Use HTML5 <http://nhacso.net//html5/album/id/WF1VVEZf>  ªß
 > `getissuetime`
 
 *DEFAULT ALBUMS*:   
-<http://st.nhacso.net/images/album/thumb_album_120x120.jpg>  
+<ht	tp://st.nhacso.net/images/album/thumb_album_120x120.jpg>  
 
 ###e.Misc###
 **Get Category**
 	
-<http://nhacso.net/category/getcategory?listIds=1,2,4,5>  
+<ht	tp://nhacso.net/category/getcategory?listIds=1,2,4,5>  
 > `getcategory` <= get list
 
 **Get Lyric**
@@ -223,7 +223,7 @@ Use HTML5 <http://nhacso.net//html5/album/id/WF1VVEZf>  ªß
 <http://nhacso.net/top/latestsong?xnl=1>  
 
 **Get Parse Amount Album:**
-<http://nhacso.net/artist/parseamountalbum?listIds=54 >  
+<ht	tp://nhacso.net/artist/parseamountalbum?listIds=54 >  
 
 **Get Parse Amount Song of Artist**
 <http://nhacso.net/artist/parseamountsong?listIds=54>  
@@ -413,9 +413,7 @@ http://data.yeucahat.com/downloads/92/3/06fea2c2b85d7c0e57eea7efe46d608e/Ng…n%
 <http://download.chiasenhac.com/download.php?m=93404>  
 <http://download.chiasenhac.com/download.php?m=1094220>   
 
-```bash
-curl 'http://download.chiasenhac.com/download.php?m=1067123' --silent -H 'Cookie:  csn_sid=ca404dfca9556f5830b5fb96add51691;' | grep Download | grep '<a href="http:'  
-``` 
+
 
 NOTE: THE LINK  
 `http://data.chiasenhac.com/downloads/1031/#{days of week}/1030109-056c7572/320/joke-link.mp3` 
@@ -860,42 +858,4 @@ curl "http://iphone.uphim.vn/xem-phim-joke-link-m-311-p-1.html" --user-agent "Mo
 2. get `eval(function(p,a,c,k,e,d){...}` in the script and decode the `dean edwards packer`  
 3. get `m3u8` file
 
-# FETCH ALL ALBUMS FROM NHASO.NET WITH NODE.JS
-
-Type in CLI, change the directory which contains these files, default is `~/Box Documents/Sites/nodejs`
-
-- To create tables : `node createAlbumTable.js add`
-- To delete tables : `node createAlbumTable.js delete`
-- To get all albums from id 1 to id 2: `node fetchdatafromNS.js No1 No2`    
-where `No1` is the first Id and `No2` is the last
-EX: `node fetchdatafromNS.js 500000 502000` <- can run parallelly 3 programs 
-
-
-# ELASTICSEARCH
-
-## Couchbase
-
-Install the couchbase nosql database
-
-## MySQL
-
-Run `bin/elasticsearch -f` , install plugin on [github>  
-
-```
-curl -XPUT 'localhost:9200/_river/ns_song/_meta' -d '{
-    "type" : "jdbc",
-    "jdbc" : {
-        "driver" : "com.mysql.jdbc.Driver",
-        "url" : "jdbc:mysql://localhost:8889/anbinh",
-        "user" : "root",
-        "password" : "root",
-        "sql" : "select * from ns_song"
-    },
-    "index" : {
-        "index" : "jdbc",
-        "type" : "jdbc"
-    }
-}'
-```
-
-Notice: `ns_song`, choose `localhost:8889`, database `anbinh` , username `root`, password `root`, select all from table `ns_song`, choose index `jdbc` and type `jdbci`
+!
