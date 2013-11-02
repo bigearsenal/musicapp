@@ -136,6 +136,7 @@ Main =
 		func.addMethod {name : "fetchAlbums", info : "Getting albums", rangeEnable : true}
 		func.addMethod {name : "getSongsTopic", info : "Getting songs' topics"}
 		func.addMethod {name : "showStats", info : "Show statistics"}
+		func.addMethod {name : "updateAlbumsStats", info : "UPDATE ALBUMS PLAYS AND TOPICS"}
 		func.run(rl)
 	nghenhac : ->
 		func = new FunctionFactory("nghenhac","./lib/",mysqlConfig)
@@ -248,6 +249,8 @@ Main =
 	assisstant_funcs : ->
 		func = new FunctionFactory("assisstantFuncs","./lib/misc/",mysqlConfig)
 		func.addMethod {name : "getID", info : "get ID which is one of ns,zi,nct",inputEnable : true}
+		func.addMethod {name : "searchES", info : "search term on ES",inputEnable : false}
+
 		func.addMethod {name : "getAll", info : "get al ids of songs to test memory"}
 		func.run(rl)
 Main.execute = (site)->

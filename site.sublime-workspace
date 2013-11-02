@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"err",
+				"err"
+			],
+			[
 				"str",
 				"stripHtmlTags"
 			],
@@ -272,10 +276,6 @@
 				"invalidRecordings"
 			],
 			[
-				"err",
-				"errMsg"
-			],
-			[
 				"er",
 				"errMsg"
 			],
@@ -523,7 +523,7 @@
 			"file": "main.coffee",
 			"settings":
 			{
-				"buffer_size": 14952,
+				"buffer_size": 15038,
 				"line_ending": "Unix"
 			}
 		},
@@ -544,6 +544,31 @@
 			}
 		},
 		{
+			"file": "lib/misc/assisstantFuncs.coffee",
+			"settings":
+			{
+				"buffer_size": 8572,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "server.coffee",
+			"settings":
+			{
+				"buffer_size": 751,
+				"line_ending": "Unix",
+				"name": "http = require(\"http\")"
+			}
+		},
+		{
+			"file": "lib/helpers/source_link.coffee",
+			"settings":
+			{
+				"buffer_size": 7066,
+				"line_ending": "Unix"
+			}
+		},
+		{
 			"file": "lib/movingSite.coffee",
 			"settings":
 			{
@@ -555,31 +580,7 @@
 			"file": "lib/construction/item.coffee",
 			"settings":
 			{
-				"buffer_size": 19672,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "lib/misc/assisstantFuncs.coffee",
-			"settings":
-			{
-				"buffer_size": 2290,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "lib/nhaccuatui.coffee",
-			"settings":
-			{
-				"buffer_size": 51394,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "test/test.coffee",
-			"settings":
-			{
-				"buffer_size": 267,
+				"buffer_size": 19749,
 				"line_ending": "Unix"
 			}
 		}
@@ -812,18 +813,27 @@
 	},
 	"file_history":
 	[
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/test/test.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/test/keeng.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/test/nhacvui.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/test/zing.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/chacha.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/test/chacha.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/nhacso.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/test/nhacso.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/pgwrapper.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/pgwrapper/SqlString.js",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/utils.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/nhaccuatui.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/test/nhaccuatui.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/helpers/source.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/helpers/source_link.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/pgwrapper.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/config/site_flags.js",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/zing.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/scripts/nhacso_decode.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/scripts/zing-cipher.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/songfreaks.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/test/misc/zi_test.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/test/test.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/nhaccuatui.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/helpers/ZI.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/helpers/NS.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/lyricwiki.coffee",
@@ -832,22 +842,16 @@
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/test/log/zing.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/test/log.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/test/lyricwiki.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/test/zing.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/nhacso.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/test/nhacso.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/helpers/media.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/movies/RC4.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/nhacvui.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/movies/hdviet.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/utils.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/helpers/progress_bar.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/node_modules/pace/pace.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/node_modules/pace/pacexx.js",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/node_modules/pace/pace.js",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/song.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/stats.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/test/chacha.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/chacha.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/test/utils.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/echonest.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/helpers/string.coffee",
@@ -867,7 +871,6 @@
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/test/log/chacha.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/test/log/nhacso.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/test/test_pgwrapper.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/test/keeng.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/spec/test.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/spec/nhacvui.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/spec/test_pgwrapper.coffee",
@@ -937,9 +940,7 @@
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/zing-cipher.js",
 		"/Users/daonguyenanbinh/Box Documents/Sites/hdviet_tv.as",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/testZINGLyric.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/anbinh.as",
-		"/Users/daonguyenanbinh/Box Documents/Sites/index.js",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/livetv.as"
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/anbinh.as"
 	],
 	"find":
 	{
@@ -958,6 +959,10 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"/",
+			"nsongs",
+			"item",
+			"id",
 			"Fetching & inserting",
 			"STEP 2",
 			"STEP 2: Fetching & inserting new songs",
@@ -1081,11 +1086,7 @@
 			";",
 			"runType",
 			"NULL",
-			"@finalReporterText",
-			"@finalReporterText ",
-			" \"\\",
-			"results",
-			"getTableCount"
+			"@finalReporterText"
 		],
 		"highlight": false,
 		"in_selection": false,
@@ -1125,7 +1126,7 @@
 	"groups":
 	[
 		{
-			"selected": 6,
+			"selected": 7,
 			"sheets":
 			[
 				{
@@ -1133,15 +1134,15 @@
 					"file": "main.coffee",
 					"settings":
 					{
-						"buffer_size": 14952,
+						"buffer_size": 15038,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2684,
-								2684
+								12099,
+								12107
 							]
 						],
 						"settings":
@@ -1238,7 +1239,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1375.0,
+						"translation.y": 765.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1370,8 +1371,8 @@
 						"selection":
 						[
 							[
-								324,
-								291
+								21,
+								0
 							]
 						],
 						"settings":
@@ -1475,18 +1476,18 @@
 				},
 				{
 					"buffer": 3,
-					"file": "lib/movingSite.coffee",
+					"file": "lib/misc/assisstantFuncs.coffee",
 					"settings":
 					{
-						"buffer_size": 12384,
+						"buffer_size": 8572,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								8182,
-								8182
+								6027,
+								6027
 							]
 						],
 						"settings":
@@ -1583,25 +1584,25 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 4831.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 4,
-					"file": "lib/construction/item.coffee",
+					"file": "server.coffee",
 					"settings":
 					{
-						"buffer_size": 19672,
+						"buffer_size": 751,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								17722,
-								17722
+								675,
+								675
 							]
 						],
 						"settings":
@@ -1612,6 +1613,7 @@
 								"README",
 								"FIXME"
 							],
+							"auto_name": "http = require(\"http\")",
 							"csslint_options":
 							{
 								"adjoining-classes": "warning",
@@ -1705,18 +1707,18 @@
 				},
 				{
 					"buffer": 5,
-					"file": "lib/misc/assisstantFuncs.coffee",
+					"file": "lib/helpers/source_link.coffee",
 					"settings":
 					{
-						"buffer_size": 2290,
+						"buffer_size": 7066,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2101,
-								2101
+								772,
+								49
 							]
 						],
 						"settings":
@@ -1813,25 +1815,25 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1304.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 6,
-					"file": "lib/nhaccuatui.coffee",
+					"file": "lib/movingSite.coffee",
 					"settings":
 					{
-						"buffer_size": 51394,
+						"buffer_size": 12384,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								22320,
-								22320
+								10509,
+								10509
 							]
 						],
 						"settings":
@@ -1928,25 +1930,25 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 7244.0,
+						"translation.y": 657.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 7,
-					"file": "test/test.coffee",
+					"file": "lib/construction/item.coffee",
 					"settings":
 					{
-						"buffer_size": 267,
+						"buffer_size": 19749,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								265,
-								24
+								15197,
+								15197
 							]
 						],
 						"settings":
@@ -2039,10 +2041,11 @@
 								"Ruby on Rails": "ruby"
 							},
 							"sublimelinter_wrap_find": true,
-							"syntax": "Packages/CoffeeScript/CoffeeScript.tmLanguage"
+							"syntax": "Packages/CoffeeScript/CoffeeScript.tmLanguage",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 538.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -2096,8 +2099,44 @@
 		"selected_items":
 		[
 			[
+				"item",
+				"nodejs/lib/construction/item.coffee"
+			],
+			[
+				"kee",
+				"nodejs/test/keeng.coffee"
+			],
+			[
 				"nhac",
-				"nodejs/test/nhaccuatui.coffee"
+				"nodejs/test/nhacvui.coffee"
+			],
+			[
+				"zing",
+				"nodejs/test/zing.coffee"
+			],
+			[
+				"chac",
+				"nodejs/test/chacha.coffee"
+			],
+			[
+				"test",
+				"nodejs/test/test.coffee"
+			],
+			[
+				"nhacso",
+				"nodejs/lib/nhacso.coffee"
+			],
+			[
+				"chacha",
+				"nodejs/lib/chacha.coffee"
+			],
+			[
+				"source",
+				"nodejs/lib/helpers/source_link.coffee"
+			],
+			[
+				"uti",
+				"nodejs/lib/utils.coffee"
 			],
 			[
 				"test.co",
@@ -2108,16 +2147,8 @@
 				"nodejs/lib/nhaccuatui.coffee"
 			],
 			[
-				"zing",
-				"nodejs/lib/zing.coffee"
-			],
-			[
 				"zi",
 				"nodejs/lib/zing.coffee"
-			],
-			[
-				"nhacso",
-				"nodejs/scripts/nhacso_decode.coffee"
 			],
 			[
 				"zi_tes",
@@ -2126,10 +2157,6 @@
 			[
 				"nhaccc",
 				"nodejs/test/nhaccuatui.coffee"
-			],
-			[
-				"test",
-				"nodejs/test/test.coffee"
 			],
 			[
 				"nhaccui",
@@ -2196,10 +2223,6 @@
 				"nodejs/lib/movies/RC4.coffee"
 			],
 			[
-				"source",
-				"nodejs/lib/helpers/source_link.coffee"
-			],
-			[
 				"nhacvui",
 				"nodejs/lib/nhacvui.coffee"
 			],
@@ -2248,16 +2271,8 @@
 				"nodejs/lib/chacha.coffee"
 			],
 			[
-				"chacha",
-				"nodejs/test/chacha.coffee"
-			],
-			[
 				"sring",
 				"nodejs/lib/helpers/string.coffee"
-			],
-			[
-				"chac",
-				"nodejs/lib/chacha.coffee"
 			],
 			[
 				"lyricwiki",
@@ -2316,16 +2331,8 @@
 				"nodejs/test/connection.coffee"
 			],
 			[
-				"kee",
-				"nodejs/test/keeng.coffee"
-			],
-			[
 				"keen",
 				"nodejs/lib/keeng.coffee"
-			],
-			[
-				"uti",
-				"nodejs/spec/utils.coffee"
 			],
 			[
 				"gomusi",
@@ -2602,10 +2609,6 @@
 			[
 				"inde",
 				"index.js"
-			],
-			[
-				"z",
-				"nodejs/lib/zing.coffee"
 			]
 		],
 		"width": 0.0

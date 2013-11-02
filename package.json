@@ -32,7 +32,9 @@
     "pg" : ">= 2.2.0",
     "pace" : ">= 0.0.4",
     "charm" : ">= 0.1.2",
-    "keypress" : ">= 0.2.1"
+    "keypress" : ">= 0.2.1",
+    "js2xmlparser" : ">=0.1.2"
+
   },
   "analyze": false, 
   "license": "MIT",

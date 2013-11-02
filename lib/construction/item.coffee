@@ -101,7 +101,8 @@ class ItemConstruction extends require('events').EventEmitter
 			if err then errMes =  "Cannot insert new item. #{err}"
 			callback(errMes)
 	saveUpdatedItem : (item,callback)->
-		updateSongQuery = "update #{@sourceTable} SET sources = '#{JSON.stringify item.sources}' WHERE id = #{item.id}"
+		# on 01-11-2013, update checktime, set it to current time
+		updateSongQuery = "update #{@sourceTable} SET sources = '#{JSON.stringify item.sources}', checktime=now() WHERE id = #{item.id}"
 		@connection.query updateSongQuery,(err)->
 			if err then errMes =  "Cannot update found item. #{err}"
 			callback(errMes)

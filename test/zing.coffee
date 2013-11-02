@@ -81,7 +81,7 @@ describe 'THE WEBSITE MP3.ZING.VN', ->
                         expect(video.artists).to.eql(["Lâm Hùng"])
                         expect(video.topics).to.eql(["Việt Nam","Nhạc Trẻ"])
                         expect(parseInt(video.plays,10)).to.be.at.least(1014646)
-                        expect(video.thumbnail).to.equal('http://image.mp3.zdn.vn/thumb/240_135/thumb_video/1/e/1ebf84dd6270b3978273b47f980c854a_1340685814.jpg')
+                        expect(video.thumbnail).to.equal('http://image.mp3.zdn.vn/thumb_video/1/e/1ebf84dd6270b3978273b47f980c854a_1340685814.jpg')
                         expect(video.link).to.match(/http:\/\/mp3.zing.vn\/html5\/video\/[a-zA-Z0-9]{24}/)
                         expect(video.lyric).to.equal('Kiếp phong trần bạn đường sương gió, giang hồ phiêu lãng vũ trụ là nhà. Ánh trăng vàng làm đèn đêm thâu, tựa mình trên cát sương giăng làm màn. 2. Nắng chan hoà miền trời thanh câm tú, ngỡ ngàng tựa như bước trên bồng lai. Mong quên đời phàm trần còn nhiều trên vai, tranh giành như thế tốt hơn làm người. ĐK1: Đời nam nhi chí trai dọc ngang núi sông, dù gian khó quyết không nao núng lòng. Đường ta đi chông gai không làm nhụt chí hiên ngang, đường thênh thang bước chân vui miệt mài. ĐK2: Đàn réo rắt chất ngất bầu không gian sẽ xoa dịu ta quên nỗi đau thương trầm luân. Đàn hỡi có nói giúp cho lòng ta xin nhân gian thôi hận thù cho nét môi tươi rạng ngời. Ta vui cùng non bồng lãng du, ta vui cùng bạn đường gió sương. Trọn niềm vui xóa tan đau thương sầu kiếp.\t\t"')
                         expect(video.date_created).to.equal('2012-6-26')

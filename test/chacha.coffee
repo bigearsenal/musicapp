@@ -9,6 +9,7 @@ describe "THE WEBSITE CHACHA.VN",->
                   id = 614150
                   link = "http://www.chacha.vn/song/play/#{id}"
                   getFileByHTTP link, (data)->
+                        console.log data
                         data = JSON.parse data
                         chacha.connect()
                         chacha.connection.query = ->

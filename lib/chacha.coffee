@@ -48,36 +48,6 @@ class Chacha extends Module
 		@log = {}
 		@_readLog()
 
-	createTables : ->
-		@connect()
-		songsQuery = "CREATE TABLE IF NOT EXISTS " + @table.Songs + " (
-					songid int NOT NULL,
-					song_name varchar(255),
-					album varchar(200),
-					artistid int,
-					artist_name varchar(255),
-					duration int,
-					bitrate int,
-					thumbnail varchar(255),
-					link varchar(255)
-					);"
-		albumsQuery = "CREATE TABLE IF NOT EXISTS " + @table.Albums+ " (
-					albumid int NOT NULL,
-					album_name varchar(255),
-					album_artist varchar(200),
-					songid int
-					);"
-		_query = songsQuery +  albumsQuery
-		@connection.query _query, (err, result)=>
-			if err then console.log "Cannot create table" else console.log "Tables: #{@table.Songs} and #{@table.Albums} have been created!"
-			@end()
-	resetTables : ->
-		@connect()
-		songsQuery = "truncate table #{@table.Songs} ;"
-		@connection.query songsQuery, (err, result)=>
-			if err then console.log "Cannot truncate tables" else console.log "Tables: #{@table.Songs} have been truncated!"
-			@end()
-
 	getFileByHTTP : (link, onSucess, onFail, options) ->
 		http.get link, (res) =>
 				res.setEncoding 'utf8'
@@ -91,36 +61,20 @@ class Chacha extends Module
 				else onFail("The link is temporarily moved",options)
 			.on 'error', (e) =>
 				onFail  "Cannot get file from server. ERROR: " + e.message, options
+	HTTPGet : (link, options, callback) ->
+		http.get link, (res) =>
+				res.setEncoding 'utf8'
+				data = ''
+				# onSucess res.headers.location
+				if res.statusCode isnt 302
+					res.on 'data', (chunk) =>
+						data += chunk;
+					res.on 'end', () =>
+						callback null, data, options
+				else callback("The link is temporarily moved",null,options)
+			.on 'error', (e) =>
+				callback  "Cannot get file from server. ERROR: " + e.message, null,options
 
-
-	_storeSong : (song) ->
-		if song.thumb.match(/artists\/\/s5\/\d+/) 
-			_artistid = parseInt song.thumb.match(/artists\/\/s5\/\d+/)[0].replace(/artists\/\/s5\//,'')
-		else _artistid = 0
-		_duration = parseInt(song.duration.split(':')[0])*60+parseInt(song.duration.split(':')[1])
-		if song.artist.trim()
-			artists = song.artist.trim().split().splitBySeperator(' - ').splitBySeperator('- ')
-										.splitBySeperator(' ft. ').splitBySeperator(' ft ')
-										.splitBySeperator(' _ ')
-										.splitBySeperator(',').replaceElement('V.A',"Various Artists")
-										.replaceElement('Nhiều ca sĩ',"Various Artists").replaceElement('Nhiều Ca Sĩ',"Various Artists")
-		else artists = []
-		_item = 
-			id : song.id
-			title : song.name.trim()
-			artistid : _artistid
-			artists : artists
-			duration : _duration
-			bitrate : parseInt song.bitrate
-			coverart : song.thumb
-			link : song.url
-
-		# console.log _item
-		# process.exit 0
-
-		@connection.query @query._insertIntoCCSongs, _item, (err) ->
-		 	if err then console.log "Cannot insert the song into table. ERROR: " + err	
-		_item
 	_storeAlbum : (id, album, name, artist) ->
 		for song, index in album
 			if song.thumb.match(/artists\/\/s5\/\d+/) 
@@ -134,45 +88,113 @@ class Chacha extends Module
 				songid : song.id
 			@connection.query @query._insertIntoCCAlbums, _item, (err) =>
 			 	if err then console.log "Cannot insert the song into table: #{@table.Albums}. ERROR: " + err
-			 	
+	
+	processSongLink : (song,callback)->
+		url = "http://beta.chacha.vn/player/songXml/#{song.id}"
+		options = {}
+		@HTTPGet url, options, (err,data)=>
+			if err  
+				console.log err
+			else 
+				if data.match(/label=\"320K\"/)
+					song.bitrate = 320
+					song.link = data.match(/(http.+?)\".+label="320K"/)?[1]
+				else if data.match(/label=\"128K\"/)
+						song.bitrate = 128
+						song.link = data.match(/(http.+?)\".+label="128K"/)?[1]
+					else console.log "Error at song id: #{song.id} in processSongLink() "
+			callback song
+	processSong : (data,options,callback) ->
+		song = 
+			id : options.id
+			title  : ""
+			artistid : 0
+			artists : []
+			topics : []
+			plays : 0
+			lyrics : ""
+			bitrate : 0
+			duration : 0
+			link : ""
+			coverart  : ""
+
+		try 
+			title = data.match(/<h2 class=\"name\">(.+)<\/h2>/)?[1]
+			if title
+				song.title = encoder.htmlDecode title.trim()
+			artists = data.match(/Nghệ sĩ:[^]+?<\/a>/)?[0]
+
+			if artists
+				song.artistid = parseInt(artists.match(/([0-9]+)\.html/)?[1],10)
+				song.artists = artists.stripHtmlTags().replace(/Nghệ sĩ:/,'').trim().split().splitBySeperator(' - ').splitBySeperator('- ')
+										.splitBySeperator(' ft. ').splitBySeperator(' ft ')
+										.splitBySeperator(' _ ')
+										.splitBySeperator(',').replaceElement('V.A',"Various Artists")
+										.replaceElement('Nhiều ca sĩ',"Various Artists").replaceElement('Nhiều Ca Sĩ',"Various Artists")
+
+			coverart = data.match(/og:image.+content=\"(.+)\"/)?[1]
+			if coverart
+				song.coverart = coverart
+
+			topics = data.match(/Thể loại:[^]+?<\/a>/g)?[0]
+			if topics
+				song.topics = topics.stripHtmlTags().replace("Thể loại:","").trim().split()
+
+			plays = data.match(/([0-9]+)\s*lượt nghe/)?[1]
+			if plays 
+				song.plays = parseInt(plays,10)
+
+			lyrics = data.match(/<p class=\"lyric\" id=\"lyric_box\">([^]+)<a class.+lyric_more/)?[1]
+			if lyrics 
+				song.lyrics = encoder.htmlDecode lyrics.trim().replace(/<\/div>$/,'').trim().replace(/<\/p>$/,'').trim()
+
+			@processSongLink song, callback
+
+		catch e
+			console.log "Error at songid : #{song.id}, #{e}"
+		return song
 	_updateSong : (id) ->
-		link = "http://www.chacha.vn/song/play/#{id}"
-		http.get link, (res) =>
-				res.setEncoding 'utf8'
-				data = ''
-				res.on 'data', (chunk) =>
-					data += chunk;
-				res.on 'end', () =>
-					@stats.totalItemCount +=1
-					@utils.printUpdateRunning id, @stats, "Fetching..."
-					if res.statusCode is 200
-						@stats.passedItemCount +=1
-						data = JSON.parse data
-						@_storeSong data
-						@log.lastSongId = id
-						@_updateSong id+1
-						# if the record fails consecutively 100 times, it would stop
-						@temp.totalFail = 0
-					else 
-						@stats.failedItemCount +=1
-						@temp.totalFail +=1
-						@utils.printUpdateRunning id, @stats, "Fetching..."
-						if @temp.totalFail is 100
-							if @stats.passedItemCount isnt 0
-								@utils.printFinalResult @stats
-								@_writeLog @log
-							else 
-								console.log ""
-								console.log "Table: #{@table.Songs} is up-to-date"
-							@resetStats()
-							@updateAlbums()
-						else @_updateSong id+1
-			.on 'error', (e) =>
-				console.log  "Got error: " + e.message
-				@stats.failedItemCount+=1
+		# id = 716470 850786
+		url = "http://beta.chacha.vn/song/joke,#{id}.html"
+		options = 
+			id : id
+		@HTTPGet url , options,(err,response)=>
+			@stats.totalItemCount +=1
+			if err  
+				# console.log err
+				@stats.failedItemCount +=1
+				@utils.printUpdateRunning id, @stats, "Fetching"
+			else 
+				if not response.match(/Không tìm thấy bài hát/g)
+					@processSong response,options,(song)=>
+						# console.log song
+						@connection.query @query._insertIntoCCSongs, song, (err)->
+							if err then console.log err
+					@stats.passedItemCount +=1
+					@log.lastSongId = id
+					@temp.totalFail = 0
+					@utils.printUpdateRunning id, @stats, "Fetching"
+					@_updateSong id+1
+				else 
+					@stats.failedItemCount +=1
+					@temp.totalFail +=1
+					@utils.printUpdateRunning id, @stats, "Fetching"
+					if @temp.totalFail is 500
+						if @stats.passedItemCount isnt 0
+							@utils.printFinalResult @stats
+							@_writeLog @log
+						else 
+							console.log ""
+							console.log "Table: #{@table.Songs} is up-to-date"
+						@resetStats()
+						console.log "UPDATING ALBUMS...... WAITING......"
+						# @updateAlbums()
+					else @_updateSong id+1
+				
+				
 
 	processAlbum : (data,options)=>
-		if data isnt null
+		if data isnt null or data.match(/<h1>Lỗi:<\/h1>/)
 			album =
 				id : options.id
 				title : ""
@@ -180,70 +202,89 @@ class Chacha extends Module
 				nsongs : 0
 				coverart : ""
 				plays : 0
-				songids : null
-			
-			title = data.match(/<meta name="title" content="(.+)"/)?[0]
-			title = title.replace(/\|.+$/g,'').replace(/<meta name="title" content="/,'').replace(/-[\s]+$/,'').trim() if title 
-			artists = data.match(/artist-name[^]+?<\/a>/)?[0]
+				description : ""
+				year_released : 0
+				topics : []
+				songids : []
+			title = data.match(/<h2 class=\"name\">(.+)<\/h2>/)?[1]
+			if title
+				album.title = encoder.htmlDecode title.trim()
 
+			artists = data.match(/<li>Nghệ sĩ:([^]+?)<\/li>/)?[1]
 			if artists
-				artists = artists.replace(/^.+>/,'').replace(/<\/a>/,'').trim()
-				# to prevent artist name from appearing on title
-				try
-					pattern = new RegExp(artists.trim(),"g")
-					title = title.replace(pattern,'')
-					album.title = title.replace(/[-\s]+$/,'').replace(/^[\s-]+/,'').trim()
-				catch e
-					album.title = title.replace(/[-\s]+$/,'').replace(/^[\s-]+/,'').trim()
-				
-				artists = artists.trim().split().splitBySeperator(' - ').splitBySeperator('- ')
+				album.artists = encoder.htmlDecode(artists.stripHtmlTags()).trim().replace(/\r|\t|\n/g,'')
+										.replace(/(\s\s\s)+/g,'')
+										.split().splitBySeperator(' - ').splitBySeperator('- ')
 										.splitBySeperator(' ft. ').splitBySeperator(' ft ')
 										.splitBySeperator(' _ ')
 										.splitBySeperator(',').replaceElement('V.A',"Various Artists")
 										.replaceElement('Nhiều ca sĩ',"Various Artists").replaceElement('Nhiều Ca Sĩ',"Various Artists")
-			else 
-				artists = []
-				album.title = title.replace(/[-\s]+$/,'').replace(/^[\s-]+/,'').trim()
-			album.artists = artists
+										.map (v)-> return v.trim()
+			yearReleased = data.match(/Năm phát hành:(.+?)<\/li>/)?[1]
+			if yearReleased
+				album.year_released = parseInt yearReleased.stripHtmlTags().trim(),10
 
-			album.coverart = data.match(/album-image.+[\r\n\t]+.+/g)?[0]
-			if album.coverart isnt undefined
-				album.coverart = album.coverart.replace(/\?.+/g,'').replace(/album-image.+[\r\n\t]+.+\"/g,'')
-			else album.coverart = ""
+			topics = data.match(/<li>Thể loại:([^]+?)<\/li>/)?[1]
+			if topics 
+				album.topics = topics.stripHtmlTags().trim().split().splitBySeperator(', ').splitBySeperator(' - ')
 
-			album.description = data.match(/full-desc.+/)?[0]
-			if album.description isnt undefined
-				album.description = encoder.htmlDecode album.description
-												.replace(/<br\/><a.+view-more-full.+$/g,'')
-												.replace(/full-desc\">/g,'')
-												.replace(/<\/p>$/g,'').replace(/^<p>/g,'')
-												.replace(/<\/span>$/g,'').replace(/^<span.+\">/g,'')
-												.replace(/<\/p>$/g,'').replace(/^<p.+\">/g,'')
-				if album.description.match(/songLyric/) or album.description.match(/Đang cập nhật thông tin/ig) then album.description = ""
+			plays = data.match(/<i class=\"icon icon_alb_listen\"><\/i>([0-9]+) Lượt nghe<\/p>/)?[1]
+			if plays
+				album.plays = parseInt(plays,10)
+
+			nsongs = data.match(/Số bài hát:(.+?)<\/li>/)?[1]
+			if nsongs
+				album.nsongs = parseInt(nsongs.stripHtmlTags().trim(),10)
+
+			desc = data.match(/desc_box.+\">([^]+?)<\/p>/)?[1]
+			if desc
+				album.description = desc.stripHtmlTags().trim()
+
+			coverart = data.match(/<img class=\"detail\" src=\"(.+?)\"/)?[1]
+			if coverart
+				album.coverart = coverart
+
+			songids = data.match(/<li id=\"song_[0-9]+\" value=\"[0-9]+\">/g)
+			if songids 
+				songids = songids.map (v)-> 
+					_t = v.match(/value=\"([0-9]+)\"/)?[1]
+					if _t then return parseInt(_t) else return 0
+				album.songids = songids
+
+			# to find duration of song
+			songDurations = data.match(/<div class=\"col4 flr\">(.+)<\/div>/g)
+			if songDurations
+				songDurations = songDurations.map (v)-> 
+					_t = v.match(/<div class=\"col4 flr\">(.+)<\/div>/)?[1]
+					if _t.split(":").length isnt 2
+						return 0
+					else 
+						time = _t.split(":")
+						mins = time[0]
+						secs = time[1]
+						return 60*parseInt(mins,10) + parseInt(secs,10)
 			
-			plays  = data.match(/total-played.+/g)
-			sum = 0
-			if plays isnt null
-				plays = plays.map (v)-> v.replace(/<\/span>/g,'').replace(/total-played\">/g,'')
-				plays.forEach (v)-> if v isnt '' then sum += parseInt(v)
-				album.nsongs = plays.length-1
-				sum = sum/album.nsongs if plays.length > 1
-			album.plays = sum | 0
+			# define songs
+			#  songs = [{id : 123,duration : 232},{id : 123,duration : 232},{id : 123,duration : 232}]
+			songs = []
+			for value,index in album.songids
+				songs.push {id : value,duration : songDurations[index]}
+			
+			for song in songs
+				upd  = "UPDATE #{@table.Songs} SET duration = #{song.duration} WHERE duration = 0 and id = #{song.id}"
+				# console.log upd
 
-			songs = data.match(/avatar\sinline\splayer\ssong\d+/g)
-			if songs isnt null
-				songs = songs.map (v) -> v.replace(/avatar\sinline\splayer\ssong/g,'')
-				album.songids = songs.map (v)-> parseInt v,10
 		else 
 			album = null
 
-
 		# console.log album
 		# process.exit 0
+
 		@eventEmitter.emit 'result', album
 		album
 	_updateAlbum : (id) ->
-		link = "http://www.chacha.vn/album/fake-link,#{id}.html"
+		link = "http://beta.chacha.vn/album/joke,#{id}.html"
+
 		options = 
 			id : id
 		@stats.totalItemCount +=1
@@ -349,17 +390,10 @@ class Chacha extends Module
 				@stats.passedItemCount +=1
 				@temp.totalFail +=0
 				@log.lastAlbumId = result.id
-				# songs = result.songs
-				# delete result.songs
-
+				if result.songids.length is 0 then result.songids = null
 				if result.songids isnt null
-					# console.log result
-					# process.exit 0
-					# console.log "#{@query._insertIntoCCAlbums}"
 					@connection.query @query._insertIntoCCAlbums, result, (err)=>
 						if err then console.log "cannt insert album: #{result.id} into table. ERROR #{err}"
-						# console.log "dsfsfsdafsdf"
-						# process.exit 0
 				else 
 					@stats.passedItemCount -=1
 					@stats.failedItemCount +=1
@@ -367,14 +401,52 @@ class Chacha extends Module
 			else 
 				@stats.failedItemCount +=1
 				@temp.totalFail +=1
-			# console.log result
-			
-			@_updateAlbum result.id+1
-			
 
+			if @temp.totalFail < 100
+				@_updateAlbum result.id+1
+			else
+				if @stats.totalItemCount is 100
+					console.log ""
+					console.log "Table: #{@table.Albums} is up-to-date"
+				else 
+					@utils.printFinalResult @stats
+					@_writeLog @log
+					
 		@_updateAlbum @log.lastAlbumId+1
-		
-		# @_updateAlbum 4047	
+
+	updateAlbumsStats: ->
+		@connect()
+		@connection.query "SELECT id from #{@table.Albums}", (err,results)=>
+			if err then console.log err
+			else 
+				als = results.map (v) -> return v.id
+				# console.log als
+				@stats.totalItems = als.length
+				for id in als
+					do (id)=>
+						link = "http://beta.chacha.vn/album/joke,#{id}.html"
+						options = 
+							id : id
+						@HTTPGet link, options, (err,response,options)=>
+							@stats.totalItemCount +=1
+							if err 
+								@stats.failedItemCount +=1
+							else 
+								album = @processAlbum response,options
+								upd = "UPDATE #{@table.Albums} SET year_released=#{album.year_released}, topics=#{@connection.escape JSON.stringify(album.topics).replace(/^\[/,'{').replace(/\]$/,'}')}"
+								upd += " WHERE id = #{album.id}"
+								@connection.query upd,(err)->
+									if err then console.log err
+								@stats.passedItemCount +=1
+
+							@utils.printRunning @stats
+							if @stats.totalItems is @stats.totalItemCount
+								@utils.printFinalResult @stats
+								
+
+
+
+
 
 	showStats : ->
 		@_printTableStats CC_CONFIG.table

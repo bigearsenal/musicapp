@@ -321,7 +321,7 @@ Updated on December 12, 2012
 <http://audio.chacha.vn/songs/output/71/586908/2/s/duc-vong%20-%20Thanh%20Dai%20Sieu.mp3>
 <http://audio.chacha.vn/songs/output/71/586908/4/s/duc-vong%20-%20Thanh%20Dai%20Sieu.mp3>
 
-Notice `2` and `4` 
+Notice `2` and `4`  for the sound quality: `2` means 128kbps & `4` means 320
 
 The rule of finding the link of mp3 file:  
 

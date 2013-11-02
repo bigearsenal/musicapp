@@ -78,6 +78,7 @@ describe 'THE WEBSITE NHACSO.NET', ->
                         done()
             it 'should contain 12 songs',(done)->
                   link = "http://nhacso.net/album/gettotalsong?listIds=#{album.id}"
+                  # console.log link
                   getFileByHTTP link, (data)=>
                         data = JSON.parse data
                         # console.log data
