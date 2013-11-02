@@ -287,7 +287,7 @@ class Stats extends Site
 		month = if month.toString().length is 1 then "0" + month else month
 		day = dt.getDate()
 		day = if day.toString().length is 1 then "0" + day else day
-		date = dt.getFullYear()  + month +  day
+		date = dt.getFullYear()  + month.toString() +  day.toString()
 		# end of format
 		fileName = "#{name}_#{date}.md"
 		path = "./reporters/#{dir}/#{fileName}"
