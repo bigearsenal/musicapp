@@ -1,3 +1,26 @@
+**Table of Contents**  *generated with [DocToc](http://doctoc.herokuapp.com/)*
+
+- [ZING API](#zing-api)
+	- [ALBUMS](#albums)
+		- [Get albums by genre](#get-albums-by-genre)
+		- [Get songs of an album](#get-songs-of-an-album)
+		- [Get album info](#get-album-info)
+	- [VIDEOS](#videos)
+		- [Get videos by genre](#get-videos-by-genre)
+		- [Get video info](#get-video-info)
+		- [Get video's lyrics](#get-video's-lyrics)
+		- [Get videos suggestion](#get-videos-suggestion)
+		- [Get video's comments](#get-video's-comments)
+	- [ARTISTS](#artists)
+		- [Get artists by genre](#get-artists-by-genre)
+		- [Get albums of an artist](#get-albums-of-an-artist)
+		- [Get songs of an artist](#get-songs-of-an-artist)
+		- [Get videos of an artist](#get-videos-of-an-artist)
+	- [CHARTS](#charts)
+		- [All](#all)
+	- [TOP 100](#top-100)
+	- [SONG BY THEMES](#song-by-themes)
+
 # ZING API
 
 ## ALBUMS
