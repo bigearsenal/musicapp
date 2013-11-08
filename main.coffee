@@ -228,6 +228,7 @@ Main =
 		func = new FunctionFactory("deezer","./lib/",mysqlConfig)
 		func.addMethod {name : "getAlbums", info : "Getting albums"}
 		func.addMethod {name : "getArtists", info : "Getting artists"}
+		func.addMethod {name : "getGenres", info : "Getting genres"}
 		func.run(rl)
 	hdviet : ->
 		func = new FunctionFactory("hdviet","./lib/movies/",mysqlConfig)
@@ -253,6 +254,14 @@ Main =
 
 		func.addMethod {name : "getAll", info : "get al ids of songs to test memory"}
 		func.run(rl)
+	allmusic : ->
+		func = new FunctionFactory("allmusic","./lib/",mysqlConfig)
+		func.addMethod {name : "getAlbums", info : "get album id"}
+		func.addMethod {name : "getRatings", info : "get ratings"}
+		func.addMethod {name : "getSimilars", info : "get similars"}
+		
+		
+		func.run(rl)
 Main.execute = (site)->
 	Main[site.toLowerCase()]()
 
@@ -275,11 +284,12 @@ registerFuncs.push {name: "songfreaks", activated : true}
 registerFuncs.push {name: "echonest", activated : false}
 registerFuncs.push {name: "lyricwiki", activated : true}
 registerFuncs.push {name: "zazoo", activated : false}
-registerFuncs.push {name: "deezer", activated : false}
+registerFuncs.push {name: "deezer", activated : true}
 registerFuncs.push {name: "assisstant_funcs", activated : true}
 registerFuncs.push {name: "hdviet", activated : false}
 registerFuncs.push {name: "reporter", activated : true}
 registerFuncs.push {name: "moving_site", activated : true}
+registerFuncs.push {name: "allmusic", activated : true}
 activatedFuncs = [""]
 disableFuncs = [""]
 

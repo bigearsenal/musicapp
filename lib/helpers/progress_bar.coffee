@@ -21,6 +21,11 @@ class ProgressBar
 		@firstTime = true
 		@charm = require('../../node_modules/charm')()
 		@charm.pipe process.stdout
+	renew : (options)->
+		@max_burden = options.maxBurden or 0.1
+		@show_burden = options.showBurden or false
+		@total = options.total or 10
+		@firstTime = true
 	show : (count, extraInfo) ->
 		if count
 		  @current = count

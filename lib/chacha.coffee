@@ -188,7 +188,7 @@ class Chacha extends Module
 							console.log "Table: #{@table.Songs} is up-to-date"
 						@resetStats()
 						console.log "UPDATING ALBUMS...... WAITING......"
-						# @updateAlbums()
+						@updateAlbums()
 					else @_updateSong id+1
 				
 				

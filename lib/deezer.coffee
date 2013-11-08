@@ -9,9 +9,7 @@ class Deezer extends Site
 		@table.Artists = "ZZArtists"
 		@table.Clips = "ZZClips"
 		@table.Lyrics  = "ZZLyrics"
-
-
-	# callback(err:String,options:Object)
+	# callback(err:String,data:String,options:Object)
 	requestItemLink: (link,callback)->
 		onSucess = (data,options)=>
 			callback(null,data,options)
@@ -33,8 +31,7 @@ class Deezer extends Site
 			console.log ""
 			return true
 		else return false
-	
-	
+		
 	fetchAlbum : (id,callback)->
 		link = "http://api.deezer.com/2.0/album/#{id}"
 		enableTransaction = yes
@@ -166,15 +163,42 @@ class Deezer extends Site
 		@roundCount = 0
 		@fetchArtistInRange @config.initialRange
 
+	getGenres : ->
+		nItems = 14000
+		@stats.totalItems = nItems
+		genres = []
+		genresName = []
+		for id in [1..nItems]
+			do (id)=>
+				link = "http://api.deezer.com/genre/#{id}"
+				@requestItemLink link, (err,data)=>
+					@stats.totalItemCount +=1
+					if err 
+						@stats.failedItemCount +=1
+					else 
+						@stats.passedItemCount +=1
+						ret = JSON.parse data
+						if not ret.error 
+							val = 
+								id : ret.id
+								name : ret.name
+							genres.push val
+							genresName.push val.name
+					@utils.printRunning @stats
+					if @stats.totalItemCount is @stats.totalItems
+						@utils.printFinalResult @stats
+						fs = require 'fs'
+						filePath = "data/genres.json"
+						content = JSON.stringify(genres).replace(/\}\,\{/g,"},\n{")
+						fs.writeFile filePath, content, (err)->
+							if err then console.log err
+							else console.log "Writing to #{filePath}"
 
-
-
-		
-
-			
-
-
-
+						# writing unique name
+						require("./helpers/array")
+						fs.writeFile "data/genres_name.json", JSON.stringify(genresName.unique()).replace(/\"\,\"/g,"\",\n\""), (err)->
+							if err then console.log err
+							else console.log "Writing to data/genres_name.json"
 
 
 module.exports = Deezer

@@ -858,4 +858,8 @@ curl "http://iphone.uphim.vn/xem-phim-joke-link-m-311-p-1.html" --user-agent "Mo
 2. get `eval(function(p,a,c,k,e,d){...}` in the script and decode the `dean edwards packer`  
 3. get `m3u8` file
 
-!
+## 22.allmusic ##
+
+* Get files
+
+if http://cps-static.rovicorp.com/3/JPG_400/MI0001/646/MI0001646658.jpg is not available. Change resolution to 75,170,400,500. For instance `JPG_400` => `JPG_75`

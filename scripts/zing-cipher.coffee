@@ -138,9 +138,9 @@ console.log "Video with 720: 	http://mp3.zing.vn/html5/video/" + encryptZingIDVi
 console.log "Video with 1080: 	http://mp3.zing.vn/html5/video/" + encryptZingIDVideoWithType "ZW67BW9E",1080
 console.log "END OF VIDEO --------------------------------------"
 
-console.log "Song 128kbps: 	http://mp3.zing.vn/download/song/joke-link/" + getEncryptedID "ZW66WEOF",'128'
-console.log "Song 320kbps: 	http://mp3.zing.vn/download/song/joke-link/" + getEncryptedID "ZW66WEOF",'320'
-console.log "Song Lossless: 		http://mp3.zing.vn/download/song/joke-link/" + getEncryptedID "ZW66WEOF",'lossless'
+console.log "Song 128kbps: 	http://mp3.zing.vn/download/song/joke-link/" + getEncryptedID "ZW67FWWF",'128'
+console.log "Song 320kbps: 	http://mp3.zing.vn/download/song/joke-link/" + getEncryptedID "ZW67FWWF",'320'
+console.log "Song Lossless: 		http://mp3.zing.vn/download/song/joke-link/" + getEncryptedID "ZW67FWWF",'lossless'
 
 console.log "TV: 				http://tv.zing.vn/html5/video/" + encryptZingTVID720 "IWZ9FCW9"
 console.log "TV test: 			http://tv.zing.vn/html5/video/" + encryptZingTVID720Test "IWZ9FCW9"

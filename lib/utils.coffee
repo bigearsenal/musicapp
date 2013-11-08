@@ -1,6 +1,7 @@
 printResutls = require('util').print
 colors = require '../node_modules/colors'
-
+ProgressBar = require './helpers/progress_bar'
+progressBar = new ProgressBar({})
 class Utils 
 	constructor : ->
 		# @isPaceInitailized = false
@@ -72,14 +73,15 @@ class Utils
 		# message += " | t_left:" + @_getTimeRemain(stats.totalItemCount/tempDuration*1000,stats) + "|\r"
 		# printResutls message
 		if stats.totalItemCount is 1
-			ProgressBar = require './helpers/progress_bar'
 			options = 
 				maxBurden : 0.1
 				total : stats.totalItems
-			@progressBar = new ProgressBar(options)
+			progressBar.renew(options)
 		extraInfo = "(#{stats.passedItemCount}✔ + #{stats.failedItemCount}✘)"
 		extraInfo += "     Speed: #{Math.round(stats.totalItemCount/tempDuration*1000)}items/s"
-		@progressBar.show(stats.totalItemCount,extraInfo)
+		if stats.currentId isnt 0
+			extraInfo += "    Current ID: #{stats.currentId}"
+		progressBar.show(stats.totalItemCount,extraInfo)
 
 	printMessage : (message)->
 		printResutls message + "\r"

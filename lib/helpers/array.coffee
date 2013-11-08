@@ -75,6 +75,12 @@ Array::uniqueObjectByKey = (property)->
 		return -1
 	@.filter (element, index, array)->
 		indexOfObjectInArray(array, element[property], property) is index
+Array::unique = ()->
+	@.filter (element, index, array)->
+		array.indexOf(element) is index
+Array::contains = (el)->
+	@.forEach (val)->
+		if val is el then return true
 
 
 module.exports = null
