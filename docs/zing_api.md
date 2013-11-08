@@ -5,13 +5,13 @@
 	- [ALBUMS](#albums)
 		- [Get albums by genre](#get-albums-by-genre)
 		- [Get songs of an album](#get-songs-of-an-album)
-		- [Get album info](#get-album-info)
+		- [Get album's info](#get-album's-info)
 		- [Get album's comments](#get-album's-comments)
 	- [VIDEOS](#videos)
 		- [Get videos by genre](#get-videos-by-genre)
 		- [Get video's info](#get-video's-info)
 		- [Get video's lyrics](#get-video's-lyrics)
-		- [Get videos suggestion](#get-videos-suggestion)
+		- [Get video's suggestion](#get-video's-suggestion)
 		- [Get video's comments](#get-video's-comments)
 	- [ARTISTS](#artists)
 		- [Get artists by genre](#get-artists-by-genre)
@@ -24,6 +24,10 @@
 	- [TOP 100](#top-100)
 	- [SONG BY THEMES](#song-by-themes)
 		- [Get list](#get-list)
+	- [SEARCH](#search)
+		- [Songs](#songs)
+		- [ALbums](#albums)
+		- [Videos](#videos)
 
 # ZING API
 
@@ -532,7 +536,7 @@ Response:
 }
 ```
 
-### Get album info
+### Get album's info
 
 	http://api.mp3.zing.vn/api/mobile/playlist/getplaylistinfo?key={YOUR_KEY}&requestdata={"id":1073816610}
 
@@ -1360,7 +1364,7 @@ Example
     }
 }
 ```
-### Get videos suggestion
+### Get video's suggestion
 
 	http://api.mp3.zing.vn/api/mobile/video/getvideosuggest?requestdata={{"id":1074729245,"start":0,"length":20}}
 
@@ -4405,3 +4409,577 @@ Response:
     }
 }
 ```
+
+## SEARCH
+
+### Songs
+
+    http://api.mp3.zing.vn/api/mobile/search/song?keycode={YOUR_KEY}&requestdata={"t":"","q":"Man","length":20,"sort":"","filter":0,"start":0,"upload":0}
+
+Example:
+
+    http://api.mp3.zing.vn/api/mobile/search/song?keycode=fafd463e2131914934b73310aa34a23f&requestdata={"t":"","q":"Man","length":20,"sort":"","filter":0,"start":0,"upload":0}
+
+Response:
+
+```json
+{
+    "numFound": 3553,
+    "start": 0,
+    "docs": [
+        {
+            "song_id": 1073903286,
+            "title": "Goldseries 2",
+            "artist": "Man",
+            "genre": "",
+            "username": "mp3",
+            "bitrate": "128 | 320 | lossless",
+            "duration": 288,
+            "have_rbt": false,
+            "download_status": 1,
+            "copyright": "",
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/ZHxmykmNdEHdvJgyZFcyFGLH",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/kGJHyLGsVinVbxgyBvHyDGLG",
+                "lossless": "http://api.mp3.zing.vn/api/mobile/source/song/knJmykmaViHVFcgyUwKKrofKybGLn"
+            },
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/ZmxmyknaVunVDxhTLvxtDmLn",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/LGJmtkHsdindbJgyVDnTbnLG",
+                "lossless": "http://api.mp3.zing.vn/api/mobile/download/song/LmJGyZmadEGVvJCTIqfeIofeTbGkH"
+            },
+            "link": "/bai-hat/Goldseries-2-Man/ZWZBC7O6.html"
+        },
+        {
+            "song_id": 1073833229,
+            "title": "Tìm Lại Hạnh Phúc",
+            "artist": "Quang Mẫn",
+            "genre": "Việt Nam, Nhạc Trẻ",
+            "username": "mp3",
+            "bitrate": "128 | 320 | lossless",
+            "duration": 321,
+            "have_rbt": false,
+            "download_status": 1,
+            "copyright": "",
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/ZmcGTkHNVcVBbviykFcTDHZm",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/ZncmyZnadJddvFiyVDHtDHkG",
+                "lossless": "http://api.mp3.zing.vn/api/mobile/source/song/LncntLHadJddFDuTIwKfIYeftvGZG"
+            },
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/LGJnyLmNBJddFDutkFJyFGLm",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/knJGyLHsBcddvFiydFGtbHLm",
+                "lossless": "http://api.mp3.zing.vn/api/mobile/download/song/kGJHyZGsBxBVbDiTIPfeIoefyFHLH"
+            },
+            "link": "/bai-hat/Tim-Lai-Hanh-Phuc-Quang-Man/ZWZABZ8D.html"
+        },
+        {
+            "song_id": 1074135284,
+            "title": "Sự Thật Sau Đôi Mắt",
+            "artist": "Quang Mẫn",
+            "genre": "Việt Nam, Nhạc Trẻ",
+            "username": "mp3",
+            "bitrate": "128 | 320 | lossless",
+            "duration": 276,
+            "have_rbt": false,
+            "download_status": 1,
+            "copyright": "",
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/LGxGtLGNSZdQbxzyLFxybGLG",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/LGJGTkHNSLBWbJSydbmyvnZn",
+                "lossless": "http://api.mp3.zing.vn/api/mobile/source/song/LHcHyZHaSZBQDcATIOffrMffybmkn"
+            },
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/LHxnyZGNlZBpFxzykvxybHZm",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/LGJmtZmazZdQDxltdvGtbnLG",
+                "lossless": "http://api.mp3.zing.vn/api/mobile/download/song/ZHcmtLHszLBWbJlyrqeKIMfetvGZm"
+            },
+            "link": "/bai-hat/Su-That-Sau-Doi-Mat-Quang-Man/ZWZFZI7U.html"
+        },
+        {
+            "song_id": 1074162902,
+            "title": "Vì Em Đổi Thay",
+            "artist": "Quang Mẫn",
+            "genre": "Việt Nam, Nhạc Trẻ",
+            "username": "mp3",
+            "bitrate": "128 | 320 | lossless",
+            "duration": 283,
+            "have_rbt": false,
+            "download_status": 1,
+            "copyright": "",
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/ZHcHyZnsSLhbiGbyLvcyDGLm",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/LHcnyLHNALCvRnbydDnyFnkG",
+                "lossless": "http://api.mp3.zing.vn/api/mobile/source/song/LGcGykmNzZhbuGvTIPKeIMfeyvGZH"
+            },
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/ZGJmTLmaSLCvEnDtkFxTDHLm",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/ZHJHTZGaAkXDinDtdbGyvGkH",
+                "lossless": "http://api.mp3.zing.vn/api/mobile/download/song/LGJHyZGNAkhFumDyrwefrYfftvGLG"
+            },
+            "link": "/bai-hat/Vi-Em-Doi-Thay-Quang-Man/ZWZFBDZ6.html"
+        },
+        {
+            "song_id": 1073833243,
+            "title": "Xua Tan Niềm Đau",
+            "artist": "Quang Mẫn",
+            "genre": "Việt Nam, Nhạc Trẻ",
+            "username": "mp3",
+            "bitrate": "128 | 320 | lossless",
+            "duration": 339,
+            "have_rbt": false,
+            "download_status": 1,
+            "copyright": "",
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/ZncmyZmNVcdBDlBtkFJtbnZn",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/ZnJGyknNVJdBbzBydFmyvnZH",
+                "lossless": "http://api.mp3.zing.vn/api/mobile/source/song/LmJnyZGNVxVBbzByrqffrYeftFGZn"
+            },
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/knJnyZGNdJBBvlVtZDcyDnZn",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/LGJGyLnsVJBVvldtBFmtvnLm",
+                "lossless": "http://api.mp3.zing.vn/api/mobile/download/song/kHxHtkmNdxddFzdyIwefUYefybGZG"
+            },
+            "link": "/bai-hat/Xua-Tan-Niem-Dau-Quang-Man/ZWZABZ9B.html"
+        },
+        {
+            "song_id": 1074283294,
+            "title": "Đừng Vì Cô Đơn",
+            "artist": "Quang Mẫn",
+            "genre": "Việt Nam, Nhạc Trẻ, Nhạc Trữ Tình, R&B",
+            "username": "mp3",
+            "bitrate": "128 | 320 | lossless",
+            "duration": 284,
+            "have_rbt": false,
+            "download_status": 1,
+            "copyright": "",
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/LHJmyLHszbxBFultLvJybHLm",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/ZGxntZHsAvJBDiATdDnyFnZn",
+                "lossless": "http://api.mp3.zing.vn/api/mobile/source/song/LmxHyknNSFJdbEATrwefUMfKyDHZH"
+            },
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/ZGcHTknNzvJBbuzykbctFGZn",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/LncntZnNlbJdvEAydvmtFmkn",
+                "lossless": "http://api.mp3.zing.vn/api/mobile/download/song/kmcGtLGaAFJdvRSyrPeKIYffybnkn"
+            },
+            "link": "/bai-hat/Dung-Vi-Co-Don-Quang-Man/ZW6I9O9E.html"
+        },
+        {
+            "song_id": 1073833240,
+            "title": "Đau ( Slow Version )",
+            "artist": "Quang Mẫn",
+            "genre": "Việt Nam, Nhạc Trẻ",
+            "username": "mp3",
+            "bitrate": "128 | 320 | lossless",
+            "duration": 289,
+            "have_rbt": false,
+            "download_status": 1,
+            "copyright": "",
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/LnxHTkmsVJVVFlnTLvcTbHkn",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/ZHcGtknNdxddvlnyBbnTFHZm",
+                "lossless": "http://api.mp3.zing.vn/api/mobile/source/song/LGJGTZmNBJddbznyUOferofftvnkG"
+            },
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/LHJntLGsBxVVbSGyLbxybGLH",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/LncmTLHNVJdVvlHyBFGyFGLG",
+                "lossless": "http://api.mp3.zing.vn/api/mobile/download/song/kGcnyLHNVJVBDlGyUqKfroeftDmLm"
+            },
+            "link": "/bai-hat/Dau-Slow-Version-Quang-Man/ZWZABZ98.html"
+        },
+        {
+            "song_id": 1074179867,
+            "title": "Chắc Có Lẽ",
+            "artist": "Quang Mẫn",
+            "genre": "Việt Nam, Nhạc Trẻ",
+            "username": "mp3",
+            "bitrate": "128 | 320 | lossless",
+            "duration": 205,
+            "have_rbt": false,
+            "download_status": 1,
+            "copyright": "",
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/LGJGTLGNALNEJXNyZvxtvnkH",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/LmxGyknNSLaEJhayBbGyvnZm",
+                "lossless": "http://api.mp3.zing.vn/api/mobile/source/song/kGcGtLnsSkNiJgayUweKrjKftbnkH"
+            },
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/ZHxntknNALsiJXNyZbxtvmLG",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/ZnxmyknsAZaEJXsTdvGyFGkH",
+                "lossless": "http://api.mp3.zing.vn/api/mobile/download/song/LHxHTLmaSksRxXNyrOfeIMfeyDGLm"
+            },
+            "link": "/bai-hat/Chac-Co-Le-Quang-Man/ZWZFFF9B.html"
+        },
+        {
+            "song_id": 1073990725,
+            "title": "Tìm Lại Hạnh Phúc",
+            "artist": "Quang Mẫn",
+            "genre": "Nhạc Trẻ, Việt Nam",
+            "username": "mp3",
+            "bitrate": "128 | 320",
+            "duration": 322,
+            "have_rbt": false,
+            "download_status": 1,
+            "copyright": "",
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/ZnxnyZGNVuumaFQTLFcTDHLG",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/kmxntkHNBiiHNFQyVFntDGZH",
+                "lossless": ""
+            },
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/LnJntLmNduuHaDpTkDJtFGLn",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/kmJmTkGadiuHNbQydDmyvHZH",
+                "lossless": ""
+            },
+            "link": "/bai-hat/Tim-Lai-Hanh-Phuc-Quang-Man/ZWZDICCZ.html"
+        },
+        {
+            "song_id": 1073993753,
+            "title": "Khúc Hát Sông Quê",
+            "artist": "Lê Mận",
+            "genre": "Nhạc Quê Hương, Việt Nam",
+            "username": "mp3",
+            "bitrate": "128 | 320",
+            "duration": 296,
+            "have_rbt": false,
+            "download_status": 1,
+            "copyright": "",
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/ZnxHyknNdEiVNpdyLbxyDnLG",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/LGxnTLHNVEEBaQdyVbmybnkH",
+                "lossless": ""
+            },
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/kmxGtLmNVuuVNpdyLvJTDmkG",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/LnxntLHsVERdNWBTBbnybHLn",
+                "lossless": ""
+            },
+            "link": "/bai-hat/Khuc-Hat-Song-Que-Le-Man/ZWZDW899.html"
+        },
+        {
+            "song_id": 1073833230,
+            "title": "Anh Còn Yêu",
+            "artist": "Quang Mẫn",
+            "genre": "Việt Nam, Nhạc Trẻ",
+            "username": "mp3",
+            "bitrate": "128 | 320 | lossless",
+            "duration": 311,
+            "have_rbt": false,
+            "download_status": 1,
+            "copyright": "",
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/LmxnyZmNdJdVDdHtZvJyFmLG",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/LnJHyLGsBxVBDdHydDGyDnLn",
+                "lossless": "http://api.mp3.zing.vn/api/mobile/source/song/LHcntLGaVcdBDVHyrweKrMfftFmZH"
+            },
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/ZHJHyLGNBJddbVGyLvJtbmkG",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/LmxnTkHsdJBdbBGTVDnyFmZG",
+                "lossless": "http://api.mp3.zing.vn/api/mobile/download/song/LmcGykmsdJBdFBGTIPeeUMffybmLH"
+            },
+            "link": "/bai-hat/Anh-Con-Yeu-Quang-Man/ZWZABZ8E.html"
+        },
+        {
+            "song_id": 1073993760,
+            "title": "Về Quê",
+            "artist": "Lê Mận",
+            "genre": "Nhạc Quê Hương, Việt Nam",
+            "username": "mp3",
+            "bitrate": "128 | 320",
+            "duration": 349,
+            "have_rbt": false,
+            "download_status": 1,
+            "copyright": "",
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/LmxnTZGNBiEBNXmTkFxtbmkm",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/LncHykGNBRidNCGtVFmtDHLH",
+                "lossless": ""
+            },
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/LmJmtkmNBRiVsCnyLDJtDmLn",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/LnJntLnNdiRdNCmyBbmyvnZG",
+                "lossless": ""
+            },
+            "link": "/bai-hat/Ve-Que-Le-Man/ZWZDW8A0.html"
+        },
+        {
+            "song_id": 1073990705,
+            "title": "Vẫn Yêu Dù Biết Sẽ Đau",
+            "artist": "Quang Mẫn",
+            "genre": "Nhạc Trẻ, Việt Nam",
+            "username": "mp3",
+            "bitrate": "128 | 320",
+            "duration": 299,
+            "have_rbt": false,
+            "download_status": 1,
+            "copyright": "",
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/LHcGTLmNBREnNnWykbJyFGkH",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/ZmcGtkHNduuGNnpyBbmyDmkH",
+                "lossless": ""
+            },
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/LmJmtknNduEmNGQtLFcyDGLn",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/kHJGyLHsBiuHsnWTVFmyDmZG",
+                "lossless": ""
+            },
+            "link": "/bai-hat/Van-Yeu-Du-Biet-Se-Dau-Quang-Man/ZWZDICBI.html"
+        },
+        {
+            "song_id": 1073993759,
+            "title": "Quê Hương",
+            "artist": "Lê Mận",
+            "genre": "Nhạc Quê Hương, Việt Nam",
+            "username": "mp3",
+            "bitrate": "128 | 320",
+            "duration": 255,
+            "have_rbt": false,
+            "download_status": 1,
+            "copyright": "",
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/ZHJHtLHNVuRdNWEyZvctFHLm",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/LGcGtZmNdEEVNpEydvGyFmLH",
+                "lossless": ""
+            },
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/LmJHykGNduEBNWutkFJyFnkH",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/LnJHykmaBREdNpuyVDnyvHkm",
+                "lossless": ""
+            },
+            "link": "/bai-hat/Que-Huong-Le-Man/ZWZDW89F.html"
+        },
+        {
+            "song_id": 1073993752,
+            "title": "Giếng Quê",
+            "artist": "Lê Mận",
+            "genre": "Nhạc Quê Hương, Việt Nam",
+            "username": "mp3",
+            "bitrate": "128 | 320",
+            "duration": 331,
+            "have_rbt": false,
+            "download_status": 1,
+            "copyright": "",
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/knxHtLGNdREdNWbtLFxybHLG",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/ZHcmyLGaBiidNWvydFmTFHZG",
+                "lossless": ""
+            },
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/LmJHtLGsduudNQDyZvxyFGLG",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/ZncHyLmNdRRdapvydvGtDGLG",
+                "lossless": ""
+            },
+            "link": "/bai-hat/Gieng-Que-Le-Man/ZWZDW898.html"
+        },
+        {
+            "song_id": 1073993756,
+            "title": "Một Câu Hò Sông Hương",
+            "artist": "Lê Mận",
+            "genre": "Nhạc Quê Hương, Việt Nam",
+            "username": "mp3",
+            "bitrate": "128 | 320",
+            "duration": 349,
+            "have_rbt": false,
+            "download_status": 1,
+            "copyright": "",
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/LGcHyLnsBEEdsWCykvJyvGLG",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/LHcnTZmNduRBaphtVFGTvmZn",
+                "lossless": ""
+            },
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/LncHTknsVuRdsQgykbJTDmkn",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/LmJHTLGsVRiVNWXtBbmyvGLH",
+                "lossless": ""
+            },
+            "link": "/bai-hat/Mot-Cau-Ho-Song-Huong-Le-Man/ZWZDW89C.html"
+        },
+        {
+            "song_id": 1073993758,
+            "title": "Lời Quê",
+            "artist": "Lê Mận",
+            "genre": "Nhạc Quê Hương, Việt Nam",
+            "username": "mp3",
+            "bitrate": "128 | 320",
+            "duration": 463,
+            "have_rbt": false,
+            "download_status": 1,
+            "copyright": "",
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/LGcntZnNVERBNQJtLFcyDnLn",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/kmcmtLHadREBNWcydbHtbHLG",
+                "lossless": ""
+            },
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/LnJHTLnadEEBaQJTLFcyDmZm",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/kGJGyLGsduEdNQJtBFmyvnZn",
+                "lossless": ""
+            },
+            "link": "/bai-hat/Loi-Que-Le-Man/ZWZDW89E.html"
+        },
+        {
+            "song_id": 1073993754,
+            "title": "Lội Dòng Sông Quê",
+            "artist": "Lê Mận",
+            "genre": "Nhạc Trữ Tình, Việt Nam",
+            "username": "mp3",
+            "bitrate": "128 | 320",
+            "duration": 304,
+            "have_rbt": false,
+            "download_status": 1,
+            "copyright": "",
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/LnJnyLmNduidNQztkFxTFnZn",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/LHcHykHadiEBapztBbntDmLn",
+                "lossless": ""
+            },
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/knJmTZmsBERdapltkFxTbnZG",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/ZnJnTLnaduRdsWAydvHtvHLG",
+                "lossless": ""
+            },
+            "link": "/bai-hat/Loi-Dong-Song-Que-Le-Man/ZWZDW89A.html"
+        },
+        {
+            "song_id": 1073993757,
+            "title": "Tình Làng Quê",
+            "artist": "Lê Mận",
+            "genre": "Nhạc Quê Hương, Việt Nam",
+            "username": "mp3",
+            "bitrate": "128 | 320",
+            "duration": 509,
+            "have_rbt": false,
+            "download_status": 1,
+            "copyright": "",
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/LHJHyLHsBRudaWayLvJtbGZn",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/LGcGyknaduRVsWNtdvnyDHLH",
+                "lossless": ""
+            },
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/knJHyLGadiRVaQNykDJTDnZG",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/knJHtLmsBuudNQNyBFmTDGLm",
+                "lossless": ""
+            },
+            "link": "/bai-hat/Tinh-Lang-Que-Le-Man/ZWZDW89D.html"
+        },
+        {
+            "song_id": 1073990728,
+            "title": "Tìm Lại Hạnh Phúc (Beat)",
+            "artist": "Quang Mẫn",
+            "genre": "Nhạc Không Lời, Việt Nam",
+            "username": "mp3",
+            "bitrate": "128 | 320",
+            "duration": 318,
+            "have_rbt": false,
+            "download_status": 1,
+            "copyright": "",
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/ZGJnyLmNdEunsFJykbctbnLn",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/LncGyZnNduEnNFxydDmTFGLm",
+                "lossless": ""
+            },
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/ZmJHykGaVREnNFJyLbJyFGkG",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/ZHcnyZGNdEEHNDcTVbmyFHLG",
+                "lossless": ""
+            },
+            "link": "/bai-hat/Tim-Lai-Hanh-Phuc-Beat-Quang-Man/ZWZDICC8.html"
+        }
+    ],
+    "listens": {
+        "1073833229": 1765901,
+        "1073833230": 114311,
+        "1073833240": 37777,
+        "1073833243": 88076,
+        "1073903286": 478,
+        "1073990705": 65258,
+        "1073990725": 191668,
+        "1073990728": 27419,
+        "1073993752": 55961,
+        "1073993753": 118146,
+        "1073993754": 39347,
+        "1073993756": 49226,
+        "1073993757": 32815,
+        "1073993758": 47779,
+        "1073993759": 57415,
+        "1073993760": 70486,
+        "1074135284": 260322,
+        "1074162902": 116951,
+        "1074179867": 217782,
+        "1074283294": 43447
+    },
+    "charts": {
+        "1073981322": 25,
+        "1074053957": 24,
+        "1074257899": 26,
+        "1074385775": 18,
+        "1074446501": 20,
+        "1074571860": 34,
+        "1074585023": 37,
+        "1074589158": 39,
+        "1074605906": 36,
+        "1074616662": 15,
+        "1074623382": 33,
+        "1074645723": 19,
+        "1074647050": 23,
+        "1074668552": 6,
+        "1074677962": 14,
+        "1074679839": 1,
+        "1074690527": 9,
+        "1074692886": 10,
+        "1074693776": 4,
+        "1074693816": 3,
+        "1074695206": 13,
+        "1074697537": 27,
+        "1074700719": 2,
+        "1074701320": 29,
+        "1074705762": 5,
+        "1074706105": 32,
+        "1074706249": 35,
+        "1074706251": 30,
+        "1074710584": 17,
+        "1074728365": 7,
+        "1074739175": 8,
+        "1074739871": 16,
+        "1074748253": 38,
+        "1074748272": 21,
+        "1074750623": 28,
+        "1074758146": 11,
+        "1074758744": 22,
+        "1074758749": 12,
+        "1074760199": 31,
+        "1074763565": 40
+    },
+    "t": "artist",
+    "response": {
+        "msgCode": 1
+    }
+}
+```
+
+### ALbums
+    
+    http://api.mp3.zing.vn/api/mobile/search/playlist?keycode={YOUR_KEY}&requestdata={"t":"","q":"Man","length":20,"sort":"","filter":0,"start":0,"upload":0}
+
+RequestDate: 
+
+`{"t":"composer","q":"Man","length":20,"sort":"total_play","filter":0,"start":0,"upload":0}` Searching by composer, sorted by the number of plays
+
+`{"t":"lyrics","q":"Man","length":20,"sort":"created_date","filter":3,"start":0,"upload":0}` Searching by lyrics, sorted by date created.
+
+More options but they are neglected for simplicity.
+
+Example:
+
+    http://api.mp3.zing.vn/api/mobile/search/playlist?keycode=fafd463e2131914934b73310aa34a23f&requestdata={"t":"","q":"Man","length":20,"sort":"","filter":0,"start":0,"upload":0}
+
+### Videos
+
+    http://api.mp3.zing.vn/api/mobile/search/video?keycode={YOUR_KEY}&requestdata={"t":"","q":"Man","length":20,"sort":"","filter":0,"start":0,"upload":0}
+
+Example:
+
+    http://api.mp3.zing.vn/api/mobile/search/video?keycode=fafd463e2131914934b73310aa34a23f&requestdata={"t":"","q":"Man","length":20,"sort":"","filter":0,"start":0,"upload":0}
+
