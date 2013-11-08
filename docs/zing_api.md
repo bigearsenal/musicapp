@@ -1,10 +1,15 @@
 # ZING API
 
-## Albums
+## ALBUMS
 
 ### Get albums by genre
 
+Sorted by date released
+
 	http://api.mp3.zing.vn/api/mobile/playlist/getplaylistbygenre?key={YOUR_KEY}&requestdata={{"sort":"release_date","id":8,"length":20,"start":0}}
+
+`sort` params : `release_date`, `total_play`, and ``
+`id` : genre id
 
 Example:
 
@@ -183,3 +188,3540 @@ Response:
     }
 }
 ```
+
+### Get songs of an album
+
+	http://api.mp3.zing.vn/api/mobile/playlist/getsonglist?key={YOUR_KEY}&requestdata={{"id":1073816610,"start":0,"length":200}}
+
+`id` is album id derived from key
+
+Example:
+
+	http://api.mp3.zing.vn/api/mobile/playlist/getsonglist?key=fafd463e2131914934b73310aa34a23f&requestdata={"id":1073816610,"start":0,"length":200}
+
+Response:
+
+```json
+{
+    "numFound": 9,
+    "docs": [
+        {
+            "song_id": 1074458243,
+            "title": "Chiến Sỹ",
+            "artist_id": "28768",
+            "artist": "Stillrock",
+            "album_id": "1073816610",
+            "username": "france_song",
+            "download_status": 1,
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/LHxGyLHNSAWJDldyZFcyDmZG",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/LHJGTLmNzlQcDlVTdFmyDmLG",
+                "lossless": ""
+            },
+            "copyright": "",
+            "download_disable": 0,
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/LmcmtknNSlQJDzdyLvJTvHLH",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/kmJmyZnallQxFldydDGtvnLm",
+                "lossless": ""
+            },
+            "link": "/bai-hat/Chien-Sy-Stillrock/ZW6UOF0O.html",
+            "thumbnail": "covers/3/e/3e2c54b351be6220c2afe114f2cc0b90_1356856078.jpg"
+        },
+        {
+            "song_id": 1074458244,
+            "title": "Có Say",
+            "artist_id": "28768",
+            "artist": "Stillrock",
+            "album_id": "1073816610",
+            "username": "thebestofmusic",
+            "download_status": 1,
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/kmcHtZHaSzQJvzzyLFcyFnLn",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/LnxmyZnNlzQxvzAydDnyFGLG",
+                "lossless": ""
+            },
+            "copyright": "",
+            "download_disable": 0,
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/LHxGyLGalzpxblSyLbJtDmLH",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/LHxHTLnNllWcbAztBDmTvnLn",
+                "lossless": ""
+            },
+            "link": "/bai-hat/Co-Say-Stillrock/ZW6UOF0U.html",
+            "thumbnail": "covers/3/e/3e2c54b351be6220c2afe114f2cc0b90_1356856078.jpg"
+        },
+        {
+            "song_id": 1074458245,
+            "title": "Rock",
+            "artist_id": "28768",
+            "artist": "Stillrock",
+            "album_id": "1073816610",
+            "username": "hiphop_world",
+            "download_status": 1,
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/LHcmtknallQcDlQtLFcyvnLG",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/kncmyknNzSWJvlQTBFnybHZG",
+                "lossless": ""
+            },
+            "copyright": "",
+            "download_disable": 0,
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/ZGxHTZHNlAWxDSpTLvxtvHkm",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/LHcHykGNAAWJbSptBDnTbGLH",
+                "lossless": ""
+            },
+            "link": "/bai-hat/Rock-Stillrock/ZW6UOF0Z.html",
+            "thumbnail": "covers/3/e/3e2c54b351be6220c2afe114f2cc0b90_1356856078.jpg"
+        },
+        {
+            "song_id": 1074458246,
+            "title": "Rung",
+            "artist_id": "28768",
+            "artist": "Stillrock",
+            "album_id": "1073816610",
+            "username": "bbzing",
+            "download_status": 1,
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/kHxmtLGNSAWcDShyLbJtbnkG",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/kmcHyLGNASQxbSXtBvntbnZG",
+                "lossless": ""
+            },
+            "copyright": "",
+            "download_disable": 0,
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/kHxHyZnsSlQxvzgyLbJTFnLm",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/LHJHyLGazSpJbAXtdDHyDGZm",
+                "lossless": ""
+            },
+            "link": "/bai-hat/Rung-Stillrock/ZW6UOF06.html",
+            "thumbnail": "covers/3/e/3e2c54b351be6220c2afe114f2cc0b90_1356856078.jpg"
+        },
+        {
+            "song_id": 1074458247,
+            "title": "Tất Cả",
+            "artist_id": "28768",
+            "artist": "Stillrock",
+            "album_id": "1073816610",
+            "username": "thuhuynh",
+            "download_status": 1,
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/kHxnTZGaAlpcFAaTZvctDmLn",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/ZmxGyknslzQxvlayVvntbnLn",
+                "lossless": ""
+            },
+            "copyright": "",
+            "download_disable": 0,
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/ZnJHTkHNASpxFlayLvJybnkH",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/LHcHTkmallQcbAstdFHyDmLH",
+                "lossless": ""
+            },
+            "link": "/bai-hat/Tat-Ca-Stillrock/ZW6UOF07.html",
+            "thumbnail": "covers/3/e/3e2c54b351be6220c2afe114f2cc0b90_1356856078.jpg"
+        },
+        {
+            "song_id": 1074458248,
+            "title": "Tiễn Bạn",
+            "artist_id": "28768",
+            "artist": "Stillrock",
+            "album_id": "1073816610",
+            "username": "nemomb",
+            "download_status": 1,
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/LmcmTZHsAAQcblJTkFctDnLH",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/LncmyknNAzQxFAcyBDHyDmLG",
+                "lossless": ""
+            },
+            "copyright": "",
+            "download_disable": 0,
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/ZHxHTLHsAlQcvzJyZDxtvHZn",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/kGxmyknaASQJvlxyVDntbHkn",
+                "lossless": ""
+            },
+            "link": "/bai-hat/Tien-Ban-Stillrock/ZW6UOF08.html",
+            "thumbnail": "covers/3/e/3e2c54b351be6220c2afe114f2cc0b90_1356856078.jpg"
+        },
+        {
+            "song_id": 1074458249,
+            "title": "Tơ Nhện",
+            "artist_id": "28768",
+            "artist": "Stillrock",
+            "album_id": "1073816610",
+            "username": "mp3lover",
+            "download_status": 1,
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/LGJntknNlAQJDAiTLDJyDnLm",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/LHxnTLmsllWJDSEtdbmTFmZG",
+                "lossless": ""
+            },
+            "copyright": "",
+            "download_disable": 0,
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/LGJGyLmszAQxDAitLbxTvHZn",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/LnxntLGNlAQcbzuyVDHTvnkG",
+                "lossless": ""
+            },
+            "link": "/bai-hat/To-Nhen-Stillrock/ZW6UOF09.html",
+            "thumbnail": "covers/3/e/3e2c54b351be6220c2afe114f2cc0b90_1356856078.jpg"
+        },
+        {
+            "song_id": 1074458267,
+            "title": "Thời gian",
+            "artist_id": "28768",
+            "artist": "Stillrock",
+            "album_id": "1073816610",
+            "username": "nemomb",
+            "download_status": 1,
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/LGJmtknNzSQcbCaTLDJybHZH",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/ZnxnTkGNAAQJbgaTdDmybnZH",
+                "lossless": ""
+            },
+            "copyright": "",
+            "download_disable": 0,
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/LGxGykGazAQJvCstLDJtbnLG",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/kGxnTkmsSAQcvhsyBvGyDGLm",
+                "lossless": ""
+            },
+            "link": "/bai-hat/Thoi-gian-Stillrock/ZW6UOFIB.html",
+            "thumbnail": "covers/3/e/3e2c54b351be6220c2afe114f2cc0b90_1356856078.jpg"
+        },
+        {
+            "song_id": 1074458268,
+            "title": "Trăng Mờ",
+            "artist_id": "28768",
+            "artist": "Stillrock",
+            "album_id": "1073816610",
+            "zaloid": 0,
+            "username": "mp3lover",
+            "download_status": 1,
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/ZHxHyZmaAlQJbhJTLDJyvnLn",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/LncmyLGNSlQJvXcydvmTvGLn",
+                "lossless": ""
+            },
+            "copyright": "",
+            "download_disable": 0,
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/ZnxGyZGslSQcbXJtkFJTFmLm",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/LmcGTLGNlSWxvgJydFHTbHLn",
+                "lossless": ""
+            },
+            "link": "/bai-hat/Trang-Mo-Stillrock/ZW6UOFIC.html",
+            "thumbnail": "covers/3/e/3e2c54b351be6220c2afe114f2cc0b90_1356856078.jpg"
+        }
+    ],
+    "response": {
+        "msgCode": 1
+    }
+}
+```
+
+### Get album info
+
+	http://api.mp3.zing.vn/api/mobile/playlist/getplaylistinfo?key={YOUR_KEY}&requestdata={"id":1073816610}
+
+Example:
+	
+	http://api.mp3.zing.vn/api/mobile/playlist/getplaylistinfo?key=fafd463e2131914934b73310aa34a23f&requestdata={"id":1073816610}
+
+Response:
+
+```json
+{
+    "playlist_id": 1073816610,
+    "title": "Thời Gian",
+    "artist_id": "28768",
+    "artist": "Stillrock",
+    "genre_id": "1,10",
+    "zaloid": 0,
+    "username": "",
+    "cover": "covers/3/e/3e2c54b351be6220c2afe114f2cc0b90_1356856078.jpg",
+    "description": "Ý tưởng của album dựa trên những diễn biến cuộc sống đời thường của ban nhạc. Có bắt tay vào làm việc mà cụ thể là đầu tư cho một album rock trong điều kiện còn nhiều khó khăn quả thực lúc đó mới biết quí THỜI GIAN. Đam mê thứ tài sản vô giá mà mỗi rocker chân chính có được, ROCK gieo vào đầu óc những ý nghĩ tích cực: sự mạnh mẽ, sự táo bạo và cả sự nghiêm túc đàng hoàng. Quả thực, rock đã tiếp sức để mỗi người trẻ tự vượt qua những cám dỗ trong cuộc sống, những lũ nhện ma quái giăng tơ huyền ảo khắp nơi. Đó chính là TƠ NHỆN.  Niềm vui , những điều hạnh phúc vừa đến, lại phải đối mặt với khó khăn và nỗi đau. Trong văn chương nói rất nhiều cái gọi là cõi tạm, sinh ra là khóc là khổ. Vậy mới biết “Có nước mắt trôi trên cuộc đời, có sóng gió mênh mang bầu trời, hãy đứng vững bằng đôi chân không mềm yếu” (trích lời bài CHIẾN SĨ) . Phải đứng vững trên đôi chân mình, chân lí sống không bao giờ thay đổi và hãy nghe TẤT CẢ  để thấy mình trong đó, cuộc sống đôi khi vô thường, nhàm chán đến tận cùng, vậy mới biết lí trí chẳng vượt qua được sự tận cùng. Chưa hết, TRĂNG MỜ muốn đem tới cho rock fan một chút cảm thụ nhân văn mà tác giả Phan Hoàng Thái muốn gửi gắm. Quả đất là một vòng tròn, Mặt trăng là một vòng tròn, mỗi con người lần lượt  phải đi qua cái vòng tròn lẫn quẩn đó… cái chết. Để rồi khi đối mặt với nó có nghĩa là chúng ta thấy sự sống quí giá chừng nào. RUNG xô đẩy người nghe từ đất liền ra biển khơi, ở đâu cũng vậy cũng có hiền nhân và quĩ dữ, cũng có nguy nan và bình s",
+    "is_hit": 1,
+    "is_official": 1,
+    "is_album": 1,
+    "year": "2008",
+    "status_id": 1,
+    "link": "/album/Thoi-Gian-Stillrock/ZWZA7UAW.html",
+    "total_play": 272684,
+    "genre_name": "Việt Nam, Rock Việt",
+    "likes": 95,
+    "like_this": false,
+    "comments": 0,
+    "favourites": 0,
+    "favourite_this": false,
+    "response": {
+        "msgCode": 1
+    }
+}
+```
+
+## VIDEOS
+
+### Get videos by genre
+
+	http://api.mp3.zing.vn/api/mobile/video/getvideobygenre?key={YOUR_KEY}&requestdata={{"sort":"release_date","id":11,"length":20,"start":0}}
+
+`sort` params : `release_date`, `total_play`, and ``
+`id` : genre id
+
+Example: 
+	
+	http://api.mp3.zing.vn/api/mobile/video/getvideobygenre?key=fafd463e2131914934b73310aa34a23f&requestdata={"sort":"release_date","id":11,"length":20,"start":0}
+
+Response:
+
+```json
+{
+    "numFound": 724,
+    "start": 0,
+    "docs": [
+        {
+            "video_id": 1074322430,
+            "title": "Anh Đi Chăn Trâu",
+            "artist_id": "9045",
+            "artist": "Lâm Quang Long",
+            "composer_id": 806,
+            "composer": "Phi Bằng ",
+            "genre_id": "1,11,13",
+            "thumbnail": "thumb_video/5/b/5b8e6fe01e1911831cd330420cad1772_1383883513.jpg",
+            "tag": "",
+            "duration": 259,
+            "is_hit": 0,
+            "have_lyrics": 0,
+            "status_id": 1,
+            "created_date": 1383883476,
+            "source": {
+                "240": "http://api.mp3.zing.vn/api/mobile/source/video/ZHJGTZmszdFFAdmyDlHtFHLH",
+                "360": "http://api.mp3.zing.vn/api/mobile/source/video/ZmxmtLHNSdDDlBnTdXnyDGLG",
+                "480": "http://api.mp3.zing.vn/api/mobile/source/video/ZGJHTLnNlVFvSVmySJHyvHZH",
+                "720": "http://api.mp3.zing.vn/api/mobile/source/video/LmxHyknszdvblVHyNFnyvnZG",
+                "1080": "http://api.mp3.zing.vn/api/mobile/source/video/kGJmyLnNSBbvzdHTLnxntFnLH"
+            },
+            "link": "/video-clip/Anh-Di-Chan-Trau-Lam-Quang-Long/ZW6WWC7E.html",
+            "total_play": 21361,
+            "likes": 19,
+            "comments": 0
+        },
+        {
+            "video_id": 1074659334,
+            "title": "Đôi Khi",
+            "artist_id": "2889",
+            "artist": "Nguyễn Hồng Ân",
+            "composer_id": 807,
+            "composer": "Minh Đức",
+            "genre_id": "1,11",
+            "thumbnail": "thumb_video/2/c/2cc4db934788a07b70179a9d21a664b1_1383818448.jpg",
+            "tag": "",
+            "duration": 371,
+            "is_hit": 0,
+            "have_lyrics": 0,
+            "status_id": 1,
+            "created_date": 1383818113,
+            "source": {
+                "240": "http://api.mp3.zing.vn/api/mobile/source/video/ZGxGTLnNSCWEVVAyDSntvHLH",
+                "360": "http://api.mp3.zing.vn/api/mobile/source/video/ZHJnTLnNlXQRBVSyBXmyFnZm",
+                "480": "http://api.mp3.zing.vn/api/mobile/source/video/kncGyLnazCpEdVSySxmtbHLm",
+                "720": "http://api.mp3.zing.vn/api/mobile/source/video/ZHxmtLnNAgWiVdlyaFGyDnZn",
+                "1080": "http://api.mp3.zing.vn/api/mobile/source/video/knxnTkGaSCpEBBztZnJHtDHkG"
+            },
+            "link": "/video-clip/Doi-Khi-Nguyen-Hong-An/ZW67Z086.html",
+            "total_play": 24698,
+            "likes": 4,
+            "comments": 0
+        },
+        {
+            "video_id": 1074766528,
+            "title": "Liên Khúc Mẹ Từ Bi",
+            "artist_id": "11888",
+            "artist": "Hoàng Minh Phi",
+            "composer_id": 0,
+            "composer": "",
+            "genre_id": "1,11",
+            "thumbnail": "thumb_video/3/c/3caa74ca37e89ea17f73c97abb5a7edd_1383809141.jpg",
+            "tag": "",
+            "duration": 436,
+            "is_hit": 0,
+            "have_lyrics": 0,
+            "status_id": 1,
+            "created_date": 1383809117,
+            "source": {
+                "240": "http://api.mp3.zing.vn/api/mobile/source/video/kHcGyZHslNCgQvJtvzntFHZG",
+                "360": "http://api.mp3.zing.vn/api/mobile/source/video/kHJHyZGNSshgQDxyBXGyDGkG",
+                "480": "http://api.mp3.zing.vn/api/mobile/source/video/LHJnyLmsAaChQvctScnTvHLH",
+                "720": "http://api.mp3.zing.vn/api/mobile/source/video/kHJHTLmalahgQvJTaDGyDGLH",
+                "1080": "http://api.mp3.zing.vn/api/mobile/source/video/LnJnykHNzsChpvJTZGxmtbnZm"
+            },
+            "link": "/video-clip/Lien-Khuc-Me-Tu-Bi-Hoang-Minh-Phi/ZW68FOU0.html",
+            "total_play": 18401,
+            "likes": 16,
+            "comments": 0
+        },
+        {
+            "video_id": 1074764786,
+            "title": "Bông Ô Môi",
+            "artist_id": "42513",
+            "artist": "Thùy Dương",
+            "composer_id": 0,
+            "composer": "",
+            "genre_id": "1,11",
+            "thumbnail": "thumb_video/e/4/e4b901f80594fef9547542186fcd40d6_1383291140.jpg",
+            "tag": "",
+            "duration": 1495,
+            "is_hit": 0,
+            "have_lyrics": 0,
+            "status_id": 1,
+            "created_date": 1383291134,
+            "source": {
+                "360": "http://api.mp3.zing.vn/api/mobile/source/video/LmxntLmaSsCSNxhyVCnTDHLH"
+            },
+            "link": "/video-clip/Bong-O-Moi-Thuy-Duong/ZW68EC7W.html",
+            "total_play": 52950,
+            "likes": 21,
+            "comments": 3
+        },
+        {
+            "video_id": 1074764784,
+            "title": "Lấy Chồng Xứ Lạ",
+            "artist_id": "42513",
+            "artist": "Thùy Dương",
+            "composer_id": 0,
+            "composer": "",
+            "genre_id": "1,8,11",
+            "thumbnail": "thumb_video/5/3/534460d2ad1dad4b7da63c4768c9bbe3_1383290952.jpg",
+            "tag": "",
+            "duration": 548,
+            "is_hit": 0,
+            "have_lyrics": 0,
+            "status_id": 1,
+            "created_date": 1383290948,
+            "source": {
+                "360": "http://api.mp3.zing.vn/api/mobile/source/video/kHcmTZnNlNgSNJzTBgHybmLG"
+            },
+            "link": "/video-clip/Lay-Chong-Xu-La-Thuy-Duong/ZW68EC70.html",
+            "total_play": 63352,
+            "likes": 53,
+            "comments": 0
+        },
+        {
+            "video_id": 1074764783,
+            "title": "Người Thương Kẻ Nhớ",
+            "artist_id": "42513",
+            "artist": "Thùy Dương",
+            "composer_id": 0,
+            "composer": "",
+            "genre_id": "1,11",
+            "thumbnail": "thumb_video/5/b/5b95c15488057177e7b398ffc249b2f2_1383290878.jpg",
+            "tag": "",
+            "duration": 271,
+            "is_hit": 0,
+            "have_lyrics": 0,
+            "status_id": 1,
+            "created_date": 1383290872,
+            "source": {
+                "360": "http://api.mp3.zing.vn/api/mobile/source/video/knJntZHazsXSaJdyBhmyvGZH"
+            },
+            "link": "/video-clip/Nguoi-Thuong-Ke-Nho-Thuy-Duong/ZW68EC6F.html",
+            "total_play": 21947,
+            "likes": 16,
+            "comments": 0
+        },
+        {
+            "video_id": 1074764782,
+            "title": "Đính Ước",
+            "artist_id": "42513,11736",
+            "artist": "Thùy Dương , Vũ Duy",
+            "composer_id": 0,
+            "composer": "",
+            "genre_id": "1,11",
+            "thumbnail": "thumb_video/4/0/4053c05b22640ef0980929c0e5336511_1383290791.jpg",
+            "tag": "",
+            "duration": 283,
+            "is_hit": 0,
+            "have_lyrics": 0,
+            "status_id": 1,
+            "created_date": 1383290786,
+            "source": {
+                "360": "http://api.mp3.zing.vn/api/mobile/source/video/ZHJmtknaSNXzNxvyBXmTbmZm"
+            },
+            "link": "/video-clip/Dinh-Uoc-Thuy-Duong-Vu-Duy/ZW68EC6E.html",
+            "total_play": 22330,
+            "likes": 15,
+            "comments": 0
+        },
+        {
+            "video_id": 1074764780,
+            "title": "Khóc Thầm",
+            "artist_id": "42513",
+            "artist": "Thùy Dương",
+            "composer_id": 0,
+            "composer": "",
+            "genre_id": "1,11",
+            "thumbnail": "thumb_video/8/b/8beefc4425a9706df00d9ce2504460e9_1383290687.jpg",
+            "tag": "",
+            "duration": 343,
+            "is_hit": 0,
+            "have_lyrics": 0,
+            "status_id": 1,
+            "created_date": 1383290681,
+            "source": {
+                "360": "http://api.mp3.zing.vn/api/mobile/source/video/ZnxmyZmNAsglsJHydhnyDHkn"
+            },
+            "link": "/video-clip/Khoc-Tham-Thuy-Duong/ZW68EC6C.html",
+            "total_play": 5417,
+            "likes": 9,
+            "comments": 0
+        },
+        {
+            "video_id": 1074764778,
+            "title": "Mùa Hoa Cưới",
+            "artist_id": "42513,6434",
+            "artist": "Thùy Dương , Trọng Phúc",
+            "composer_id": 0,
+            "composer": "",
+            "genre_id": "1,11",
+            "thumbnail": "thumb_video/9/8/98cab19a021f3e6c2e96905c9537ff24_1383290589.jpg",
+            "tag": "",
+            "duration": 529,
+            "is_hit": 0,
+            "have_lyrics": 0,
+            "status_id": 1,
+            "created_date": 1383290585,
+            "source": {
+                "360": "http://api.mp3.zing.vn/api/mobile/source/video/LnxGyLGNANClsNcydhHyvnLm"
+            },
+            "link": "/video-clip/Mua-Hoa-Cuoi-Thuy-Duong-Trong-Phuc/ZW68EC6A.html",
+            "total_play": 8489,
+            "likes": 6,
+            "comments": 0
+        },
+        {
+            "video_id": 1074764776,
+            "title": "Lời Nhớ Lời Thương",
+            "artist_id": "42513",
+            "artist": "Thùy Dương",
+            "composer_id": 0,
+            "composer": "",
+            "genre_id": "1,11",
+            "thumbnail": "thumb_video/9/2/92da1399adf012219842cc50d6a09f69_1383290514.jpg",
+            "tag": "",
+            "duration": 349,
+            "is_hit": 0,
+            "have_lyrics": 0,
+            "status_id": 1,
+            "created_date": 1383290509,
+            "source": {
+                "360": "http://api.mp3.zing.vn/api/mobile/source/video/LHJntZnslNhlNNgTdhHyvGkH"
+            },
+            "link": "/video-clip/Loi-Nho-Loi-Thuong-Thuy-Duong/ZW68EC68.html",
+            "total_play": 3623,
+            "likes": 2,
+            "comments": 0
+        },
+        {
+            "video_id": 1074764775,
+            "title": "Anh Sáu Về Quê",
+            "artist_id": "42513",
+            "artist": "Thùy Dương",
+            "composer_id": 0,
+            "composer": "",
+            "genre_id": "1,11,13",
+            "thumbnail": "thumb_video/1/c/1cab9223efe1eb29be707c48266c252b_1383290434.jpg",
+            "tag": "",
+            "duration": 506,
+            "is_hit": 0,
+            "have_lyrics": 0,
+            "status_id": 1,
+            "created_date": 1383290427,
+            "source": {
+                "360": "http://api.mp3.zing.vn/api/mobile/source/video/LnJHtZHNSNhSNNWtBhHyvmZn"
+            },
+            "link": "/video-clip/Anh-Sau-Ve-Que-Thuy-Duong/ZW68EC67.html",
+            "total_play": 10884,
+            "likes": 10,
+            "comments": 0
+        },
+        {
+            "video_id": 1074764774,
+            "title": "Miền Tây Quê Tôi",
+            "artist_id": "42513",
+            "artist": "Thùy Dương",
+            "composer_id": 0,
+            "composer": "",
+            "genre_id": "1,11,13",
+            "thumbnail": "thumb_video/b/a/bacab7a6e23784cc9560ff7c2b79550f_1383290323.jpg",
+            "tag": "",
+            "duration": 299,
+            "is_hit": 0,
+            "have_lyrics": 0,
+            "status_id": 1,
+            "created_date": 1383290315,
+            "source": {
+                "360": "http://api.mp3.zing.vn/api/mobile/source/video/ZmxmTLHaSNClNNATdCHTbnZn"
+            },
+            "link": "/video-clip/Mien-Tay-Que-Toi-Thuy-Duong/ZW68EC66.html",
+            "total_play": 10609,
+            "likes": 16,
+            "comments": 0
+        },
+        {
+            "video_id": 1074761638,
+            "title": "Cõng Mẹ Đi Chơi",
+            "artist_id": "43616",
+            "artist": "Nguyễn Duy Dũng",
+            "composer_id": 482,
+            "composer": "Trần Quế Sơn",
+            "genre_id": "1,11",
+            "thumbnail": "thumb_video/f/9/f9e84037e128f3e52fc11510c98adaa2_1382585737.jpg",
+            "tag": "",
+            "duration": 338,
+            "is_hit": 0,
+            "have_lyrics": 1,
+            "status_id": 1,
+            "created_date": 1382585202,
+            "source": {
+                "240": "http://api.mp3.zing.vn/api/mobile/source/video/kHJGykmNANXLXVcyDAGybGZm",
+                "360": "http://api.mp3.zing.vn/api/mobile/source/video/LGJGtZnNlNhZXdxtVXnTbGLn",
+                "480": "http://api.mp3.zing.vn/api/mobile/source/video/LmJHTLGaAahZgVJTScmybHLG",
+                "720": "http://api.mp3.zing.vn/api/mobile/source/video/kHcmyLmNzNCkXdxTNbGybmZG",
+                "1080": "http://api.mp3.zing.vn/api/mobile/source/video/ZHJHyLGsSNXkCdxTLnJmyvnLG"
+            },
+            "link": "/video-clip/Cong-Me-Di-Choi-Nguyen-Duy-Dung/ZW68E0W6.html",
+            "total_play": 14571,
+            "likes": 21,
+            "comments": 2
+        },
+        {
+            "video_id": 1074613928,
+            "title": "Ngày Còn Anh Bên Tôi",
+            "artist_id": "29901",
+            "artist": "Lê Duy",
+            "composer_id": 279,
+            "composer": "Duy Khánh",
+            "genre_id": "1,11",
+            "thumbnail": "thumb_video/0/d/0d59aaee64d6fbd36aee0f13385f6ba8_1382414068.jpg",
+            "tag": "",
+            "duration": 287,
+            "is_hit": 0,
+            "have_lyrics": 0,
+            "status_id": 1,
+            "created_date": 1382411623,
+            "source": {
+                "240": "http://api.mp3.zing.vn/api/mobile/source/video/LGcmtZHNzXLBiFcyFlnTbnLH",
+                "360": "http://api.mp3.zing.vn/api/mobile/source/video/LnJHtLmazhZBEDcydCGyFGkn",
+                "480": "http://api.mp3.zing.vn/api/mobile/source/video/LHJmyLGalXkBibxyzcGtDmkn",
+                "720": "http://api.mp3.zing.vn/api/mobile/source/video/LHcmtLHNAgZdRFxysFnybmLH"
+            },
+            "link": "/video-clip/Ngay-Con-Anh-Ben-Toi-Le-Duy/ZW669FW8.html",
+            "total_play": 33836,
+            "likes": 26,
+            "comments": 0
+        },
+        {
+            "video_id": 1074707561,
+            "title": "Sông Nước Quê Tôi",
+            "artist_id": "40023",
+            "artist": "Steven Chí Dũng",
+            "composer_id": 45,
+            "composer": "Hồng Xương Long",
+            "genre_id": "1,11",
+            "thumbnail": "thumb_video/c/9/c98dfcc2cfc904b1527eb28a993e6c57_1382354837.jpg",
+            "tag": "",
+            "duration": 323,
+            "is_hit": 0,
+            "have_lyrics": 0,
+            "status_id": 1,
+            "created_date": 1382354580,
+            "source": {
+                "240": "http://api.mp3.zing.vn/api/mobile/source/video/ZGcmykGsANnNQgkTDAmyvGLH",
+                "360": "http://api.mp3.zing.vn/api/mobile/source/video/ZnJmTLnsSNHNQCktVCntFnLH",
+                "480": "http://api.mp3.zing.vn/api/mobile/source/video/LmJnTkHNSaGsQgZTzxGtDnLG",
+                "720": "http://api.mp3.zing.vn/api/mobile/source/video/LHJGtknNSNHNQgLyNFHybnLn",
+                "1080": "http://api.mp3.zing.vn/api/mobile/source/video/ZnJntLHazaGsQCkyZGJGTbGkH"
+            },
+            "link": "/video-clip/Song-Nuoc-Que-Toi-Steven-Chi-Dung/ZW680CE9.html",
+            "total_play": 35640,
+            "likes": 34,
+            "comments": 2
+        },
+        {
+            "video_id": 1074707530,
+            "title": "Ba Chuyến Đò Ngang",
+            "artist_id": "40023",
+            "artist": "Steven Chí Dũng",
+            "composer_id": 460,
+            "composer": "Sơn Hạ",
+            "genre_id": "1,11",
+            "thumbnail": "thumb_video/7/6/768341ac5a34ba3ceaa0de3d74913a1b_1382354529.jpg",
+            "tag": "",
+            "duration": 323,
+            "is_hit": 0,
+            "have_lyrics": 0,
+            "status_id": 1,
+            "created_date": 1382354175,
+            "source": {
+                "240": "http://api.mp3.zing.vn/api/mobile/source/video/ZHJmtLGNlaGNWBnyvAmTDnLn",
+                "360": "http://api.mp3.zing.vn/api/mobile/source/video/ZHxHtLnaSaGNpdntdCGyFmLG",
+                "480": "http://api.mp3.zing.vn/api/mobile/source/video/LmxGTLHsANGapVnySJmTvnLH",
+                "720": "http://api.mp3.zing.vn/api/mobile/source/video/ZHxmTknNzNHNQVGTsbGtbGLn",
+                "1080": "http://api.mp3.zing.vn/api/mobile/source/video/kmcmtLmNlNnNQdGyLGJGTvnZm"
+            },
+            "link": "/video-clip/Ba-Chuyen-Do-Ngang-Steven-Chi-Dung/ZW680CCA.html",
+            "total_play": 26346,
+            "likes": 25,
+            "comments": 6
+        },
+        {
+            "video_id": 1074753351,
+            "title": "LK Sến 2: Thói Đời",
+            "artist_id": "42136",
+            "artist": "Hoàng Long",
+            "composer_id": 0,
+            "composer": "",
+            "genre_id": "1,11",
+            "thumbnail": "thumb_video/3/8/386842227615223be38c4055aee0ae42_1382067747.jpg",
+            "tag": "",
+            "duration": 324,
+            "is_hit": 0,
+            "have_lyrics": 0,
+            "status_id": 1,
+            "created_date": 1382067657,
+            "source": {
+                "240": "http://api.mp3.zing.vn/api/mobile/source/video/ZGJGTknaSNWVdWLyDznybGZn",
+                "360": "http://api.mp3.zing.vn/api/mobile/source/video/LGJnykmNlNWVBQLtBXnyvnZH",
+                "480": "http://api.mp3.zing.vn/api/mobile/source/video/kHJmyLGNzNQddpLyAJmTDmLm",
+                "720": "http://api.mp3.zing.vn/api/mobile/source/video/LGxHtkGNAaWBdpLtNvGTbnZm",
+                "1080": "http://api.mp3.zing.vn/api/mobile/source/video/LGJmTLHalapdBQLyZGJHybmZm"
+            },
+            "link": "/video-clip/LK-Sen-2-Thoi-Doi-Hoang-Long/ZW68BFC7.html",
+            "total_play": 56478,
+            "likes": 65,
+            "comments": 2
+        },
+        {
+            "video_id": 1074752203,
+            "title": "Cảm Ơn Mẹ (Mẹ Tôi)",
+            "artist_id": "5",
+            "artist": "Quách Tuấn Du",
+            "composer_id": 0,
+            "composer": "",
+            "genre_id": "1,8,11",
+            "thumbnail": "thumb_video/c/3/c37dae7c1fb6267db15232a864826d59_1382001595.jpg",
+            "tag": "",
+            "duration": 287,
+            "is_hit": 0,
+            "have_lyrics": 0,
+            "status_id": 1,
+            "created_date": 1382001590,
+            "source": {
+                "240": "http://api.mp3.zing.vn/api/mobile/source/video/knJmtZHszsWbFmBTFlGyDnLH",
+                "360": "http://api.mp3.zing.vn/api/mobile/source/video/LGcmyZnNzspFvmVtBCGybGLn",
+                "480": "http://api.mp3.zing.vn/api/mobile/source/video/knJntLmszNpDvndyAJnyvmLH",
+                "720": "http://api.mp3.zing.vn/api/mobile/source/video/LHxGtkHNzapbvGVyNDnTFHZH",
+                "1080": "http://api.mp3.zing.vn/api/mobile/source/video/knJGtZmalNQvbndTkGJmTbmLm"
+            },
+            "link": "/video-clip/Cam-On-Me-Me-Toi-Quach-Tuan-Du/ZW68BBUB.html",
+            "total_play": 186748,
+            "likes": 296,
+            "comments": 7
+        },
+        {
+            "video_id": 1074748031,
+            "title": "Quang Gánh Mẹ Tôi (Teaser)",
+            "artist_id": "2086",
+            "artist": "Various Artists",
+            "composer_id": 0,
+            "composer": "",
+            "genre_id": "1,11",
+            "thumbnail": "thumb_video/1/d/1d8df4c4db941fa67cca682c2f68c935_1381738521.jpg",
+            "tag": "",
+            "duration": 35,
+            "is_hit": 0,
+            "have_lyrics": 0,
+            "status_id": 1,
+            "created_date": 1381738514,
+            "source": {
+                "360": "http://api.mp3.zing.vn/api/mobile/source/video/LHJGyZHazNlcmdkydhGybmkm"
+            },
+            "link": "/video-clip/Quang-Ganh-Me-Toi-Teaser-Various-Artists/ZW68AAFF.html",
+            "total_play": 47761,
+            "likes": 129,
+            "comments": 0
+        },
+        {
+            "video_id": 1074748029,
+            "title": "Liên Khúc Nỗi Buồn Hoa Phượng - Phượng Buồn",
+            "artist_id": "40804,8905",
+            "artist": "Triệu Phát , Nguyệt Ánh",
+            "composer_id": 0,
+            "composer": "",
+            "genre_id": "1,8,11,13",
+            "thumbnail": "thumb_video/e/2/e23ac71f830a2bdccd98a5d160e67c2f_1381737814.jpg",
+            "tag": "",
+            "duration": 255,
+            "is_hit": 0,
+            "have_lyrics": 0,
+            "status_id": 1,
+            "created_date": 1381737808,
+            "source": {
+                "240": "http://api.mp3.zing.vn/api/mobile/source/video/LGJnyLmNlNAxHbitvznTDGkm",
+                "360": "http://api.mp3.zing.vn/api/mobile/source/video/ZHJGykGNSsScnbuyBCnTvnZn",
+                "480": "http://api.mp3.zing.vn/api/mobile/source/video/kmxGyLmsAsSxHvETSJHTFmZm",
+                "720": "http://api.mp3.zing.vn/api/mobile/source/video/LmxHTkmNSsAcmDEtNvGybHLn",
+                "1080": "http://api.mp3.zing.vn/api/mobile/source/video/LmcmTLGazslJGvETkHJHTvnZG"
+            },
+            "link": "/video-clip/Lien-Khuc-Noi-Buon-Hoa-Phuong-Phuong-Buon-Trieu-Phat-Nguyet-Anh/ZW68AAFD.html",
+            "total_play": 56637,
+            "likes": 59,
+            "comments": 4
+        }
+    ],
+    "response": {
+        "msgCode": 1
+    }
+}
+```
+### Get video info
+
+	http://api.mp3.zing.vn/api/mobile/video/getvideoinfo?keycode={YOUR_KEY}&requestdata={{"id":1074729245}}
+
+Example: 
+
+	http://api.mp3.zing.vn/api/mobile/video/getvideoinfo?keycode=fafd463e2131914934b73310aa34a23f&requestdata={"id":1074729245}
+
+Response:
+
+```json
+{
+    "video_id": 1074729245,
+    "title": "Xin Anh Đừng Đến",
+    "artist_id": "465",
+    "artist": "Bảo Thy",
+    "genre_id": "1,8,66",
+    "thumbnail": "thumb_video/d/c/dcacff355635deedf62fd80de34f2346_1380622208.jpg",
+    "duration": 307,
+    "status_id": 1,
+    "link": "/video-clip/Xin-Anh-Dung-Den-Bao-Thy/ZW686I9D.html",
+    "source": {
+        "240": "http://api.mp3.zing.vn/api/mobile/source/video/kHJGykmsSNvEbzWyblmtFmZH",
+        "360": "http://api.mp3.zing.vn/api/mobile/source/video/kGcmTkGNlsDEvzQtdXnyDHLn",
+        "480": "http://api.mp3.zing.vn/api/mobile/source/video/kmcGTLmNSNbuvSpySxnTvmLm",
+        "720": "http://api.mp3.zing.vn/api/mobile/source/video/kGJGyLHNzaDRDzpysvmyvHkm",
+        "1080": "http://api.mp3.zing.vn/api/mobile/source/video/ZHxmyknNSNDuFSWyZmJGtDHLG"
+    },
+    "total_play": 1550841,
+    "likes": 7147,
+    "like_this": false,
+    "favourites": 0,
+    "favourite_this": false,
+    "comments": 229,
+    "genre_name": "Việt Nam, Nhạc Trẻ, Nhạc Dance",
+    "response": {
+        "msgCode": 1
+    }
+}
+```
+
+### Get video's lyrics
+
+	http://api.mp3.zing.vn/api/mobile/video/getlyrics?keycode={YOUR_KEY}&requestdata={{"id":1074729245}}
+
+Example 
+
+	http://api.mp3.zing.vn/api/mobile/video/getlyrics?keycode=fafd463e2131914934b73310aa34a23f&requestdata={"id":1074729245}
+
+```json
+{
+    "id": "1207338",
+    "content": "Xin Anh Đừng Đến\n(Bảo Thy on the mind)\nÁnh sáng trắng xóa bỗng thấy em trong cơn mơ\nMột mình em như kề bên không còn ai\nBờ vai em đang run run khi không gian đang chìm sâu\nTrong ánh mắt em giờ đây một màu u tối.\n\nNhớ ánh mắt ấy tiếng nói ấy sao giờ đây\nChỉ còn em đang ngồi bên những niềm đau\nTự dặn mình hãy cố xóa hết những giấc mơ khi bên anh\nEm còn mơ, em còn mơ đầy thương nhớ.\n\nEm sẽ xóa hết những phút giây ta yêu thương\nĐể về sau gặp lại nhau em sẽ vơi đi nỗi đau\nHãy để nỗi nhớ khi mà em đang bơ vơ\nKhông cần anh không cần thương nhớ\nNhững ngày còn vụn vỡ\n\n(em sẽ cố quên)\n(tình yêu đó)\n\n[ĐK:]\nXin anh hãy nói, đôi ta chia tay\nCho con tim em không như bao ngày\nXin anh đừng đến trong cơn mơ\nĐể từng ngày qua em thôi trông mong chờ\nLeave me alone!\n\nHey Boy ! Shake your body x3\nHey Girl ! Let me Put your hands up in the air\n\n[ĐK:]\nXin anh hãy nói, đôi ta chia tay\nCho con tim em không như bao ngày\nXin anh đừng đến trong cơn mơ\nĐể từng ngày qua em thôi trông mong chờ\nLeave me alone!",
+    "mark": 419,
+    "status_id": 0,
+    "author": "pynyuno",
+    "created_date": 1380727569,
+    "response": {
+        "msgCode": 1
+    }
+}
+```
+### Get videos suggestion
+
+	http://api.mp3.zing.vn/api/mobile/video/getvideosuggest?requestdata={{"id":1074729245,"start":0,"length":20}}
+
+Example: 
+
+	http://api.mp3.zing.vn/api/mobile/video/getvideosuggest?requestdata={"id":1074729245,"start":0,"length":20}
+
+Response:
+
+```json
+{
+    "docs": [
+        {
+            "video_id": 1074721681,
+            "title": "Xin Anh Đừng Đến (Teaser)",
+            "artist": "Bảo Thy",
+            "thumbnail": "thumb_video/f/6/f64dd9f5a429f0034481c443daf3fb64_1379901020.jpg",
+            "total_play": 39622,
+            "source": {
+                "240": "http://api.mp3.zing.vn/api/mobile/source/video/LnxnTLnslaFZXJZyDlGTFGLH",
+                "360": "http://api.mp3.zing.vn/api/mobile/source/video/LHJmTLmazNvLCJkydgnybGkn",
+                "480": "http://api.mp3.zing.vn/api/mobile/source/video/kHcHyLnNzNbLgcLyAxGtvHkn",
+                "720": "http://api.mp3.zing.vn/api/mobile/source/video/kmJHtLGNzaDkgcLyNFmTvnZn"
+            },
+            "likes": 89,
+            "comments": 3
+        },
+        {
+            "video_id": 1074054885,
+            "title": "Ngày Vắng Anh",
+            "artist": "Bảo Thy",
+            "thumbnail": "thumb_video/6/6/661d19a45bfcb6e78d52d6760985f1ce_1320380971.jpg",
+            "total_play": 5032925,
+            "source": {
+                "480": "http://api.mp3.zing.vn/api/mobile/source/video/LncmyZHNznQzxcWyAJHTbmLn"
+            },
+            "likes": 4111,
+            "comments": 1600
+        },
+        {
+            "video_id": 1073968552,
+            "title": "Ngại Ngùng",
+            "artist": "Angela Phương Trinh",
+            "thumbnail": "thumb_video/c/c/cc1b33c32447f0150efbe492237f14cc_1314172216.jpg",
+            "total_play": 4453329,
+            "source": {
+                "480": "http://api.mp3.zing.vn/api/mobile/source/video/LGxnykHNBuCcWWvtAJGTbGkm"
+            },
+            "likes": 3664,
+            "comments": 1448
+        },
+        {
+            "video_id": 1074758835,
+            "title": "Buồn",
+            "artist": "Uyên Linh",
+            "thumbnail": "thumb_video/b/2/b2ddd2fca2331c0a206154e68b21fa8e_1382422365.jpg",
+            "total_play": 168493,
+            "source": {
+                "240": "http://api.mp3.zing.vn/api/mobile/source/video/LmxnyZnaSNWccBWtDzHyFnLH",
+                "360": "http://api.mp3.zing.vn/api/mobile/source/video/LHJnyLnNlsQxJdQyVXGTbnLn",
+                "480": "http://api.mp3.zing.vn/api/mobile/source/video/LnJHtknsSapxJdQyzxHybGkm",
+                "720": "http://api.mp3.zing.vn/api/mobile/source/video/LGcnTLHNlsWxJdQtNbHyFnZG",
+                "1080": "http://api.mp3.zing.vn/api/mobile/source/video/ZGJmtkGNANQJxdWyLGcGTvGLm"
+            },
+            "likes": 2175,
+            "comments": 44
+        },
+        {
+            "video_id": 1074575248,
+            "title": "Quên Đi",
+            "artist": "Emily",
+            "thumbnail": "thumb_video/b/a/ba99b7fcde085e754e22f5c6aed8494b_1367553445.jpg",
+            "total_play": 2873232,
+            "source": {
+                "480": "http://api.mp3.zing.vn/api/mobile/source/video/LmJnyLmaSQaQDSJyAxGyFHkG"
+            },
+            "likes": 5946,
+            "comments": 146
+        },
+        {
+            "video_id": 1074360360,
+            "title": "Đắn Đo",
+            "artist": "Hồ Ngọc Hà",
+            "thumbnail": "thumb_video/5/2/52a2c0f065b3e44f78fb0825b03f6006_1349863571.jpg",
+            "total_play": 2415019,
+            "source": {
+                "480": "http://api.mp3.zing.vn/api/mobile/source/video/LnJHtZHazdgndhmyAJmtDmkn"
+            },
+            "likes": 3342,
+            "comments": 313
+        },
+        {
+            "video_id": 1074673921,
+            "title": "Growl (Korean Ver.)",
+            "artist": "EXO",
+            "thumbnail": "thumb_video/3/8/383f016ec268ed4879da4d9aed743544_1375337116.jpg",
+            "total_play": 559852,
+            "source": {
+                "360": "http://api.mp3.zing.vn/api/mobile/source/video/LHJmTkGNzgsVubLyBhHyDmZH",
+                "480": "http://api.mp3.zing.vn/api/mobile/source/video/knJnyLnNlXaBEDLtlJGybnLG",
+                "720": "http://api.mp3.zing.vn/api/mobile/source/video/LGxGTZGaACNdEbZyaDHTbnkG"
+            },
+            "likes": 3135,
+            "comments": 75
+        },
+        {
+            "video_id": 1074724027,
+            "title": "Request",
+            "artist": "Infinite",
+            "thumbnail": "thumb_video/8/7/8739e961e6508fc359da5be9b3f79d4a_1380338530.jpg",
+            "total_play": 116070,
+            "source": {
+                "240": "http://api.mp3.zing.vn/api/mobile/source/video/LnxGtknalNbAGvayDzHyFHLm",
+                "360": "http://api.mp3.zing.vn/api/mobile/source/video/ZHJmtLnNANFlHvaTVXHTFHkH",
+                "480": "http://api.mp3.zing.vn/api/mobile/source/video/knJnyknNlNbAmvstlJGTbmLn",
+                "720": "http://api.mp3.zing.vn/api/mobile/source/video/kHxHTZmaANvAHFsysbHtDGZn",
+                "1080": "http://api.mp3.zing.vn/api/mobile/source/video/kGcmtZmNANbSHDNtLHJntbmLH"
+            },
+            "likes": 474,
+            "comments": 12
+        },
+        {
+            "video_id": 1074564782,
+            "title": "Ngày Tinh Khôi",
+            "artist": "Thanh Tâm (Tâm Tít)",
+            "thumbnail": "thumb_video/7/9/799bad5a3b514f096e69bbc4a7896cd9_1365829680.jpg",
+            "total_play": 694865,
+            "source": {
+                "480": "http://api.mp3.zing.vn/api/mobile/source/video/LnxGyZGsAphAaJbylJHTFGkm"
+            },
+            "likes": 2027,
+            "comments": 46
+        },
+        {
+            "video_id": 1074641100,
+            "title": "Bar Bar Bar",
+            "artist": "Crayon Pop",
+            "thumbnail": "thumb_video/2013/06/26/1/5/1514a4a931708f91e61048cc381cc9f4_3.jpg",
+            "total_play": 590358,
+            "source": {
+                "480": "http://api.mp3.zing.vn/api/mobile/source/video/LHJntZmszgALLHnySxGybmLG"
+            },
+            "likes": 1075,
+            "comments": 82
+        },
+        {
+            "video_id": 1074748062,
+            "title": "Tình Mênh Mang",
+            "artist": "Bảo Thy",
+            "thumbnail": "thumb_video/1/5/15c1e690da9956fe55cec65cbbbdb6fb_1381741865.jpg",
+            "total_play": 55852,
+            "source": {
+                "240": "http://api.mp3.zing.vn/api/mobile/source/video/knJnTLGNlsAJnhFTDlGybHLG",
+                "360": "http://api.mp3.zing.vn/api/mobile/source/video/ZmJHtkGNANSJnCDTdXHtbnLH",
+                "480": "http://api.mp3.zing.vn/api/mobile/source/video/kmJGyLnaAaSJHXvtlxnyDnLn",
+                "720": "http://api.mp3.zing.vn/api/mobile/source/video/LGcntZmaANSJGhvyavmybHkn",
+                "1080": "http://api.mp3.zing.vn/api/mobile/source/video/LHJnTZmNANlJnhbyLHJHTFGLn"
+            },
+            "likes": 167,
+            "comments": 0
+        },
+        {
+            "video_id": 1074717521,
+            "title": "Cheated",
+            "artist": "5Dolls",
+            "thumbnail": "thumb_video/2013/09/23/1/9/19a4c58ef831f2549990040ca37325ad_3.jpg",
+            "total_play": 116965,
+            "source": {
+                "240": "http://api.mp3.zing.vn/api/mobile/source/video/LGJGtLnaSaksQbLyFSmyFHkn",
+                "360": "http://api.mp3.zing.vn/api/mobile/source/video/LnJGyLHsSsLNWDZydXHyvnLn",
+                "480": "http://api.mp3.zing.vn/api/mobile/source/video/LGJHTLmNzNZNpbZtAJGybmLn",
+                "720": "http://api.mp3.zing.vn/api/mobile/source/video/LnxmyZHaSaLNQbLtNvHTbGZH",
+                "1080": "http://api.mp3.zing.vn/api/mobile/source/video/LHJmtLGNlaLsWFZTLmJGTbHZn"
+            },
+            "likes": 299,
+            "comments": 12
+        }
+    ],
+    "numFound": 12,
+    "response": {
+        "msgCode": 1
+    }
+}
+```
+
+### Get video's comments
+
+	http://api.mp3.zing.vn/api/mobile/comment/getcommentofvideo?keycode={YOUR_KEY}&requestdata={"id":1074729245,"start":0,"length":20}
+
+Example:
+
+	http://api.mp3.zing.vn/api/mobile/comment/getcommentofvideo?keycode=fafd463e2131914934b73310aa34a23f&requestdata={"id":1074729245,"start":0,"length":20}
+
+Response:
+
+```json
+{
+    "numFound": 229,
+    "docs": [
+        {
+            "commentId": 1873639651,
+            "time": 1383891067,
+            "content": "nhìn chất .đúng là bảo thy. bài nào cũng thấy hay.",
+            "owner": {
+                "userName": "heroin_la_tao",
+                "displayName": "phươngg anhh"
+            }
+        },
+        {
+            "commentId": 1872645802,
+            "time": 1383806416,
+            "content": "sao mình thích nghe nhạc của chị bảo thy zậy ta !!! hay wá à",
+            "owner": {
+                "userName": "stella566.com",
+                "displayName": "barbie hot girl kute"
+            }
+        },
+        {
+            "commentId": 1870829097,
+            "time": 1383650179,
+            "content": "mới nghe thôi mà đã thấy hay rùi, bài này nhìn chị giống người ai cập quá àk",
+            "owner": {
+                "userName": "loverabit_27",
+                "displayName": "oOo Bunny Lâm cute oOo"
+            }
+        },
+        {
+            "commentId": 1870265868,
+            "time": 1383575376,
+            "content": "bài này mới nhìn zô tưởng người ấn độ nè lên top nhé",
+            "owner": {
+                "userName": "pemo121",
+                "displayName": "Quân Phạm"
+            }
+        },
+        {
+            "commentId": 1869491949,
+            "time": 1383527612,
+            "content": "cố gắng ở lại top 10 nhe Em Không Còn Buồn, nghe hoài không chán nè, vui tóa",
+            "owner": {
+                "userName": "pynyuno",
+                "displayName": "Pyn Yuno"
+            }
+        },
+        {
+            "commentId": 1869199064,
+            "time": 1383484136,
+            "content": "phong cách hàn.cũng tốt.rất biết tận dụng sự yêu thích của giới trẻ việt nam đối với nền âm nhạc Hàn quốc",
+            "owner": {
+                "userName": "baby_lonely919",
+                "displayName": "Nhóc Ít Nói"
+            }
+        },
+        {
+            "commentId": 1869164659,
+            "time": 1383483292,
+            "content": "chị lô na ơi hay quá chị ơi em mong được nghe mấy bài nhạc sôi động cũa chị , hay hơn nhạc hàn quốc nữa mà cái này hơi dài, nếu từ 3 đến 4 phút thì thật tuyệt vời, tại em thích mấy bài ngắn ngắn nghe cho nó qua mau",
+            "owner": {
+                "userName": "ocsen9s",
+                "displayName": "ocsen9s"
+            }
+        },
+        {
+            "commentId": 1868577658,
+            "time": 1383459441,
+            "content": "chị hát hay quá chị nhớ ra bài mới nửa nha mà nhớ ra bài hay giống vậy nha chị",
+            "owner": {
+                "userName": "nguyengiaquynh123",
+                "displayName": "Nguyễn Gia Quỳnh"
+            }
+        },
+        {
+            "commentId": 1866168910,
+            "time": 1383300810,
+            "content": "hay wá.iu chị bảo thy nhìu.nổi nhất là đôi giày cao gót màu đen đính hạt vàng mà ở đoạn đầu chị bảo thy đội mũ đen đó.",
+            "owner": {
+                "userName": "ngocanh8102003",
+                "displayName": "Lê Bảo Ngọc Anh"
+            }
+        },
+        {
+            "commentId": 1863798932,
+            "time": 1383056927,
+            "content": "chị bảo thy thân mến em rất thích bài hát này của chị em là fan hâm mộ của chị bảo thy em rất mến chị bảo thy",
+            "owner": {
+                "userName": "kimyensakura",
+                "displayName": "kimyensakura"
+            }
+        },
+        {
+            "commentId": 1863764156,
+            "time": 1383055499,
+            "content": "bài này không hợp với bảo thy lắm. bảo thy là phải là công chúa bong bóng chứ",
+            "owner": {
+                "userName": "puccaubeo",
+                "displayName": "Nguyễn Lý Gia Hân"
+            }
+        },
+        {
+            "commentId": 1863010824,
+            "time": 1383011539,
+            "content": "úi giời hay tuyệt vũ điệu của chị bảo thy hay thiệt",
+            "owner": {
+                "userName": "duc_thannuoc",
+                "displayName": "Hồ Mạnh Đức"
+            }
+        },
+        {
+            "commentId": 1862324715,
+            "time": 1382941541,
+            "content": "hay wá đi chị bảo thy quay video wá cá tính dễ thương",
+            "owner": {
+                "userName": "camerlia",
+                "displayName": "SUM x FLORA x STELLA x AISHA hÓm hỈnH"
+            }
+        },
+        {
+            "commentId": 1862169322,
+            "time": 1382931391,
+            "content": "nghe có khúc giống nhạc tiếng anh,là sao ta!chắc là đạo nhạc nưa rồi",
+            "owner": {
+                "userName": "nhoxrua0106",
+                "displayName": "pe vjrut"
+            }
+        },
+        {
+            "commentId": 1862088966,
+            "time": 1382923459,
+            "content": "bài này hay quá đi à nhất là khúc dạo nhạc í chị thy ơi làm nhìu mv hay nữa nha",
+            "owner": {
+                "userName": "sori12645",
+                "displayName": "Nguyễn Huỳnh Trúc Thy"
+            }
+        },
+        {
+            "commentId": 1861265030,
+            "time": 1382857734,
+            "content": "chị Bảo Thy ơi!Chị hát bài nào cũng hay hết.Em rất yêu chị,chị đẹp như thiên thần",
+            "owner": {
+                "userName": "nguyenquynhan2001",
+                "displayName": " nguyenquynhan2001"
+            }
+        },
+        {
+            "commentId": 1860303216,
+            "time": 1382793255,
+            "content": "bảo thy nhảy đẹp thật! nữ hoàng ai cập bảo thy tuyệt vời",
+            "owner": {
+                "userName": "hienthichhuuhuy",
+                "displayName": "Phan Thị Hiền"
+            }
+        },
+        {
+            "commentId": 1855971948,
+            "time": 1382442763,
+            "content": "chị hát hay wá em hum mộ chị lắm mong chị ra nhìu mc mới nhen",
+            "owner": {
+                "userName": "suna1912",
+                "displayName": "Pôn Pé Pự"
+            }
+        },
+        {
+            "commentId": 1854888134,
+            "time": 1382349985,
+            "content": "Chị hát hay quá em sẽ mãi là fan của chịu I LOVE YOU BẢO THY",
+            "owner": {
+                "userName": "nhiprolaclam",
+                "displayName": "Nhi Trần"
+            }
+        },
+        {
+            "commentId": 1854827122,
+            "time": 1382346354,
+            "content": "vũ đạo tuyệt cú mèo! nữ hoàng ai cập bảo tky muôn năm!!!!",
+            "owner": {
+                "userName": "heo548",
+                "displayName": "ĨiÍ ngỐ ÍiĨ"
+            }
+        }
+    ],
+    "response": {
+        "msgCode": 1
+    }
+}
+```
+
+## ARTISTS
+
+### Get artists by genre
+
+	http://api.mp3.zing.vn/api/mobile/artist/getartistbygenre?key={YOUR_KEY}&requestdata={{"sort":"","id":0,"length":20,"start":0}}
+
+`{"sort":"alphabet","id":4,"length":20,"filter":"C","start":0}` => get artists whose names starting with "C"
+`id` => genre, `Viet nam` or `Han quoc` ....
+
+Example:
+	
+	http://api.mp3.zing.vn/api/mobile/artist/getartistbygenre?key=fafd463e2131914934b73310aa34a23f&requestdata={"sort":"","id":0,"length":20,"start":0}
+
+Response:
+
+```json
+{
+    "numFound": 42874,
+    "start": 0,
+    "docs": [
+        {
+            "artist_id": 16,
+            "name": "Đàm Vĩnh Hưng",
+            "avatar": "avatars/8/b/8bfbdc043fed3c56c42eb27108aac199_1376293480.jpg",
+            "link": "/nghe-si/Dam-Vinh-Hung"
+        },
+        {
+            "artist_id": 828,
+            "name": "Quang Lê",
+            "avatar": "avatars/9/6/96c7f8568cdc943997aace39708bf7b6_1376539870.jpg",
+            "link": "/nghe-si/Quang-Le"
+        },
+        {
+            "artist_id": 66,
+            "name": "Đan Trường",
+            "avatar": "avatars/c/9/c93c54b690b08b0fffa8833f44137c6c_1328519684.jpg",
+            "link": "/nghe-si/Dan-Truong"
+        },
+        {
+            "artist_id": 2806,
+            "name": "Khắc Việt",
+            "avatar": "avatars/8/3/83865cedbe1e47ee62e62650f6c4d6d6_1380021418.jpg",
+            "link": "/nghe-si/Khac-Viet"
+        },
+        {
+            "artist_id": 3663,
+            "name": "Phạm Trưởng",
+            "avatar": "avatars/9/8/9852df962d52b3660be01189150f765a_1372655379.jpg",
+            "link": "/nghe-si/Pham-Truong"
+        },
+        {
+            "artist_id": 100,
+            "name": "Lệ Quyên",
+            "avatar": "avatars/1/4/141d134b51150f2c5ce233686b105a5b_1368517961.jpg",
+            "link": "/nghe-si/Le-Quyen"
+        },
+        {
+            "artist_id": 242,
+            "name": "Lương Bích Hữu",
+            "avatar": "avatars/a/0/a0ab8112abab50b3de78d440a15e211e_1371293203.jpg",
+            "link": "/nghe-si/Luong-Bich-Huu"
+        },
+        {
+            "artist_id": 209,
+            "name": "Khánh Phương",
+            "avatar": "avatars/3/8/38269d87c2710617130cf2c17796ac74_1366620491.jpg",
+            "link": "/nghe-si/Khanh-Phuong"
+        },
+        {
+            "artist_id": 6083,
+            "name": "Hồ Quang Hiếu",
+            "avatar": "avatars/1/b/1b03ea82b35e244e353228d6417cd53c_1380765906.jpg",
+            "link": "/nghe-si/Ho-Quang-Hieu"
+        },
+        {
+            "artist_id": 444,
+            "name": "Đông Nhi",
+            "avatar": "avatars/d/0/d0d31439e6c0ea1ae5afe5b73f04ce94_1343730207.jpg",
+            "link": "/nghe-si/Dong-Nhi"
+        },
+        {
+            "artist_id": 29,
+            "name": "Cao Thái Sơn",
+            "avatar": "avatars/e/7/e76998c126e70feb0b14779b36268128_1381922690.jpg",
+            "link": "/nghe-si/Cao-Thai-Son"
+        },
+        {
+            "artist_id": 465,
+            "name": "Bảo Thy",
+            "avatar": "avatars/d/f/dfeb09792969220943592c08142b9ef7_1376839232.jpg",
+            "link": "/nghe-si/Bao-Thy"
+        },
+        {
+            "artist_id": 484,
+            "name": "Hồ Ngọc Hà",
+            "avatar": "avatars/c/3/c300ae434343b009621c000ef85bc849_1381059559.jpg",
+            "link": "/nghe-si/Ho-Ngoc-Ha"
+        },
+        {
+            "artist_id": 966,
+            "name": "Noo Phước Thịnh",
+            "avatar": "avatars/a/c/acac606ea8ccc82446d3111736734a9f_1353582559.jpg",
+            "link": "/nghe-si/Noo-Phuoc-Thinh"
+        },
+        {
+            "artist_id": 3879,
+            "name": "Minh Vương M4U",
+            "avatar": "avatars/e/2/e2358dc9ba8b5b5e9bc0476dea165e9d_1373258860.jpg",
+            "link": "/nghe-si/Minh-Vuong-M4U"
+        },
+        {
+            "artist_id": 376,
+            "name": "Mỹ Tâm",
+            "avatar": "avatars/d/b/dbdbdce97a2ba5a55cebbea6a1119cd3_1369815533.jpg",
+            "link": "/nghe-si/My-Tam"
+        },
+        {
+            "artist_id": 6094,
+            "name": "HKT",
+            "avatar": "avatars/1/5/150840b5b5849fc50cfd4902cc102d99_1343638478.jpg",
+            "link": "/nghe-si/HKT"
+        },
+        {
+            "artist_id": 3094,
+            "name": "The Men",
+            "avatar": "avatars/a/d/ad7bc863acc50ad3b747c51c2f85b431_1373259706.jpg",
+            "link": "/nghe-si/The-Men"
+        },
+        {
+            "artist_id": 832,
+            "name": "Tuấn Hưng",
+            "avatar": "avatars/1/3/13f387c9049b09498fcd6df2a311b0e7_1369826590.jpg",
+            "link": "/nghe-si/Tuan-Hung"
+        },
+        {
+            "artist_id": 494,
+            "name": "Thủy Tiên",
+            "avatar": "avatars/2/3/23bf3db84bba29db458b1851ae7994bb_1380254086.jpg",
+            "link": "/nghe-si/Thuy-Tien"
+        }
+    ],
+    "response": {
+        "msgCode": 1
+    }
+}
+```
+
+### Get albums of an artist
+
+	http://api.mp3.zing.vn/api/mobile/artist/getalbumofartist?key={YOUR_KEY}&requestdata={{"id":347,"start":0,"length":20}}
+
+Example:
+
+	http://api.mp3.zing.vn/api/mobile/artist/getalbumofartist?key=fafd463e2131914934b73310aa34a23f&requestdata={"id":347,"start":0,"length":20}
+
+Response:
+
+```json
+{
+    "numFound": 30,
+    "start": 0,
+    "docs": [
+        {
+            "playlist_id": 1073744608,
+            "playlist_id_encode": "ZWZ9ZB60",
+            "title": "Bolero",
+            "title_stripviet": "Bolero",
+            "artist": "Mr.Children",
+            "artist_stripviet": "Mr-Children",
+            "cover": "covers/a/5/a59f1cacc3ab574a35c0b01fdec4bea8_1288284042.jpg",
+            "total_play": 24230
+        },
+        {
+            "playlist_id": 1073744777,
+            "playlist_id_encode": "ZWZ9ZC09",
+            "title": "Kimi ga Suki",
+            "title_stripviet": "Kimi-ga-Suki",
+            "artist": "Mr.Children",
+            "artist_stripviet": "Mr-Children",
+            "cover": "covers/3/7/3793f4e083d1035f76f3cbc7993fd491_1288455851.jpg",
+            "total_play": 12239
+        },
+        {
+            "playlist_id": 1073744544,
+            "playlist_id_encode": "ZWZ9ZBW0",
+            "title": "Home",
+            "title_stripviet": "Home",
+            "artist": "Mr.Children",
+            "artist_stripviet": "Mr-Children",
+            "cover": "covers/6/3/63ec47b251e1e81af3c2b4f91709bb11_1288186336.jpg",
+            "total_play": 11316
+        },
+        {
+            "playlist_id": 1073743704,
+            "playlist_id_encode": "ZWZ9Z7D8",
+            "title": "I ♥ U",
+            "title_stripviet": "I-U",
+            "artist": "Mr.Children",
+            "artist_stripviet": "Mr-Children",
+            "cover": "covers/f/d/fd0ca29665717bca6c98b8fee90cc75e_1286987677.jpg",
+            "total_play": 11076
+        },
+        {
+            "playlist_id": 1073813826,
+            "playlist_id_encode": "ZWZA69CW",
+            "title": "[(an imitation) blood orange]",
+            "title_stripviet": "an-imitation-blood-orange",
+            "artist": "Mr.Children",
+            "artist_stripviet": "Mr-Children",
+            "cover": "covers/2/0/20edeceb5051a172872534eb427206a4_1354776514.jpg",
+            "total_play": 10938
+        },
+        {
+            "playlist_id": 1073788577,
+            "playlist_id_encode": "ZWZA07WI",
+            "title": "Mr.Children 2005-2010 (macro)",
+            "title_stripviet": "Mr-Children-2005-2010-macro",
+            "artist": "Mr.Children",
+            "artist_stripviet": "Mr-Children",
+            "cover": "covers/5/5/551fc24b29280ddd91f617436759cc27_1336799552.jpg",
+            "total_play": 10158
+        },
+        {
+            "playlist_id": 1073748390,
+            "playlist_id_encode": "ZWZ96AW6",
+            "title": "Mr.Children 1996-2000",
+            "title_stripviet": "Mr-Children-1996-2000",
+            "artist": "Mr.Children",
+            "artist_stripviet": "Mr-Children",
+            "cover": "covers/1/b/1be2a3dfc1f2fc5bb8d75e03477f759c_1291223563.jpg",
+            "total_play": 9492
+        },
+        {
+            "playlist_id": 1073788576,
+            "playlist_id_encode": "ZWZA07W0",
+            "title": "Mr.Children 2001-2005 (micro)",
+            "title_stripviet": "Mr-Children-2001-2005-micro",
+            "artist": "Mr.Children",
+            "artist_stripviet": "Mr-Children",
+            "cover": "covers/8/3/83b8262dc815ef7ff2bf193cc08c8942_1336799512.jpg",
+            "total_play": 9214
+        },
+        {
+            "playlist_id": 1073748389,
+            "playlist_id_encode": "ZWZ96AWZ",
+            "title": "Mr.Children 1992-1995",
+            "title_stripviet": "Mr-Children-1992-1995",
+            "artist": "Mr.Children",
+            "artist_stripviet": "Mr-Children",
+            "cover": "covers/c/7/c70b8d579bdacf419d87c4868dcbf3bb_1291223410.jpg",
+            "total_play": 7956
+        },
+        {
+            "playlist_id": 1073749798,
+            "playlist_id_encode": "ZWZ96FA6",
+            "title": "It's A Wonderful World",
+            "title_stripviet": "It-s-A-Wonderful-World",
+            "artist": "Mr.Children",
+            "artist_stripviet": "Mr-Children",
+            "cover": "covers/9/2/9260db3c2a13022a6c4a5a01c78d6842_1292755945.jpg",
+            "total_play": 7333
+        },
+        {
+            "playlist_id": 1073758521,
+            "playlist_id_encode": "ZWZ99IB9",
+            "title": "B-SIDE (CD1)",
+            "title_stripviet": "B-SIDE-CD1",
+            "artist": "Mr.Children",
+            "artist_stripviet": "Mr-Children",
+            "cover": "covers/d/d/dd50a1043fa6d2050347e3185e5d6aa1_1304625975.jpg",
+            "total_play": 6841
+        },
+        {
+            "playlist_id": 1073758522,
+            "playlist_id_encode": "ZWZ99IBA",
+            "title": "B-SIDE (CD2)",
+            "title_stripviet": "B-SIDE-CD2",
+            "artist": "Mr.Children",
+            "artist_stripviet": "Mr-Children",
+            "cover": "covers/d/d/dd50a1043fa6d2050347e3185e5d6aa1_1304626030.jpg",
+            "total_play": 6500
+        },
+        {
+            "playlist_id": 1073787149,
+            "playlist_id_encode": "ZWZA0I8D",
+            "title": "祈り ~涙の軌道 (Inori - Namida no Kido) / End Of The Day / Pieces",
+            "title_stripviet": "Inori-Namida-no-Kido-End-Of-The-Day-Pieces",
+            "artist": "Mr.Children",
+            "artist_stripviet": "Mr-Children",
+            "cover": "covers/0/8/08c88ce745e2e18f18ec504d12ccafcb_1335319523.jpg",
+            "total_play": 4828
+        },
+        {
+            "playlist_id": 1073744550,
+            "playlist_id_encode": "ZWZ9ZBW6",
+            "title": "Q.",
+            "title_stripviet": "Q",
+            "artist": "Mr.Children",
+            "artist_stripviet": "Mr-Children",
+            "cover": "covers/a/3/a30590dee90d658f2504b1d7613a3f6e_1288188594.jpg",
+            "total_play": 4755
+        },
+        {
+            "playlist_id": 1073748388,
+            "playlist_id_encode": "ZWZ96AWU",
+            "title": "Sense",
+            "title_stripviet": "Sense",
+            "artist": "Mr.Children",
+            "artist_stripviet": "Mr-Children",
+            "cover": "covers/3/9/39fd461c5b7410b0485f8d9afac73dd7_1291222436.jpg",
+            "total_play": 4338
+        },
+        {
+            "playlist_id": 1073748500,
+            "playlist_id_encode": "ZWZ96A9U",
+            "title": "Tomorrow Never Knows",
+            "title_stripviet": "Tomorrow-Never-Knows",
+            "artist": "Mr.Children",
+            "artist_stripviet": "Mr-Children",
+            "cover": "covers/d/7/d78019fe1d47d665495010d469f954e8_1291291673.jpg",
+            "total_play": 3902
+        },
+        {
+            "playlist_id": 1073743285,
+            "playlist_id_encode": "ZWZ9Z6OZ",
+            "title": "Supermarket Fantasy",
+            "title_stripviet": "Supermarket-Fantasy",
+            "artist": "Mr.Children",
+            "artist_stripviet": "Mr-Children",
+            "cover": "covers/f/7/f75524897b4478351b193b5478d2d13b_1286649327.jpg",
+            "total_play": 3674
+        },
+        {
+            "playlist_id": 1073743698,
+            "playlist_id_encode": "ZWZ9Z7DW",
+            "title": "Hanabi",
+            "title_stripviet": "Hanabi",
+            "artist": "Mr.Children",
+            "artist_stripviet": "Mr-Children",
+            "cover": "covers/0/8/0850d62b8fe3f54842cf0f2ef3a47c17_1286971202.jpg",
+            "total_play": 3585
+        },
+        {
+            "playlist_id": 1073744551,
+            "playlist_id_encode": "ZWZ9ZBW7",
+            "title": "シフクノオト (Shifuku no Oto)",
+            "title_stripviet": "Shifuku-no-Oto",
+            "artist": "Mr.Children",
+            "artist_stripviet": "Mr-Children",
+            "cover": "covers/1/1/11caff0ece444802136f802e69629ec9_1288190249.jpg",
+            "total_play": 3456
+        },
+        {
+            "playlist_id": 1073744561,
+            "playlist_id_encode": "ZWZ9ZBOI",
+            "title": "Discovery",
+            "title_stripviet": "Discovery",
+            "artist": "Mr.Children",
+            "artist_stripviet": "Mr-Children",
+            "cover": "covers/7/c/7c5512d92038cf06aec6cd63f8a20a33_1288191848.jpg",
+            "total_play": 2818
+        }
+    ],
+    "response": {
+        "msgCode": 1
+    }
+}
+```
+
+### Get songs of an artist
+
+	http://api.mp3.zing.vn/api/mobile/artist/getsongofartist?key={YOUR_KEY}&requestdata={{"id":347,"start":0,"length":20}}
+
+Example:
+
+	http://api.mp3.zing.vn/api/mobile/artist/getsongofartist?key=fafd463e2131914934b73310aa34a23f&requestdata={"id":347,"start":0,"length":20}
+
+```json
+{
+    "numFound": 285,
+    "start": 0,
+    "docs": [
+        {
+            "song_id": 1074432315,
+            "title": "過去と未来と交信する男 (Kako To Mirai To Koushin Suru Otoko)",
+            "artist_id": "347",
+            "artist": "Mr.Children",
+            "album_id": 0,
+            "download_status": 1,
+            "copyright": "",
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/kGJHTZGslzBbVLQykDJyDnLm",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/kGxGykGNzSdDdZQyVFnyDmLn",
+                "lossless": ""
+            },
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/kncnyZHNAAdvVZQyLFJybnZn",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/LGxnTknNAABvdkWyVbGTvnLG",
+                "lossless": ""
+            },
+            "link": "/bai-hat/Kako-To-Mirai-To-Koushin-Suru-Otoko-Mr-Children/ZW6OD9BB.html"
+        },
+        {
+            "song_id": 1074432316,
+            "title": "Happy Song",
+            "artist_id": "347",
+            "artist": "Mr.Children",
+            "album_id": 0,
+            "download_status": 1,
+            "copyright": "",
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/LncnTkHNlABDVZXTLvJyvmkm",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/LncnyknszSdFVLhyVDnTDmZG",
+                "lossless": ""
+            },
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/LHJHTLmNlldbVkhtLvcTDGLn",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/LGJGTLGaSlBvdLhtdFmTbHkm",
+                "lossless": ""
+            },
+            "link": "/bai-hat/Happy-Song-Mr-Children/ZW6OD9BC.html"
+        },
+        {
+            "song_id": 1074432310,
+            "title": "常套句 (Joutouku)",
+            "artist_id": "347",
+            "artist": "Mr.Children",
+            "album_id": 0,
+            "download_status": 1,
+            "copyright": "",
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/knJGyZnNSldbBLGtZvJyFHLH",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/LmxGyLnNlSdbVLHTdvmTbnZn",
+                "lossless": ""
+            },
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/LGJmTLHNzABDdLHtLFJyvHLm",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/ZnJnyLnaAldbdkntdbGyFHZm",
+                "lossless": ""
+            },
+            "link": "/bai-hat/Joutouku-Mr-Children/ZW6OD9B6.html"
+        },
+        {
+            "song_id": 1074432317,
+            "title": "祈り 〜涙の軌道 (Inori -Namida No Kidou)",
+            "artist_id": "347",
+            "artist": "Mr.Children",
+            "album_id": 0,
+            "download_status": 1,
+            "copyright": "",
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/ZHJGTLnNlAdFBkNTZbcyDnZH",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/kGJGTLGNSlBDVLsTBbGybmkn",
+                "lossless": ""
+            },
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/LmJGyZmsASBFdLsyLFJyFGLG",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/kmxmtLmNlzBDdLNTdDmtvmkG",
+                "lossless": ""
+            },
+            "link": "/bai-hat/Inori-Namida-No-Kidou-Mr-Children/ZW6OD9BD.html"
+        },
+        {
+            "song_id": 1074432312,
+            "title": "イミテーションの木 (Imitation No Ki)",
+            "artist_id": "347",
+            "artist": "Mr.Children",
+            "album_id": 0,
+            "download_status": 1,
+            "copyright": "",
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/LHcHyZnazAVDVkvyLvJybHkn",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/LmJGyknNAAdbVkbydDnTDnLn",
+                "lossless": ""
+            },
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/kGxmTknaSAVvdkDyZDJtFmLm",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/LmJGyZmNlSVbBLvtBvHTDmkH",
+                "lossless": ""
+            },
+            "link": "/bai-hat/Imitation-No-Ki-Mr-Children/ZW6OD9B8.html"
+        },
+        {
+            "song_id": 1074432308,
+            "title": "Marshmallow Day",
+            "artist_id": "347",
+            "artist": "Mr.Children",
+            "album_id": 0,
+            "download_status": 1,
+            "copyright": "",
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/kGJHtLGsllVFBGJTkbJTDGLH",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/kHJHyLHaAzdDBmcyVDHybmkm",
+                "lossless": ""
+            },
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/LnJmyZnNSlVFdHcyZFxybmLH",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/ZnJHtZGNzlVvVnxydbHyFHZH",
+                "lossless": ""
+            },
+            "link": "/bai-hat/Marshmallow-Day-Mr-Children/ZW6OD9BU.html"
+        },
+        {
+            "song_id": 1074198877,
+            "title": "And I Love You",
+            "artist_id": "347",
+            "artist": "Mr.Children",
+            "album_id": 0,
+            "download_status": 1,
+            "copyright": "",
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/LHJHTLnazLucJNsykvJTDHLG",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/LGcnyknNlLuJJaNydvnTvmZG",
+                "lossless": ""
+            },
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/LHJmyLnaALuxxsNyLDxyvnZH",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/ZncmTLGNALixJaNyBbnyvmLn",
+                "lossless": ""
+            },
+            "link": "/bai-hat/And-I-Love-You-Mr-Children/ZW60U9DD.html"
+        },
+        {
+            "song_id": 1074192516,
+            "title": "祈り ~涙の軌道 (Inori - Namida No Kido)",
+            "artist_id": "347",
+            "artist": "Mr.Children",
+            "album_id": 0,
+            "download_status": 1,
+            "copyright": "",
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/kHJntLHaSLEbWLhyZvctvGkG",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/kHJHyLHslZEvWkCyVvnyvmLG",
+                "lossless": ""
+            },
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/LncmyLHsSLuvQLCTLFJybHkn",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/LmcHtkHaSLEFQkgtdvnTDGLH",
+                "lossless": ""
+            },
+            "link": "/bai-hat/Inori-Namida-No-Kido-Mr-Children/ZW60OI0U.html"
+        },
+        {
+            "song_id": 1074198876,
+            "title": "Sign",
+            "artist_id": "347",
+            "artist": "Mr.Children",
+            "album_id": 0,
+            "download_status": 1,
+            "copyright": "",
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/kGJnTLGaALuJJshTZDcyDHLG",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/LmJntLGslZuJcaXyBDmTFnLH",
+                "lossless": ""
+            },
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/ZmJnTLHNzZRJcsCTLvJybHLG",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/kmJGtLGalkEcJaCtdDnyFmZn",
+                "lossless": ""
+            },
+            "link": "/bai-hat/Sign-Mr-Children/ZW60U9DC.html"
+        },
+        {
+            "song_id": 1074198879,
+            "title": "ランニングハイ (Running High)",
+            "artist_id": "347",
+            "artist": "Mr.Children",
+            "album_id": 0,
+            "download_status": 1,
+            "copyright": "",
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/kGJHykHNSLuxJsRyLDJTDmkG",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/LnJmyLHszZEJcsutVvmTDnkn",
+                "lossless": ""
+            },
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/LGxGtZGNAkEccNiTkFJyFGZH",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/ZmcmTLGslZEJJsuTdbHyvnkG",
+                "lossless": ""
+            },
+            "link": "/bai-hat/Running-High-Mr-Children/ZW60U9DF.html"
+        },
+        {
+            "song_id": 1074198848,
+            "title": "Hanabi",
+            "artist_id": "347",
+            "artist": "Mr.Children",
+            "album_id": 0,
+            "download_status": 1,
+            "copyright": "",
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/LnJHyLHNAkEJxlxyZvxyDnkG",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/ZGJmyZHszLixclxyVFHtDHZG",
+                "lossless": ""
+            },
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/LmxGykHazLicJlJTZbxyvGLm",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/kHcnykGNALucJSJtBvnTFnZH",
+                "lossless": ""
+            },
+            "link": "/bai-hat/Hanabi-Mr-Children/ZW60U9C0.html"
+        },
+        {
+            "song_id": 1074192518,
+            "title": "Pieces",
+            "artist_id": "347",
+            "artist": "Mr.Children",
+            "album_id": 0,
+            "download_status": 1,
+            "copyright": "",
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/LGJGtLHNlZRDWkctLvJTvGZn",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/LmcmtZGsALRbpLctBvntbmLG",
+                "lossless": ""
+            },
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/ZHJHyLmNSZuDpZJyLbJyFmLG",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/ZHcGyZmNALiDpZJydFmyDGZm",
+                "lossless": ""
+            },
+            "link": "/bai-hat/Pieces-Mr-Children/ZW60OI06.html"
+        },
+        {
+            "song_id": 1073759034,
+            "title": "HANABI",
+            "artist_id": "347",
+            "artist": "Mr.Children",
+            "album_id": 0,
+            "download_status": 1,
+            "copyright": "",
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/LHcGtLGaBaQuHVzTLbJyFnkH",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/ZnxHTLGNVspRHBzydFGTvHZm",
+                "lossless": ""
+            },
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/LGJmtkGsVaQEGdzTLbJtvHLG",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/LmJnyLGsVNQunVSyBbmyDmZG",
+                "lossless": ""
+            },
+            "link": "/bai-hat/HANABI-Mr-Children/ZWZ99OBA.html"
+        },
+        {
+            "song_id": 1073821691,
+            "title": "One, Two, Three",
+            "artist_id": "347",
+            "artist": "Mr.Children",
+            "album_id": 0,
+            "download_status": 1,
+            "copyright": "",
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/LnJnyLmNBxDLXEkyLDcyFnkn",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/LHJHTLHsBxbLCRZyVFmTvGZH",
+                "lossless": ""
+            },
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/LmJGTLGaVJDZhiZTkbxyvmLm",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/LncmyZnsdJFkgEkTBvnyFnLm",
+                "lossless": ""
+            },
+            "link": "/bai-hat/One-Two-Three-Mr-Children/ZWZA887B.html"
+        },
+        {
+            "song_id": 1073759904,
+            "title": "And I Love You",
+            "artist_id": "347",
+            "artist": "Mr.Children",
+            "album_id": 0,
+            "download_status": 1,
+            "copyright": "",
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/ZnxHTLGsdsQuiHzTZvJyFmZn",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/LHxntZGadapiimStBvmybHZH",
+                "lossless": ""
+            },
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/ZmcGyLmNVNWEuGztLvxyDmZG",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/LHJntkHNBsWiRGATVvnTDnLH",
+                "lossless": ""
+            },
+            "link": "/bai-hat/And-I-Love-You-Mr-Children/ZWZ997W0.html"
+        },
+        {
+            "song_id": 1074198878,
+            "title": "未来 (Mirai)",
+            "artist_id": "347",
+            "artist": "Mr.Children",
+            "album_id": 0,
+            "download_status": 1,
+            "copyright": "",
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/LHJmyLGNALuJcaJyZFJtbnLH",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/ZmJGyLmslZuxcNxydDGTvmkG",
+                "lossless": ""
+            },
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/LHJmykmsALuccNxyZFJyFnLm",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/kmxGTLGaALixJaJyBvHTvHLm",
+                "lossless": ""
+            },
+            "link": "/bai-hat/Mirai-Mr-Children/ZW60U9DE.html"
+        },
+        {
+            "song_id": 1074198875,
+            "title": "くるみ (Kurumi)",
+            "artist_id": "347",
+            "artist": "Mr.Children",
+            "album_id": 0,
+            "download_status": 1,
+            "copyright": "",
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/kHJHTknNAZEccNQyZvxTDHZm",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/ZHcGyknNzZuJcaQTdbmybHLn",
+                "lossless": ""
+            },
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/kHcHTLHNALuJxspyLvxyDmkG",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/LHJnyLmsSZRJcspydbnyFGLn",
+                "lossless": ""
+            },
+            "link": "/bai-hat/Kurumi-Mr-Children/ZW60U9DB.html"
+        },
+        {
+            "song_id": 1073808652,
+            "title": "Tomorrow Never Knows",
+            "artist_id": "347",
+            "artist": "Mr.Children",
+            "album_id": 0,
+            "download_status": 1,
+            "copyright": "",
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/kGcHyLmadJnJCpDykbctDmLG",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/ZGJmtLHsdJmJhQvTdDHTDHkn",
+                "lossless": ""
+            },
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/LHJHyLmNVcmJXQvtkDJtvnkG",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/kGJmyZnNdcHxgQDtBFGyDmZn",
+                "lossless": ""
+            },
+            "link": "/bai-hat/Tomorrow-Never-Knows-Mr-Children/ZWZAZZ8C.html"
+        },
+        {
+            "song_id": 1073808486,
+            "title": "Innocent World",
+            "artist_id": "347",
+            "artist": "Mr.Children",
+            "album_id": 0,
+            "download_status": 1,
+            "copyright": "",
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/ZHJnyZnNVcncAxCykvxtFGkG",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/LmJHTZGNdJmJSxCyVDnTvnLm",
+                "lossless": ""
+            },
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/ZHJntLmNVJmJlJCyLbJTvGZm",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/ZHxGykGNVcnJzJgtdbmTFHLG",
+                "lossless": ""
+            },
+            "link": "/bai-hat/Innocent-World-Mr-Children/ZWZAZUE6.html"
+        },
+        {
+            "song_id": 1074198874,
+            "title": "掌 (Tenohira)",
+            "artist_id": "347",
+            "artist": "Mr.Children",
+            "album_id": 0,
+            "download_status": 1,
+            "copyright": "",
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/LnJGTLnszZEJxslyLDJtvnZH",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/knJnyZHNzLiJxNSyVvGtvmZH",
+                "lossless": ""
+            },
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/LHcmTZmaALucxNStLvJyDmkn",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/kmxHtLGaAZiJcaAydbHyDHZn",
+                "lossless": ""
+            },
+            "link": "/bai-hat/Tenohira-Mr-Children/ZW60U9DA.html"
+        }
+    ],
+    "response": {
+        "msgCode": 1
+    }
+}
+```
+
+### Get videos of an artist
+
+	http://api.mp3.zing.vn/api/mobile/artist/getvideoofartist?key={YOUR_KEY}&requestdata={{"id":347,"start":0,"length":20}}
+
+Example:
+
+	http://api.mp3.zing.vn/api/mobile/artist/getvideoofartist?key=fafd463e2131914934b73310aa34a23f&requestdata={"id":347,"start":0,"length":20}
+
+Response:
+
+```json
+{
+    "numFound": 91,
+    "start": 0,
+    "docs": [
+        {
+            "video_id": "1074618459",
+            "title": "Worlds End",
+            "artist": "Mr.Children",
+            "thumbnail": "thumb_video/2013/06/06/8/b/8b7c7848606c3c74cedd9818fcaf6113_2.jpg",
+            "total_play": 889,
+            "source": {
+                "480": "http://api.mp3.zing.vn/api/mobile/source/video/ZGJnyZnaSgkJlpuylJGyFHkG"
+            },
+            "link": "/video-clip/Worlds-End-Mr-Children/ZW66B0DB.html"
+        },
+        {
+            "video_id": "1074618458",
+            "title": "Worlds End & 365 Day (Music Station)",
+            "artist": "Mr.Children",
+            "thumbnail": "thumb_video/2013/06/06/2/f/2f8a0cadcafd198b24b4c668ff67ea4f_2.jpg",
+            "total_play": 424,
+            "source": {
+                "480": "http://api.mp3.zing.vn/api/mobile/source/video/LmJHyknNzCkJlQJtSxmyDGZH"
+            },
+            "link": "/video-clip/Worlds-End-365-Day-Music-Station-Mr-Children/ZW66B0DA.html"
+        },
+        {
+            "video_id": "1074618457",
+            "title": "To U 2007 Home Tour Live",
+            "artist": "Mr.Children",
+            "thumbnail": "thumb_video/2013/06/06/d/9/d9cf373c07af90b9e2d549738ed86c85_1.jpg",
+            "total_play": 53,
+            "source": {
+                "480": "http://api.mp3.zing.vn/api/mobile/source/video/kHcHtZHalgkJApaTzcmyDHLG"
+            },
+            "link": "/video-clip/To-U-2007-Home-Tour-Live-Mr-Children/ZW66B0D9.html"
+        },
+        {
+            "video_id": "1074618456",
+            "title": "Tenohira (2004 Tour live)",
+            "artist": "Mr.Children",
+            "thumbnail": "thumb_video/2013/06/06/2/e/2ee9805716c7c0f0647ee69bcb2e7cc6_2.jpg",
+            "total_play": 144,
+            "source": {
+                "480": "http://api.mp3.zing.vn/api/mobile/source/video/knJHTZmNSXkcAWCtSJGTvHkn"
+            },
+            "link": "/video-clip/Tenohira-2004-Tour-live-Mr-Children/ZW66B0D8.html"
+        },
+        {
+            "video_id": "1074618455",
+            "title": "Shirushi (Karaoke)",
+            "artist": "Mr.Children",
+            "thumbnail": "thumb_video/2013/06/06/4/b/4b587126043dd2bc4442404a73cc567e_1.jpg",
+            "total_play": 364,
+            "source": {
+                "480": "http://api.mp3.zing.vn/api/mobile/source/video/ZmcmykHNACZJzWQTzxGyFGLG"
+            },
+            "link": "/video-clip/Shirushi-Karaoke-Mr-Children/ZW66B0D7.html"
+        },
+        {
+            "video_id": "1074618454",
+            "title": "Marshmallow day (2012 FN)",
+            "artist": "Mr.Children",
+            "thumbnail": "thumb_video/2013/06/06/b/c/bc70a91ab70a31244f76ea665e90864d_1.jpg",
+            "total_play": 0,
+            "source": {
+                "480": "http://api.mp3.zing.vn/api/mobile/source/video/kGxGyZGsSCkJlQAtlxHyvnLG"
+            },
+            "link": "/video-clip/Marshmallow-day-2012-FN-Mr-Children/ZW66B0D6.html"
+        },
+        {
+            "video_id": "1074618453",
+            "title": "Joutouku (Best Artist 2012)",
+            "artist": "Mr.Children",
+            "thumbnail": "thumb_video/2013/06/06/3/3/33d662e326e46073e40bd25b4965e4c2_2.jpg",
+            "total_play": 191,
+            "source": {
+                "480": "http://api.mp3.zing.vn/api/mobile/source/video/ZHxHtLHazXZxlWdtSJGybHZG"
+            },
+            "link": "/video-clip/Joutouku-Best-Artist-2012-Mr-Children/ZW66B0DZ.html"
+        },
+        {
+            "video_id": "1074618452",
+            "title": "Joutouku (2012 FNS)",
+            "artist": "Mr.Children",
+            "thumbnail": "thumb_video/2013/06/06/3/5/3536ad9729569926d0925b955425e223_3.jpg",
+            "total_play": 0,
+            "source": {
+                "480": "http://api.mp3.zing.vn/api/mobile/source/video/LHxntLHNzXZxAQvTSJnyvGLm"
+            },
+            "link": "/video-clip/Joutouku-2012-FNS-Mr-Children/ZW66B0DU.html"
+        },
+        {
+            "video_id": "1074618451",
+            "title": "HANABI",
+            "artist": "Mr.Children",
+            "thumbnail": "thumb_video/2013/06/06/f/4/f44f1317d57a7fe4b7795dbbeb5c7e1f_3.jpg",
+            "total_play": 322,
+            "source": {
+                "480": "http://api.mp3.zing.vn/api/mobile/source/video/LmJmykHszhLJApZtScGtFnkn"
+            },
+            "link": "/video-clip/HANABI-Mr-Children/ZW66B0DO.html"
+        },
+        {
+            "video_id": "1074618450",
+            "title": "Gift",
+            "artist": "Mr.Children",
+            "thumbnail": "thumb_video/2013/06/06/b/f/bf6752fdc89580a4914a9a33e9a1c33e_2.jpg",
+            "total_play": 0,
+            "source": {
+                "480": "http://api.mp3.zing.vn/api/mobile/source/video/ZmxmTLmNlgZJSpmySxmyvHLG"
+            },
+            "link": "/video-clip/Gift-Mr-Children/ZW66B0DW.html"
+        },
+        {
+            "video_id": "1074618449",
+            "title": "Find The Way (live)",
+            "artist": "Mr.Children",
+            "thumbnail": "thumb_video/2013/06/06/f/e/fedc3e30687d67e70f3a21c6de7d7040_3.jpg",
+            "total_play": 0,
+            "source": {
+                "480": "http://api.mp3.zing.vn/api/mobile/source/video/ZHcGtLmsSXLJSliyzxmTFnLm"
+            },
+            "link": "/video-clip/Find-The-Way-live-Mr-Children/ZW66B0DI.html"
+        },
+        {
+            "video_id": "1074618448",
+            "title": "Any",
+            "artist": "Mr.Children",
+            "thumbnail": "thumb_video/2013/06/06/f/f/ff2e8f095a6559bd642899ddf8e6d527_1.jpg",
+            "total_play": 337,
+            "source": {
+                "480": "http://api.mp3.zing.vn/api/mobile/source/video/LGxHyLmslCLJzzJyzJHtFGLn"
+            },
+            "link": "/video-clip/Any-Mr-Children/ZW66B0D0.html"
+        },
+        {
+            "video_id": "1074618447",
+            "title": "Final journey Warinaki (2009 Dome Tour Supermarket Fantasy)",
+            "artist": "Mr.Children",
+            "thumbnail": "thumb_video/2013/06/06/d/c/dce8ebd14bd10d139dfd5f0d8f801f31_3.jpg",
+            "total_play": 0,
+            "source": {
+                "480": "http://api.mp3.zing.vn/api/mobile/source/video/LmcntLmaACZczAatAcHTDmLH"
+            },
+            "link": "/video-clip/Final-journey-Warinaki-2009-Dome-Tour-Supermarket-Fantasy-Mr-Children/ZW66B0CF.html"
+        },
+        {
+            "video_id": "1074618446",
+            "title": "GIFT & Esora (HAPPY X'mas SHOW)",
+            "artist": "Mr.Children",
+            "thumbnail": "thumb_video/2013/06/06/b/5/b59ea98fb5e8673ac2adcc4180fe08e1_2.jpg",
+            "total_play": 20,
+            "source": {
+                "480": "http://api.mp3.zing.vn/api/mobile/source/video/knJGTknaAgZxAAgTlJntbnLm"
+            },
+            "link": "/video-clip/GIFT-Esora-HAPPY-X-mas-SHOW-Mr-Children/ZW66B0CE.html"
+        },
+        {
+            "video_id": "1074618445",
+            "title": "and I love you (live)",
+            "artist": "Mr.Children",
+            "thumbnail": "thumb_video/2013/06/06/d/9/d92b2cf446bf89fb1e30dd7948c699e5_3.jpg",
+            "total_play": 105,
+            "source": {
+                "480": "http://api.mp3.zing.vn/api/mobile/source/video/LGcmyLmsAgZJllQylJGyvHLm"
+            },
+            "link": "/video-clip/and-I-love-you-live-Mr-Children/ZW66B0CD.html"
+        },
+        {
+            "video_id": "1074618444",
+            "title": "Imagine 2007 Home Tour",
+            "artist": "Mr.Children , John Lennon",
+            "thumbnail": "thumb_video/2013/06/06/8/f/8f0a655a4952390f9ccbc3697d568ca4_2.jpg",
+            "total_play": 113,
+            "source": {
+                "480": "http://api.mp3.zing.vn/api/mobile/source/video/LGJntZnsSXkJllSTAJGybmLm"
+            },
+            "link": "/video-clip/Imagine-2007-Home-Tour-Mr-Children-John-Lennon/ZW66B0CC.html"
+        },
+        {
+            "video_id": "1074618443",
+            "title": "Tomorrow Never Knows",
+            "artist": "Mr.Children",
+            "thumbnail": "thumb_video/2013/06/06/7/8/7856c45c77c148a671952792a6b3522c_3.jpg",
+            "total_play": 0,
+            "source": {
+                "480": "http://api.mp3.zing.vn/api/mobile/source/video/ZGJnyZHsSXZczzBtAJGTDnkH"
+            },
+            "link": "/video-clip/Tomorrow-Never-Knows-Mr-Children/ZW66B0CB.html"
+        },
+        {
+            "video_id": "1074618434",
+            "title": "Yasashii Uta",
+            "artist": "Mr.Children",
+            "thumbnail": "thumb_video/2013/06/06/d/3/d3d60012e90c6ff22fa7ff3f37c75127_3.jpg",
+            "total_play": 6,
+            "source": {
+                "480": "http://api.mp3.zing.vn/api/mobile/source/video/LnJmTZmNShLxSBlTAcGyvHkH"
+            },
+            "link": "/video-clip/Yasashii-Uta-Mr-Children/ZW66B0CW.html"
+        },
+        {
+            "video_id": "1074618433",
+            "title": "Tomorrow Never Knows (Anime Ver.)",
+            "artist": "Mr.Children",
+            "thumbnail": "thumb_video/2013/06/06/d/0/d04f93fdb5732a1f38360386ea570eff_1.jpg",
+            "total_play": 1602,
+            "source": {
+                "480": "http://api.mp3.zing.vn/api/mobile/source/video/kHJHtLnsACZxAdVTSxHtbmLH"
+            },
+            "link": "/video-clip/Tomorrow-Never-Knows-Anime-Ver-Mr-Children/ZW66B0CI.html"
+        },
+        {
+            "video_id": "1074618432",
+            "title": "Sign (Karaoke)",
+            "artist": "Mr.Children",
+            "thumbnail": "thumb_video/2013/06/06/7/e/7e07aec3c80049d29d5c37d5588c0e35_3.jpg",
+            "total_play": 120,
+            "source": {
+                "480": "http://api.mp3.zing.vn/api/mobile/source/video/LHJnykmNlhLJzBvyAJnTDHLn"
+            },
+            "link": "/video-clip/Sign-Karaoke-Mr-Children/ZW66B0C0.html"
+        }
+    ],
+    "response": {
+        "msgCode": 1
+    }
+}
+```
+
+## CHARTS
+
+### All
+
+	http://api.mp3.zing.vn/api/mobile/charts/getchartslist?key={YOUR_KEY}&requestdata={{"type":"all"}}
+
+Example 1: Getting general info 
+
+	http://api.mp3.zing.vn/api/mobile/charts/getchartslist?key=fafd463e2131914934b73310aa34a23f&requestdata={"type":"all"}
+
+Response:
+
+```json
+{
+    "numFound": 0,
+    "docs": {
+        "song": [
+            {
+                "charts_id": 1,
+                "thumbnail": "avatars/c/4/c41664c555e4e39cd4c98617e8903734_1383458736.jpg"
+            },
+            {
+                "charts_id": 50,
+                "thumbnail": "avatars/0/2/02cc63cf5c74cf4fd497e32da404e986_1380957810.jpg"
+            },
+            {
+                "charts_id": 51,
+                "thumbnail": "avatars/d/9/d993b700c132ab1400e0e8a342011edf_1383409988.jpg"
+            }
+        ],
+        "video": [
+            {
+                "charts_id": 2,
+                "thumbnail": "avatars/7/6/76d193be4217d858b53f965aa229491f_1383458503.jpg"
+            },
+            {
+                "charts_id": 52,
+                "thumbnail": "avatars/a/a/aa37f90f0ab715e01d5654c45b96eb32_1382778605.png"
+            },
+            {
+                "charts_id": 53,
+                "thumbnail": "avatars/8/7/87c4ed8a05d0cf57dfd745d6370eb817_1383411112.jpg"
+            }
+        ],
+        "album": [
+            {
+                "charts_id": 3,
+                "thumbnail": "avatars/8/9/89090568d141e9d574184d2e2801f76c_1383458485.jpg"
+            },
+            {
+                "charts_id": 54,
+                "thumbnail": "covers/6/2/62637d23e96b19ff8fed97ad8926dcd0_1379396734.jpg"
+            },
+            {
+                "charts_id": 55,
+                "thumbnail": "avatars/e/2/e279262902af0d22dd4c5efa2133ba0d_1381595002.jpg"
+            }
+        ]
+    },
+    "start": 0,
+    "response": {
+        "msgCode": 1
+    }
+}
+```
+
+Example 2: Getting top items (songs,albums or videos) in each category
+
+	http://api.mp3.zing.vn/api/mobile/charts/getchartsinfo?key=fafd463e2131914934b73310aa34a23f&requestdata={"week":44,"id":50,"year":2013,"length":40,"start":0}
+
+Response:
+
+```json
+{
+    "charts_id": 50,
+    "charts_id_encode": "IWZ9Z0BW",
+    "title": "Bảng Xếp Hạng Bài Hát Âu Mỹ - Tuần 44, 2013",
+    "album_id": 1073852092,
+    "name": "Âu Mỹ",
+    "type": "song",
+    "group": "us-uk",
+    "week": 44,
+    "year": "2013",
+    "date_start": 1382893200,
+    "item": [
+        {
+            "song_id": 1074649254,
+            "title": "Royals",
+            "artist": "Lorde",
+            "zaloid": 0,
+            "username": "mp3",
+            "download_status": 1,
+            "copyright": "",
+            "thumbnail": "avatars/0/2/02cc63cf5c74cf4fd497e32da404e986_1380957810.jpg",
+            "order": 1,
+            "pos_status": 0,
+            "wplay": 0,
+            "wlike": 0,
+            "wcomment": 0,
+            "zpoint": 0,
+            "link": "/bai-hat/Royals-Lorde/ZW67W9W6.html",
+            "total_play": 397268,
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/LnJmTLGazXliDQzyLbcTFGZH",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/kGcGTZHaACzRDQAyBFHTvHkG",
+                "lossless": "http://api.mp3.zing.vn/api/mobile/source/song/ZHxmtLGaACzuFQltrwffUYeftvnLG"
+            },
+            "download_disable": 0,
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/LHxmyLnNAglEbQSyLvctbmZn",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/LmJmyLmaAgzRvQSTdDmtFGLH",
+                "lossless": "http://api.mp3.zing.vn/api/mobile/download/song/ZnxHtLGaSCSiFWAyrOKfUoKfTvHLn"
+            }
+        },
+        {
+            "song_id": 1074681564,
+            "title": "Roar",
+            "artist": "Katy Perry",
+            "zaloid": 0,
+            "username": "mp3",
+            "download_status": 1,
+            "copyright": "",
+            "thumbnail": "avatars/3/e/3e7b91cf901d8b4137a2be7875dd7e1f_1379600711.jpg",
+            "order": 2,
+            "pos_status": 0,
+            "wplay": 0,
+            "wlike": 0,
+            "wcomment": 0,
+            "zpoint": 0,
+            "link": "/bai-hat/Roar-Katy-Perry/ZW67A7ZC.html",
+            "total_play": 1053654,
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/LmxGyLGslhxkWgSTLbJtbHLn",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/LHJGyLGNzhckQgStdFGTbmZm",
+                "lossless": ""
+            },
+            "download_disable": 0,
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/knJmTZmNlXcLWhSTkbJyFGkn",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/kGJGykmsAXcZWXlTBbGTFmLG",
+                "lossless": ""
+            }
+        },
+        {
+            "song_id": 1074693721,
+            "title": "Wrecking Ball",
+            "artist": "Miley Cyrus",
+            "zaloid": 0,
+            "username": "mp3",
+            "download_status": 1,
+            "copyright": "",
+            "thumbnail": "avatars/5/0/50d2def00bcf2ac3f3780300218be884_1380955655.jpg",
+            "order": 3,
+            "pos_status": 0,
+            "wplay": 0,
+            "wlike": 0,
+            "wcomment": 0,
+            "zpoint": 0,
+            "link": "/bai-hat/Wrecking-Ball-Miley-Cyrus/ZW67D6D9.html",
+            "total_play": 842002,
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/LHxnTLnNSCRBaFLtLvctbnLH",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/ZnJnyZmNlhRdabLtBFnTDHkn",
+                "lossless": ""
+            },
+            "download_disable": 0,
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/LmJGtZGNlXEdNFZyLbJyDGZn",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/ZGcnyLHNzCiVNvLtVbHyFnLH",
+                "lossless": ""
+            }
+        },
+        {
+            "song_id": 1074643883,
+            "title": "Wake Me Up",
+            "artist": "Avicii",
+            "zaloid": 0,
+            "username": "mp3",
+            "download_status": 0,
+            "copyright": "Universal Music Group",
+            "thumbnail": "avatars/b/f/bfa21f99ddb0c6c23b8f5e42213bb2e0_1375154566.jpg",
+            "order": 4,
+            "pos_status": 0,
+            "wplay": 0,
+            "wlike": 0,
+            "wcomment": 0,
+            "zpoint": 0,
+            "link": "/bai-hat/Wake-Me-Up-Avicii/ZW67IUWB.html",
+            "total_play": 400951,
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/LHcGtkGNlCAVxJVTLvJyFmkn",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/knJmyLHsSXSBJcdtBFmtvnLm",
+                "lossless": "http://api.mp3.zing.vn/api/mobile/source/song/LGxHTLHazCzVJxByrwffroefyDHLH"
+            },
+            "download_disable": 1,
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/ZHJmyZGslXSdcJdTLvJtFmZn",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/LGxHykmsSXzVJcBTVFntDmZG",
+                "lossless": "http://api.mp3.zing.vn/api/mobile/download/song/ZmxntZHazglBxJVTUqKfIoKeTbGLH"
+            }
+        },
+        {
+            "song_id": 1074693421,
+            "title": "Hold On, We're Going Home",
+            "artist": "Drake , Majid Jordan",
+            "zaloid": 0,
+            "username": "mp3",
+            "download_status": 1,
+            "copyright": "",
+            "thumbnail": "avatars/1/1/1167610aa17b0813233fe82d99403e41_1291644677.jpg",
+            "order": 5,
+            "pos_status": 0,
+            "wplay": 0,
+            "wlike": 0,
+            "wcomment": 0,
+            "zpoint": 0,
+            "link": "/bai-hat/Hold-On-We-re-Going-Home-Drake-Majid-Jordan/ZW67DZAD.html",
+            "total_play": 50776,
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/kGJHTZGalCEdSFLyZFcTDHZm",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/ZGxGyZmalgRBAFkyBbntbmZn",
+                "lossless": ""
+            },
+            "download_disable": 0,
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/ZmJnyZnazXEdzDkTLbxyFGZm",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/LnxntkmNSXRBzvZyVFHtbHLn",
+                "lossless": ""
+            }
+        },
+        {
+            "song_id": 1074651373,
+            "title": "Holy Grail",
+            "artist": "Jay-Z , Justin Timberlake",
+            "zaloid": 0,
+            "username": "mp3",
+            "download_status": 1,
+            "copyright": "",
+            "thumbnail": "avatars/f/b/fb99c47e948491d78859930807a78f77_1289881708.jpg",
+            "order": 6,
+            "pos_status": 2,
+            "wplay": 0,
+            "wlike": 0,
+            "wcomment": 0,
+            "zpoint": 0,
+            "link": "/bai-hat/Holy-Grail-Jay-Z-Justin-Timberlake/ZW67OI6D.html",
+            "total_play": 191977,
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/LnJHtLnNzgQkVNdTLbcTvmkn",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/ZGxHtZGNzCQZdNdyVvGTbnZm",
+                "lossless": ""
+            },
+            "download_disable": 0,
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/LnxHyLnNAgQkdNdtLvJTvmLm",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/LGJmyLGNzhQLVNdydDGtFGLG",
+                "lossless": ""
+            }
+        },
+        {
+            "song_id": 1074682641,
+            "title": "Applause",
+            "artist": "Lady Gaga",
+            "zaloid": 0,
+            "username": "mp3",
+            "download_status": 0,
+            "copyright": "Universal Music Group",
+            "thumbnail": "avatars/d/c/dc9ddf34269d7a6e6ee8f7065f348b94_1376360932.jpg",
+            "order": 7,
+            "pos_status": 2,
+            "wplay": 0,
+            "wlike": 0,
+            "wcomment": 0,
+            "zpoint": 0,
+            "link": "/bai-hat/Applause-Lady-Gaga/ZW67AB9I.html",
+            "total_play": 317760,
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/LnJmtLnsSCJvhzLTkvJTDnZH",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/knJHtLmNlCJvXALydbHtFGkG",
+                "lossless": "http://api.mp3.zing.vn/api/mobile/source/song/LmcmtkmslgJvhAZyUOKfUMffyFnZn"
+            },
+            "download_disable": 1,
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/ZHxHyknazhJDhzLtLDJyvmLG",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/kmxmyLnaAgxbhlZyBbGybGLG",
+                "lossless": "http://api.mp3.zing.vn/api/mobile/download/song/ZnxHtZmNlXxFgzLyIPfeUYffTDGLG"
+            }
+        },
+        {
+            "song_id": 1074545998,
+            "title": "Counting Stars",
+            "artist": "OneRepublic",
+            "zaloid": 0,
+            "username": "mp3",
+            "download_status": 1,
+            "copyright": "",
+            "thumbnail": "avatars/4/f/4f982e2c106089dcfd59a222aab1ac3c_1363925216.jpg",
+            "order": 8,
+            "pos_status": 7,
+            "wplay": 0,
+            "wlike": 0,
+            "wcomment": 0,
+            "zpoint": 0,
+            "link": "/bai-hat/Counting-Stars-OneRepublic/ZW6Z9ZCE.html",
+            "total_play": 174306,
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/ZGcHyLHNlWSpRRJTLDJTvnZG",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/LGxmtLmsAQlWuicyBbHyvmZm",
+                "lossless": "http://api.mp3.zing.vn/api/mobile/source/song/kGJntLGNAQzQERJtUOKeIoefTDHLm"
+            },
+            "download_disable": 0,
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/LncmTLHNzpSQuiJTLvcTbHLm",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/LGxGtkHalQSpRictVFntvnkG",
+                "lossless": "http://api.mp3.zing.vn/api/mobile/download/song/LmxGyZmszWlQuiJtUPeKIoffyDnZm"
+            }
+        },
+        {
+            "song_id": 1074330219,
+            "title": "Demons",
+            "artist": "Imagine Dragons",
+            "zaloid": 0,
+            "username": "mp3",
+            "download_status": 0,
+            "copyright": "Universal Music Group",
+            "thumbnail": "avatars/6/d/6d68e439d5a39d6888e323ade4c241e2_1348365793.png",
+            "order": 9,
+            "pos_status": 3,
+            "wplay": 0,
+            "wlike": 0,
+            "wcomment": 0,
+            "zpoint": 0,
+            "link": "/bai-hat/Demons-Imagine-Dragons/ZW6WUAEB.html",
+            "total_play": 264536,
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/knJGyLnNzBdmvkEyLFJybnLm",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/ZGJnykGslBdmFLiyVDHybnZn",
+                "lossless": ""
+            },
+            "download_disable": 1,
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/ZnJnyZmsSBBHbLETkDxyFnZH",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/kGJnykmsAdBGDLRyVvHyvGLn",
+                "lossless": ""
+            }
+        },
+        {
+            "song_id": 1074708972,
+            "title": "The Fox",
+            "artist": "Ylvis",
+            "zaloid": 0,
+            "username": "mp3",
+            "download_status": 1,
+            "copyright": "",
+            "thumbnail": "avatars/7/1/717f582d50a9389a483208e611757828_1379074216.jpg",
+            "order": 10,
+            "pos_status": -4,
+            "wplay": 0,
+            "wlike": 0,
+            "wcomment": 0,
+            "zpoint": 0,
+            "link": "/bai-hat/The-Fox-Ylvis/ZW68IW6C.html",
+            "total_play": 151244,
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/kGJHyZGNlNHxRNFTZFxyDGkm",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/LHxHyLGNlanJRNbyVFmTFnLm",
+                "lossless": ""
+            },
+            "download_disable": 0,
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/kHJGtLGslNnJRNFTLFxyFHkH",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/kmJHyLmNANmJiNFTBvHtvGkG",
+                "lossless": ""
+            }
+        },
+        {
+            "song_id": 1074611041,
+            "title": "Blurred Lines",
+            "artist": "Robin Thicke , T.I. , Pharell",
+            "zaloid": 0,
+            "username": "mp3",
+            "download_status": 0,
+            "copyright": "Universal Music Group",
+            "thumbnail": "avatars/6/d/6d9fc951b2621a4b76b9231325c9e4d9_1378399023.jpg",
+            "order": 11,
+            "pos_status": -1,
+            "wplay": 0,
+            "wlike": 0,
+            "wcomment": 0,
+            "zpoint": 0,
+            "link": "/bai-hat/Blurred-Lines-Robin-Thicke-T-I-Pharell/ZW669OEI.html",
+            "total_play": 636682,
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/LHxGykmNzCkLmAktLFJybHZm",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/LHJmtkGaAgkLGlLydDGTbHkm",
+                "lossless": ""
+            },
+            "download_disable": 1,
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/ZHJnyLmNAXkLHzLyLvJyvmLH",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/kHJnyZHalCLknAkydvHtFnZG",
+                "lossless": ""
+            }
+        },
+        {
+            "song_id": 1074734975,
+            "title": "23",
+            "artist": "Mike WiLL Made-It , Miley Cyrus , Wiz Khalifa , Juicy J",
+            "zaloid": 0,
+            "username": "mp3",
+            "download_status": 1,
+            "copyright": "",
+            "thumbnail": null,
+            "order": 12,
+            "pos_status": 2,
+            "wplay": 0,
+            "wlike": 0,
+            "wcomment": 0,
+            "zpoint": 0,
+            "link": "/bai-hat/23-Mike-WiLL-Made-It-Miley-Cyrus-Wiz-Khalifa-Juicy-J/ZW6877FF.html",
+            "total_play": 14849,
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/ZnJGyZHNzNdlRaWyLFcybmZG",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/LGJHyLnsAsdAiaWtVvmyvGLm",
+                "lossless": ""
+            },
+            "download_disable": 0,
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/LGJGykHNSsBzENQyZFJTvGZm",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/LGJHTZmsSNdSiNWtdbnTFnZH",
+                "lossless": ""
+            }
+        },
+        {
+            "song_id": 1074758144,
+            "title": "Do What U Want",
+            "artist": "Lady Gaga , R. Kelly",
+            "zaloid": 0,
+            "username": "mp3",
+            "download_status": 0,
+            "copyright": "",
+            "thumbnail": "avatars/d/c/dc9ddf34269d7a6e6ee8f7065f348b94_1376360932.jpg",
+            "order": 13,
+            "pos_status": null,
+            "wplay": 0,
+            "wlike": 0,
+            "wcomment": 0,
+            "zpoint": 0,
+            "link": "/bai-hat/Do-What-U-Want-Lady-Gaga-R-Kelly/ZW68DW80.html",
+            "total_play": 20716,
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/LGcGyLnsSNpxZSStLFctFHLn",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/LHJGyLHalaQJLzSyBvGyDmkH",
+                "lossless": "http://api.mp3.zing.vn/api/mobile/source/song/ZGJGTkmszNpxklzTIPKfrYKKybmLn"
+            },
+            "download_disable": 1,
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/ZmJGyLnazNpJkSlTkbctFGLH",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/kmcHyLmalNQJLSlydDGtvGLm",
+                "lossless": "http://api.mp3.zing.vn/api/mobile/download/song/ZGJmtknNSNQJkSSTIOffrjeeyDGZn"
+            }
+        },
+        {
+            "song_id": 1074251942,
+            "title": "Summertime Sadness",
+            "artist": "Lana Del Rey",
+            "zaloid": 0,
+            "username": "mp3",
+            "download_status": 0,
+            "copyright": "Universal Music Group",
+            "thumbnail": "avatars/5/7/57e3d4ea7f883ed7adda48eb500030bd_1346828295.jpg",
+            "order": 14,
+            "pos_status": -3,
+            "wplay": 0,
+            "wlike": 0,
+            "wcomment": 0,
+            "zpoint": 0,
+            "link": "/bai-hat/Summertime-Sadness-Lana-Del-Rey/ZW6II9W6.html",
+            "total_play": 137959,
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/LHJmtLGNlvQLilvTkDcyFnZn",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/LGJHyLnaAbQZEzvydFntvHLG",
+                "lossless": ""
+            },
+            "download_disable": 1,
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/LGJmtLmNSvpkiSbtLbJyFHLn",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/LncHtkHNlvQkRAbTBbGyFHkG",
+                "lossless": ""
+            }
+        },
+        {
+            "song_id": 1074524840,
+            "title": "Safe And Sound",
+            "artist": "Capital Cities",
+            "zaloid": 0,
+            "username": "mp3",
+            "download_status": 0,
+            "copyright": "Universal Music Group",
+            "thumbnail": null,
+            "order": 15,
+            "pos_status": -2,
+            "wplay": 0,
+            "wlike": 0,
+            "wcomment": 0,
+            "zpoint": 0,
+            "link": "/bai-hat/Safe-And-Sound-Capital-Cities/ZW6ZUOW8.html",
+            "total_play": 112267,
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/kmJGtkGsSWDAcznykFJyFmLG",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/ZHxHyZGsAQDAJAnydvntFHZm",
+                "lossless": "http://api.mp3.zing.vn/api/mobile/source/song/kGcnTLHNAQblJzntUwffIMeKyvHLG"
+            },
+            "download_disable": 1,
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/ZnJnyLHsSWvlJSmyLvJyvHZn",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/LnJnyLHalWvSxAnydvHyDHLm",
+                "lossless": "http://api.mp3.zing.vn/api/mobile/download/song/LnxntLHsSpDSJlnyrOferjefTFHLm"
+            }
+        },
+        {
+            "song_id": 1074330215,
+            "title": "Radioactive",
+            "artist": "Imagine Dragons",
+            "zaloid": 0,
+            "username": "mp3",
+            "download_status": 0,
+            "copyright": "Universal Music Group",
+            "thumbnail": "avatars/6/d/6d68e439d5a39d6888e323ade4c241e2_1348365793.png",
+            "order": 16,
+            "pos_status": 0,
+            "wplay": 0,
+            "wlike": 0,
+            "wcomment": 0,
+            "zpoint": 0,
+            "link": "/bai-hat/Radioactive-Imagine-Dragons/ZW6WUAE7.html",
+            "total_play": 560398,
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/knJnyLGaSddmbkQTLFJtFnLn",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/knxmyZmNlVBGbLQtBFHTDmLG",
+                "lossless": ""
+            },
+            "download_disable": 1,
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/ZmxHyZGsSddnFLQyLDJyFnkH",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/knJHtLnsAVdHFLWyBDmyDnLm",
+                "lossless": ""
+            }
+        },
+        {
+            "song_id": 1074181714,
+            "title": "Let Her Go",
+            "artist": "Passenger",
+            "zaloid": 0,
+            "username": "mp3",
+            "download_status": 1,
+            "copyright": "",
+            "thumbnail": null,
+            "order": 17,
+            "pos_status": 2,
+            "wplay": 0,
+            "wlike": 0,
+            "wcomment": 0,
+            "zpoint": 0,
+            "link": "/bai-hat/Let-Her-Go-Passenger/ZW6006DW.html",
+            "total_play": 176280,
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/LnJnTLGNlZJkNkztLDxybHLG",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/LmJHtLHsAZxkNkltdbmybnLn",
+                "lossless": ""
+            },
+            "download_disable": 0,
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/ZncntLGNALcZNZATkvJybmLG",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/ZGxmtZHaALcLaklTVvGybmLm",
+                "lossless": ""
+            }
+        },
+        {
+            "song_id": 1074686064,
+            "title": "That's My Kind Of Night",
+            "artist": "Luke Bryan",
+            "zaloid": 0,
+            "username": "mp3",
+            "download_status": 1,
+            "copyright": "",
+            "thumbnail": "avatars/5/d/5db9ccb0c565a88ef4c8065f82835578_1336249012.jpg",
+            "order": 18,
+            "pos_status": -1,
+            "wplay": 0,
+            "wlike": 0,
+            "wcomment": 0,
+            "zpoint": 0,
+            "link": "/bai-hat/That-s-My-Kind-Of-Night-Luke-Bryan/ZW67B8F0.html",
+            "total_play": 8584,
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/ZmxGtLGalCJXnXSyZbJTDGZn",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/LnxmyZHsSCxCnCzyBFmybGkm",
+                "lossless": "http://api.mp3.zing.vn/api/mobile/source/song/ZnxHykGNSXJXmClyIOKeUYefyvnLn"
+            },
+            "download_disable": 0,
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/ZGcntLGszCcgHhzyLbJyFnLn",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/LHJGyLGslhchGXSyVFnyDGkG",
+                "lossless": "http://api.mp3.zing.vn/api/mobile/download/song/LGxGyLnNAhJhmhlTrqeeIMffyDmZH"
+            }
+        },
+        {
+            "song_id": 1074525100,
+            "title": "Sail",
+            "artist": "AWOLNATION",
+            "username": "freshy89",
+            "download_status": 1,
+            "thumbnail": null,
+            "order": 19,
+            "pos_status": 4,
+            "wplay": 0,
+            "wlike": 0,
+            "wcomment": 0,
+            "zpoint": 0,
+            "link": "/bai-hat/Sail-AWOLNATION/ZW6ZUUWC.html",
+            "total_play": 29229,
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/ZnJGyLmNzQFpLmHyLFJTDnkn",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/LGcmTLGNlQbWZHnyVDHybHZn",
+                "lossless": ""
+            },
+            "copyright": "",
+            "download_disable": 0,
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/LnxnyLGNlpFpLHmyZvcyvHZG",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/LHxmyLmslWvQkGHyVvHTbGkG",
+                "lossless": ""
+            }
+        },
+        {
+            "song_id": 1074755595,
+            "title": "My Hitta",
+            "artist": "YG , Jeezy , Rich Homie Quan",
+            "zaloid": 0,
+            "username": "mp3",
+            "download_status": 1,
+            "copyright": "",
+            "thumbnail": "avatars/1/1/1167610aa17b0813233fe82d99403e41_1293264507.jpg",
+            "order": 20,
+            "pos_status": 0,
+            "wplay": 0,
+            "wlike": 0,
+            "wcomment": 0,
+            "zpoint": 0,
+            "link": "/bai-hat/My-Hitta-YG-Jeezy-Rich-Homie-Quan/ZW68C88B.html",
+            "total_play": 1014,
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/kGxHtkHNSaWWQiptZvJtvnLm",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/kHcntkGazNWQpiWyBbmtvGLn",
+                "lossless": ""
+            },
+            "download_disable": 0,
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/LHxnTLmNSNQQQuWyLvJyFHkG",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/LGJGtZnszNQQpEQTVFHyFHLH",
+                "lossless": ""
+            }
+        },
+        {
+            "song_id": 1074748647,
+            "title": "Rap God",
+            "artist": "Eminem",
+            "zaloid": 0,
+            "username": "mp3",
+            "download_status": 1,
+            "copyright": "",
+            "thumbnail": "avatars/6/4/6491c2173d300d5bbbee6b4c326fa561_1376557444.jpg",
+            "order": 21,
+            "pos_status": -14,
+            "wplay": 0,
+            "wlike": 0,
+            "wcomment": 0,
+            "zpoint": 0,
+            "link": "/bai-hat/Rap-God-Eminem/ZW68AD67.html",
+            "total_play": 32589,
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/LHxnyLmNlNSJXlstZDxyDGZn",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/LGJGyLnazNzJhSsydvHTbnkG",
+                "lossless": ""
+            },
+            "download_disable": 0,
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/LncnTkHNzsSJCzsykvJybnZG",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/LmJmTLGazaAxXANyVbHTbnLn",
+                "lossless": ""
+            }
+        },
+        {
+            "song_id": 1074432393,
+            "title": "Gorilla",
+            "artist": "Bruno Mars",
+            "zaloid": 0,
+            "username": "mp3",
+            "download_status": 1,
+            "copyright": "",
+            "thumbnail": "avatars/a/4/a4c4e539f35b30fb6c0c5c8d134990ef_1366022661.jpg",
+            "order": 22,
+            "pos_status": 0,
+            "wplay": 0,
+            "wlike": 0,
+            "wcomment": 0,
+            "zpoint": 0,
+            "link": "/bai-hat/Gorilla-Bruno-Mars/ZW6ODA09.html",
+            "total_play": 19539,
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/ZmJmyLnNzSdFdRdTkFxyFmkG",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/ZHxntZHsSlBFduBydvmTbHLm",
+                "lossless": "http://api.mp3.zing.vn/api/mobile/source/song/LnJmtLHNSzdvdRByrqKfroeeyFnkm"
+            },
+            "download_disable": 0,
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/LHxntLmNzSdbdudykbctbmLH",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/LHcmTZmNAldvBEdyVDHtbHZH",
+                "lossless": "http://api.mp3.zing.vn/api/mobile/download/song/kGcntknNlldvdRdTUOefrjfeybmLH"
+            }
+        },
+        {
+            "song_id": 1074666509,
+            "title": "Love More",
+            "artist": "Chris Brown , Nicki Minaj",
+            "zaloid": 0,
+            "username": "mp3",
+            "download_status": 1,
+            "copyright": "",
+            "thumbnail": "avatars/1/f/1fe0516fe9ab44c75fc969c939c03e55_1341891567.jpg",
+            "order": 23,
+            "pos_status": 2,
+            "wplay": 0,
+            "wlike": 0,
+            "wcomment": 0,
+            "zpoint": 0,
+            "link": "/bai-hat/Love-More-Chris-Brown-Nicki-Minaj/ZW676C8D.html",
+            "total_play": 19373,
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/LGJGTLHszgCgQnutLFJTFmZm",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/kmcHtkHNzhggQHRyVvmyFHLG",
+                "lossless": ""
+            },
+            "download_disable": 0,
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/kGJnyLGalCCCQGitLvxtDHZH",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/LHJnTLHsAhghWHiydvHyDnkn",
+                "lossless": ""
+            }
+        },
+        {
+            "song_id": 1074553051,
+            "title": "Still Into You",
+            "artist": "Paramore",
+            "zaloid": 0,
+            "username": "mp3",
+            "download_status": 1,
+            "copyright": "",
+            "thumbnail": "avatars/b/0/b0430e6b2709e4ee4b2ad67850d7f2ca_1334840008.jpg",
+            "order": 24,
+            "pos_status": 2,
+            "wplay": 0,
+            "wlike": 0,
+            "wcomment": 0,
+            "zpoint": 0,
+            "link": "/bai-hat/Still-Into-You-Paramore/ZW6ZBIZB.html",
+            "total_play": 30780,
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/ZnJnTLmNlQWVHpZtkvJyFGkn",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/LncHTZHNAQWBHQZtdFGyDmkH",
+                "lossless": "http://api.mp3.zing.vn/api/mobile/source/song/ZHxGTLmsApQdmQLTIPKeUjeftbnLH"
+            },
+            "download_disable": 0,
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/kHJGTLHazQpVGpZyLbJyFnLm",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/LnJGyLnNzQWdmWkydFnyDmZm",
+                "lossless": "http://api.mp3.zing.vn/api/mobile/download/song/LmJnTkmNAQQdmpkTrPffrYKftFHkm"
+            }
+        },
+        {
+            "song_id": 1074694056,
+            "title": "Berzerk",
+            "artist": "Eminem",
+            "zaloid": 0,
+            "username": "mp3",
+            "download_status": 1,
+            "copyright": "",
+            "thumbnail": "avatars/6/4/6491c2173d300d5bbbee6b4c326fa561_1376557444.jpg",
+            "order": 25,
+            "pos_status": -7,
+            "wplay": 0,
+            "wlike": 0,
+            "wcomment": 0,
+            "zpoint": 0,
+            "link": "/bai-hat/Berzerk-Eminem/ZW67D8W8.html",
+            "total_play": 82549,
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/ZGcnykmNzCRlnpCtLDcTbHLG",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/ZnJHTLGNSCElGWgyBFmtbGZG",
+                "lossless": ""
+            },
+            "download_disable": 0,
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/LnJGyLHNlCESHpXykvxybmkn",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/LHxnyZGsShEAHWhyBDnyvnkm",
+                "lossless": ""
+            }
+        },
+        {
+            "song_id": 1074616949,
+            "title": "We Can't Stop",
+            "artist": "Miley Cyrus",
+            "zaloid": 0,
+            "username": "mp3",
+            "download_status": 1,
+            "copyright": "",
+            "thumbnail": "avatars/d/f/df7f79399e9e96e7d5d4e41f15cddb54_1342772217.jpg",
+            "order": 26,
+            "pos_status": -5,
+            "wplay": 0,
+            "wlike": 0,
+            "wcomment": 0,
+            "zpoint": 0,
+            "link": "/bai-hat/We-Can-t-Stop-Miley-Cyrus/ZW66AAFZ.html",
+            "total_play": 892424,
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/LmJnyLmNlXZhiSuyZvcTvnZn",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/LmJHTZnNAhkCRAuTdDmTbnZm",
+                "lossless": ""
+            },
+            "download_disable": 0,
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/kGcGTLnNSCLhiAEyZDJtvHkm",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/ZHcHtLmaACZCuzEyVDntDHZH",
+                "lossless": ""
+            }
+        },
+        {
+            "song_id": 1074689070,
+            "title": "It Goes Like This",
+            "artist": "Thomas Rhett",
+            "zaloid": 0,
+            "username": "mp3",
+            "download_status": 1,
+            "copyright": "",
+            "thumbnail": null,
+            "order": 27,
+            "pos_status": 0,
+            "wplay": 0,
+            "wlike": 0,
+            "wcomment": 0,
+            "zpoint": 0,
+            "link": "/bai-hat/It-Goes-Like-This-Thomas-Rhett/ZW67CUAE.html",
+            "total_play": 4742,
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/ZmJHykGNzhJuGsGTZDJybHZn",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/LnJntZnaSgxEmNnTdbmybmkH",
+                "lossless": ""
+            },
+            "download_disable": 0,
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/ZmJnyZGNSCxuHNmyZbJyvmLH",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/knJmTLnazXcRHsmyBDnyFGLn",
+                "lossless": ""
+            }
+        },
+        {
+            "song_id": 1074716992,
+            "title": "Dark Horse",
+            "artist": "Katy Perry , Juicy J",
+            "zaloid": 0,
+            "username": "mp3",
+            "download_status": 1,
+            "copyright": "",
+            "thumbnail": "avatars/5/d/5de3323223aa43c9290905c906fc7027_1383201200.jpg",
+            "order": 28,
+            "pos_status": null,
+            "wplay": 0,
+            "wlike": 0,
+            "wcomment": 0,
+            "zpoint": 0,
+            "link": "/bai-hat/Dark-Horse-Katy-Perry-Juicy-J/ZW68OIC0.html",
+            "total_play": 24620,
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/ZnxGyLmNSsLgEuvyLbxybGLn",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/LnxmtLnNAsLXEEDydvGtvGkn",
+                "lossless": "http://api.mp3.zing.vn/api/mobile/source/song/ZnJmyLGNANLhiuFTIOffrjfetDnkm"
+            },
+            "download_disable": 0,
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/ZHJntZmsAaLhRiFTLDxtDnLG",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/LHcHtZmaAaZCEuvTBFGTDnLn",
+                "lossless": "http://api.mp3.zing.vn/api/mobile/download/song/LnJntLnalNZhuEbyrOffUoKKtvnLn"
+            }
+        },
+        {
+            "song_id": 1074751533,
+            "title": "Unconditionally",
+            "artist": "Katy Perry",
+            "zaloid": 0,
+            "username": "mp3",
+            "download_status": 1,
+            "copyright": "",
+            "thumbnail": "avatars/5/d/5de3323223aa43c9290905c906fc7027_1383201200.jpg",
+            "order": 29,
+            "pos_status": null,
+            "wplay": 0,
+            "wlike": 0,
+            "wcomment": 0,
+            "zpoint": 0,
+            "link": "/bai-hat/Unconditionally-Katy-Perry/ZW68B8AD.html",
+            "total_play": 10683,
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/LncntLGNAaQLpdByZvJyFGZn",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/ZHJHykHNzNQZQBVydDmyvHLm",
+                "lossless": "http://api.mp3.zing.vn/api/mobile/source/song/kGxGyknNzNWLQdBTrqfKUjfKTvHkH"
+            },
+            "download_disable": 0,
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/kGJGtLnaANQLQdVykbJybGZH",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/kmxntLHaANpkQddydbntFmZn",
+                "lossless": "http://api.mp3.zing.vn/api/mobile/download/song/ZGJHTkGNlapkQBVyrqfKUYfKTvGZH"
+            }
+        },
+        {
+            "song_id": 1074505824,
+            "title": "Mirrors",
+            "artist": "Justin Timberlake",
+            "zaloid": 0,
+            "username": "nemomb",
+            "download_status": 1,
+            "thumbnail": "avatars/e/4/e40221c3b040ea2bdc51ba7429ed401a_1363061978.png",
+            "order": 30,
+            "pos_status": 0,
+            "wplay": 0,
+            "wlike": 0,
+            "wcomment": 0,
+            "zpoint": 0,
+            "link": "/bai-hat/Mirrors-Justin-Timberlake/ZW6UF8E0.html",
+            "total_play": 1256099,
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/LncntLHNlQGWJFlTZbJyvmkH",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/LmJHyZnazQGpJDlydFHtDmZm",
+                "lossless": ""
+            },
+            "copyright": "",
+            "download_disable": 0,
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/ZnJHTLGNlQGWJDlyLvJtvHLH",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/ZnxmTkHslpGpxDSydbmyDmLG",
+                "lossless": ""
+            }
+        },
+        {
+            "song_id": 1074586873,
+            "title": "Brave",
+            "artist": "Sara Bareilles",
+            "zaloid": 0,
+            "username": "mp3",
+            "download_status": 1,
+            "copyright": "",
+            "thumbnail": "avatars/f/7/f705db87f1c7e09904464d6a87c152ad_1336283971.jpg",
+            "order": 31,
+            "pos_status": 7,
+            "wplay": 0,
+            "wlike": 0,
+            "wcomment": 0,
+            "zpoint": 0,
+            "link": "/bai-hat/Brave-Sara-Bareilles/ZW66OZ79.html",
+            "total_play": 16386,
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/LHJmTkmNzQxhJadTkDJyDnkn",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/kmJnTLnsSQJCJNBTBvmtFGkm",
+                "lossless": ""
+            },
+            "download_disable": 0,
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/ZHJnTkmsSWJXcNByZDJtbHkm",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/kmxGtkHNSWJhJNBtVDnTvnLG",
+                "lossless": ""
+            }
+        },
+        {
+            "song_id": 1074710293,
+            "title": "Slow Down",
+            "artist": "Selena Gomez",
+            "zaloid": 0,
+            "username": "mp3",
+            "download_status": 1,
+            "copyright": "",
+            "thumbnail": "avatars/7/f/7f40a1a40081599265f38b59e46fef54_1370320369.jpg",
+            "order": 32,
+            "pos_status": 4,
+            "wplay": 0,
+            "wlike": 0,
+            "wcomment": 0,
+            "zpoint": 0,
+            "link": "/bai-hat/Slow-Down-Selena-Gomez/ZW68I79Z.html",
+            "total_play": 9935,
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/ZGJGyLGNAaZnbRdtkvJybHkn",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/LmcGTLmNSNknviVydbGyDmLn",
+                "lossless": ""
+            },
+            "download_disable": 0,
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/kmxnyLnNSsLnFidtLFctbHLm",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/kmxHtLnsSskmDEdtdFHtbmLn",
+                "lossless": ""
+            }
+        },
+        {
+            "song_id": 1074758142,
+            "title": "Sweeter Than Fiction",
+            "artist": "Taylor Swift",
+            "zaloid": 0,
+            "username": "mp3",
+            "download_status": 1,
+            "copyright": "",
+            "thumbnail": "avatars/b/3/b3e58c5301cc4af4c6a6282ba3a820f8_1345605469.jpg",
+            "order": 33,
+            "pos_status": null,
+            "wplay": 0,
+            "wlike": 0,
+            "wcomment": 0,
+            "zpoint": 0,
+            "link": "/bai-hat/Sweeter-Than-Fiction-Taylor-Swift/ZW68DW7E.html",
+            "total_play": 47602,
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/LGJnTLHNSNpxkzvyLDJTbnLm",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/LmcnTLnslNQcZAbydDGtFGLG",
+                "lossless": ""
+            },
+            "download_disable": 0,
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/knxnTLGNANQJklvykFJybGZn",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/LmJGyknszNpxklbydbmybmZG",
+                "lossless": ""
+            }
+        },
+        {
+            "song_id": 1074738874,
+            "title": "Timber",
+            "artist": "Pitbull , Ke$ha",
+            "zaloid": 0,
+            "username": "mp3",
+            "download_status": 1,
+            "copyright": "",
+            "thumbnail": "avatars/b/7/b77dc720eb2a45161874450fda56336f_1354537808.jpg",
+            "order": 34,
+            "pos_status": null,
+            "wplay": 0,
+            "wlike": 0,
+            "wcomment": 0,
+            "zpoint": 0,
+            "link": "/bai-hat/Timber-Pitbull-Ke-ha/ZW6887OA.html",
+            "total_play": 26782,
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/ZmxHtLmslsBJJNSTZDctbnZG",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/ZHJHyZGaAsBcJsATdFnTbnLH",
+                "lossless": ""
+            },
+            "download_disable": 0,
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/kmJHtZnNzNBccNSykbJtbmZH",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/kGJGyZnNSsdxJNzyVbmyFnkG",
+                "lossless": ""
+            }
+        },
+        {
+            "song_id": 1074714639,
+            "title": "Work Bitch",
+            "artist": "Britney Spears",
+            "zaloid": 0,
+            "username": "mp3",
+            "download_status": 1,
+            "copyright": "",
+            "thumbnail": "avatars/1/5/15ed530214c7ee6417bdc9af69130822_1379305081.jpg",
+            "order": 35,
+            "pos_status": -7,
+            "wplay": 0,
+            "wlike": 0,
+            "wcomment": 0,
+            "zpoint": 0,
+            "link": "/bai-hat/Work-Bitch-Britney-Spears/ZW68W88F.html",
+            "total_play": 91737,
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/kHJHtLGazNZAgBitZvxTbnkm",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/LnJHyLGsSNLSgdRyBbGTFHZH",
+                "lossless": ""
+            },
+            "download_disable": 0,
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/kmcmyknslsLACdutLDJyvHZn",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/kHJHtLGNANLzCdiTBFmyFnkG",
+                "lossless": ""
+            }
+        },
+        {
+            "song_id": 1074381083,
+            "title": "Everything Has Changed",
+            "artist": "Taylor Swift,Ed Sheeran",
+            "zaloid": 0,
+            "username": "mp3",
+            "download_status": 1,
+            "copyright": "",
+            "thumbnail": "avatars/b/3/b3e58c5301cc4af4c6a6282ba3a820f8_1345605469.jpg",
+            "order": 36,
+            "pos_status": 1,
+            "wplay": 0,
+            "wlike": 0,
+            "wcomment": 0,
+            "zpoint": 0,
+            "link": "/bai-hat/Everything-Has-Changed-Taylor-Swift-Ed-Sheeran/ZW6OII9B.html",
+            "total_play": 190231,
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/LmJntZGNzdxLHJBTLDJyDHZm",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/LGxGyLmNldxLGJVyVbnybmkG",
+                "lossless": "http://api.mp3.zing.vn/api/mobile/source/song/kHJGTZHNzVJLGxdtrOKfIMeeTvmkn"
+            },
+            "download_disable": 0,
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/kGJHyLHNSBcLmcdykbJtbHZG",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/kHJmtkmNSdJkHcByBFmyFnZH",
+                "lossless": "http://api.mp3.zing.vn/api/mobile/download/song/kmxntLmaldxkGJdTrwKeIMfetvnLn"
+            }
+        },
+        {
+            "song_id": 1074628325,
+            "title": "Crooked Smile",
+            "artist": "J. Cole , TLC",
+            "zaloid": 0,
+            "username": "mp3",
+            "download_status": 1,
+            "copyright": "",
+            "thumbnail": "avatars/f/3/f3ccdd27d2000e3f9255a7e3e2c48800_1351157725.jpg",
+            "order": 37,
+            "pos_status": -2,
+            "wplay": 0,
+            "wlike": 0,
+            "wcomment": 0,
+            "zpoint": 0,
+            "link": "/bai-hat/Crooked-Smile-J-Cole-TLC/ZW66D76Z.html",
+            "total_play": 4041,
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/knJHtLnsAgbcBvpyZFxybnLm",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/kGJnTZGNAXDxBbQyVFnTvGZH",
+                "lossless": "http://api.mp3.zing.vn/api/mobile/source/song/ZGJHyZmslgvJdbQtrOKeIYefybGZG"
+            },
+            "download_disable": 0,
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/LHxnyLnNAXvcVFQykDJTFmkn",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/ZGxnTZGNzXDcdvWydbmTFnLn",
+                "lossless": "http://api.mp3.zing.vn/api/mobile/download/song/ZncntZHsSCvJdDQTrOKfUoKfTDnLH"
+            }
+        },
+        {
+            "song_id": 1074583946,
+            "title": "Get Lucky",
+            "artist": "Daft Punk , Pharrell Williams",
+            "zaloid": 0,
+            "username": "freshyidol",
+            "download_status": 1,
+            "thumbnail": "avatars/8/b/8bbb68c673fb24304e49ebe4338a1c72_1335021176.jpg",
+            "order": 38,
+            "pos_status": -6,
+            "wplay": 0,
+            "wlike": 0,
+            "wcomment": 0,
+            "zpoint": 0,
+            "link": "/bai-hat/Get-Lucky-Daft-Punk-Pharrell-Williams/ZW66WA0A.html",
+            "total_play": 195431,
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/ZmJntkHazQxBESCyLFcyFHLG",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/kHxGyLHNAQcduShTdbnyvmLm",
+                "lossless": ""
+            },
+            "copyright": "",
+            "download_disable": 0,
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/LnJmtLGNAWJVizXyZFxTbnZG",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/kHxHykmNlpJBRSCyVvHyFHLm",
+                "lossless": ""
+            }
+        },
+        {
+            "song_id": 1074684637,
+            "title": "Survival",
+            "artist": "Eminem",
+            "zaloid": 0,
+            "username": "mp3",
+            "download_status": 1,
+            "copyright": "",
+            "thumbnail": "avatars/6/4/6491c2173d300d5bbbee6b4c326fa561_1376557444.jpg",
+            "order": 39,
+            "pos_status": -8,
+            "wplay": 0,
+            "wlike": 0,
+            "wcomment": 0,
+            "zpoint": 0,
+            "link": "/bai-hat/Survival-Eminem/ZW67BOZD.html",
+            "total_play": 15571,
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/LmxGykmNShxlXdNTLFxyFHLG",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/ZGcHTLHszgcSgVstBvntDHkH",
+                "lossless": ""
+            },
+            "download_disable": 0,
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/ZHJHtLGaACJSXdNyZDctvmZG",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/kmcGtLmsAhxSCBNtBDnTvmLG",
+                "lossless": ""
+            }
+        },
+        {
+            "song_id": 1074546059,
+            "title": "Mine Would Be You",
+            "artist": "Blake Shelton",
+            "zaloid": 0,
+            "username": "mp3",
+            "download_status": 1,
+            "copyright": "",
+            "thumbnail": "avatars/9/c/9c168c4be1ad91d5df0db332e48cb412_1347297367.jpg",
+            "order": 40,
+            "pos_status": null,
+            "wplay": 0,
+            "wlike": 0,
+            "wcomment": 0,
+            "zpoint": 0,
+            "link": "/bai-hat/Mine-Would-Be-You-Blake-Shelton/ZW6Z960B.html",
+            "total_play": 1286,
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/LmJHTLnNzQlCHQutZDJTbmkm",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/LncnyLHNSQShGQEyVFntDGLG",
+                "lossless": ""
+            },
+            "download_disable": 0,
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/ZmcmTZmNlpSgmQETkDcTDmkm",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/LHxnTLHslWlhHQRTVFHtDGLH",
+                "lossless": ""
+            }
+        }
+    ],
+    "numFound": 40,
+    "likes": 68,
+    "like_this": false,
+    "favourites": 0,
+    "favourite_this": false,
+    "response": {
+        "msgCode": 1
+    }
+}
+```
+
+## TOP 100
+
+
+## SONG BY THEMES
