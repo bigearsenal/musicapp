@@ -601,6 +601,14 @@
 			}
 		},
 		{
+			"file": "docs/zing_api.md",
+			"settings":
+			{
+				"buffer_size": 181646,
+				"line_ending": "Unix"
+			}
+		},
+		{
 			"file": "proxy.js",
 			"settings":
 			{
@@ -609,10 +617,10 @@
 			}
 		},
 		{
-			"file": "lib/movies/RC4.coffee",
+			"file": "scripts/zing-cipher.coffee",
 			"settings":
 			{
-				"buffer_size": 23770,
+				"buffer_size": 7680,
 				"line_ending": "Unix"
 			}
 		}
@@ -832,7 +840,10 @@
 	},
 	"console":
 	{
-		"height": 167.0
+		"height": 167.0,
+		"history":
+		[
+		]
 	},
 	"distraction_free":
 	{
@@ -845,7 +856,7 @@
 	},
 	"file_history":
 	[
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/movies/hdviet.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/helpers/ZI.coffee",
 		"/Users/daonguyenanbinh/aa.txt",
 		"/Users/daonguyenanbinh/aaa 2.txt",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/proxy.coffee",
@@ -896,7 +907,6 @@
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/scripts/zing-cipher.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/songfreaks.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/test/misc/zi_test.coffee",
-		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/helpers/ZI.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/helpers/NS.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/lyricwiki.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/test/misc/zi.coffee",
@@ -906,6 +916,7 @@
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/helpers/media.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/movies/RC4.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/nhacvui.coffee",
+		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/lib/movies/hdviet.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/node_modules/pace/pace.coffee",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/node_modules/pace/pacexx.js",
 		"/Users/daonguyenanbinh/Box Documents/Sites/nodejs/node_modules/pace/pace.js",
@@ -1158,12 +1169,13 @@
 	"groups":
 	[
 		{
-			"selected": 11,
+			"selected": 10,
 			"sheets":
 			[
 				{
 					"buffer": 0,
 					"file": "main.coffee",
+					"semi_transient": false,
 					"settings":
 					{
 						"buffer_size": 15526,
@@ -1279,6 +1291,7 @@
 				{
 					"buffer": 1,
 					"file": "lib/chacha.coffee",
+					"semi_transient": false,
 					"settings":
 					{
 						"buffer_size": 14285,
@@ -1394,6 +1407,7 @@
 				{
 					"buffer": 2,
 					"file": "lib/helpers/string.coffee",
+					"semi_transient": false,
 					"settings":
 					{
 						"buffer_size": 573,
@@ -1509,6 +1523,7 @@
 				{
 					"buffer": 3,
 					"file": "lib/module.coffee",
+					"semi_transient": false,
 					"settings":
 					{
 						"buffer_size": 1910,
@@ -1624,6 +1639,7 @@
 				{
 					"buffer": 4,
 					"file": "lib/Site.coffee",
+					"semi_transient": false,
 					"settings":
 					{
 						"buffer_size": 3377,
@@ -1739,6 +1755,7 @@
 				{
 					"buffer": 5,
 					"file": "lib/misc/assisstantFuncs.coffee",
+					"semi_transient": false,
 					"settings":
 					{
 						"buffer_size": 8572,
@@ -1854,6 +1871,7 @@
 				{
 					"buffer": 6,
 					"file": "server.coffee",
+					"semi_transient": false,
 					"settings":
 					{
 						"buffer_size": 751,
@@ -1970,6 +1988,7 @@
 				{
 					"buffer": 7,
 					"file": "lib/helpers/source_link.coffee",
+					"semi_transient": false,
 					"settings":
 					{
 						"buffer_size": 7066,
@@ -2085,6 +2104,7 @@
 				{
 					"buffer": 8,
 					"file": "lib/helpers/elements/element.coffee",
+					"semi_transient": false,
 					"settings":
 					{
 						"buffer_size": 2684,
@@ -2200,6 +2220,7 @@
 				{
 					"buffer": 9,
 					"file": "lib/allmusic.coffee",
+					"semi_transient": false,
 					"settings":
 					{
 						"buffer_size": 15916,
@@ -2304,17 +2325,48 @@
 							},
 							"sublimelinter_wrap_find": true,
 							"syntax": "Packages/CoffeeScript/CoffeeScript.tmLanguage",
+							"tab_size": 1,
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1730.0,
+						"translation.y": 10555.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 10,
+					"file": "docs/zing_api.md",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 181646,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Markdown/Markdown.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 11,
 					"file": "proxy.js",
+					"semi_transient": false,
 					"settings":
 					{
 						"buffer_size": 637,
@@ -2429,117 +2481,29 @@
 					"type": "text"
 				},
 				{
-					"buffer": 11,
-					"file": "lib/movies/RC4.coffee",
+					"buffer": 12,
+					"file": "scripts/zing-cipher.coffee",
+					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 23770,
+						"buffer_size": 7680,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3846,
-								3846
+								7381,
+								7389
 							]
 						],
 						"settings":
 						{
-							"annotations":
-							[
-								"TODO",
-								"README",
-								"FIXME"
-							],
-							"csslint_options":
-							{
-								"adjoining-classes": "warning",
-								"box-model": true,
-								"box-sizing": "warning",
-								"compatible-vendor-prefixes": "warning",
-								"display-property-grouping": true,
-								"duplicate-background-images": "warning",
-								"duplicate-properties": true,
-								"empty-rules": true,
-								"errors": true,
-								"fallback-colors": "warning",
-								"floats": "warning",
-								"font-faces": "warning",
-								"font-sizes": "warning",
-								"gradients": "warning",
-								"ids": "warning",
-								"import": "warning",
-								"important": "warning",
-								"known-properties": true,
-								"outline-none": "warning",
-								"overqualified-elements": "warning",
-								"qualified-headings": "warning",
-								"regex-selectors": "warning",
-								"rules-count": "warning",
-								"shorthand": "warning",
-								"star-property-hack": "warning",
-								"text-indent": "warning",
-								"underscore-property-hack": "warning",
-								"unique-headings": "warning",
-								"universal-selector": "warning",
-								"vendor-prefix": true,
-								"zero-units": "warning"
-							},
-							"gjslint_ignore":
-							[
-								110.0
-							],
-							"gjslint_options":
-							[
-							],
-							"javascript_linter": "jshint",
-							"jshint_options":
-							{
-								"browser": true,
-								"evil": true,
-								"regexdash": true,
-								"sub": true,
-								"trailing": true,
-								"wsh": true
-							},
-							"pep8": true,
-							"pep8_ignore":
-							[
-								"E501"
-							],
-							"perl_linter": "perlcritic",
-							"pyflakes_ignore":
-							[
-							],
-							"pyflakes_ignore_import_*": true,
-							"sublimelinter": true,
-							"sublimelinter_delay": 2.0,
-							"sublimelinter_disable":
-							[
-							],
-							"sublimelinter_executable_map":
-							{
-							},
-							"sublimelinter_fill_outlines": false,
-							"sublimelinter_gutter_marks": false,
-							"sublimelinter_mark_style": "outline",
-							"sublimelinter_notes": false,
-							"sublimelinter_objj_check_ascii": false,
-							"sublimelinter_popup_errors_on_save": false,
-							"sublimelinter_syntax_map":
-							{
-								"C++": "c",
-								"Python Django": "python",
-								"Ruby on Rails": "ruby"
-							},
-							"sublimelinter_wrap_find": true,
 							"syntax": "Packages/CoffeeScript/CoffeeScript.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1723.0,
+						"translation.y": 2551.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -2582,6 +2546,7 @@
 	{
 		"height": 262.0
 	},
+	"project": "site.sublime-project",
 	"replace":
 	{
 		"height": 86.0
@@ -2593,20 +2558,16 @@
 		"selected_items":
 		[
 			[
-				"rc",
-				"nodejs/lib/movies/RC4.coffee"
+				"zing",
+				"nodejs/scripts/zing-cipher.coffee"
 			],
 			[
-				"hdvie",
-				"nodejs/lib/movies/hdviet.coffee"
+				"hzi",
+				"nodejs/lib/helpers/ZI.coffee"
 			],
 			[
 				"util",
 				"nodejs/lib/utils.coffee"
-			],
-			[
-				"zing",
-				"nodejs/lib/zing.coffee"
 			],
 			[
 				"uti",
@@ -2751,6 +2712,10 @@
 			[
 				"nhacvui",
 				"nodejs/lib/nhacvui.coffee"
+			],
+			[
+				"hdvie",
+				"nodejs/lib/movies/hdviet.coffee"
 			],
 			[
 				"hdviet",
@@ -2957,6 +2922,10 @@
 				"nodejs/lib/movies/RC4.coffee"
 			],
 			[
+				"rc",
+				"nodejs/scripts/RC4_hdviet.coffee"
+			],
+			[
 				"nhacs",
 				"nodejs/lib/nhacso.coffee"
 			],
@@ -3099,10 +3068,6 @@
 			[
 				"main.cof",
 				"nodejs/main.coffee"
-			],
-			[
-				"ma",
-				"nodejs/main"
 			]
 		],
 		"width": 0.0
@@ -3115,10 +3080,24 @@
 		],
 		"width": 380.0
 	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"settings":
+	{
+	},
 	"show_minimap": true,
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": false,
 	"side_bar_width": 181.0,
-	"status_bar_visible": true
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
 }

@@ -1,27 +1,116 @@
-**Table of Contents**  *generated with [DocToc](http://doctoc.herokuapp.com/)*
-
 - [ZING API](#zing-api)
+	- [SONGS](#songs)
+		- [Get song's info](#get-song's-info)
+		- [Get song's lyrics](#get-song's-lyrics)
 	- [ALBUMS](#albums)
 		- [Get albums by genre](#get-albums-by-genre)
 		- [Get songs of an album](#get-songs-of-an-album)
 		- [Get album info](#get-album-info)
+		- [Get album's comments](#get-album's-comments)
 	- [VIDEOS](#videos)
 		- [Get videos by genre](#get-videos-by-genre)
-		- [Get video info](#get-video-info)
+		- [Get video's info](#get-video's-info)
 		- [Get video's lyrics](#get-video's-lyrics)
 		- [Get videos suggestion](#get-videos-suggestion)
 		- [Get video's comments](#get-video's-comments)
 	- [ARTISTS](#artists)
 		- [Get artists by genre](#get-artists-by-genre)
-		- [Get albums of an artist](#get-albums-of-an-artist)
-		- [Get songs of an artist](#get-songs-of-an-artist)
-		- [Get videos of an artist](#get-videos-of-an-artist)
+		- [Get artist's info](#get-artist's-info)
+		- [Get artist's albums](#get-artist's-albums)
+		- [Get artist's songs](#get-artist's-songs)
+		- [Get artist's videos](#get-artist's-videos)
 	- [CHARTS](#charts)
 		- [All](#all)
 	- [TOP 100](#top-100)
 	- [SONG BY THEMES](#song-by-themes)
+		- [Get list](#get-list)
 
 # ZING API
+
+## SONGS
+
+### Get song's info
+
+    http://api.mp3.zing.vn/api/mobile/song/getlyrics?keycode={YOUR_KEY}&requestdata={"id":"ZW67FWWF"}
+
+Example:
+
+    http://api.mp3.zing.vn/api/mobile/song/getlyrics?keycode=fafd463e2131914934b73310aa34a23f&requestdata={"id":"ZW67FWWF"}
+
+Response:
+    
+```json
+{
+    "song_id": 1074700719,
+    "song_id_encode": "ZW67FWWF",
+    "title": "Bức Tranh Từ Nước Mắt",
+    "artist_id": "13705",
+    "artist": "Mr. Siro",
+    "album_id": 1073845392,
+    "album": "Bức Tranh Từ Nước Mắt",
+    "composer_id": 303,
+    "composer": "Mr Siro",
+    "genre_id": "1,8",
+    "zaloid": 0,
+    "username": "mp3",
+    "is_hit": 1,
+    "is_official": 1,
+    "download_status": 1,
+    "copyright": "",
+    "thumbnail": "avatars/c/b/cb1c0681ed21166b63979e08e27b9a94_1348329834.jpg",
+    "total_play": 37428183,
+    "link": "/bai-hat/Buc-Tranh-Tu-Nuoc-Mat-Mr-Siro/ZW67FWWF.html",
+    "source": {
+        "128": "http://api.mp3.zing.vn/api/mobile/source/song/LmxHTZnalNGmNLEykDJyvnLm",
+        "320": "http://api.mp3.zing.vn/api/mobile/source/song/LmJHyZGNSaGmNLuTdvGtDnZn",
+        "lossless": "http://api.mp3.zing.vn/api/mobile/source/song/ZnJnyLmazsGHNLutrPffIMKfyvnLm"
+    },
+    "link_download": {
+        "128": "http://api.mp3.zing.vn/api/mobile/download/song/kmJnyLnNlaHHNLEyLvJyFHLG",
+        "320": "http://api.mp3.zing.vn/api/mobile/download/song/LnJHTZGazNHHNLEydFnybGLm",
+        "lossless": "http://api.mp3.zing.vn/api/mobile/download/song/LGxHyZnNlaHnskEyrPffrMKftbHZn"
+    },
+    "album_cover": null,
+    "likes": 27460,
+    "like_this": false,
+    "favourites": 0,
+    "favourite_this": false,
+    "comments": 831,
+    "genre_name": "Việt Nam, Nhạc Trẻ",
+    "video": {
+        "video_id": 1074700719,
+        "title": "Bức Tranh Từ Nước Mắt",
+        "artist": "Mr. Siro",
+        "thumbnail": "thumb_video/2/b/2b01f358a38b70c2761eb2913daec382_1379306977.jpg",
+        "duration": 340
+    },
+    "response": {
+        "msgCode": 1
+    }
+}
+```
+
+### Get song's lyrics
+
+    http://api.mp3.zing.vn/api/mobile/song/getlyrics?keycode={YOUR_KEY}&requestdata={"id":"ZW67FWWF"}
+
+Example:
+
+    http://api.mp3.zing.vn/api/mobile/song/getlyrics?keycode=fafd463e2131914934b73310aa34a23f&requestdata={"id":"ZW67FWWF"}
+
+Response:
+
+```json
+{
+    "id": "1188945",
+    "content": "Chuyện hai chúng ta bây giờ khác rồi\nThật lòng anh không muốn ai phải bối rối\nSợ em nhìn thấy nên anh đành phải lẳng lặng đứng xa\nChuyện tình thay đổi nên bây giờ trở thành người thứ ba\nTrách ai bây giờ, trách mình thôi.....\n\nĐK:\nNhìn em hạnh phúc bên ai càng làm anh tan nát lòng\nMới hiểu tại sao tình yêu người ta sợ khi cách xa\nĐiều anh lo lắng cứ vẫn luôn xảy ra\nNếu không đổi thay chẳng có ai sống được vì thiếu mất yêu thương.\n\nThời gian giết chết cuộc tình còn đau hơn giết chính mình\nTại sao mọi thứ xung quanh vẫn thế chỉ lòng người thay đổi\nGiờ em chỉ là tất cả quá khứ anh phải cố xoá trong nước mắt\n\n[ Trong tình yêu, thuộc về ai không quan trọng\nMột giây mơ màng là đã mất nhau....]\n\nCàng nghĩ đến em, anh càng hối hận\nVì xa em nên mất em thật ngu ngốc\nGiờ tình anh như bức tranh bằng nước mắt không màu sắc\nNhẹ nhàng và trong suốt cho dù đau đớn vẫn lặng yên\nTrách ai bây giờ, trách mình thôi....\n\nĐK:\nNhìn em hạnh phúc bên ai càng làm anh tan nát lòng\nMới hiểu tại sao tình yêu người ta sợ khi cách xa\nĐiều anh lo lắng cứ vẫn luôn xảy ra\nNếu không đổi thay chẳng có ai sống được vì thiếu mất yêu thương.\n\nThời gian giết chết cuộc tình còn đau hơn giết chính mình\nTại sao mọi thứ xung quanh vẫn thế chỉ lòng người thay đổi\nGiờ em chỉ là tất cả quá khứ anh phải cố xoá trong nước mắt.\n\nNụ cười em vẫn như xưa mà lòng em sao khác rồi\nNỗi đau này chỉ mình anh nhận lấy vì anh đã sai\nGiờ anh phải cố giữ nước mắt đừng rơi\nBức tranh tình yêu của em từ lâu đã không hề có anh......\n\nTrong tình yêu, thuộc về ai không quan trọng, rồi cũng mất nhau…",
+    "mark": 3876,
+    "author": "o0cobemuaxuan0o",
+    "response": {
+        "msgCode": 1
+    }
+}
+```
 
 ## ALBUMS
 
@@ -477,6 +566,207 @@ Response:
     "comments": 0,
     "favourites": 0,
     "favourite_this": false,
+    "response": {
+        "msgCode": 1
+    }
+}
+```
+
+### Get album's comments
+
+    http://api.mp3.zing.vn/api/mobile/comment/getcommentofplaylist?key={YOUR_KEY}&requestdata={"id":1073852647,"start":0,"length":20}
+
+Example: 
+
+    http://api.mp3.zing.vn/api/mobile/comment/getcommentofplaylist?key=fafd463e2131914934b73310aa34a23f&requestdata={"id":1073852647,"start":0,"length":20}
+
+Response:
+
+```json
+{
+    "numFound": 32,
+    "docs": [
+        {
+            "commentId": 1874068398,
+            "time": 1383914264,
+            "content": "sao bài em muốn nhìn môi chị ghê vậy ! chỉ là em giấu đi môi đẹp lắm á ",
+            "owner": {
+                "userName": "cunannoinhonhe",
+                "displayName": "cunannoinhonhe"
+            }
+        },
+        {
+            "commentId": 1874016578,
+            "time": 1383913642,
+            "content": "chỉ là anh giấu đi....chỉ là anh giấu đi....chỉ là anh giấu đi....",
+            "owner": {
+                "userName": "lethanhtam53",
+                "displayName": " alone"
+            }
+        },
+        {
+            "commentId": 1873946477,
+            "time": 1383911942,
+            "content": ":) bùi bích phương. chị thật... làm cho em khóc rồi nè.. :'(((( nghe xong mà... buồn quá trời buồn.",
+            "owner": {
+                "userName": "hatnangguongcuoi",
+                "displayName": "Triệu Thị Thu Thủy"
+            }
+        },
+        {
+            "commentId": 1873939440,
+            "time": 1383910767,
+            "content": "Nếu BP phát hành album chắc chắn mình sẽ mua bản gốc. Trước giờ chỉ muốn nghe nhạc chùa của các ca sĩ khác thôi nhưng của BP lại khác ^^",
+            "owner": {
+                "userName": "icysnowflake93",
+                "displayName": "icysnowflake93"
+            }
+        },
+        {
+            "commentId": 1873937933,
+            "time": 1383910698,
+            "content": "thế cái bài có lời là :\" vì e biết 1 ngày nào đó k thể bên a, k thể ngắm nhìn đc nụ cười và đc ôm a, nếu có trách e cũng đành hãy cứ để những nụ cười e giữ riêng....\" là bài nào ạ, e nghe k có thấy",
+            "owner": {
+                "userName": "try_life_yb",
+                "displayName": " forget"
+            }
+        },
+        {
+            "commentId": 1873764968,
+            "time": 1383902841,
+            "content": "Xin lỗi anh nhé!............... .E không làm được đâu :(",
+            "owner": {
+                "userName": "ngoc_nghech_1993",
+                "displayName": "Ngoc_Nghech_1993 Ngoc_Nghech_1993"
+            }
+        },
+        {
+            "commentId": 1873756370,
+            "time": 1383902064,
+            "content": "bài hát này hay quá!BP hát bài nào cũng thấy cảm xúc.",
+            "owner": {
+                "userName": "binhhien225",
+                "displayName": "Đinh Thị Hiên"
+            }
+        },
+        {
+            "commentId": 1873739118,
+            "time": 1383900464,
+            "content": "càng nghe nhiều nhạc của bích phương, mình càng mất dần niềm tin vào tình yêu :p. Đùa chứ nghe buồn mà hay ghê ^^.",
+            "owner": {
+                "userName": "phattrumvt114",
+                "displayName": "Đinh Ngọc Phát"
+            }
+        },
+        {
+            "commentId": 1873725097,
+            "time": 1383898704,
+            "content": "bài này đúng tâm trạng đúng hoàn cảnh của mình..........",
+            "owner": {
+                "userName": "pelun365",
+                "displayName": "Ny Nũng Nịu"
+            }
+        },
+        {
+            "commentId": 1873703509,
+            "time": 1383896706,
+            "content": "xin lỗi anh nhé............ em không làm được đâu >\"",
+            "owner": {
+                "userName": "nana_vq",
+                "displayName": "Na Còi"
+            }
+        },
+        {
+            "commentId": 1873703508,
+            "time": 1383896458,
+            "content": "album này rất đáng nghe, bài nào cũng hay, bài Khoảng Lặng giai điệu lạ, bài chia tay nhưng nghe k não nề :D",
+            "owner": {
+                "userName": "tsu21376",
+                "displayName": " tsu21376"
+            }
+        },
+        {
+            "commentId": 1873686652,
+            "time": 1383893566,
+            "content": "Khoảng lặng là bài hát chia tay mà nghe sao vui thế nhỉ ^^",
+            "owner": {
+                "userName": "cherry_aries",
+                "displayName": " MrsEraser"
+            }
+        },
+        {
+            "commentId": 1873686644,
+            "time": 1383893302,
+            "content": "yêu chị bích phương nhìu lém . mấy bài chị hát cảm động đến rơi nước mắt lun. Chúc chị thành công trong sự nghiệp ca hát",
+            "owner": {
+                "userName": "tienvip_bmt",
+                "displayName": "oOo Ny xXx Ngok oOo"
+            }
+        },
+        {
+            "commentId": 1873643935,
+            "time": 1383891345,
+            "content": "Mấy cái bài hát kia hay hơn cả bài chủ chốt =.= Bài Khoảng lặng hay ^^",
+            "owner": {
+                "userName": "heocoi_95",
+                "displayName": "Vân Anh"
+            }
+        },
+        {
+            "commentId": 1873616184,
+            "time": 1383889813,
+            "content": "Thích những bài hát này. Yêu giọng hát của Phương. Đã theo dõi bạn qua cuộc thi VNID rồi thích luôn bài Có khi nào rời xa,Có Lẽ Em, Em Muốn... cả album này bài nào cũng thích. Chúc bạn thành công nhé.",
+            "owner": {
+                "userName": "nguyentranle1405",
+                "displayName": " nguyentranle1405"
+            }
+        },
+        {
+            "commentId": 1873616183,
+            "time": 1383889741,
+            "content": "kết nhất bài Nếu Hạnh Phúc Không Phải Em ... tâm trạng quá :(",
+            "owner": {
+                "userName": "mitukun",
+                "displayName": " mitukun"
+            }
+        },
+        {
+            "commentId": 1873607705,
+            "time": 1383888931,
+            "content": "Chị Bích Phương hát bài nào cũng hay..thích nguyên cả album của chị..rất đúng tâm trạng..cố gắng lên nữa chị nhé............ ",
+            "owner": {
+                "userName": "hien_milo",
+                "displayName": "GjA DinH II  VIP VInG QuAnG II luv Ga"
+            }
+        },
+        {
+            "commentId": 1873487243,
+            "time": 1383880097,
+            "content": "nghe bài nào cũng hay, cũng tâm trạng. Càng ngày càng thích giọng Bích Phương, êm ái, dịu dàng, ngọt ngào như hình ảnh của P vậy! Nhưng nhạc của P buồn lắm nên ai thất tình thì đừng có nghe nhiều!!! :3",
+            "owner": {
+                "userName": "anhtubkk57",
+                "displayName": "Devil Nim"
+            }
+        },
+        {
+            "commentId": 1873469468,
+            "time": 1383879418,
+            "content": "ko có gì đặt biệt lắm , bài nào cũng mang 1 âm hưởng",
+            "owner": {
+                "userName": "duy1231979",
+                "displayName": "Kẹo Bông"
+            }
+        },
+        {
+            "commentId": 1873469323,
+            "time": 1383878508,
+            "content": "^^ hình abum giông boom ghê lun.dễ thương quá đi.hát cũng hay nữa hii",
+            "owner": {
+                "userName": "razu55",
+                "displayName": "Huỳnh Minh Tài"
+            }
+        }
+    ],
     "response": {
         "msgCode": 1
     }
@@ -1008,7 +1298,7 @@ Response:
     }
 }
 ```
-### Get video info
+### Get video's info
 
 	http://api.mp3.zing.vn/api/mobile/video/getvideoinfo?keycode={YOUR_KEY}&requestdata={{"id":1074729245}}
 
@@ -1604,7 +1894,45 @@ Response:
 }
 ```
 
-### Get albums of an artist
+### Get artist's info
+
+    http://api.mp3.zing.vn/api/mobile/artist/getartistinfo?key={YOUR_KEY}&requestdata={{"id":828}}
+
+Example:
+
+    http://api.mp3.zing.vn/api/mobile/artist/getartistinfo?key=fafd463e2131914934b73310aa34a23f&requestdata={"id":828}
+
+```json
+{
+    "artist_id": 828,
+    "name": "Quang Lê",
+    "alias": "",
+    "birthname": "Leon Quang Lê",
+    "birthday": "24/01/1981",
+    "sex": 1,
+    "genre_id": "1,11,13",
+    "avatar": "avatars/9/6/96c7f8568cdc943997aace39708bf7b6_1376539870.jpg",
+    "cover": "cover_artist/9/9/9920ce8b6c7eb43328383041acb58e76_1376539928.jpg",
+    "cover2": "",
+    "zme_acc": "",
+    "role": "1",
+    "website": "",
+    "biography": "Quang Lê sinh ra tại Huế, trong gia đình gồm 6 anh em và một người chị nuôi, Quang Lê là con thứ 3 trong gia đình.\r\nĐầu những năm 1990, Quang Lê theo gia đình sang định cư tại bang Missouri, Mỹ.\r\nHiện nay Quang Lê sống cùng gia đình ở Los Angeles, nhưng vẫn thường xuyên về Việt Nam biểu diễn.\r\n\r\nSự nghiệp:\r\n\r\nSay mê ca hát từ nhỏ và niềm say mê đó đã cho Quang Lê những cơ hội để đi đến con đường ca hát ngày hôm nay. Có sẵn chất giọng Huế ngọt ngào, Quang Lê lại được cha mẹ cho theo học nhạc từ năm lớp 9 đến năm thứ 2 của đại học khi gia đình chuyển sang sống ở California . Anh từng đoạt huy chương bạc trong một cuộc thi tài năng trẻ tổ chức tại California. Thời gian đầu, Quang Lê chỉ xuất hiện trong những sinh hoạt của cộng đồng địa phương, mãi đến năm 2000 mới chính thức theo nghiệp ca hát. Nhưng cũng phải gần 2 năm sau, Quang Lê mới tạo được chỗ đứng trên sân khấu ca nhạc của cộng đồng người Việt ở Mỹ. Và từ đó, Quang Lê liên tục nhận được những lời mời biểu diễn ở Mỹ, cũng như ở Canada, Úc...\r\nLà một ca sĩ trẻ, cùng gia đình định cư ở Mỹ từ năm 10 tuổi, Quang Lê đã chọn và biểu diễn thành công dòng nhạc quê hương. Nhạc sĩ lão thành Châu Kỳ cũng từng khen Quang Lê là ca sĩ trẻ diễn đạt thành công nhất những tác phẩm của ông…\r\nQuang Lê rất hạnh phúc và anh xem lời khen tặng đó là sự khích lệ rất lớn để anh cố gắng nhiều hơn nữa trong việc diễn đạt những bài hát của nhạc sĩ Châu Kỳ cũng như những bài hát về tình yêu quê hương đất nước. 25 tuổi, được xếp vào số những ca sĩ trẻ thành công, nhưng Quang Lê luôn khiêm tốn cho rằng thành công thường đi chung với sự may mắn, và điều may mắn của anh là được lớn lên trong tiếng đàn của cha, giọng hát của mẹ.\r\nTiếng hát, tiếng đàn của cha mẹ anh quyện lấy nhau, như một sợi dây vô hình kết nối mọi người trong gia đình lại với nhau. Những âm thanh ngọt ngào đó chính là dòng nhạc quê hương mà Quang Lê trình diễn ngày hôm nay. Quang Lê cho biết: \"Mặc dù sống ở Mỹ đã lâu nhưng hình ảnh quê hương không bao giờ phai mờ trong tâm trí Quang Lê, nên mỗi khi hát những nhạc phẩm quê hương, những hình ảnh đó lại như hiện ra trước mắt\". Có lẽ vì thế mà giọng hát của Quang Lê như phảng phất cái không khí êm đềm của thành phố Huế.\r\nQuang Lê là con thứ 3 trong gia đình gồm 6 anh em và một người chị nuôi. Từ nhỏ, Quang Lê thường được người chung quanh khen là có triển vọng. Cậu bé chẳng hiểu \"có triển vọng\" là gì, chỉ biết là mình rất thích hát, và thích được cất tiếng hát trước người thân, để được khen ngợi và cổ vũ.\r\nĐầu những năm 1990, Quang Lê theo gia đình sang định cư tại bang Missouri, Mỹ. Một hôm, nhân có buổi lễ được tổ chức ở ngôi chùa gần nhà, một người quen của gia đình đã đưa Quang Lê đến để giúp vui cho chương trình sinh hoạt của chùa, và anh đã nhận được sự đón nhận nhiệt tình của khán giả. Quang Lê nhớ lại, \"người nghe không chỉ vỗ tay hoan hô mà còn thưởng tiền nữa\". Đối với một đứa trẻ 10 tuổi, thì đó quả là một niềm hạnh phúc lớn lao, khi nghĩ rằng niềm đam mê của mình lại còn có thể kiếm tiền giúp đỡ gia đình.\r\nQuan điểm của Quang Lê là khi dự định làm một việc gì thì hãy cố gắng hết mình để đạt được những điều mà mình mơ ước. Quang Lê cho biết anh toàn tâm toàn ý với dòng nhạc quê hương trữ tình mà anh đã chọn lựa và được đón nhận, nhưng anh tiết lộ là những lúc đi hát vũ trường, vì muốn thay đổi và để hòa đồng với các bạn trẻ, anh cũng trình bày những ca khúc \"Techno\" và cũng nhảy nhuyễn không kém gì vũ đoàn minh họa.\r\n\r\nAlbum:\r\n\r\nSương trắng miền quê ngoại (2003)\r\nXin gọi nhau là cố nhân (2004)\r\nHuế đêm trăng (2004)\r\nKẻ ở miền xa (2004)\r\n7000 đêm góp Lại (2005)\r\nĐập vỡ cây đàn (2007)\r\nHai quê (2008)\r\nTương tư nàng ca sĩ (2009)\r\nĐôi mắt người xưa (2010)\r\nPhải lòng con gái bến tre (2011)\r\nKhông phải tại chúng mình (2012)",
+    "agency_name": "Ca sĩ Tự Do",
+    "national_name": "Việt Nam",
+    "is_official": 1,
+    "year_active": "2000",
+    "status_id": 1,
+    "created_date": 0,
+    "link": "/nghe-si/Quang-Le",
+    "genre_name": "Việt Nam, Nhạc Trữ Tình",
+    "response": {
+        "msgCode": 1
+    }
+}
+```
+
+### Get artist's albums
 
 	http://api.mp3.zing.vn/api/mobile/artist/getalbumofartist?key={YOUR_KEY}&requestdata={{"id":347,"start":0,"length":20}}
 
@@ -1826,7 +2154,7 @@ Response:
 }
 ```
 
-### Get songs of an artist
+### Get artist's songs
 
 	http://api.mp3.zing.vn/api/mobile/artist/getsongofartist?key={YOUR_KEY}&requestdata={{"id":347,"start":0,"length":20}}
 
@@ -2246,7 +2574,7 @@ Example:
 }
 ```
 
-### Get videos of an artist
+### Get artist's videos
 
 	http://api.mp3.zing.vn/api/mobile/artist/getvideoofartist?key={YOUR_KEY}&requestdata={{"id":347,"start":0,"length":20}}
 
@@ -3746,5 +4074,334 @@ Response:
 
 ## TOP 100
 
+    http://api.mp3.zing.vn/api/mobile/charts/gettopsong?key={YOUR_KEY}&requestdata={"id":66,"start":0,"length":100}
+
+Example: 
+    
+    http://api.mp3.zing.vn/api/mobile/charts/gettopsong?key=fafd463e2131914934b73310aa34a23f&requestdata={"id":66,"start":0,"length":100}
+
+```json
+{
+    "numFound": 100,
+    "start": 0,
+    "docs": [
+        {
+            "song_id": 1074729245,
+            "title": "Xin Anh Đừng Đến",
+            "artist": "Bảo Thy",
+            "album_id": 0,
+            "zaloid": 0,
+            "username": "mp3",
+            "download_status": 1,
+            "copyright": 0,
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/knJnTZHslsDuvzQTkFJtDHkm",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/LHJntZnsSsbuDzQydvnyDmZG"
+            },
+            "download_disable": 0,
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/kncnyLHNzNbivlWykvJtDnZG",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/ZHxGtLHslNbubzQTVbGybGZm"
+            },
+            "link": "/bai-hat/Xin-Anh-Dung-Den-Bao-Thy/ZW686I9D.html",
+            "thumbnail": null
+        },
+        {
+            "song_id": 1074516665,
+            "title": "Xóa Hết Remix",
+            "artist": "Du Thiên",
+            "album_id": "1073822975",
+            "zaloid": 0,
+            "username": "minhth26",
+            "download_status": 1,
+            "source": {
+                "128": "http://api.mp3.zing.vn/api/mobile/source/song/LGcGtkGsAWZCCXQTkFJtFmkH",
+                "320": "http://api.mp3.zing.vn/api/mobile/source/song/ZnJGtLGaAQLCXgQyBDGTDnZG",
+                "lossless": "http://api.mp3.zing.vn/api/mobile/source/song/ZHJGykGsSpLgXCQtrwefIYfftDmLm"
+            },
+            "download_disable": 0,
+            "link_download": {
+                "128": "http://api.mp3.zing.vn/api/mobile/download/song/kGxGTLGNApLChCWykbJtFmZG",
+                "320": "http://api.mp3.zing.vn/api/mobile/download/song/knJmtLHaSpLgXgQTVbmTvmkm",
+                "lossless": "http://api.mp3.zing.vn/api/mobile/download/song/LGxntLnNzQZhXXQTrwffIjfetvmkG"
+            },
+            "link": "/bai-hat/Xoa-Het-Remix-Du-Thien/ZW6ZWOO9.html",
+            "thumbnail": ""
+        }
+        ......................................................................
+    ],
+    "response": {
+        "msgCode": 1
+    }
+}
+```
 
 ## SONG BY THEMES
+
+### Get list
+
+    http://api.mp3.zing.vn/api/mobile/song/gettopiclist?keycode={YOUR_KEY}
+
+Example: 
+
+    http://api.mp3.zing.vn/api/mobile/song/gettopiclist?keycode=fafd463e2131914934b73310aa34a23f
+
+Response:
+
+```json
+{
+    "docs": [
+        {
+            "topic_id": 72,
+            "topic_name": "Nhạc Hot Việt",
+            "numFound": 38,
+            "item": [
+                {
+                    "playlist_id": 1073851783,
+                    "title": "Nhạc Hot Việt Tháng 11/2013",
+                    "artist": "Various Artists",
+                    "zaloid": 0,
+                    "username": "mp3",
+                    "cover": "covers/0/9/09bdb4a26d1a5c3c10faf5d0163afb7f_1383279849.jpg",
+                    "description": "Album tập hợp những ca khúc nhạc Việt hay nhất được ra mắt trong tháng 11 tại Zing Mp3.",
+                    "is_album": 0,
+                    "modified_date": 1383909854,
+                    "total_play": 2403208
+                }
+            ]
+        },
+        {
+            "topic_id": 109,
+            "topic_name": "Nhạc Việt Mới",
+            "numFound": 30,
+            "item": [
+                {
+                    "playlist_id": 1073851779,
+                    "title": "Nhạc Việt Mới Tháng 11/2013",
+                    "artist": "Various Artists",
+                    "zaloid": 0,
+                    "username": "mp3",
+                    "cover": "covers/8/d/8dfd59eecf913ae8109188bb4cd93351_1383279974.jpg",
+                    "description": "Album tập hợp những ca khúc nhạc Việt mới nhất được ra mắt trong tháng 11 tại Zing Mp3.",
+                    "is_album": 0,
+                    "modified_date": 1383909733,
+                    "total_play": 606093
+                }
+            ]
+        },
+        {
+            "topic_id": 76,
+            "topic_name": "Nhạc Hot Rap Việt",
+            "numFound": 34,
+            "item": [
+                {
+                    "playlist_id": 1073851762,
+                    "title": "Nhạc Hot Rap Việt Tháng 11/2013",
+                    "artist": "Various Artists",
+                    "zaloid": 0,
+                    "username": "mp3",
+                    "cover": "covers/9/6/9651cc991aa67672d888896c734baa33_1383280184.jpg",
+                    "description": "",
+                    "is_album": 0,
+                    "modified_date": 1383797051,
+                    "total_play": 732961
+                }
+            ]
+        },
+        {
+            "topic_id": 75,
+            "topic_name": "Nhạc Hot Âu Mỹ",
+            "numFound": 37,
+            "item": [
+                {
+                    "playlist_id": 1073851763,
+                    "title": "Nhạc Hot US-UK Tháng 11/2013",
+                    "artist": "Various Artists",
+                    "zaloid": 0,
+                    "username": "mp3",
+                    "cover": "covers/e/1/e19820190b1c59040d3f89b1f6069d93_1383280103.jpg",
+                    "description": "",
+                    "is_album": 0,
+                    "modified_date": 1383628776,
+                    "total_play": 392204
+                }
+            ]
+        },
+        {
+            "topic_id": 74,
+            "topic_name": "Nhạc Hot Hàn",
+            "numFound": 38,
+            "item": [
+                {
+                    "playlist_id": 1073851626,
+                    "title": "Nhạc Hot K-Pop Tháng 11/2013",
+                    "artist": "Various Artists",
+                    "zaloid": 0,
+                    "username": "mp3",
+                    "cover": "covers/1/0/1096b0d160bb84948306d25893786e03_1383280023.jpg",
+                    "description": "",
+                    "is_album": 0,
+                    "modified_date": 1383869941,
+                    "total_play": 161688
+                }
+            ]
+        },
+        {
+            "topic_id": 89,
+            "topic_name": "Love Songs",
+            "numFound": 66,
+            "item": [
+                {
+                    "playlist_id": 1073832201,
+                    "title": "Best Ballad Songs 5 (Tuyển Tập Các Ca Khúc Ballad Hay Nhất)",
+                    "artist": "Various Artists",
+                    "zaloid": 0,
+                    "username": "mp3",
+                    "cover": "covers/b/d/bd51972e296a4224a01da3e0c03cdf4c_1368680810.jpg",
+                    "description": "Cùng Zing Mp3 thưởng thức 15 ca khúc Pop Ballads hay được yêu mến trong thời gian qua.",
+                    "is_album": 0,
+                    "modified_date": 1370833220,
+                    "total_play": 3864866
+                }
+            ]
+        },
+        {
+            "topic_id": 84,
+            "topic_name": "Nhạc Sàn",
+            "numFound": 47,
+            "item": [
+                {
+                    "playlist_id": 1073792639,
+                    "title": "Hit Remixes Vol.2",
+                    "artist": "Various Artists",
+                    "zaloid": 0,
+                    "username": "mp3",
+                    "cover": "covers/5/0/5088a23fdb4b60e1629f4028ddca1a1d_1373604263.jpg",
+                    "description": "Album tập hợp những single được remix lại theo một phong cách sôi động rất thích hợp cho những buổi party cuối tuần. Mời các bạn cùng thưởng thức. ",
+                    "is_album": 0,
+                    "modified_date": 1377139637,
+                    "total_play": 1345690
+                }
+            ]
+        },
+        {
+            "topic_id": 151,
+            "topic_name": "Nhạc Phim ",
+            "numFound": 84,
+            "item": [
+                {
+                    "playlist_id": 1073849035,
+                    "title": "About Time OST",
+                    "artist": "Various Artists",
+                    "zaloid": 0,
+                    "username": "mp3",
+                    "cover": "covers/6/5/6573c74a05e65e62970947f9d941c110_1381235659.jpg",
+                    "description": "About Time (tên Việt là Đã đến lúc), bộ phim tình cảm của Anh là bản ballad ngọt ngào, lãng mạn và đầy ý nghĩa về tình yêu, tình thân. Tác phẩm nhắc người xem nâng niu từng phút giây được sống. Tác phẩm là bài ca về tình yêu và cuộc sống, chân thật như hơi thở con người. Nếu nhìn poster hay xem trailer About time, không ít người nghĩ đây là phim tình cảm lứa đôi. Điều đó đúng nhưng chưa đủ. Mối tình lãng mạn trong phim như cái cớ để đạo diễn Richard Curtis kể câu chuyện về cuộc sống muôn màu. About Time OST là album soundtrack trong phim, vừa phát hành vào ngày 02/09 bởi hãng ghi âm Decca, với các ca khúc vô cùng ngọt ngào của Sugababes, t.A.T.u, Ellie Goulding, ... album chắc chắn sẽ làm bạn hài lòng, mời các bạn cùng thưởng thức những ca khúc ngọt ngào này nhé.",
+                    "is_album": 1,
+                    "modified_date": 1381240195,
+                    "total_play": 187128
+                }
+            ]
+        },
+        {
+            "topic_id": 149,
+            "topic_name": "Nhạc Thúy Nga",
+            "numFound": 52,
+            "item": [
+                {
+                    "playlist_id": 1073847359,
+                    "title": "Lắng Nghe Thời Gian (Top Hits 57)",
+                    "artist": "Various Artists",
+                    "zaloid": 0,
+                    "username": "mp3",
+                    "cover": "covers/d/6/d625050fbe50ad9924135049fec6a81a_1379923565.jpg",
+                    "description": "Đây là CD tổng hợp thứ 527 của trung tâm Thúy Nga phát hành. Album tập hợp các giọng ca vàng của trung tâm như Ngọc Anh, Thu Phương, Minh Tuyết, Tóc Tiên, Lương Tùng Quang, Trịnh Lam...\r\n\r\nĐây cũng là những ca khúc từng xuất hiện trong Thúy Nga 108 chủ đề Dòng Thời Gian",
+                    "is_album": 1,
+                    "modified_date": 1380010376,
+                    "total_play": 593152
+                }
+            ]
+        },
+        {
+            "topic_id": 156,
+            "topic_name": "The Voice Mỹ",
+            "numFound": 6,
+            "item": [
+                {
+                    "playlist_id": 1073850694,
+                    "title": "The Voice US Season 5 (EP 7) (Battle Round)",
+                    "artist": "Various Artists",
+                    "zaloid": 0,
+                    "username": "mp3",
+                    "cover": "covers/b/7/b72d76f2bee453fa0297d4d6fbc61e9a_1382068413.jpg",
+                    "description": "Album tổng hợp các ca khúc ở vòng Đối Đầu cuộc thi The Voice Mỹ mùa thứ 5, phát sóng trên đài truyền hình NBC vào tháng 9 năm 2013",
+                    "is_album": 1,
+                    "modified_date": 1382172125,
+                    "total_play": 96873
+                }
+            ]
+        },
+        {
+            "topic_id": 107,
+            "topic_name": "Zing Collection",
+            "numFound": 123,
+            "item": [
+                {
+                    "playlist_id": 1073808572,
+                    "title": "Tuyển Tập Những Bài Hát Hay Nhất Ngày Halloween",
+                    "artist": "Various Artists",
+                    "zaloid": 0,
+                    "username": "mp3",
+                    "cover": "covers/0/c/0ca3540b0843bbe15534ca55c6429eff_1382672903.jpg",
+                    "description": "Album tập hợp những bài hát hay nhất mọi thời đại dành riêng cho ngày lễ Halloween. Đây là danh sách từng được tạp chí Billboard của Mỹ giới thiệu.",
+                    "is_album": 0,
+                    "modified_date": 1382672940,
+                    "total_play": 42468
+                }
+            ]
+        },
+        {
+            "topic_id": 83,
+            "topic_name": "Nhạc Giáng Sinh",
+            "numFound": 131,
+            "item": [
+                {
+                    "playlist_id": 1073814327,
+                    "title": "Những Bài Hát Giáng Sinh Hay Nhất",
+                    "artist": "Various Artists",
+                    "zaloid": 0,
+                    "username": "",
+                    "cover": "covers/e/e/ee83a99b184ee963bb526b61aac9c6fb_1355210048.jpg",
+                    "description": "Với album này, các bạn sẽ được nghe những ca khúc Giáng sinh hay nhất của các nghệ sỹ quốc tế. Đây có thể nói là các ca khúc bất hủ mỗi mùa Noel về. Có những ca khúc ra đời đôi khi còn lớn tuổi hơn cả chúng ta nhưng nó vẫn được yêu thích đến ngày hôm nay nhờ ca từ ý nghĩa cũng như giai điệu vui tươi, tạo không khí Giáng sinh đến từng trái tim người yêu nhạc và sống mãi với thời gian.\r\n\r\nNhững ca khúc này có rất nhiều phiên bản khác nhau nhưng tất cả đều có một điểm chung là mang lại cho người nghe nhiều cảm xúc đặc biệt mỗi mùa Giáng sinh về. Những bài hát trong album này có thể bạn đã được nghe đâu đó vào mùa Noel và hy vọng album \"Những Bài Hát Giáng Sinh Hay Nhất\" sẽ góp một phần nho nhỏ trong món ăn tinh thần vào mỗi mùa Giáng Sinh.\r\n\r\nChúc các bạn Giáng sinh an lành và hạnh phúc.\r\n\r\n-Zing Mp3 -",
+                    "is_album": 0,
+                    "modified_date": 1356179988,
+                    "total_play": 3346589
+                }
+            ]
+        },
+        {
+            "topic_id": 116,
+            "topic_name": "The Best Of's",
+            "numFound": 124,
+            "item": [
+                {
+                    "playlist_id": 1073845469,
+                    "title": "Tuyển Tập Các Bài Hát Hay Nhất Của Mr.Siro",
+                    "artist": "Mr. Siro",
+                    "zaloid": 0,
+                    "username": "mp3",
+                    "cover": "covers/a/8/a807e616c8ded5b645354b8900f82395_1378277339.jpg",
+                    "description": "Tuyển Tập Các Bài Hát Hay Nhất Của Mr.Siro",
+                    "is_album": 0,
+                    "modified_date": 1378277341,
+                    "total_play": 2516943
+                }
+            ]
+        }
+    ],
+    "numFound": 0,
+    "response": {
+        "msgCode": 1
+    }
+}
+```
