@@ -4,7 +4,7 @@ http = require 'http'
 url = require 'url'
 zlib = require 'zlib'
 
-http.globalAgent.maxSockets = 100
+http.globalAgent.maxSockets = 150
 
 class AllMusic extends Site
 	constructor : ->
@@ -445,10 +445,15 @@ class AllMusic extends Site
 						similarids = album.similar.map (song)-> song.id
 						upd = ""
 						upd += "UPDATE #{@table.Albums} SET similars = '#{JSON.stringify(similarids).replace(/^\[/,'{').replace(/\]$/,'}')}' where id=#{album.id};"
-						for song in album.similar
-							upd += "UPDATE #{@table.Albums}  SET coverart='#{song.coverart}', ratings[1]=#{song.allmusicRating} where id=#{song.id} and (coverart is null or coverart='');"
+						upd += "INSERT INTO amcovertart VALUES "
+						for song, index in album.similar
+							upd += " (#{song.id}, '#{song.coverart}', #{song.allmusicRating})"
+							if index is album.similar.length-1
+								upd += ";"
+							else upd += ","
 						# upd += "COMMIT;"
 						# console.log upd
+						# process.exit 0
 						@connection.query upd, (errInfo)=>
 							if errInfo
 								# console.log errInfo
@@ -467,10 +472,10 @@ class AllMusic extends Site
 							@getSimilarsInRange()
 	getSimilars : ->
 		@config =
-			from : 10001
-			to : 20000
+			from : 770001
+			to : 800000
 			step : 1
-			leap : 0 # the number of items each loop
+			leap : 30000 # the number of items each loop
 			maxLeap : 100
 			count : 0
 			errorFilePath : "./almusic.err"
@@ -479,5 +484,91 @@ class AllMusic extends Site
 		@fs  = require("fs")
 		console.log "MAX SOCKET: #{http.globalAgent.maxSockets}"
 		@getSimilarsInRange()
+
+
+	getCredit : (key,callback)->
+		link = "http://www.allmusic.com/album/album/google-v2.5.4.2-#{key}/credits/mobile"
+		album =
+			id : parseInt(key.match(/([0-9]+)/)?[1],10)
+			credits : []
+		@HTTPGet link, (err,data)=>
+			if err 
+				callback(err,null)
+			else 
+				error = null
+				try
+					artistids = data.match(/mn[0-9]+/g)
+					if artistids
+						artistids = artistids.map (v)-> parseInt(v.match(/[0-9]+/)?[0],10)
+
+					artists = data.match(/<a href=.+?<\/a>/g)
+					if artists
+						artists = artists.map (v)-> v.stripHtmlTags().trim()
+
+					jobs = data.match(/<div class="credit">[^]+?<\/div>/g)
+					if jobs
+						jobs = jobs.map (v)-> v.stripHtmlTags().trim()
+
+					for artistid, index in artistids
+						credit = 
+							id : artistid
+							artist : artists[index]
+							job : jobs[index]
+						album.credits.push credit
+				catch e
+					error = e
+				if error
+					callback(error,null)
+				else callback(null,album)
+
+	getCreditsInRange : ->
+		@resetStats()
+		@stats.totalItems = @config.to - @config.from + 1
+		@stats.currentTable = @table.Albums
+		@config.count +=1
+		console.log  "LOOP: #{@config.count}".inverse.blue + " - getting albums from : #{@config.from} - #{@config.to}".blue
+		for id in [@config.from..@config.to] by @config.step
+			do (id)=>
+				@getCredit @toKey(id,"mw"),(err,album)=>
+					@stats.totalItemCount +=1
+					@stats.currentId = id
+					if err 
+						@stats.failedItemCount +=1
+						@fs.appendFile @config.errorFilePath,"#{id}\n",(err)->
+							if err then console.log "Cannot append new file"
+					else 
+						@stats.passedItemCount +=1
+						upd = "UPDATE #{@table.Albums} SET credits=#{@connection.escape JSON.stringify(album.credits)}"
+						upd += " WHERE id=#{album.id}"
+						@connection.query upd, (errInfo)=>
+							if errInfo
+								# console.log errInfo
+								# console.log album
+								@fs.appendFile @config.sqlErrorFilePath,"#{id}\n",(err)->
+									if err then console.log "Cannot append new file. SQL"
+							# else console.log "DONE.................."
+					
+					@utils.printRunning @stats
+
+					if @stats.totalItems is @stats.totalItemCount
+						@utils.printFinalResult @stats
+						if @config.leap > 0 and @config.count < @config.maxLeap
+							@config.from  = @config.to + 1
+							@config.to = @config.to + @config.leap
+							@getCreditsInRange()
+	getCredits : ->
+		@config =
+			from : 2360001
+			to : 2390000
+			step : 1
+			leap : 30000 # the number of items each loop
+			maxLeap : 5
+			count : 0
+			errorFilePath : "./almusic.err"
+			sqlErrorFilePath : "./almusic_sql.err"
+		@connect()
+		@fs  = require("fs")
+		console.log "MAX SOCKET: #{http.globalAgent.maxSockets}"
+		@getCreditsInRange()
 
 module.exports = AllMusic

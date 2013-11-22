@@ -646,7 +646,7 @@ class Nhaccuatui extends Module
 		type =  data.match(/.+inpHiddenType/g)?[0]
 		if type then video.type = type.replace(/\"\sid.+$/g,'').replace(/^.+\"/g,'')
 
-		info = data.match(/<div class="songname">[^]+?<\/h2>/g)?[0]
+		info = data.match(/<h1 class="songname">[^]+?<\/h1>/g)?[0]
 		if info
 			info = info.stripHtmlTags().trim()
 			info =  encoder.htmlDecode(info.trim()).split(' - ')

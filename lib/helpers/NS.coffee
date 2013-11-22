@@ -39,7 +39,7 @@ class NS
 		else return false
 
 # console.log NS.getID "X1pYW0pebQ"
-# console.log NS.getKey 17444
+console.log NS.getKey 1310212
 # # WVFSVg 7935
 # console.log NS.checkKey "X1pYW0pebQ"
 

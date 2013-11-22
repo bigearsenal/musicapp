@@ -55,13 +55,13 @@ describe "THE WEBSITE NHACCUATUI.COM",->
                         # console.log album
                         expect(album.id).to.equal(11997829)
                         expect(album.key).to.equal("0nXnIALOOIP2")
-                        expect(album.title).to.equal('Tuyết Lạnh (2013)')
+                        expect(album.title).to.equal('Tuyết Lạnh')
                         expect(album.artists).to.eql(["Thúy Vy","Lương Mạnh Hùng"])
                         expect(album.topics).to.eql(['Trữ Tình'])
                         expect(album.nsongs).to.equal(3)
-                        expect(album.coverart).to.equal('http://p.img.nct.nixcdn.com/playlist/2013/04/25/e/5/8/5/1366902514487.jpg')
+                        expect(album.coverart).to.equal('http://p.img.nct.nixcdn.com/playlist/2013/11/06/c/c/a/8/1383713236078.jpg')
                         expect(album.link_key).to.equal('1ffc9e71de0805c18a588165a200b008')
-                        expect(album.date_created).to.equal('2013-04-25 22:8:34')
+                        expect(album.date_created).to.equal('2013-11-06 11:47:16')
                         expect(album.songs).to.eql([ { id: '2505185', key: 'MCFGGOJ52cLM' },{ id: '2505189', key: 'PZAjh6mFUDhR' },{ id: '2507968', key: 'pxdnb4Wgb9gv' } ])
                         done()
             it 'should be played at least 1158 times',(done)->
@@ -84,6 +84,7 @@ describe "THE WEBSITE NHACCUATUI.COM",->
                               id : video.id
                               key : video.key
                         video = nhaccuatui.processVideo data, options
+                        # console.log video
                         expect(video.id).to.equal(2612146)
                         expect(video.key).to.equal("UJ7TXPPXNkMB")
                         expect(video.title).to.equal('Đi Tìm Lại Chính Anh')
@@ -91,6 +92,7 @@ describe "THE WEBSITE NHACCUATUI.COM",->
                         expect(video.topics).to.eql(["Việt Nam","Rap Việt"])
                         # expect(video.bitrate).to.equal('320')
                         expect(video.type).to.equal('mv')
+
                         expect(video.thumbnail).to.equal('http://m.img.nct.nixcdn.com/mv/2013/06/20/8/0/e/d/1371661683442_640.jpg')
                         expect(video.link_key).to.equal('baae98a4bd1c7ba3e1bc6640f36f5af0')
                         # new version in June 2013 does not support lyric of videos

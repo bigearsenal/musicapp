@@ -180,7 +180,7 @@ class LyricWiki extends Site
 			if data.match(/class='lyricbox'.+Instrumental.+TrebleClef/)
 				song.lyric = "Instrumental"
 			
-			lyric = data.match(/class='lyricbox'.+<\/a><\/div>(.+)<\!--/)?[1]
+			lyric = data.match(/class='lyricbox'.+<\/span><\/div>(.+)<\!--/)?[1]
 
 			if lyric 
 				song.lyric = @processStringorArray lyric

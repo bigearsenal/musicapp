@@ -259,6 +259,7 @@ Main =
 		func.addMethod {name : "getAlbums", info : "get album id"}
 		func.addMethod {name : "getRatings", info : "get ratings"}
 		func.addMethod {name : "getSimilars", info : "get similars"}
+		func.addMethod {name : "getCredits", info : "get credits"}
 		
 		
 		func.run(rl)

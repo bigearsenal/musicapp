@@ -12,6 +12,8 @@ encoder = new Encoder('entity');
 
 events = require('events')
 
+require("./helpers/string")
+
 ZI_CONFIG = 
 	table : 
 		Songs : "zisongs"
@@ -387,7 +389,7 @@ class Zing extends Module
 									.replace(/_albumIntro.+\"\>|\<br\s\/\>|\<\/p\>/g,'')
 
 		if data.match /detail-title.+/g
-			item = data.match(/detail-title.+/g)[0].replace(/detail-title\">|<\/h1>/g,'')
+			item = data.match(/detail-title.+/g)[0].replace(/detail-title\">|<\/h1>/g,'').stripHtmlTags()
 			_tempArr = item.split(' - ')
 			_temp_artist = encoder.htmlDecode _tempArr[_tempArr.length-1]
 

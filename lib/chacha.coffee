@@ -119,7 +119,7 @@ class Chacha extends Module
 			coverart  : ""
 
 		try 
-			title = data.match(/<h2 class=\"name\">(.+)<\/h2>/)?[1]
+			title = data.match(/<h1 class="name">(.+)<\/h1>/)?[1]
 			if title
 				song.title = encoder.htmlDecode title.trim()
 			artists = data.match(/Nghệ sĩ:[^]+?<\/a>/)?[0]
@@ -206,7 +206,7 @@ class Chacha extends Module
 				year_released : 0
 				topics : []
 				songids : []
-			title = data.match(/<h2 class=\"name\">(.+)<\/h2>/)?[1]
+			title = data.match(/<h1 class=\"name\">(.+)<\/h1>/)?[1]
 			if title
 				album.title = encoder.htmlDecode title.trim()
 

@@ -17,7 +17,7 @@ describe "THE WEBSITE NHAC.VUI.VN",->
                               song = nv._storeSong id, song
                               expect(song.song_name).to.equal('Anh Sẽ Quên')
                               expect(song.artist_name).to.equal('MT Phan')
-                              expect(song.link).to.match(/http:\/\/www[0-9]+\.nhac\.vui\.vn\/uploadmusic2\/[0-9a-f]{32}\/[0-9a-f]{8}\/uploadmusic\/id_chan\/2-2013\/huylun\/Rap\/NewTrack\/128\/Anh Se Quen - MT Phan\.mp3/)
+                              expect(song.link).to.match(/http:\/\/.+\/uploadmusic2\/[0-9a-f]{32}\/[0-9a-f]{8}\/uploadmusic\/id_chan\/2-2013\/huylun\/Rap\/NewTrack\/128\/Anh Se Quen - MT Phan\.mp3/)
                               done()
             it 'should have author, plays, topic, lyric properties',(done)->
                   id = 318186

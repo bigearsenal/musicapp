@@ -1,5 +1,7 @@
 Site = require "./Site"
 
+require("./helpers/string")
+
 
 class Nhacso extends Site
 	constructor: ->
@@ -248,10 +250,25 @@ class Nhacso extends Site
 				album.artists = @processStringorArray artists.replace(/^.+>/g,'')
 				artistid = artists.match(/\d+\.html/g)
 				if artistid then album.artistid = parseInt artistid[0].replace(/\.html/g,''),10
+
+				if album.artists is "" then album.artists = album.artists.split("")
+			
+			artists = temp.match(/<p><span>.+?<\/span><\/p>/g)
+			if artists
+				# console.log "------------->>>>>>>>>>>>>"
+				album.artists = artists.map((v)=> @processStringorArray  v.stripHtmlTags().trim())
+
+			# console.log artists
+			# console.log album
+			album.artists = album.artists.splitBySeperator('||').splitBySeperator(' / ').splitBySeperator(' - ')
+
 			# description = temp.match(/class=\"desc.+[^]+.+xemthem/g)?[0]
 			# if description then album.description = @processStringorArray description.replace(/<\/p>[^]+.+/g,'').replace(/^.+\">/g,'')
 			coverart = temp.match(/<img width.+align/g)?[0]
 			if coverart then album.coverart = coverart.replace(/^.+src=\"|\".+$/g,'')
+
+
+
 
 		topics = data.match(/\<li\sclass\=\"bg\".+\<\/li\>/)?[0]
 		if topics then  album.topics = @processStringorArray topics.replace(/\<li\sclass\=\"bg\"\>\<a\shref\s\=\"http\:\/\/nhacso\.net\/.+\"\>/,'')
@@ -259,8 +276,7 @@ class Nhacso extends Site
 
 		# convert fields to ARRAY
 		album.topics = album.topics.split().splitBySeperator(' - ').splitBySeperator('/')
-		album.artists = album.artists.split().splitBySeperator('||').splitBySeperator(' / ').splitBySeperator(' - ')
-
+		
 		songids = data.match(/songid_\d+/g)
 		if songids 
 			songids.map (v)-> album.songids.push parseInt(v.replace(/songid_/g,''),10)
