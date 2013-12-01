@@ -1,18 +1,18 @@
 - [ZING API](#zing-api)
 	- [SONGS](#songs)
-		- [Get song's info](#get-song's-info)
-		- [Get song's lyrics](#get-song's-lyrics)
+		- [Get song info](#get-song-info)
+		- [Get song lyrics](#get-song-lyrics)
 	- [ALBUMS](#albums)
 		- [Get albums by genre](#get-albums-by-genre)
 		- [Get songs of an album](#get-songs-of-an-album)
-		- [Get album's info](#get-album's-info)
-		- [Get album's comments](#get-album's-comments)
+		- [Get album info](#get-album-info)
+		- [Get album comments](#get-album-comments)
 	- [VIDEOS](#videos)
 		- [Get videos by genre](#get-videos-by-genre)
-		- [Get video's info](#get-video's-info)
-		- [Get video's lyrics](#get-video's-lyrics)
-		- [Get video's suggestion](#get-video's-suggestion)
-		- [Get video's comments](#get-video's-comments)
+		- [Get video info](#get-video-info)
+		- [Get video lyrics](#get-video-lyrics)
+		- [Get video suggestion](#get-video-suggestion)
+		- [Get video comments](#get-video-comments)
 	- [ARTISTS](#artists)
 		- [Get artists by genre](#get-artists-by-genre)
 		- [Get artist's info](#get-artist's-info)
@@ -33,13 +33,13 @@
 
 ## SONGS
 
-### Get song's info
+### Get song info
 
-    http://api.mp3.zing.vn/api/mobile/song/getlyrics?keycode={YOUR_KEY}&requestdata={"id":"ZW67FWWF"}
+    http://api.mp3.zing.vn/api/mobile/song/getsonginfo?keycode={YOUR_KEY}&requestdata={"id":"ZW67FWWF"}
 
 Example:
 
-    http://api.mp3.zing.vn/api/mobile/song/getlyrics?keycode=fafd463e2131914934b73310aa34a23f&requestdata={"id":"ZW67FWWF"}
+    http://api.mp3.zing.vn/api/mobile/song/getsonginfo?keycode=fafd463e2131914934b73310aa34a23f&requestdata={"id":"ZW67FWWF"}
 
 Response:
     
@@ -94,7 +94,7 @@ Response:
 }
 ```
 
-### Get song's lyrics
+### Get song lyrics
 
     http://api.mp3.zing.vn/api/mobile/song/getlyrics?keycode={YOUR_KEY}&requestdata={"id":"ZW67FWWF"}
 
@@ -536,7 +536,7 @@ Response:
 }
 ```
 
-### Get album's info
+### Get album info
 
 	http://api.mp3.zing.vn/api/mobile/playlist/getplaylistinfo?key={YOUR_KEY}&requestdata={"id":1073816610}
 
@@ -576,7 +576,7 @@ Response:
 }
 ```
 
-### Get album's comments
+### Get album comments
 
     http://api.mp3.zing.vn/api/mobile/comment/getcommentofplaylist?key={YOUR_KEY}&requestdata={"id":1073852647,"start":0,"length":20}
 
@@ -1302,7 +1302,7 @@ Response:
     }
 }
 ```
-### Get video's info
+### Get video info
 
 	http://api.mp3.zing.vn/api/mobile/video/getvideoinfo?keycode={YOUR_KEY}&requestdata={{"id":1074729245}}
 
@@ -1343,7 +1343,7 @@ Response:
 }
 ```
 
-### Get video's lyrics
+### Get video lyrics
 
 	http://api.mp3.zing.vn/api/mobile/video/getlyrics?keycode={YOUR_KEY}&requestdata={{"id":1074729245}}
 
@@ -1364,7 +1364,7 @@ Example
     }
 }
 ```
-### Get video's suggestion
+### Get video suggestion
 
 	http://api.mp3.zing.vn/api/mobile/video/getvideosuggest?requestdata={{"id":1074729245,"start":0,"length":20}}
 
@@ -1550,7 +1550,7 @@ Response:
 }
 ```
 
-### Get video's comments
+### Get video comments
 
 	http://api.mp3.zing.vn/api/mobile/comment/getcommentofvideo?keycode={YOUR_KEY}&requestdata={"id":1074729245,"start":0,"length":20}
 
