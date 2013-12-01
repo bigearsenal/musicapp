@@ -15,10 +15,10 @@
 		- [Get video comments](#get-video-comments)
 	- [ARTISTS](#artists)
 		- [Get artists by genre](#get-artists-by-genre)
-		- [Get artist's info](#get-artist's-info)
-		- [Get artist's albums](#get-artist's-albums)
-		- [Get artist's songs](#get-artist's-songs)
-		- [Get artist's videos](#get-artist's-videos)
+		- [Get artist info](#get-artist-info)
+		- [Get artist albums](#get-artist-albums)
+		- [Get artist songs](#get-artist-songs)
+		- [Get artist videos](#get-artist-videos)
 	- [CHARTS](#charts)
 		- [All](#all)
 	- [TOP 100](#top-100)
@@ -1898,7 +1898,7 @@ Response:
 }
 ```
 
-### Get artist's info
+### Get artist info
 
     http://api.mp3.zing.vn/api/mobile/artist/getartistinfo?key={YOUR_KEY}&requestdata={{"id":828}}
 
@@ -1936,7 +1936,7 @@ Example:
 }
 ```
 
-### Get artist's albums
+### Get artist albums
 
 	http://api.mp3.zing.vn/api/mobile/artist/getalbumofartist?key={YOUR_KEY}&requestdata={{"id":347,"start":0,"length":20}}
 
@@ -2158,7 +2158,7 @@ Response:
 }
 ```
 
-### Get artist's songs
+### Get artist songs
 
 	http://api.mp3.zing.vn/api/mobile/artist/getsongofartist?key={YOUR_KEY}&requestdata={{"id":347,"start":0,"length":20}}
 
@@ -2578,7 +2578,7 @@ Example:
 }
 ```
 
-### Get artist's videos
+### Get artist videos
 
 	http://api.mp3.zing.vn/api/mobile/artist/getvideoofartist?key={YOUR_KEY}&requestdata={{"id":347,"start":0,"length":20}}
 
