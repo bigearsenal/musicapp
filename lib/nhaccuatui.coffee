@@ -843,7 +843,7 @@ class Nhaccuatui extends Module
 						_options =
 							field : "key"
 							table : options.config.table
-				# console.log @items
+				# console.log @items.map (v)-> v.id
 				@filterNonExistedRecordInDB @items, _options, (results)=>
 					console.log " |The # of items AFTER being filtered :" + results.length
 					@items = results
