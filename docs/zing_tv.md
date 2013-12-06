@@ -17,40 +17,43 @@ http://api.tv.zing.vn/2.0/media/info?api_key=d04210a70026ad9323076716781c223f&me
 
 Response
 
-	{
-	  "response": {
-		"id": 51179,
-		"title": "",
-		"full_name": "Vietnam's Next Top Model 2013 - Tập 9",
-		"episode": 9,
-		"release_date": "1/12/2013",
-		"duration": 4031,
-		"thumbnail": "2013/1201/3d/d3c0339dbae22720060e322b0a022c1b_1385909009.jpg",
-		"file_url": "stream6.tv.zdn.vn/streaming/c565075a1711a934b2c8a6c4c1237361/52a1fd5c/2013/1201/3d/a92fdb1852643fa471ba8427a58abed1.mp4?format=f360&device=ios",
-		"other_url": {
-		  "Video3GP": "stream.m.tv.zdn.vn/tv/7a1270f6945316e563f88112d626ee1e/52a1fd5c/Video3GP/2013/1201/3d/be1c0e1b8db5dbf0bd2443afa320ff55.3gp?format=f3gp&device=ios",
-		  "Video720": "stream6.tv.zdn.vn/streaming/cb817ee01c998f8791f87a27d90e65e4/52a1fd5c/Video720/2013/1201/3d/3dc9498f6e724e7312ebf24a05d78f88.mp4?format=f720&device=ios",
-		  "Video480": "stream6.tv.zdn.vn/streaming/b0cd9461060f41802923c6666d27cd94/52a1fd5c/Video480/2013/1201/3d/a2d91214b514aeb406a76604a31150a3.mp4?format=f480&device=ios"
-		},
-		"link_url": "http://tv.zing.vn/video/vietnam's-next-top-model-2013-tap-9/IWZAI86B.html",
-		"program_id": 1729,
-		"program_name": "Vietnam's Next Top Model 2013",
-		"program_thumbnail": "channel/6/4/642334a1b21115cf5e23f34f7f749ba3_1385960130.jpg",
-		"program_genre": [
-		  {
-			"id": 78,
-			"name": "TV Show"
-		  }
-		],
-		"listen": 490559,
-		"comment": 231,
-		"like": 384,
-		"rating": 8.134680134680135,
-		"sub_title": {},
-		"tracking": {},
-		"signature": "a35b031d8ded1f1d64780d8cae2c936c"
-	  }
-	}
+ ```javascript
+{
+  "response": {
+    "id": 51179,
+    "title": "",
+    "full_name": "Vietnam's Next Top Model 2013 - Tập 9",
+    "episode": 9,
+    "release_date": "1/12/2013",
+    "duration": 4031,
+    "thumbnail": "2013/1201/3d/d3c0339dbae22720060e322b0a022c1b_1385909009.jpg",
+    "file_url": "stream6.tv.zdn.vn/streaming/c565075a1711a934b2c8a6c4c1237361/52a1fd5c/2013/1201/3d/a92fdb1852643fa471ba8427a58abed1.mp4?format=f360&device=ios",
+    "other_url": {
+      "Video3GP": "stream.m.tv.zdn.vn/tv/7a1270f6945316e563f88112d626ee1e/52a1fd5c/Video3GP/2013/1201/3d/be1c0e1b8db5dbf0bd2443afa320ff55.3gp?format=f3gp&device=ios",
+      "Video720": "stream6.tv.zdn.vn/streaming/cb817ee01c998f8791f87a27d90e65e4/52a1fd5c/Video720/2013/1201/3d/3dc9498f6e724e7312ebf24a05d78f88.mp4?format=f720&device=ios",
+      "Video480": "stream6.tv.zdn.vn/streaming/b0cd9461060f41802923c6666d27cd94/52a1fd5c/Video480/2013/1201/3d/a2d91214b514aeb406a76604a31150a3.mp4?format=f480&device=ios"
+    },
+    "link_url": "http://tv.zing.vn/video/vietnam's-next-top-model-2013-tap-9/IWZAI86B.html",
+    "program_id": 1729,
+    "program_name": "Vietnam's Next Top Model 2013",
+    "program_thumbnail": "channel/6/4/642334a1b21115cf5e23f34f7f749ba3_1385960130.jpg",
+    "program_genre": [
+      {
+        "id": 78,
+        "name": "TV Show"
+      }
+    ],
+    "listen": 490559,
+    "comment": 231,
+    "like": 384,
+    "rating": 8.134680134680135,
+    "sub_title": {},
+    "tracking": {},
+    "signature": "a35b031d8ded1f1d64780d8cae2c936c"
+  }
+}
+```
+
 
 ## Home
 
@@ -644,6 +647,7 @@ http://api.tv.zing.vn/2.0/user/info?api_key=d04210a70026ad9323076716781c223f&use
 
 Response
 
+
 	{
 		"response": {
 			"id": 335113,
@@ -659,291 +663,294 @@ http://api.tv.zing.vn/2.0/program/list?genre_id=83&page=1&list_type=new&count=20
 
 Change genreid, list_type (new, hot,hot_yesterday)
 
-  {
-	"total": 145,
-	"response": [
-	  {
-		"id": 2038,
-		"name": "Pony Bé Nhỏ Đáng Yêu - Phần 1",
-		"thumbnail": "channel/e/3/e3323632731830f3171f5768874c038b_1384966110.jpg",
-		"genre": [
-		  {
-			"id": 83,
-			"name": "Hoạt Hình"
-		  }
-		],
-		"duration": "25 Phút",
-		"like": 76,
-		"rating": "8.67"
-	  },
-	  {
-		"id": 2037,
-		"name": "Dreamworks Spooky Stories",
-		"thumbnail": "channel/d/6/d6c77d949b657f31703396bd8ca32e22_1384965691.jpg",
-		"genre": [
-		  {
-			"id": 83,
-			"name": "Hoạt Hình"
-		  }
-		],
-		"duration": "6 Tập",
-		"like": 78,
-		"rating": "8.45"
-	  },
-	  {
-		"id": 2016,
-		"name": "Ultimate SpiderMan - Season 2",
-		"thumbnail": "channel/d/c/dc13de0b6ff9f0852841c81f01dcbad7_1384457286.jpg",
-		"genre": [
-		  {
-			"id": 83,
-			"name": "Hoạt Hình"
-		  }
-		],
-		"duration": "14 Tập",
-		"like": 64,
-		"rating": "8.91"
-	  },
-	  {
-		"id": 1926,
-		"name": "Truyền Thuyết Về Korra - Quyển 2: Thần Linh",
-		"thumbnail": "channel/c/5/c532850a6895e0328decab5fe3bb3fa6_1383902411.jpg",
-		"genre": [
-		  {
-			"id": 83,
-			"name": "Hoạt Hình"
-		  }
-		],
-		"duration": "30 Phút",
-		"like": 175,
-		"rating": "9.04"
-	  },
-	  {
-		"id": 1887,
-		"name": "Những Chú Chim Cánh Cụt Đến Từ Madagascar - Vol. 2",
-		"thumbnail": "channel/8/9/89d19e779ed7a29242780ee88af20a80_1380363770.jpg",
-		"genre": [
-		  {
-			"id": 83,
-			"name": "Hoạt Hình"
-		  }
-		],
-		"duration": "23 Tập",
-		"like": 91,
-		"rating": "8.85"
-	  },
-	  {
-		"id": 1886,
-		"name": "Những Chú Chim Cánh Cụt Đến Từ Madagascar - Vol. 1",
-		"thumbnail": "channel/b/c/bca5927ba56c3460f8cd492ff6b1146f_1380363694.jpg",
-		"genre": [
-		  {
-			"id": 83,
-			"name": "Hoạt Hình"
-		  }
-		],
-		"duration": "23 Tập",
-		"like": 279,
-		"rating": "9.14"
-	  },
-	  {
-		"id": 1871,
-		"name": "Xin Chào Bút Chì",
-		"thumbnail": "channel/c/c/cc3665ec29a139c0e226a21d9a64b620_1379994566.jpg",
-		"genre": [
-		  {
-			"id": 83,
-			"name": "Hoạt Hình"
-		  }
-		],
-		"duration": "6 Phút",
-		"like": 734,
-		"rating": "7.5"
-	  },
-	  {
-		"id": 1837,
-		"name": "Truyền Thuyết Về Korra - Quyển 1: Khí",
-		"thumbnail": "channel/4/b/4b1c59c7728e2b1cb65f6cb20aaf5cf9_1378872489.jpg",
-		"genre": [
-		  {
-			"id": 83,
-			"name": "Hoạt Hình"
-		  }
-		],
-		"duration": "12 Tập",
-		"like": 124,
-		"rating": "9.36"
-	  },
-	  {
-		"id": 1824,
-		"name": "Another",
-		"thumbnail": "channel/e/e/ee83a3579031022ea25fd84956447434_1378894148.jpg",
-		"genre": [
-		  {
-			"id": 83,
-			"name": "Hoạt Hình"
-		  }
-		],
-		"duration": "12 Tập",
-		"like": 525,
-		"rating": "9.23"
-	  },
-	  {
-		"id": 1808,
-		"name": "Điệp Viên Siêu Hạng - Phần 4",
-		"thumbnail": "channel/d/f/df53bfdbdb5e75c5fa1ee896cc113551_1377684245.jpg",
-		"genre": [
-		  {
-			"id": 83,
-			"name": "Hoạt Hình"
-		  }
-		],
-		"duration": "26 Tập",
-		"like": 683,
-		"rating": "9.15"
-	  },
-	  {
-		"id": 1807,
-		"name": "Điệp Viên Siêu Hạng - Phần 3",
-		"thumbnail": "channel/4/c/4cc13db3ad8deb4d9c2044b8590db3c3_1377684179.jpg",
-		"genre": [
-		  {
-			"id": 83,
-			"name": "Hoạt Hình"
-		  }
-		],
-		"duration": "19 Tập",
-		"like": 574,
-		"rating": "8.87"
-	  },
-	  {
-		"id": 1806,
-		"name": "Điệp Viên Siêu Hạng - Phần 2",
-		"thumbnail": "channel/c/4/c4ae493262d245857e97d31becc8396e_1377684110.jpg",
-		"genre": [
-		  {
-			"id": 83,
-			"name": "Hoạt Hình"
-		  }
-		],
-		"duration": "25 Phút",
-		"like": 1003,
-		"rating": "8.92"
-	  },
-	  {
-		"id": 1772,
-		"name": "To Aru Kagaku No Railgun S",
-		"thumbnail": "channel/5/2/5236a0796f32ac4b376de1a8584e17d8_1378208839.jpg",
-		"genre": [
-		  {
-			"id": 83,
-			"name": "Hoạt Hình"
-		  }
-		],
-		"duration": "25 Tập",
-		"like": 575,
-		"rating": "8.96"
-	  },
-	  {
-		"id": 1750,
-		"name": "Transformers Prime - Season 3",
-		"thumbnail": "channel/7/9/79eaa6090e5f3fbe60c5e9fbb010b1a2_1375861698.jpg",
-		"genre": [
-		  {
-			"id": 83,
-			"name": "Hoạt Hình"
-		  }
-		],
-		"duration": "20 Phút",
-		"like": 196,
-		"rating": "8.56"
-	  },
-	  {
-		"id": 1748,
-		"name": "Transformers Prime - Season 2",
-		"thumbnail": "channel/9/a/9a7b027cc44ed632e85f339eb223a640_1375861414.jpg",
-		"genre": [
-		  {
-			"id": 83,
-			"name": "Hoạt Hình"
-		  }
-		],
-		"duration": "26 Tập",
-		"like": 91,
-		"rating": "8.72"
-	  },
-	  {
-		"id": 1739,
-		"name": "Gravity Falls - Season 1",
-		"thumbnail": "channel/1/0/10579fdfc48c8ba7629d3d932a46eb63_1375281160.jpg",
-		"genre": [
-		  {
-			"id": 83,
-			"name": "Hoạt Hình"
-		  }
-		],
-		"duration": "25 Phút",
-		"like": 1037,
-		"rating": "8.77"
-	  },
-	  {
-		"id": 1737,
-		"name": "Oda Nobuna No Yabou",
-		"thumbnail": "channel/1/e/1ed603a52e4937ea4ad436b2d104c412_1375690418.jpg",
-		"genre": [
-		  {
-			"id": 83,
-			"name": "Hoạt Hình"
-		  }
-		],
-		"duration": "12 Tập",
-		"like": 423,
-		"rating": "8.44"
-	  },
-	  {
-		"id": 1731,
-		"name": "To Aru Kagaku No Railgun",
-		"thumbnail": "channel/2/b/2bd15ad929d55096d20f4589b2309048_1375345135.jpg",
-		"genre": [
-		  {
-			"id": 83,
-			"name": "Hoạt Hình"
-		  }
-		],
-		"duration": "24 Tập",
-		"like": 475,
-		"rating": "8.9"
-	  },
-	  {
-		"id": 1711,
-		"name": "Angry Birds Toons",
-		"thumbnail": "channel/e/8/e8531bc5398282a96d308805bb64a2a8_1374488518.jpg",
-		"genre": [
-		  {
-			"id": 83,
-			"name": "Hoạt Hình"
-		  }
-		],
-		"duration": "4 Phút",
-		"like": 571,
-		"rating": "8.42"
-	  },
-	  {
-		"id": 1708,
-		"name": "Hyouka",
-		"thumbnail": "channel/c/e/ce92abb2b95d70b9b0c4e0c8d5f7b120_1374745301.jpg",
-		"genre": [
-		  {
-			"id": 83,
-			"name": "Hoạt Hình"
-		  }
-		],
-		"duration": "22 Tập",
-		"like": 394,
-		"rating": "8.65"
-	  }
-	]
-  }
+
+ ```javascript
+{
+  "total": 145,
+  "response": [
+    {
+      "id": 2038,
+      "name": "Pony Bé Nhỏ Đáng Yêu - Phần 1",
+      "thumbnail": "channel/e/3/e3323632731830f3171f5768874c038b_1384966110.jpg",
+      "genre": [
+        {
+          "id": 83,
+          "name": "Hoạt Hình"
+        }
+      ],
+      "duration": "25 Phút",
+      "like": 76,
+      "rating": "8.67"
+    },
+    {
+      "id": 2037,
+      "name": "Dreamworks Spooky Stories",
+      "thumbnail": "channel/d/6/d6c77d949b657f31703396bd8ca32e22_1384965691.jpg",
+      "genre": [
+        {
+          "id": 83,
+          "name": "Hoạt Hình"
+        }
+      ],
+      "duration": "6 Tập",
+      "like": 78,
+      "rating": "8.45"
+    },
+    {
+      "id": 2016,
+      "name": "Ultimate SpiderMan - Season 2",
+      "thumbnail": "channel/d/c/dc13de0b6ff9f0852841c81f01dcbad7_1384457286.jpg",
+      "genre": [
+        {
+          "id": 83,
+          "name": "Hoạt Hình"
+        }
+      ],
+      "duration": "14 Tập",
+      "like": 64,
+      "rating": "8.91"
+    },
+    {
+      "id": 1926,
+      "name": "Truyền Thuyết Về Korra - Quyển 2: Thần Linh",
+      "thumbnail": "channel/c/5/c532850a6895e0328decab5fe3bb3fa6_1383902411.jpg",
+      "genre": [
+        {
+          "id": 83,
+          "name": "Hoạt Hình"
+        }
+      ],
+      "duration": "30 Phút",
+      "like": 175,
+      "rating": "9.04"
+    },
+    {
+      "id": 1887,
+      "name": "Những Chú Chim Cánh Cụt Đến Từ Madagascar - Vol. 2",
+      "thumbnail": "channel/8/9/89d19e779ed7a29242780ee88af20a80_1380363770.jpg",
+      "genre": [
+        {
+          "id": 83,
+          "name": "Hoạt Hình"
+        }
+      ],
+      "duration": "23 Tập",
+      "like": 91,
+      "rating": "8.85"
+    },
+    {
+      "id": 1886,
+      "name": "Những Chú Chim Cánh Cụt Đến Từ Madagascar - Vol. 1",
+      "thumbnail": "channel/b/c/bca5927ba56c3460f8cd492ff6b1146f_1380363694.jpg",
+      "genre": [
+        {
+          "id": 83,
+          "name": "Hoạt Hình"
+        }
+      ],
+      "duration": "23 Tập",
+      "like": 279,
+      "rating": "9.14"
+    },
+    {
+      "id": 1871,
+      "name": "Xin Chào Bút Chì",
+      "thumbnail": "channel/c/c/cc3665ec29a139c0e226a21d9a64b620_1379994566.jpg",
+      "genre": [
+        {
+          "id": 83,
+          "name": "Hoạt Hình"
+        }
+      ],
+      "duration": "6 Phút",
+      "like": 734,
+      "rating": "7.5"
+    },
+    {
+      "id": 1837,
+      "name": "Truyền Thuyết Về Korra - Quyển 1: Khí",
+      "thumbnail": "channel/4/b/4b1c59c7728e2b1cb65f6cb20aaf5cf9_1378872489.jpg",
+      "genre": [
+        {
+          "id": 83,
+          "name": "Hoạt Hình"
+        }
+      ],
+      "duration": "12 Tập",
+      "like": 124,
+      "rating": "9.36"
+    },
+    {
+      "id": 1824,
+      "name": "Another",
+      "thumbnail": "channel/e/e/ee83a3579031022ea25fd84956447434_1378894148.jpg",
+      "genre": [
+        {
+          "id": 83,
+          "name": "Hoạt Hình"
+        }
+      ],
+      "duration": "12 Tập",
+      "like": 525,
+      "rating": "9.23"
+    },
+    {
+      "id": 1808,
+      "name": "Điệp Viên Siêu Hạng - Phần 4",
+      "thumbnail": "channel/d/f/df53bfdbdb5e75c5fa1ee896cc113551_1377684245.jpg",
+      "genre": [
+        {
+          "id": 83,
+          "name": "Hoạt Hình"
+        }
+      ],
+      "duration": "26 Tập",
+      "like": 683,
+      "rating": "9.15"
+    },
+    {
+      "id": 1807,
+      "name": "Điệp Viên Siêu Hạng - Phần 3",
+      "thumbnail": "channel/4/c/4cc13db3ad8deb4d9c2044b8590db3c3_1377684179.jpg",
+      "genre": [
+        {
+          "id": 83,
+          "name": "Hoạt Hình"
+        }
+      ],
+      "duration": "19 Tập",
+      "like": 574,
+      "rating": "8.87"
+    },
+    {
+      "id": 1806,
+      "name": "Điệp Viên Siêu Hạng - Phần 2",
+      "thumbnail": "channel/c/4/c4ae493262d245857e97d31becc8396e_1377684110.jpg",
+      "genre": [
+        {
+          "id": 83,
+          "name": "Hoạt Hình"
+        }
+      ],
+      "duration": "25 Phút",
+      "like": 1003,
+      "rating": "8.92"
+    },
+    {
+      "id": 1772,
+      "name": "To Aru Kagaku No Railgun S",
+      "thumbnail": "channel/5/2/5236a0796f32ac4b376de1a8584e17d8_1378208839.jpg",
+      "genre": [
+        {
+          "id": 83,
+          "name": "Hoạt Hình"
+        }
+      ],
+      "duration": "25 Tập",
+      "like": 575,
+      "rating": "8.96"
+    },
+    {
+      "id": 1750,
+      "name": "Transformers Prime - Season 3",
+      "thumbnail": "channel/7/9/79eaa6090e5f3fbe60c5e9fbb010b1a2_1375861698.jpg",
+      "genre": [
+        {
+          "id": 83,
+          "name": "Hoạt Hình"
+        }
+      ],
+      "duration": "20 Phút",
+      "like": 196,
+      "rating": "8.56"
+    },
+    {
+      "id": 1748,
+      "name": "Transformers Prime - Season 2",
+      "thumbnail": "channel/9/a/9a7b027cc44ed632e85f339eb223a640_1375861414.jpg",
+      "genre": [
+        {
+          "id": 83,
+          "name": "Hoạt Hình"
+        }
+      ],
+      "duration": "26 Tập",
+      "like": 91,
+      "rating": "8.72"
+    },
+    {
+      "id": 1739,
+      "name": "Gravity Falls - Season 1",
+      "thumbnail": "channel/1/0/10579fdfc48c8ba7629d3d932a46eb63_1375281160.jpg",
+      "genre": [
+        {
+          "id": 83,
+          "name": "Hoạt Hình"
+        }
+      ],
+      "duration": "25 Phút",
+      "like": 1037,
+      "rating": "8.77"
+    },
+    {
+      "id": 1737,
+      "name": "Oda Nobuna No Yabou",
+      "thumbnail": "channel/1/e/1ed603a52e4937ea4ad436b2d104c412_1375690418.jpg",
+      "genre": [
+        {
+          "id": 83,
+          "name": "Hoạt Hình"
+        }
+      ],
+      "duration": "12 Tập",
+      "like": 423,
+      "rating": "8.44"
+    },
+    {
+      "id": 1731,
+      "name": "To Aru Kagaku No Railgun",
+      "thumbnail": "channel/2/b/2bd15ad929d55096d20f4589b2309048_1375345135.jpg",
+      "genre": [
+        {
+          "id": 83,
+          "name": "Hoạt Hình"
+        }
+      ],
+      "duration": "24 Tập",
+      "like": 475,
+      "rating": "8.9"
+    },
+    {
+      "id": 1711,
+      "name": "Angry Birds Toons",
+      "thumbnail": "channel/e/8/e8531bc5398282a96d308805bb64a2a8_1374488518.jpg",
+      "genre": [
+        {
+          "id": 83,
+          "name": "Hoạt Hình"
+        }
+      ],
+      "duration": "4 Phút",
+      "like": 571,
+      "rating": "8.42"
+    },
+    {
+      "id": 1708,
+      "name": "Hyouka",
+      "thumbnail": "channel/c/e/ce92abb2b95d70b9b0c4e0c8d5f7b120_1374745301.jpg",
+      "genre": [
+        {
+          "id": 83,
+          "name": "Hoạt Hình"
+        }
+      ],
+      "duration": "22 Tập",
+      "like": 394,
+      "rating": "8.65"
+    }
+  ]
+}
+```
 
 ## Series
 
@@ -951,129 +958,131 @@ http://api.tv.zing.vn/2.0/series/medias?session_key=91618dfec493ed7dc9d61ac088df
 
 http://api.tv.zing.vn/2.0/series/medias?session_key=91618dfec493ed7dc9d61ac088dff36b&series_id=2483&page=1&count=20&api_key=d04210a70026ad9323076716781c223f&
 
-  {
-	"series": {
-	  "id": 2483,
-	  "name": "Castle - Season 6"
-	},
-	"total": 9,
-	"response": [
-	  {
-		"id": 50681,
-		"title": "Disciple",
-		"full_name": "Tập 9 - Disciple",
-		"episode": 9,
-		"release_date": "03/12/2013",
-		"program_name": "Castle - Season 6",
-		"thumbnail": "2013/1123/1e/766570c8581a7b2ed3ede689d617d89a_1385186436.jpg",
-		"file_url": "stream6.tv.zdn.vn/streaming/90bed1aa6a60304bb3276bb791b562d9/52a1fe00/2013/1123/1e/133f02e5a0489cecdf42e5d75cd587b0.mp4",
-		"listen": 882,
-		"duration": 2582,
-		"viewed": false
-	  },
-	  {
-		"id": 50337,
-		"title": "A Murder is Forever",
-		"full_name": "Tập 8 - A Murder is Forever",
-		"episode": 8,
-		"release_date": "03/12/2013",
-		"program_name": "Castle - Season 6",
-		"thumbnail": "2013/1115/d9/4173c430f43a4819d0f28d3e0d995859_1384537150.jpg",
-		"file_url": "stream6.tv.zdn.vn/streaming/281fa06c65854d8d4c08278812cc8086/52a1fe00/2013/1115/d9/57d4b42be121c03e6ea392c3e814fa24.mp4",
-		"listen": 591,
-		"duration": 2540,
-		"viewed": false
-	  },
-	  {
-		"id": 50263,
-		"title": "Like Father, Like Daughter",
-		"full_name": "Tập 7 - Like Father, Like Daughter",
-		"episode": 7,
-		"release_date": "",
-		"program_name": "Castle - Season 6",
-		"thumbnail": "2013/1115/18/df217b3dd2511a52120f66371a9ceffe_1384458052.jpg",
-		"file_url": "stream6.tv.zdn.vn/streaming/ce09c36c692c032812e13b5836d1f9c8/52a1fe00/2013/1115/18/cdc11b86bd101e8c296304e29bb7632a.mp4",
-		"listen": 552,
-		"duration": 2582,
-		"viewed": false
-	  },
-	  {
-		"id": 50262,
-		"title": "Get a Clue",
-		"full_name": "Tập 6 - Get a Clue",
-		"episode": 6,
-		"release_date": "03/12/2013",
-		"program_name": "Castle - Season 6",
-		"thumbnail": "2013/1115/b2/af5baa134dbad6c8201a2ddd17848b2e_1384457940.jpg",
-		"file_url": "stream6.tv.zdn.vn/streaming/dc83afde19eb65bfa096702a7e89f982/52a1fe00/2013/1115/b2/a58885d69cb5ac4c15291091a65e03db.mp4",
-		"listen": 656,
-		"duration": 2582,
-		"viewed": false
-	  },
-	  {
-		"id": 50261,
-		"title": "Time Will Tell",
-		"full_name": "Tập 5 - Time Will Tell",
-		"episode": 5,
-		"release_date": "03/12/2013",
-		"program_name": "Castle - Season 6",
-		"thumbnail": "2013/1115/ed/9ced0cefb4f6ff9627597fb6dcf32a29_1384456655.jpg",
-		"file_url": "stream6.tv.zdn.vn/streaming/eed05b8ca5227cfcdec5f2a20fb8be1a/52a1fe00/2013/1115/ed/02a30af492ab8f72acdf62eeab37d4af.mp4",
-		"listen": 685,
-		"duration": 2572,
-		"viewed": false
-	  },
-	  {
-		"id": 50260,
-		"title": "Number One Fan",
-		"full_name": "Tập 4 - Number One Fan",
-		"episode": 4,
-		"release_date": "03/12/2013",
-		"program_name": "Castle - Season 6",
-		"thumbnail": "2013/1115/3b/8dafcc1e6757ec74a08580cb876c1c1a_1384457424.jpg",
-		"file_url": "stream6.tv.zdn.vn/streaming/6db0a7d43b17cec006a367c12762b12a/52a1fe00/2013/1115/3b/0d4826e79f12e9c198719109fc3f5965.mp4",
-		"listen": 751,
-		"duration": 2583,
-		"viewed": true
-	  },
-	  {
-		"id": 50259,
-		"title": "Need to Know",
-		"full_name": "Tập 3 - Need to Know",
-		"episode": 3,
-		"release_date": "03/12/2013",
-		"program_name": "Castle - Season 6",
-		"thumbnail": "2013/1115/b5/96d5abc23682c28d2a4fa7d5f8c6b2db_1384456490.jpg",
-		"file_url": "stream6.tv.zdn.vn/streaming/f780b96343ca0065f2e0b7db15bd2635/52a1fe00/2013/1115/b5/46d7534af11bcd1bfce5ee9a2be54d4d.mp4",
-		"listen": 814,
-		"duration": 2584,
-		"viewed": false
-	  },
-	  {
-		"id": 50258,
-		"title": "Dreamworld",
-		"full_name": "Tập 2 - Dreamworld",
-		"episode": 2,
-		"release_date": "03/12/2013",
-		"program_name": "Castle - Season 6",
-		"thumbnail": "2013/1115/7e/a5dd2963e0cf23f743aa663d4a4c395e_1384456421.jpg",
-		"file_url": "stream6.tv.zdn.vn/streaming/83146bd2fd5a02de4b119bad87d03724/52a1fe00/2013/1115/7e/83c7bf6c5136d1220851b40a75795304.mp4",
-		"listen": 950,
-		"duration": 2525,
-		"viewed": false
-	  },
-	  {
-		"id": 50257,
-		"title": "Valkyrie",
-		"full_name": "Tập 1 - Valkyrie",
-		"episode": 1,
-		"release_date": "03/12/2013",
-		"program_name": "Castle - Season 6",
-		"thumbnail": "2013/1115/0c/ed8d4a844afacb315bde9beaf0d5fc78_1384456328.jpg",
-		"file_url": "stream6.tv.zdn.vn/streaming/ba34635dc7b0c98a35c308e902e2e94d/52a1fe00/2013/1115/0c/7dfe9d6a5fd4114bc2b95ddf9ece4993.mp4",
-		"listen": 1616,
-		"duration": 2538,
-		"viewed": false
-	  }
-	]
-  }
+```javascript
+{
+  "series": {
+    "id": 2483,
+    "name": "Castle - Season 6"
+  },
+  "total": 9,
+  "response": [
+    {
+      "id": 50681,
+      "title": "Disciple",
+      "full_name": "Tập 9 - Disciple",
+      "episode": 9,
+      "release_date": "03/12/2013",
+      "program_name": "Castle - Season 6",
+      "thumbnail": "2013/1123/1e/766570c8581a7b2ed3ede689d617d89a_1385186436.jpg",
+      "file_url": "stream6.tv.zdn.vn/streaming/3b3c5d1cbd34ccdcb9919384d27ba318/52a1fff5/2013/1123/1e/133f02e5a0489cecdf42e5d75cd587b0.mp4",
+      "listen": 883,
+      "duration": 2582,
+      "viewed": false
+    },
+    {
+      "id": 50337,
+      "title": "A Murder is Forever",
+      "full_name": "Tập 8 - A Murder is Forever",
+      "episode": 8,
+      "release_date": "03/12/2013",
+      "program_name": "Castle - Season 6",
+      "thumbnail": "2013/1115/d9/4173c430f43a4819d0f28d3e0d995859_1384537150.jpg",
+      "file_url": "stream6.tv.zdn.vn/streaming/4264b985730c72b3523505b1f9b8cfb6/52a1fff5/2013/1115/d9/57d4b42be121c03e6ea392c3e814fa24.mp4",
+      "listen": 593,
+      "duration": 2540,
+      "viewed": false
+    },
+    {
+      "id": 50263,
+      "title": "Like Father, Like Daughter",
+      "full_name": "Tập 7 - Like Father, Like Daughter",
+      "episode": 7,
+      "release_date": "",
+      "program_name": "Castle - Season 6",
+      "thumbnail": "2013/1115/18/df217b3dd2511a52120f66371a9ceffe_1384458052.jpg",
+      "file_url": "stream6.tv.zdn.vn/streaming/df12a775821e856ebebd77db1cedbb84/52a1fff5/2013/1115/18/cdc11b86bd101e8c296304e29bb7632a.mp4",
+      "listen": 555,
+      "duration": 2582,
+      "viewed": false
+    },
+    {
+      "id": 50262,
+      "title": "Get a Clue",
+      "full_name": "Tập 6 - Get a Clue",
+      "episode": 6,
+      "release_date": "03/12/2013",
+      "program_name": "Castle - Season 6",
+      "thumbnail": "2013/1115/b2/af5baa134dbad6c8201a2ddd17848b2e_1384457940.jpg",
+      "file_url": "stream6.tv.zdn.vn/streaming/01860fe839f9246c7eb451d95c6612a9/52a1fff5/2013/1115/b2/a58885d69cb5ac4c15291091a65e03db.mp4",
+      "listen": 656,
+      "duration": 2582,
+      "viewed": false
+    },
+    {
+      "id": 50261,
+      "title": "Time Will Tell",
+      "full_name": "Tập 5 - Time Will Tell",
+      "episode": 5,
+      "release_date": "03/12/2013",
+      "program_name": "Castle - Season 6",
+      "thumbnail": "2013/1115/ed/9ced0cefb4f6ff9627597fb6dcf32a29_1384456655.jpg",
+      "file_url": "stream6.tv.zdn.vn/streaming/52ef82d27ea0e61618a8ec8d3d41e65d/52a1fff5/2013/1115/ed/02a30af492ab8f72acdf62eeab37d4af.mp4",
+      "listen": 685,
+      "duration": 2572,
+      "viewed": false
+    },
+    {
+      "id": 50260,
+      "title": "Number One Fan",
+      "full_name": "Tập 4 - Number One Fan",
+      "episode": 4,
+      "release_date": "03/12/2013",
+      "program_name": "Castle - Season 6",
+      "thumbnail": "2013/1115/3b/8dafcc1e6757ec74a08580cb876c1c1a_1384457424.jpg",
+      "file_url": "stream6.tv.zdn.vn/streaming/80c0c4c71eca0fd50807fe7b55451746/52a1fff5/2013/1115/3b/0d4826e79f12e9c198719109fc3f5965.mp4",
+      "listen": 754,
+      "duration": 2583,
+      "viewed": true
+    },
+    {
+      "id": 50259,
+      "title": "Need to Know",
+      "full_name": "Tập 3 - Need to Know",
+      "episode": 3,
+      "release_date": "03/12/2013",
+      "program_name": "Castle - Season 6",
+      "thumbnail": "2013/1115/b5/96d5abc23682c28d2a4fa7d5f8c6b2db_1384456490.jpg",
+      "file_url": "stream6.tv.zdn.vn/streaming/91b32af9e4acfdabd7a13e00174f8811/52a1fff5/2013/1115/b5/46d7534af11bcd1bfce5ee9a2be54d4d.mp4",
+      "listen": 822,
+      "duration": 2584,
+      "viewed": false
+    },
+    {
+      "id": 50258,
+      "title": "Dreamworld",
+      "full_name": "Tập 2 - Dreamworld",
+      "episode": 2,
+      "release_date": "03/12/2013",
+      "program_name": "Castle - Season 6",
+      "thumbnail": "2013/1115/7e/a5dd2963e0cf23f743aa663d4a4c395e_1384456421.jpg",
+      "file_url": "stream6.tv.zdn.vn/streaming/28915f733a72326757d8f213ddee2b27/52a1fff5/2013/1115/7e/83c7bf6c5136d1220851b40a75795304.mp4",
+      "listen": 953,
+      "duration": 2525,
+      "viewed": false
+    },
+    {
+      "id": 50257,
+      "title": "Valkyrie",
+      "full_name": "Tập 1 - Valkyrie",
+      "episode": 1,
+      "release_date": "03/12/2013",
+      "program_name": "Castle - Season 6",
+      "thumbnail": "2013/1115/0c/ed8d4a844afacb315bde9beaf0d5fc78_1384456328.jpg",
+      "file_url": "stream6.tv.zdn.vn/streaming/524b3892d66994e15bdd580f3c4e517a/52a1fff5/2013/1115/0c/7dfe9d6a5fd4114bc2b95ddf9ece4993.mp4",
+      "listen": 1616,
+      "duration": 2538,
+      "viewed": false
+    }
+  ]
+}
+```
