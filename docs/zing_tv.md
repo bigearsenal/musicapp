@@ -1,7 +1,13 @@
+**Table of Contents**  *generated with [DocToc](http://doctoc.herokuapp.com/)*
+
+- [ZING - TV](#zing---tv)
+	- [Getting app info](#getting-app-info)
+	- [Get media](#get-media)
+	- [Series](#series)
 
 #ZING - TV
 
-## Getting app info
+##Getting app info
 
 http://api.tv.zing.vn/2.0/appinfo?api_key=d04210a70026ad9323076716781c223f&os=ios&
 
@@ -11,7 +17,7 @@ Response
 	"version": "1.1.3"
 	}
 
-## Get media
+##Get media
 
 http://api.tv.zing.vn/2.0/media/info?api_key=d04210a70026ad9323076716781c223f&media_id=51179&session_key=91618dfec493ed7dc9d61ac088dff36b&
 
@@ -54,8 +60,7 @@ Response
 }
 ```
 
-
-## Home
+##Home
 
 http://api.tv.zing.vn/2.0/home/mobile2?api_key=d04210a70026ad9323076716781c223f&
 
@@ -632,7 +637,7 @@ Response
 }
 ```
 
-## Os registration
+##Os-registration
 
 http://api.tv.zing.vn/2.0/ext/registration/ios?device_version=6.1.1&app_version=1.1.5&device_token=41110fcb251053179e94b2365b899c6862ab3baa624941e62db8c083f0c1d78e&device_id=60:C5:47:39:DE:E1&store=1&status=1&session_key=91618dfec493ed7dc9d61ac088dff36b&notify=1&api_key=d04210a70026ad9323076716781c223f&
 
@@ -643,7 +648,7 @@ Response
 	"message": null
 	}
 
-## User info
+##Userinfo
 
 http://api.tv.zing.vn/2.0/user/info?api_key=d04210a70026ad9323076716781c223f&user_id=335113&
 
@@ -659,7 +664,7 @@ Response
 		}
 	}
 
-## Get genre
+##Genres
 
 http://api.tv.zing.vn/2.0/program/list?genre_id=83&page=1&list_type=new&count=20&api_key=d04210a70026ad9323076716781c223f&
 
@@ -954,7 +959,7 @@ Change genreid, list_type (new, hot,hot_yesterday)
 }
 ```
 
-## Series
+##Series
 
 http://api.tv.zing.vn/2.0/series/medias?session_key=91618dfec493ed7dc9d61ac088dff36b&series_id=2327&page=1&count=20&api_key=d04210a70026ad9323076716781c223f&
 
