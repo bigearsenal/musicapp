@@ -177,199 +177,180 @@ Response:
 	Content-Type: application/x-www-form-urlencoded; charset=utf-8
 	Content-Length: 131
 	Connection: close
-	Cookie: JSESSIONID=DB0AB3B481585EBC2C6BB953B6BC5B9E
+	Cookie: JSESSIONID=352FFB19E8C5EBA662C490C8401D42B3
 	User-Agent: SongFreaks 2.1.1 (iPad; iPhone OS 7.0.4; en_US)
 	
-	sfid=4694677&appname=sf_iphone&comments=true&territory=US&lrc=lrc&videos=true&version=2.1.1&apikey=6c7a95aa8238f3b437b1db24e644c2ee
+	sfid=3921858&appname=sf_iphone&comments=true&territory=US&lrc=lrc&videos=true&version=2.1.1&apikey=6c7a95aa8238f3b437b1db24e644c2ee
 
 Response:
 
 	<songfreaks> 
-	<response code="101" renderTime="0.2440">SUCCESS: LICENSE, LYRICS</response> 
-	<track id="7139678" track_group_id="4694677" urlslug="blurred-lines-lyrics-pharrell-williams-3" amg="29616279" instrumental="false" viewable="true" duration="4:23" lyric="3905268" has_lrc="false" tracknumber="1" discnumber="1"> 
-		<title>Blurred Lines</title> 
+	<response code="111" renderTime="0.2300">SUCCESS: LICENSE, LRC</response> 
+	<track id="101578" track_group_id="3921858" urlslug="all-i-want-for-christmas-is-you-lyrics-mariah-carey" amg="857456" instrumental="false" viewable="true" duration="4:01" lyric="3781291" has_lrc="false" tracknumber="2" discnumber="1"> 
+		<title>All I Want for Christmas Is You</title> 
 		<rating averagerating="0.0" userrating="0" totalratings="0" /> 
-		<album id="427392" amg="2796235" urlslug="blurred-lines-album-robin-thicke-1" year="2013" image="http://www.lyricfind.com/images/amg/cov75/dru700/u725/u72557nsksm.jpg" largeimage="http://www.lyricfind.com/images/amg/cov200/dru700/u725/u72557nsksm.jpg"> 
-			<title>Blurred Lines [Clean]</title> 
-			<artist amg="556625" id="26855" image="http://www.lyricfind.com/images/amg/pic200/drq100/q101/q10180e2pwg.jpg" genre="Rhythm &amp; Blues" urlslug="robin-thicke"> 
-				<name>Robin Thicke</name> 
-				<link>http://www.songfreaks.com/robin-thicke</link> 
+		<album id="16328" amg="206142" urlslug="merry-christmas-album-mariah-carey" year="1994" image="http://www.lyricfind.com/images/amg/cov75/dre900/e962/e96280ddswo.jpg" largeimage="http://www.lyricfind.com/images/amg/cov200/dre900/e962/e96280ddswo.jpg"> 
+			<title>Merry Christmas</title> 
+			<artist amg="62404" id="1269" image="http://www.lyricfind.com/images/amg/pic200/drq100/q124/q12485fnbdj.jpg" genre="Rhythm &amp; Blues" urlslug="mariah-carey"> 
+				<name>Mariah Carey</name> 
+				<link>http://www.songfreaks.com/mariah-carey</link> 
 			</artist> 
-			<link>http://www.songfreaks.com/blurred-lines-album-robin-thicke-1</link> 
+			<link>http://www.songfreaks.com/merry-christmas-album-mariah-carey</link> 
 		</album> 
 		<artists> 
-			<artist amg="281403" id="32622" image="http://www.lyricfind.com/images/amg/pic200/drq000/q084/q08457inu2g.jpg" genre="Rap" urlslug="pharrell-williams"> 
-				<name>Pharrell Williams</name> 
-				<link>http://www.songfreaks.com/pharrell-williams</link> 
-			</artist> 
-			<artist amg="483720" id="581" image="http://www.lyricfind.com/images/amg/pic200/drq000/q036/q03691ht2fv.jpg" genre="Rap" urlslug="t-i"> 
-				<name>T.I.</name> 
-				<link>http://www.songfreaks.com/t-i</link> 
-			</artist> 
-			<artist amg="556625" id="26855" image="http://www.lyricfind.com/images/amg/pic200/drq100/q101/q10180e2pwg.jpg" genre="Rhythm &amp; Blues" urlslug="robin-thicke"> 
-				<name>Robin Thicke</name> 
-				<link>http://www.songfreaks.com/robin-thicke</link> 
+			<artist amg="62404" id="1269" image="http://www.lyricfind.com/images/amg/pic200/drq100/q124/q12485fnbdj.jpg" genre="Rhythm &amp; Blues" urlslug="mariah-carey"> 
+				<name>Mariah Carey</name> 
+				<link>http://www.songfreaks.com/mariah-carey</link> 
 			</artist> 
 		</artists> 
-		<flattened>Hey, hey, hey
-			Hey, hey, hey Hey, hey, hey
-			If you can't hear, what I'm tryna say If you can't read, from the same page
-			Maybe I'm going deaf Maybe I'm going blind
-			Maybe I'm out of my mind OK, now he was close
-			Tried to domesticate you But you're an animal
-			Baby, it's in your nature Just let me liberate you
-			You don't need no papers That man is not your mate
-			And that's why I'm gon' take you Good girl!
-			I know you want it I know you want it
-			I know you want it You're a good girl!
-			Can't let it get past me Me fall from plastic
-			Talk about getting blasted I hate these blurred lines!
-			I know you want it I know you want it
-			I know you want it But you're a good girl!
-			The way you grab me Must wanna get nasty
-			Go ahead, get at me What do they make dreams for
-			When you got them jeans on What do we need steam for
-			You the hottest b**** in this place! I feel so lucky
-			You wanna hug me What rhymes with hug me?
-			Hey! OK, now he was close
-			Tried to domesticate you But you're an animal
-			Baby, it's in your nature Just let me liberate you
-			You don't need no papers That man is not your mate
-			And that's why I'm gon' take you Good girl!
-			I know you want it I know you want it
-			I know you want it You're a good girl!
-			Can't let it get past me Me fall from plastic
-			Talk about getting blasted I hate these blurred lines!
-			I know you want it I know you want it
-			I know you want it But you're a good girl!
-			The way you grab me Must wanna get nasty
-			Go ahead, get at me (Hustle Gang Homie)
-			One thing I ask of you Lemme be the one you bring that a** up to
-			From Malibu to Paris, boo Had a b****, but she ain't bad as you
-			So, hit me up when you pa**in' through I'll give you something big enough to tear your a** in two
-			Swag on 'em even when you dress casual I mean, it's almost unbearable
-			Honey you not there when I'm At the bar side let you have me by
-			Nothin' like your last guy, he too square for you He don't smack that a** and pull your hair for you
-			So I'm just watchin' and waitin' For you to salute the truly pimpin'
-			Not many women can refuse this pimpin' I'm a nice guy, but don't get confused, you git'n it!
-			Shake your rump Get down
-			Get up Do it like it hurt, like it hurt
-			What, you don't like work? Hey!
-			Baby, can you breathe? I got this from Jamaica
-			It always works for me Dakota to Decatur
-			No more pretending Cause now your winning
-			Here's our beginning I always wanted a
-			Good girl! I know you want it
-			I know you want it I know you want it
-			You're a good girl! Can't let it get past me
-			Me fall from plastic Talk about getting blasted
-			I hate these blurred lines! I know you want it
-			I know you want it I know you want it
-			But you're a good girl! The way you grab me
-			Must wanna get nasty Go ahead, get at me
-			Everybody get up Everybody get up
-			Hey, hey, hey Hey, hey, hey
-			Hey, hey, hey</flattened> 
-		<link>http://www.songfreaks.com/blurred-lines-lyrics-pharrell-williams-3</link> 
-		<lyrics>Hey, hey, hey
-			Hey, hey, hey Hey, hey, hey
-			If you can't hear, what I'm tryna say If you can't read, from the same page
-			Maybe I'm going deaf Maybe I'm going blind
-			Maybe I'm out of my mind OK, now he was close
-			Tried to domesticate you But you're an animal
-			Baby, it's in your nature Just let me liberate you
-			You don't need no papers That man is not your mate
-			And that's why I'm gon' take you Good girl!
-			I know you want it I know you want it
-			I know you want it You're a good girl!
-			Can't let it get past me Me fall from plastic
-			Talk about getting blasted I hate these blurred lines!
-			I know you want it I know you want it
-			I know you want it But you're a good girl!
-			The way you grab me Must wanna get nasty
-			Go ahead, get at me What do they make dreams for
-			When you got them jeans on What do we need steam for
-			You the hottest b**** in this place! I feel so lucky
-			You wanna hug me What rhymes with hug me?
-			Hey! OK, now he was close
-			Tried to domesticate you But you're an animal
-			Baby, it's in your nature Just let me liberate you
-			You don't need no papers That man is not your mate
-			And that's why I'm gon' take you Good girl!
-			I know you want it I know you want it
-			I know you want it You're a good girl!
-			Can't let it get past me Me fall from plastic
-			Talk about getting blasted I hate these blurred lines!
-			I know you want it I know you want it
-			I know you want it But you're a good girl!
-			The way you grab me Must wanna get nasty
-			Go ahead, get at me (Hustle Gang Homie)
-			One thing I ask of you Lemme be the one you bring that a** up to
-			From Malibu to Paris, boo Had a b****, but she ain't bad as you
-			So, hit me up when you pa**in' through I'll give you something big enough to tear your a** in two
-			Swag on 'em even when you dress casual I mean, it's almost unbearable
-			Honey you not there when I'm At the bar side let you have me by
-			Nothin' like your last guy, he too square for you He don't smack that a** and pull your hair for you
-			So I'm just watchin' and waitin' For you to salute the truly pimpin'
-			Not many women can refuse this pimpin' I'm a nice guy, but don't get confused, you git'n it!
-			Shake your rump Get down
-			Get up Do it like it hurt, like it hurt
-			What, you don't like work? Hey!
-			Baby, can you breathe? I got this from Jamaica
-			It always works for me Dakota to Decatur
-			No more pretending Cause now your winning
-			Here's our beginning I always wanted a
-			Good girl! I know you want it
-			I know you want it I know you want it
-			You're a good girl! Can't let it get past me
-			Me fall from plastic Talk about getting blasted
-			I hate these blurred lines! I know you want it
-			I know you want it I know you want it
-			But you're a good girl! The way you grab me
-			Must wanna get nasty Go ahead, get at me
-			Everybody get up Everybody get up
-			Hey, hey, hey Hey, hey, hey
-			Hey, hey, hey</lyrics> 
-		<copyright>Lyrics © EMI Music Publishing, Universal Music Publishing Group</copyright> 
-		<writer>Williams, Pharrell L / Harris, Clifford / Thicke, Robin</writer> 
+		<lrc> 
+			<line lrc_timestamp="[00:07.50]" milliseconds="7500">I don't want a lot for Christmas</line> 
+			<line lrc_timestamp="[00:13.53]" milliseconds="13530">There is just one thing I need</line> 
+			<line lrc_timestamp="[00:17.68]" milliseconds="17680">I don't care about the presents</line> 
+			<line lrc_timestamp="[00:21.32]" milliseconds="21320">Underneath the Christmas tree</line> 
+			<line lrc_timestamp="[00:24.83]" milliseconds="24830">I just want you for my own</line> 
+			<line lrc_timestamp="[00:29.13]" milliseconds="29130">More than you could ever know</line> 
+			<line lrc_timestamp="[00:33.13]" milliseconds="33130">Make my wish come true oh</line> 
+			<line lrc_timestamp="[00:39.71]" milliseconds="39710">All I want for Christmas is you</line> 
+			<line /> 
+			<line lrc_timestamp="[00:57.53]" milliseconds="57530">I don't want a lot for Christmas</line> 
+			<line lrc_timestamp="[01:00.68]" milliseconds="60680">There is just one thing I need, and I</line> 
+			<line lrc_timestamp="[01:04.32]" milliseconds="64320">Don't care about the presents</line> 
+			<line lrc_timestamp="[01:07.04]" milliseconds="67040">Underneath the Christmas tree</line> 
+			<line lrc_timestamp="[01:10.32]" milliseconds="70320">I don't need to hang my stocking</line> 
+			<line lrc_timestamp="[01:13.53]" milliseconds="73530">There upon the fireplace</line> 
+			<line lrc_timestamp="[01:16.71]" milliseconds="76710">Santa Claus won't make me happy</line> 
+			<line lrc_timestamp="[01:20.10]" milliseconds="80100">With a toy on Christmas day</line> 
+			<line /> 
+			<line lrc_timestamp="[01:23.13]" milliseconds="83130">I just want you for my own</line> 
+			<line lrc_timestamp="[01:26.23]" milliseconds="86230">More than you could ever know</line> 
+			<line lrc_timestamp="[01:29.41]" milliseconds="89410">Make my wish come true</line> 
+			<line lrc_timestamp="[01:32.62]" milliseconds="92620">All I want for Christmas is you</line> 
+			<line /> 
+			<line lrc_timestamp="[01:42.44]" milliseconds="102440">I won't ask for much this Christmas</line> 
+			<line lrc_timestamp="[01:45.44]" milliseconds="105440">I won't even wish for snow, and I</line> 
+			<line lrc_timestamp="[01:49.07]" milliseconds="109070">I just wanna keep on waiting</line> 
+			<line lrc_timestamp="[01:51.83]" milliseconds="111830">Underneath the mistletoe</line> 
+			<line /> 
+			<line lrc_timestamp="[01:55.04]" milliseconds="115040">I won't make a list and send it</line> 
+			<line lrc_timestamp="[01:58.23]" milliseconds="118230">To the North Pole for Saint Nick</line> 
+			<line lrc_timestamp="[02:01.44]" milliseconds="121440">I won't even stay awake</line> 
+			<line lrc_timestamp="[02:04.38]" milliseconds="124380">To hear those magic reindeer click</line> 
+			<line /> 
+			<line lrc_timestamp="[02:07.74]" milliseconds="127740">'cause I just want you here tonight</line> 
+			<line lrc_timestamp="[02:11.01]" milliseconds="131010">Holding on to me so tight</line> 
+			<line lrc_timestamp="[02:14.23]" milliseconds="134230">What more can I do</line> 
+			<line lrc_timestamp="[02:17.07]" milliseconds="137070">Oh, Baby all I want for Christmas is you</line> 
+			<line /> 
+			<line lrc_timestamp="[02:27.13]" milliseconds="147130">All the lights are shining</line> 
+			<line lrc_timestamp="[02:30.10]" milliseconds="150100">So brightly everywhere</line> 
+			<line lrc_timestamp="[02:33.80]" milliseconds="153800">And the sound of children's</line> 
+			<line lrc_timestamp="[02:36.56]" milliseconds="156560">Laughter fills the air</line> 
+			<line /> 
+			<line lrc_timestamp="[02:40.56]" milliseconds="160560">And everyone is singing</line> 
+			<line lrc_timestamp="[02:43.44]" milliseconds="163440">I hear those sleigh bells ringing</line> 
+			<line lrc_timestamp="[02:46.17]" milliseconds="166170">Santa won't you bring me</line> 
+			<line lrc_timestamp="[02:47.74]" milliseconds="167740">The one I really need</line> 
+			<line lrc_timestamp="[02:49.20]" milliseconds="169200">Won't you please bring my baby to me quickly</line> 
+			<line /> 
+			<line lrc_timestamp="[02:52.68]" milliseconds="172680">I don't want a lot for Christmas</line> 
+			<line lrc_timestamp="[02:55.80]" milliseconds="175800">This is all I'm asking for</line> 
+			<line lrc_timestamp="[02:58.92]" milliseconds="178920">I just wanna see my baby</line> 
+			<line lrc_timestamp="[03:02.13]" milliseconds="182130">Standing right outside my door</line> 
+			<line /> 
+			<line lrc_timestamp="[03:05.32]" milliseconds="185320">I just want you for my own</line> 
+			<line lrc_timestamp="[03:08.50]" milliseconds="188500">More than you could ever know</line> 
+			<line lrc_timestamp="[03:11.71]" milliseconds="191710">Make my wish come true</line> 
+			<line lrc_timestamp="[03:14.53]" milliseconds="194530">Baby all I want for Christmas is you</line> 
+			<line /> 
+			<line lrc_timestamp="[03:28.01]" milliseconds="208010">All I want for Christmas is you, baby</line> 
+		</lrc> 
+		<link>http://www.songfreaks.com/all-i-want-for-christmas-is-you-lyrics-mariah-carey</link> 
+		<lyrics>I don't want a lot for Christmas
+			There is just one thing I need I don't care about the presents
+			Underneath the Christmas tree I just want you for my own
+			More than you could ever know Make my wish come true oh
+			All I want for Christmas is you I don't want a lot for Christmas
+			There is just one thing I need, and I Don't care about the presents
+			Underneath the Christmas tree I don't need to hang my stocking
+			There upon the fireplace Santa Claus won't make me happy
+			With a toy on Christmas day I just want you for my own
+			More than you could ever know Make my wish come true
+			All I want for Christmas is you I won't ask for much this Christmas
+			I won't even wish for snow, and I I just wanna keep on waiting
+			Underneath the mistletoe I won't make a list and send it
+			To the North Pole for Saint Nick I won't even stay awake
+			To hear those magic reindeer click 'cause I just want you here tonight
+			Holding on to me so tight What more can I do
+			Oh, Baby all I want for Christmas is you All the lights are shining
+			So brightly everywhere And the sound of children's
+			Laughter fills the air And everyone is singing
+			I hear those sleigh bells ringing Santa won't you bring me
+			The one I really need Won't you please bring my baby to me quickly
+			I don't want a lot for Christmas This is all I'm asking for
+			I just wanna see my baby Standing right outside my door
+			I just want you for my own More than you could ever know
+			Make my wish come true Baby all I want for Christmas is you
+			All I want for Christmas is you, baby</lyrics> 
+		<copyright>Lyrics © Universal Music Publishing Group</copyright> 
+		<writer>CAREY, MARIAH / AFANASIEFF, WALTER N.</writer> 
 		<submittedlyric>false</submittedlyric> 
 		<foxmobile available="false" /> 
 	</track> 
 	<videos> 
-		<video youtubeid="RA01pdI0jng" duration="265" thumbnail="http://i.ytimg.com/vi/RA01pdI0jng/mqdefault.jpg"> 
-			<title>Robin Thicke - Blurred Lines (ft. T.I. &amp; Pharrell) HD with Lyrics on screen</title> 
-			<description>Music video by Robin Thicke performing Blurred Lines with lyrics on screen. © 2013 Star Trak, LLC.</description> 
+		<video youtubeid="yXQViqx6GMY" duration="236" thumbnail="http://i.ytimg.com/vi/yXQViqx6GMY/mqdefault.jpg"> 
+			<title>Mariah Carey - All I Want For Christmas Is You</title> 
+			<description>Music video by Mariah Carey performing All I Want For Christmas Is You. YouTube view counts pre-VEVO: 61153 (C) 1994 SONY BMG MUSIC ENTERTAINMENT.</description> 
 		</video> 
-		<video youtubeid="yyDUC1LUXSU" duration="272" thumbnail="http://i.ytimg.com/vi/yyDUC1LUXSU/mqdefault.jpg"> 
-			<title>Robin Thicke - Blurred Lines ft. T.I., Pharrell</title> 
-			<description>Watch the UNRATED version only on VEVO: http://vevo.ly/W0OCcA Download the album in US now! http://smarturl.it/BlurredAlbum Click here for a special customiz...</description> 
+		<video youtubeid="1wYUxyX4Ifc" duration="249" thumbnail="http://i.ytimg.com/vi/1wYUxyX4Ifc/mqdefault.jpg"> 
+			<title>Mariah Carey - All I Want For Christmas Is You at Rockfeller Center 2013</title> 
+			<description /> 
 		</video> 
-		<video youtubeid="tYy5AOKuxWs" duration="272" thumbnail="http://i.ytimg.com/vi/tYy5AOKuxWs/mqdefault.jpg"> 
-			<title>Robin Thicke and Pharrell Perform 'Blurred Lines'</title> 
-			<description>The singers were here to perform their hot new single for Ellen! Check it out.</description> 
+		<video youtubeid="fGFNmEOntFA" duration="254" thumbnail="http://i.ytimg.com/vi/fGFNmEOntFA/mqdefault.jpg"> 
+			<title>All I Want For Christmas Is You (SuperFestive!) (Shazam V...</title> 
+			<description>Justin Bieber Duet with Mariah Carey - All I Want For Christmas Is You (SuperFestive!) (Shazam Version) © 2011 The Island Def Jam Music Group.</description> 
 		</video> 
-		<video youtubeid="FeIQNLAj1nI" duration="233" thumbnail="http://i.ytimg.com/vi/FeIQNLAj1nI/mqdefault.jpg"> 
-			<title>Robin Thicke - "Blurred Lines" Performance on AGT - America's Got Talent 2013</title> 
-			<description>The soulful singer performs his song of the summer on America's Got Talent. See Robin Thicke's "Blurred Lines." Subscribe Now for More AGT: http://full.sc/Il...</description> 
+		<video youtubeid="Bd0aFaU7zO8" duration="267" thumbnail="http://i.ytimg.com/vi/Bd0aFaU7zO8/mqdefault.jpg"> 
+			<title>Mariah Carey &amp; Michael Bublé - All I Want For Christmas Is You (Christmas Special 2013)</title> 
+			<description>Mariah Carey &amp; Michael Bublé perform All I Want For Christmas Is You on 'Michael Buble's 3rd Annual Christmas Special' - December 18th, 2013.</description> 
 		</video> 
-		<video youtubeid="YOZjaqHioro" duration="214" thumbnail="http://i.ytimg.com/vi/YOZjaqHioro/mqdefault.jpg"> 
-			<title>Jimmy Fallon, Robin Thicke &amp; The Roots Sing "Blurred Lines" (w/ Classroom Instruments)</title> 
-			<description>Jimmy, Robin Thicke &amp; The Roots play "Blurred Lines" on classroom instruments in the Late Night "Music Room." (instrument list below) Jimmy Fallon - wood blo...</description> 
+		<video youtubeid="YWXPX3rKFHI" duration="208" thumbnail="http://i.ytimg.com/vi/YWXPX3rKFHI/mqdefault.jpg"> 
+			<title>"All I Want For Christmas Is You"-Mariah Carey/"Last Christmas"Mashup By Amber And Yoanna</title> 
+			<description>Yoanna孫尤安Fan Page ♥: https://www.facebook.com/Yoanna.Sun1 ♥ Amber安柏兒Fan Page ♥: https://www.facebook.com/HsinHuiYoAmber ♥ CANNA Fan Page ♥ : https://www....</description> 
 		</video> 
-		<video youtubeid="uSzNN_S1-vI" duration="191" thumbnail="http://i.ytimg.com/vi/uSzNN_S1-vI/mqdefault.jpg"> 
-			<title>Robin Thicke, Pharrell Williams and T.I.: "Blurred Lines" - The Voice Highlight</title> 
-			<description>A powerhouse trio comes together on The Voice stage to perform their hit, "Blurred Lines." Subscribe to The Voice: http://full.sc/HbIXEY Mondays 8/7c and Tue...</description> 
+		<video youtubeid="AFvRf8PfpKw" duration="287" thumbnail="http://i.ytimg.com/vi/AFvRf8PfpKw/mqdefault.jpg"> 
+			<title>Mariah Carey: All I Want For Christmas Is You (Duet with Michael Bublé)</title> 
+			<description>Watch videos of Mariah performing "All I Want For Christmas Is You" (duet with Michael Bublé) and "Christmas Time Is In The Air Again" on the Michael Bublé's...</description> 
 		</video> 
-		<video youtubeid="BJ6YGabx7xs" duration="182" thumbnail="http://i.ytimg.com/vi/BJ6YGabx7xs/mqdefault.jpg"> 
-			<title>Robin Thicke;Blurred Lines Version Non-Censurée</title> 
-			<description>La Version Non-Censurée de Blurred Lines Bon Visionnage :D Et Abbonez Vous :P.</description> 
+		<video youtubeid="gZCX4sNya3o" duration="296" thumbnail="http://i.ytimg.com/vi/gZCX4sNya3o/mqdefault.jpg"> 
+			<title>Mariah Carey (All I Want for Christmas Is You)  NCT Lighting 2013 UNDUBBED</title> 
+			<description>Mariah performing her Christmas Classic Live in DC!</description> 
 		</video> 
-		<video youtubeid="5fo1kvlRjTs" duration="539" thumbnail="http://i.ytimg.com/vi/5fo1kvlRjTs/mqdefault.jpg"> 
-			<title>Teens React to Robin Thicke - Blurred Lines</title> 
-			<description>Blurred Lines BONUS REACTIONS : http://goo.gl/tbfYv9 Subscribe! New vids every Sun/Tues/Thu: http://bit.ly/TheFineBros FREE NETFLIX FOR A MONTH! http://netfl...</description> 
+		<video youtubeid="InYvRyX2Fu4" duration="182" thumbnail="http://i.ytimg.com/vi/InYvRyX2Fu4/mqdefault.jpg"> 
+			<title>Mariah Carey - All I Want For Christmas Is You (Chatroulette Version)</title> 
+			<description>Music by Mariah Carey Video created by Steve Kardynal http://www.facebook.com/SteveKardynalfans.</description> 
+		</video> 
+		<video youtubeid="ckbV7H2Gn4s" duration="303" thumbnail="http://i.ytimg.com/vi/ckbV7H2Gn4s/mqdefault.jpg"> 
+			<title>Mariah Carey - 'All I Want For Christmas Is You' [Christmas in Rockefeller Center 2012]</title> 
+			<description>Mariah Carey performing 'All I Want For Christmas Is You' live at Christmas in Rockefeller Center 2012.</description> 
 		</video> 
 	</videos> 
-	<comments totalresults="0" totalpages="0" /> 
+	<comments totalresults="2" totalpages="1"> 
+		<comment id="2523" date="2013-12-24 08:32:36.000-0500" deleted="false" likes="0" dislikes="0"> 
+			<user id="20153" displayname="lillyelly" avatar="https://s3.amazonaws.com/Songfreaks/profile_images/SFBieberAvatar.jpg" badgescore="60" /> 
+			<userrating value="0" /> 
+			<content contenttype="TRACK" contentid="3921858" /> 
+			<message>haha great !</message> 
+			<replies /> 
+		</comment> 
+		<comment id="369" date="2012-12-15 17:12:12.000-0500" deleted="false" likes="0" dislikes="0"> 
+			<user id="4215" displayname="iysh2003@hotmail.co.uk" avatar="https://s3.amazonaws.com/Songfreaks/profile_images/SFBurnsAvatar.jpg" badgescore="60" /> 
+			<userrating value="0" /> 
+			<content contenttype="TRACK" contentid="3921858" /> 
+			<message>brilliant spectacular oh my god just get in the christmas spirit</message> 
+			<replies /> 
+		</comment> 
+	</comments> 
 	</songfreaks>
 
 ### Getting an album
