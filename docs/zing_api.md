@@ -100,7 +100,86 @@ Response:
 
 Example:
 
-    http://api.mp3.zing.vn/api/mobile/song/getlyrics?keycode=fafd463e2131914934b73310aa34a23f&requestdata={"id":"ZW67FWWF"}
+    http://api.mp3.zing.vn/api/mobile/comment/getcommentofsong?key=fafd463e2131914934b73310aa34a23f&requestdata={"id":1073852647,"start":0,"length":20}
+
+Response:
+
+```json
+{
+  "numFound": 6,
+  "docs": [
+    {
+      "commentId": 2010319847,
+      "time": 1394189943,
+      "content": "Em muốn với mình êu nhau đi mới hay nhất tuyệt zời ông mặt trời",
+      "time_span": 147066,
+      "owner": {
+        "avatar": "http://b2.avatar.zdn.vn/180/3/a/9/2/sakurakjnomoto2003_180_117.jpg",
+        "userName": "sakurakjnomoto2003",
+        "displayName": "AmMy cAnDy gIrL"
+      }
+    },
+    {
+      "commentId": 1962175708,
+      "time": 1390698783,
+      "content": "Hay wá đj àk, hêm bjk em đã nghe bao nhiu lần rùj nx. Chị hát hay lắm ",
+      "time_span": 3638226,
+      "owner": {
+        "avatar": "http://b2.avatar.zdn.vn/180/0/0/0/5/my_tran_iu_anh_180_16.jpg",
+        "userName": "my_tran_iu_anh",
+        "displayName": "oOo HeO sOcIu mÚn wÊn hÌnH bÓnG cŨ oOo"
+      }
+    },
+    {
+      "commentId": 1936703871,
+      "time": 1388631875,
+      "content": "Cố lên chị ơi.ablum sẽ là của năm e iu chị:) chị cũg sớm ra ca khúc mới nhé",
+      "time_span": 5705134,
+      "owner": {
+        "avatar": "http://b2.avatar.zdn.vn/180/6/f/b/c/tien_tienyen_180_2.jpg",
+        "userName": "tien_tienyen",
+        "displayName": "Dinh TruongPhong"
+      }
+    },
+    {
+      "commentId": 1920299324,
+      "time": 1387604320,
+      "content": "Iu chi phuong wá.em muốn xin chu ki chi p lắm.làm. sao có chu ki chi day.out nhá",
+      "time_span": 6732689,
+      "owner": {
+        "avatar": "http://b2.avatar.zdn.vn/180/1/a/5/5/milanxinxin_180_13.jpg",
+        "userName": "milanxinxin",
+        "displayName": " Milanxinxin"
+      }
+    },
+    {
+      "commentId": 1878309504,
+      "time": 1384179588,
+      "content": "Bài nào kũg hay nhưg thích nhất là: chỉ là e giấu đi,khoảg lặng,nếu hp k fải e,e k làm đk đâu",
+      "time_span": 10157421,
+      "owner": {
+        "avatar": "http://b2.avatar.zdn.vn/180/d/5/f/a/liulypham_180_0.jpg",
+        "userName": "liulypham",
+        "displayName": "liulypham"
+      }
+    },
+    {
+      "commentId": 1873606740,
+      "time": 1383888877,
+      "content": "Nếu a có về em sẽ vờ như chẳg có j xảy ra , vờ như thiếu a cuộc đời e vẫn tươi tắn và hối hả. Chỉ là...chỉ là...e giấu đi Qá hay",
+      "time_span": 10448132,
+      "owner": {
+        "avatar": "http://b2.avatar.zdn.vn/180/d/5/f/a/liulypham_180_0.jpg",
+        "userName": "liulypham",
+        "displayName": "liulypham"
+      }
+    }
+  ],
+  "response": {
+    "msgCode": 1
+  }
+}
+```
 
 Response:
 
@@ -115,6 +194,10 @@ Response:
     }
 }
 ```
+
+### Get song comments
+
+    http://api.mp3.zing.vn/api/mobile/comment/getcommentofsong?key=fafd463e2131914934b73310aa34a23f&requestdata={%22id%22:1073852647,%22start%22:0,%22length%22:20}
 
 ## ALBUMS
 
