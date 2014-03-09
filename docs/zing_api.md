@@ -2,6 +2,7 @@
 	- [SONGS](#songs)
 		- [Get song info](#get-song-info)
 		- [Get song lyrics](#get-song-lyrics)
+        - [Get song comments](#get-song-comments)
 	- [ALBUMS](#albums)
 		- [Get albums by genre](#get-albums-by-genre)
 		- [Get songs of an album](#get-songs-of-an-album)
@@ -102,6 +103,26 @@ Example:
 
     http://api.mp3.zing.vn/api/mobile/comment/getcommentofsong?key=fafd463e2131914934b73310aa34a23f&requestdata={"id":1073852647,"start":0,"length":20}
 
+
+Response:
+
+```json
+{
+    "id": "1188945",
+    "content": "Chuyện hai chúng ta bây giờ khác rồi\nThật lòng anh không muốn ai phải bối rối\nSợ em nhìn thấy nên anh đành phải lẳng lặng đứng xa\nChuyện tình thay đổi nên bây giờ trở thành người thứ ba\nTrách ai bây giờ, trách mình thôi.....\n\nĐK:\nNhìn em hạnh phúc bên ai càng làm anh tan nát lòng\nMới hiểu tại sao tình yêu người ta sợ khi cách xa\nĐiều anh lo lắng cứ vẫn luôn xảy ra\nNếu không đổi thay chẳng có ai sống được vì thiếu mất yêu thương.\n\nThời gian giết chết cuộc tình còn đau hơn giết chính mình\nTại sao mọi thứ xung quanh vẫn thế chỉ lòng người thay đổi\nGiờ em chỉ là tất cả quá khứ anh phải cố xoá trong nước mắt\n\n[ Trong tình yêu, thuộc về ai không quan trọng\nMột giây mơ màng là đã mất nhau....]\n\nCàng nghĩ đến em, anh càng hối hận\nVì xa em nên mất em thật ngu ngốc\nGiờ tình anh như bức tranh bằng nước mắt không màu sắc\nNhẹ nhàng và trong suốt cho dù đau đớn vẫn lặng yên\nTrách ai bây giờ, trách mình thôi....\n\nĐK:\nNhìn em hạnh phúc bên ai càng làm anh tan nát lòng\nMới hiểu tại sao tình yêu người ta sợ khi cách xa\nĐiều anh lo lắng cứ vẫn luôn xảy ra\nNếu không đổi thay chẳng có ai sống được vì thiếu mất yêu thương.\n\nThời gian giết chết cuộc tình còn đau hơn giết chính mình\nTại sao mọi thứ xung quanh vẫn thế chỉ lòng người thay đổi\nGiờ em chỉ là tất cả quá khứ anh phải cố xoá trong nước mắt.\n\nNụ cười em vẫn như xưa mà lòng em sao khác rồi\nNỗi đau này chỉ mình anh nhận lấy vì anh đã sai\nGiờ anh phải cố giữ nước mắt đừng rơi\nBức tranh tình yêu của em từ lâu đã không hề có anh......\n\nTrong tình yêu, thuộc về ai không quan trọng, rồi cũng mất nhau…",
+    "mark": 3876,
+    "author": "o0cobemuaxuan0o",
+    "response": {
+        "msgCode": 1
+    }
+}
+```
+
+### Get song comments
+
+    http://api.mp3.zing.vn/api/mobile/comment/getcommentofsong?key=fafd463e2131914934b73310aa34a23f&requestdata={"id":1073852647,"start":0,"length":20}
+
+
 Response:
 
 ```json
@@ -180,24 +201,6 @@ Response:
   }
 }
 ```
-
-Response:
-
-```json
-{
-    "id": "1188945",
-    "content": "Chuyện hai chúng ta bây giờ khác rồi\nThật lòng anh không muốn ai phải bối rối\nSợ em nhìn thấy nên anh đành phải lẳng lặng đứng xa\nChuyện tình thay đổi nên bây giờ trở thành người thứ ba\nTrách ai bây giờ, trách mình thôi.....\n\nĐK:\nNhìn em hạnh phúc bên ai càng làm anh tan nát lòng\nMới hiểu tại sao tình yêu người ta sợ khi cách xa\nĐiều anh lo lắng cứ vẫn luôn xảy ra\nNếu không đổi thay chẳng có ai sống được vì thiếu mất yêu thương.\n\nThời gian giết chết cuộc tình còn đau hơn giết chính mình\nTại sao mọi thứ xung quanh vẫn thế chỉ lòng người thay đổi\nGiờ em chỉ là tất cả quá khứ anh phải cố xoá trong nước mắt\n\n[ Trong tình yêu, thuộc về ai không quan trọng\nMột giây mơ màng là đã mất nhau....]\n\nCàng nghĩ đến em, anh càng hối hận\nVì xa em nên mất em thật ngu ngốc\nGiờ tình anh như bức tranh bằng nước mắt không màu sắc\nNhẹ nhàng và trong suốt cho dù đau đớn vẫn lặng yên\nTrách ai bây giờ, trách mình thôi....\n\nĐK:\nNhìn em hạnh phúc bên ai càng làm anh tan nát lòng\nMới hiểu tại sao tình yêu người ta sợ khi cách xa\nĐiều anh lo lắng cứ vẫn luôn xảy ra\nNếu không đổi thay chẳng có ai sống được vì thiếu mất yêu thương.\n\nThời gian giết chết cuộc tình còn đau hơn giết chính mình\nTại sao mọi thứ xung quanh vẫn thế chỉ lòng người thay đổi\nGiờ em chỉ là tất cả quá khứ anh phải cố xoá trong nước mắt.\n\nNụ cười em vẫn như xưa mà lòng em sao khác rồi\nNỗi đau này chỉ mình anh nhận lấy vì anh đã sai\nGiờ anh phải cố giữ nước mắt đừng rơi\nBức tranh tình yêu của em từ lâu đã không hề có anh......\n\nTrong tình yêu, thuộc về ai không quan trọng, rồi cũng mất nhau…",
-    "mark": 3876,
-    "author": "o0cobemuaxuan0o",
-    "response": {
-        "msgCode": 1
-    }
-}
-```
-
-### Get song comments
-
-    http://api.mp3.zing.vn/api/mobile/comment/getcommentofsong?key=fafd463e2131914934b73310aa34a23f&requestdata={%22id%22:1073852647,%22start%22:0,%22length%22:20}
 
 ## ALBUMS
 
